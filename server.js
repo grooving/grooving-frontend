@@ -16,8 +16,8 @@ app.get('*', function (req, res) {
 })
 
 // Create default port to serve the app on
-// const port = process.env.PORT || 5000
-// app.listen(port)
+const port = process.env.PORT || 5000
+app.listen(port)
 
 // Log a feedback that this is actually running
 console.log('Server started on port ' + port)
