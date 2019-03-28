@@ -3,24 +3,28 @@
    
      <div class="collapse navbar-collapse width px-2 bg-light" id="sidebarleft">
          <p>
-         <h2>Menu</h2>
+         <div class="navContent">
+         <h2 class="title">Menu</h2>
             <ul class="navbar-nav mr-auto p-2 col align-self-center justify-content-center">
-                <li class="nav-item">
-                    <router-link class="nav-link" to="artist_search">Top Artists</router-link> 
+                <li class="nav-item section">
+                    <router-link class="nav-link" to="artist_search" data-toggle="collapse" data-target="#sidebarleft" >Top Artists</router-link> 
+                    <b-dropdown-divider class="divider"/>
                 </li>
-                <b-dropdown-divider class="divider"/>
-                <li class="nav-item">
-                    <router-link class="nav-link" to="offers">My Offers</router-link>
+                <li v-if="gsecurity.isAuthenticated()" class="nav-item section">
+                    <router-link class="nav-link" to="offers" data-toggle="collapse" 
+                    data-target="#sidebarleft" >My Offers</router-link>
+                    <b-dropdown-divider class="divider"/>
                 </li>
-                <b-dropdown-divider class="divider"/>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">QR Scan</a>
+                <li v-if="gsecurity.hasRole('ARTIST')" class="nav-item section">
+                    <a class="nav-link" href="#" data-toggle="collapse" data-target="#sidebarleft">QR Scan</a>
+                    <b-dropdown-divider class="divider"/>
                 </li>
-                <b-dropdown-divider class="divider"/>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">FAQ</a>
+                
+                <li class="nav-item section">
+                    <a class="nav-link" href="#" data-toggle="collapse" data-target="#sidebarleft">FAQ</a>
                 </li>
             </ul>
+        </div>
         </div>
   </div>
 </template>
@@ -29,10 +33,19 @@
 <!-- Script -->
  
 <script>
+import GSecurity from '@/security/GSecurity.js';
+
 export default {
   name: 'LeftMenu',
     props: {
-        blur: Boolean
+        blur: {
+            type: Boolean,
+        }  
+    },
+    data: function(){
+        return{
+            gsecurity: GSecurity,
+        }
     }
 }
 
@@ -53,10 +66,23 @@ $(window).bind('scroll', function () {
     font-family: "Archivo"
 }
 
+.title {
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.navContent {
+    margin-left: 15px;
+}
+
+.section {
+    font-size: 18px;
+}
+
 #sidebarleft.collapse {
     text-align: left;
     position: fixed;
-    z-index: 2000;
+    z-index: 2001;
     transition: all .3s ease;
     left: -130%; /* -width of sidebar */
     width: 100%;
@@ -69,6 +95,7 @@ $(window).bind('scroll', function () {
     text-align: left;
     transition: all .18s ease-in;
     position: fixed;
+    z-index: 2001;
     left: -130%;  /* -width of sidebar */
     width: 100%;  /* width of sidebar */
     height: fit-content !important;
@@ -91,13 +118,27 @@ $(window).bind('scroll', function () {
 
 @media (min-width: 768px) {
     
+    .title {
+        font-weight: bold;
+        margin-left: 5px;
+    }
+
+    .navContent {
+        margin-left: 20px;
+    }
+
+    .section {
+        font-size: 18px;
+    }
 
     #sidebarleft.collapse {
         display: none;
+        z-index: 2001;
     }
 
     #sidebarleft.collapsing {
         display: none;
+        z-index: 2001;
     }
 
     #sidebarleft.collapse.show {

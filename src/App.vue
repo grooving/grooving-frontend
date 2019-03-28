@@ -1,9 +1,15 @@
 <template>
   <div id="app">
     <div class="content">
-    <div class="Header"><Header @authenticated="setAuthenticated" v-bind:authenticated="authenticated"/></div>
-    <div class="RightMenu"><RightMenu/></div>
-    <div class="LeftMenu"><LeftMenu/></div>
+    <div class="Header">
+      <Header />
+    </div>
+    <div class="RightMenu">
+      <RightMenu />
+    </div>
+    <div class="LeftMenu">
+      <LeftMenu />
+    </div>
     <router-view/>
     </div>
     <footer><Footer/></footer>
@@ -17,39 +23,16 @@ import LeftMenu from "./components/LeftMenu.vue"
 import Footer from "./components/Footer.vue"
 
 export default {
-  data() {
-    return {
-      authenticated: false,
-      mockAccount: {
-        username: "pug",
-        password: "pug",
-      }
-    }
-  },
 
   components:{
     Header, RightMenu, LeftMenu, Footer
   },
 
   mounted() {
-    if(!this.authenticated) {
-      this.$router.replace({name: "#"});
+    if(!this.$gsecurity.isAuthenticated()) {
+      this.$router.push({path: "/"});   
     }
   },
-  
-  methods: {
-    setAuthenticated(status) {
-      if (status == "false") {
-        this.authenticated = false;
-      }
-      if (status == "true") {
-        this.authenticated = true;
-      }
-    },
-    logout() {
-      this.authenticated = false;
-    }
-  }
 }
 
 </script>

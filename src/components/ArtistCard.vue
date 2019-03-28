@@ -7,7 +7,7 @@
                     <h5 class="card-title artistName">{{ artistName }}</h5>
                     <span class="card-text artistGenres">{{ genresToString() }}</span>
                 </div>
-                <div class="rightContent">
+                <div v-if="gsecurity.hasRole('CUSTOMER')" class="rightContent">
                     <router-link v-bind:to="hireURI" class="btn btn-primary hireButton"><span class="hireText">HIRE</span></router-link>
                 </div>
             </div>
@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import GSecurity from '@/security/GSecurity.js';
+
 export default {
     name: "ArtistCard",
     props: {
@@ -38,9 +40,13 @@ export default {
         hireURI: {
             type: String,
             default: 'hiringType'
-        } 
+        }
     },
-
+    data: function(){
+        return{
+            gsecurity: GSecurity,
+        }
+    },
     methods: {
         genresToString() {
 
@@ -67,8 +73,8 @@ export default {
     }
 
     .tarjeta {
-        max-width: 350px;
-        width: 100%;
+        max-width: 400px;
+        width: 105%;
         margin: 0 auto !important;
         border-radius: 20px;
         box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, .2);

@@ -2,16 +2,16 @@
   <div>
     <nav class="navbar navbar-light bg-light">
       <div class="navbar-brand vertical-center">
-        <button class="d-inline d-md-none navbar-toggler no-border" role="button" data-toggle="collapse" data-target="#sidebarleft" 
-        v-on:click=" collapsed = !collapsed">
+        <button class="d-inline d-md-none navbar-toggler no-border" role="button" data-toggle="collapse" data-target="#sidebarleft"
+          @click="sideMenus()">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <router-link class="ml-2 vertical-center" to="/home"><img src="@/assets/logos/logo_name.png" width="100px"/></router-link>
+        <router-link class="ml-2 vertical-center" to="/"><img src="@/assets/logos/logo_name.png" width="100px"/></router-link>
       </div>
       <div class="d-none d-md-block mr-auto">
         <ul class="navbar-nav row-alignment right-float">
-          <li v-for="item in menu_links" class="nav-item mx-2" v-bind:class="{active: item.selected}">
-            <router-link v-if="(!item.authRequired || authenticated)" class="nav-link font" :to="item.link">{{item.text}}</router-link> 
+          <li v-for="item in userVisibleLinks" class="nav-item mx-2" v-bind:class="{active: item.selected}">
+            <router-link class="nav-link font" :to="item.link">{{item.text}}</router-link> 
           </li>
         </ul>
       </div>
@@ -28,15 +28,16 @@
               </form>
             </div>
           </li>
-          <li v-if="authenticated" class="serch nav-item mx-2 right-float vertical-center" >
-            <button role="button" class="collaps" data-toggle="collapse" data-target="#sidebar" v-on:click=" collapsed = !collapsed">
+          <li v-if="gsecurity.isAuthenticated()" class="nav-item mx-2 right-float vertical-center" >
+            <button role="button" class="collaps" data-toggle="collapse" data-target="#sidebar" @click="sideMenus()">
               <a class="nav-link vertical-center" href="#">
-                <img v-bind:src="profileImage" class="profileImage" alt="Profile Image">
+                <img v-if="gsecurity.hasRole('ARTIST')" v-bind:src="artistImage" class="profileImage" alt="Profile Image">
+                <img v-else v-bind:src="customerImage" class="profileImage" alt="Profile Image">
               </a>
             </button>
           </li>
           <li v-else>
-            <b-dropdown id="ddown-form" ref="ddown" class="m-2" right>
+            <b-dropdown :disabled="loginDisabled" id="ddown-form" ref="ddown" class="m-2" right>
               <template slot="button-content"><i class="material-icons align-middle">account_circle</i></template>
               
               <b-dropdown-form class="loginDropdown">
@@ -63,6 +64,7 @@
 
 <script>
 import Search from "./Search.vue";
+import GSecurity from '@/security/GSecurity.js';
 
 export default {
   name: 'Header',
@@ -70,16 +72,20 @@ export default {
   data: function() {
     return {
         menu_links: [
-          {text: "Top Artists", link: "artist_search", selected: true, authRequired: false},
-          {text: "My Offers", link: "offers", selected: false, authRequired: true},
-          {text: "FAQ", link: "#", selected: false, authRequired: false}
+          {text: "Top Artists", link: "artist_search", selected: true, requiedRoles: []},
+          {text: "My Offers", link: "offers", selected: false, requiedRoles: ['CUSTOMER', 'ARTIST']},
+          {text: "QR Scan", link: "QR Scan", selected: false, requiedRoles: ['ARTIST']},
+          {text: "FAQs", link: "#", selected: false, requiedRoles: []}
         ],
         showSearchMenu: false,
+        sideMenu: false,
         searchQuery: '',
         input: {
           username: "",
           password: "",
         },
+        gsecurity: GSecurity,
+        loginDisabled: false,
     }
   },
 
@@ -98,40 +104,61 @@ export default {
       }
 
     },
+    sideMenus: function() {
+      this.sideMenu = !this.sideMenu;
+      this.loginDisabled = !this.loginDisabled;
+
+      if(this.sideMenu){
+        $(document.body).css("overflow", "hidden")
+
+      } else {
+        $(document.body).css("overflow", "")
+      }
+    },
     search: function() {
       this.$router.push({ path: '/artist_search', query: { query : this.searchQuery } })
     },
     login() {
-      if(this.input.username != "" && this.input.password != "") {
-        if(this.input.username == this.$parent.mockAccount.username && this.input.password == this.$parent.mockAccount.password) {
-          this.$emit("authenticated", "true");
-          this.$router.replace({ name: "#" });
-        } else {
-          console.log("The username and / or password is incorrect");
-        }
-      } else {
-        console.log("A username and password must be present");
+      if(this.gsecurity.authenticate(this.input.username, this.input.password)){
+          this.$router.push({ path: "/" });
       }
     }
   },
 
   props: {
-    authenticated: {
-      type: Boolean,
-    },
-    profileImage: {
+    customerImage: {
       type: String,
       default: 'http://i65.tinypic.com/35mpp1h.jpg'
+    },
+    artistImage: {
+      type: String,
+      default: 'https://img.europapress.es/fotoweb/fotonoticia_20181107115306_1920.jpg'
     },
   },
 
   mounted: function() {
     $("button").removeClass("dropdown-toggle");
   },
+
+  computed: {
+    userVisibleLinks: function(){
+      return this.menu_links.filter(item => (item.requiedRoles.length == 0 || item.requiedRoles.includes(this.gsecurity.getRole())))
+    }
+  }
 }
 </script>
 
 <style>
+  .material-icons:hover {
+    background: -webkit-linear-gradient(left, #00fb82, #187fe6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .navbar {
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .3) !important;
+  }
+
   .btn-secondary {
     color: #212529;
     background-color: transparent;
@@ -139,7 +166,7 @@ export default {
   }
 
   .btn-secondary:hover {
-    color: #101214;
+    color: #212529;
     background-color: transparent;
     border-color: transparent;
   }
@@ -148,6 +175,16 @@ export default {
     color: #000000;
     background-color: transparent;
     border-color: transparent;
+  }
+  
+  .btn-secondary.disabled, .btn-secondary:disabled{
+    color: #000000;
+    background-color: transparent;
+    border-color: transparent;
+  }
+
+  .dropdown-toggle::after{
+    display: none
   }
 
 </style>
@@ -171,9 +208,15 @@ export default {
   .right-float{ float: right; }
 
   .profileImage {
-    max-width: 24px;
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
     border-radius: 25px;
     margin-bottom: 5px;
+  }
+
+  .profileImage:hover {
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .5) !important;
   }
 
   input:hover{

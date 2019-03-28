@@ -2,10 +2,12 @@
 <div class="container-fluid">
   <div class="container">
     <div class="row">
-      <div id="filters_desktop" class="d-none d-lg-inline col-lg-3 col-xl-2">
+      
+      <div v-if="showFilters" id="filters_desktop" class="d-none d-lg-inline col-lg-4 col-xl-2">
         <FiltersSideMenu :filters_data="filter_parameters" @onFiltersChange="updateFilters" />
       </div>
-      <div id="results" class="col-12 col-lg-9 col-xl-10">
+      <div id="results" :class="{'col-lg-8 col-xl-10' : showFilters}" class="col-12">
+        <h1 class="titleView">Top Artists</h1>
         <div class="row">
           <div v-for="artist in datos_prueba" :key="artist.artistURI" class="tarjeta col-12 col-md-6 col-xl-4">
             <ArtistCard :artistImage="artist.artistImage" :artistName="artist.artistName" />
@@ -108,12 +110,37 @@ export default {
           }
         }
       }
+    },
+    props:{
+      showFilters: {
+        type: Boolean,
+        default: true
+      }
     }
 }
 
 </script>
 
 <style scoped>
+
+  
+
+  @media (min-width:768px)  {
+    .titleView{
+      text-align: left;
+      font-weight: bold;
+
+    }
+  }
+
+  @media (max-width: 768px){
+    .titleView{
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 30px;
+
+    }
+  }
 
   .hidden {
     display: none;
