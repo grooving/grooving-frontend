@@ -23,7 +23,7 @@
             </div>
             <div class="d-none d-md-inline nav-item">
               <form class="form-inline serch">
-                <input v-model="searchQuery" class="form-control mr-sm-2" style="border-radius:100px;" type="search" placeholder="Search" aria-label="Search">
+                <input id="searchFormDesktop" v-model="searchQuery" class="form-control mr-sm-2" style="border-radius:100px;" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn" type="button" @click="search()"><i class="material-icons align-middle ">search</i></button>
               </form>
             </div>
@@ -31,7 +31,8 @@
           <li v-if="gsecurity.isAuthenticated()" class="nav-item mx-2 right-float vertical-center" >
             <button role="button" class="collaps" data-toggle="collapse" data-target="#sidebar" @click="sideMenus()">
               <a class="nav-link vertical-center" href="#">
-                <img v-bind:src="userPhoto" class="profileImage" alt="Profile Image">
+                <img v-if="userPhoto == null || userPhoto == '' || userPhoto == 'null'" src="@/assets/defaultPhoto.png" class="profileImage" alt="Profile Image">
+                <img v-else v-bind:src="userPhoto" class="profileImage" alt="Profile Image">
               </a>
             </button>
           </li>
@@ -45,7 +46,7 @@
                 </b-form-group>
 
                 <b-form-group>
-                  <b-form-input class="loginInput" v-model="input.password" type="password" size="sm" placeholder="Password" id="ddown-form-passwd"></b-form-input>
+                  <b-form-input class="loginInput" v-on:keydown.enter="login()" v-model="input.password" type="password" size="sm" placeholder="Password" id="ddown-form-passwd"></b-form-input>
                 </b-form-group>
                 <b-button class="continueButton" variant="primary" size="sm" v-on:click="login()">SIGN IN</b-button>
               </b-dropdown-form>
@@ -57,7 +58,7 @@
         </ul>
       </div>
     </nav>
-    <Search v-if="showSearchMenu" @closeSearch="toggleSearchPanel()" />
+    <Search v-if="showSearchMenu" @changeQuery="changeQueryMobile" @closeSearch="toggleSearchPanel()" />
   </div>
 </template>
 
@@ -71,10 +72,10 @@ export default {
   data: function() {
     return {
         menu_links: [
-          {text: "Top Artists", link: "artist_search", selected: true, requiedRoles: []},
-          {text: "My Offers", link: "offers", selected: false, requiedRoles: ['CUSTOMER', 'ARTIST']},
-          {text: "QR Scan", link: "receivePayment", selected: false, requiedRoles: ['ARTIST']},
-          {text: "FAQs", link: "#", selected: false, requiedRoles: []}
+          {text: "Top Artists", link: "/artist_search", selected: true, requiedRoles: []},
+          {text: "My Offers", link: "/offers", selected: false, requiedRoles: ['CUSTOMER', 'ARTIST']},
+          {text: "QR Scan", link: "/receivePayment", selected: false, requiedRoles: ['ARTIST']},
+          {text: "FAQs", link: "/#", selected: false, requiedRoles: []}
         ],
         showSearchMenu: false,
         sideMenu: false,
@@ -104,6 +105,10 @@ export default {
       }
 
     },
+    changeQueryMobile: function(){
+      this.searchQuery = arguments[0];
+      this.search();
+    },
     sideMenus: function() {
       this.sideMenu = !this.sideMenu;
       this.loginDisabled = !this.loginDisabled;
@@ -116,7 +121,8 @@ export default {
       }
     },
     search: function() {
-      this.$router.push({ path: '/artist_search', query: { query : this.searchQuery } })
+      window.location = '#/artist_search?artisticName='+this.searchQuery;
+      window.location.reload();
     },
     login() {
       if(this.gsecurity.authenticate(this.input.username, this.input.password)){
@@ -125,23 +131,23 @@ export default {
     }
   },
 
-  props: {
-    customerImage: {
-      type: String,
-      default: 'http://i65.tinypic.com/35mpp1h.jpg'
-    },
-    artistImage: {
-      type: String,
-      default: 'https://img.europapress.es/fotoweb/fotonoticia_20181107115306_1920.jpg'
-    },
-  },
-
   beforeUpdate: function() {
-    this.userPhoto = this.gsecurity.getPhoto();
+      this.userPhoto = this.gsecurity.getPhoto();
   },
 
   mounted: function() {
     $("button").removeClass("dropdown-toggle");
+
+    // Update searchbar value
+    var queries = this.$route.query;
+
+    // If either artisticName or artisticGender is set, update them
+
+    if(queries['artisticName'] != undefined)
+      this.searchQuery = queries['artisticName']
+    else if(queries['artisticGender'] != undefined)
+      this.searchQuery = queries['artisticGender']
+
   },
 
   computed: {

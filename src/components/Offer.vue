@@ -29,17 +29,25 @@
                         <textarea class="form-control" id="rejectionReason" rows="3" placeholder="You can explain the reason why you are rejecting this offer. It will be shown to the person that contacted you."></textarea>
                     </div>
                     <div class="row container">
-                        <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="enableOfferButtons()" class="btn btn-primary cancelButton" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">CANCEL</span></a></div>
-                        <div class="right-div right-text2"><router-link v-bind:to="offerURI" class="btn btn-primary confirmButton"><span class="continueText">CONFIRM</span></router-link></div>
+                        <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="enableOfferButtons()" class="btn btn-primary cancelButton" 
+                            data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">CANCEL</span></a></div>
+                        <div v-if="offerStatus === 'PENDING' && gsecurity.hasRole('ARTIST')" class="right-div right-text2">
+                            <button class="btn btn-primary confirmButton" v-on:click="rejectOffer"><span class="continueText">CONFIRM</span></button></div>
+                        <div v-if="offerStatus === 'PENDING' && gsecurity.hasRole('CUSTOMER')" class="right-div right-text2">
+                            <button class="btn btn-primary confirmButton" v-on:click="withdrawnOffer"><span class="continueText">CONFIRM</span></button></div>
+                        <div v-if="offerStatus === 'CONTRACT_MADE'" class="right-div right-text2">
+                            <button class="btn btn-primary confirmButton" v-on:click="cancelOffer"><span class="continueText">CONFIRM</span></button></div>
                     </div>
                 </div>
-                <div v-if="offerStatus === 'pending' || offerStatus === 'accepted'" class="row container" v-bind:id="buttonsId()">
-                    <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="disableOfferButtons()" class="btn btn-primary rejectButton" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">REJECT</span></a></div>
-                    <div class="right-div right-text2"><router-link v-bind:to="confirmURI" class="btn btn-primary confirmButton"><span class="continueText">ACCEPT</span></router-link></div>
+                <div v-if="offerStatus === 'PENDING'" class="row container" v-bind:id="buttonsId()">
+                    <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="disableOfferButtons()" class="btn btn-primary rejectButton" 
+                        data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">REJECT</span></a></div>
+                    <div v-if="offerStatus === 'PENDING' && gsecurity.hasRole('ARTIST')" class="right-div right-text2">
+                        <router-link v-bind:to="confirmURI" class="btn btn-primary confirmButton"><span class="continueText">ACCEPT</span></router-link></div>
                 </div>
-                <div v-else class="row container" v-bind:id="buttonsId()">
-                    <div class="right-div right-text2"><a v-bind:href="hashtag()" class="btn btn-primary rejectButton"><span class="continueText">REJECT</span></a></div>
-                    <div class="right-div right-text2"><router-link v-bind:to="confirmURI" class="btn btn-primary confirmButton"><span class="continueText">ACCEPT</span></router-link></div>
+                <div v-if="offerStatus === 'CONTRACT_MADE'" class="row container" v-bind:id="buttonsId()">
+                    <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="disableOfferButtons()" class="btn btn-primary rejectButton" 
+                        data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">DECLINE</span></a></div>
                 </div>
             </div>
         </div>
@@ -48,8 +56,19 @@
 
 <script>
 
+    import GAxios from '../utils/GAxios.js'
+    import GSecurity from '@/security/GSecurity.js';
+    import endpoints from '@/utils/endpoints.js';
+
     export default {
         name: 'Offer',
+
+        data: function() {
+            return {
+                gsecurity: GSecurity,
+                gaxios: GAxios,
+            }
+        },
         
         props: {
             offerID: {
@@ -61,8 +80,8 @@
                 default: 'March 19, 2019',
             },
             price: {
-                type: Number,
-                default: 61.00
+                type: String,
+                default: '61.00'
             },
             place: {
                 type: String,
@@ -112,7 +131,51 @@
             enableOfferButtons() {
                 document.getElementById(this.buttonsId()).style.display='inline-block';
                 return false;
-            }
+            },
+
+            rejectOffer() {
+                var authorizedGAxios = GAxios;
+                var GAxiosToken = this.gsecurity.getToken();
+                authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
+
+                authorizedGAxios.put(endpoints.offer + this.offerID + '/', {
+                    "status": "REJECTED",
+                }).then(response => {
+                    console.log(response);
+                    window.location.reload();
+                }).catch(ex => {
+                    console.log(ex);
+                })
+
+            },
+            cancelOffer() {
+                var authorizedGAxios = GAxios;
+                var GAxiosToken = this.gsecurity.getToken();
+                authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
+
+                authorizedGAxios.put(endpoints.offer + this.offerID + '/', {
+                    "status": "CANCELED",
+                }).then(response => {
+                    console.log(response);
+                    window.location.reload();
+                }).catch(ex => {
+                    console.log(ex);
+                })
+            },
+            withdrawnOffer() {
+                var authorizedGAxios = GAxios;
+                var GAxiosToken = this.gsecurity.getToken();
+                authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
+
+                authorizedGAxios.put(endpoints.offer + this.offerID + '/', {
+                    "status": "WITHDRAWN",
+                }).then(response => {
+                    console.log(response);
+                    window.location.reload();
+                }).catch(ex => {
+                    console.log(ex);
+                })
+            },
         }
     }   
 
