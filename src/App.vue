@@ -29,8 +29,17 @@ export default {
     Header, RightMenu, LeftMenu, Footer
   },
 
+  data: function(){
+    return{
+      gsecurity: undefined,
+    }
+  },
+
   beforeCreate() {
-    GSecurity.obtainSavedCredentials();
+    
+    this.gsecurity = GSecurity;
+    this.gsecurity.obtainSavedCredentials();
+
     if(!this.$gsecurity.isAuthenticated()) {
       //this.$router.push({path: "/"});   
     }
