@@ -13,6 +13,9 @@
 
 <script>
 
+
+import GSecurity from '@/security/GSecurity.js';
+
     export default {
         name: 'AcceptedOffer',
         
@@ -25,6 +28,18 @@
                 type: String,
                 default: 'You have accepted the offer'
             },
+        },
+
+        data: function() {
+            return {
+                gsecurity: GSecurity,
+            }
+        },
+
+        beforeMount: function() {
+            if (!this.gsecurity.hasRole('ARTIST')) {
+                this.$router.push({name: "error"});
+            }
         },
     }   
 

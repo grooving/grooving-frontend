@@ -51,8 +51,7 @@
                 <b-button class="continueButton" variant="primary" size="sm" v-on:click="login()">SIGN IN</b-button>
               </b-dropdown-form>
               <b-dropdown-divider />
-              <b-dropdown-item-button class="dropdownButton1">New around here? <span class="signUp">Sign up</span></b-dropdown-item-button>
-              <b-dropdown-item-button class="dropdownButton2">Forgot Password?</b-dropdown-item-button>
+              <b-dropdown-item-button class="dropdownButton">New around here? <span class="signUp">Sign up</span></b-dropdown-item-button>
             </b-dropdown>
           </li>
         </ul>
@@ -272,12 +271,8 @@ export default {
     font-weight:bold
   }
 
-  .dropdownButton1:hover {
-    background-color: #b5ffdb;
-  }
-
-  .dropdownButton2:hover {
-    background-color: #a8c9ea;
+  .dropdownButton:hover {
+    background-image: linear-gradient(to right, #b5ffdb, #a8c9ea);
   }
 
   .continueButton {
@@ -296,7 +291,7 @@ export default {
     background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
   }
 
-  .dropdownButton1, .dropdownButton2 {
+  .dropdownButton {
     color: gray;
     text-align:center;
   }

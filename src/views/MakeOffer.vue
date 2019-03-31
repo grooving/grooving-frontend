@@ -92,7 +92,13 @@ export default {
             });
 
         }
-    }
+    },
+
+    beforeMount: function() {
+        if (!this.gsecurity.hasRole('CUSTOMER')) {
+            this.$router.push({name: "error"});
+        }
+    },
 }
 </script>
 

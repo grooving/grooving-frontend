@@ -71,7 +71,12 @@ class GSecurity {
     }
 
     deleteCredentialsInCache(){
-        window.localStorage.clear();
+        window.localStorage.removeItem("username");
+        window.localStorage.removeItem("role");
+        window.localStorage.removeItem("id");
+        window.localStorage.removeItem("photo");
+        window.localStorage.removeItem("firstName");
+        window.localStorage.removeItem("token");
     }
   
     authenticate(username, password){

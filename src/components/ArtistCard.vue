@@ -102,6 +102,7 @@ export default {
     .artistName {
         font-weight: bold;
         font-size: 2rem;
+        word-break: break-word;
     }
 
     .artistGenres {

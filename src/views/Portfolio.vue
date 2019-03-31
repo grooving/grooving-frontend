@@ -112,8 +112,10 @@ export default {
 
 
       var authorizedGAxios = GAxios;
-      var GAxiosToken = this.gsecurity.getToken();
-      authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
+      if (this.gsecurity.isAuthenticated()) {
+        var GAxiosToken = this.gsecurity.getToken();
+        authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
+      }
 
       authorizedGAxios.get('/artist' + endpoints.calendar + this.$route.params['artistId'] + '/')
         .then(response => {

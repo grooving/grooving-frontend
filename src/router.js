@@ -48,44 +48,9 @@ export default new Router({
       component: OffersList
     },
     {
-      path: '/dateSelection/:artistId',
-      name: 'dateSelection',
-      component: DateSelection
-    },
-    {
-      path: '/timeSelection',
-      name: 'timeSelection',
-      component: TimeSelection
-    },
-    {
       path: '/offerDetails/:offerId',
       name: 'offerDetails',
       component: OfferDetails
-    },
-    {
-      path: '/addressInput',
-      name: 'addressInput',
-      component: AddressInput
-    },
-    {
-      path: '/eventInput',
-      name: 'eventInput',
-      component: EventInput
-    },
-    {
-      path: '/hiringType',
-      name: 'hiringType',
-      component: TypeOfHiring
-    },
-    {
-      path: '/paymentSelector',
-      name: 'paymentSelector',
-      component: PaymentSelector
-    },
-    {
-      path: '/payment',
-      name: 'payment',
-      component: Payment
     },
     {
       path: '/acceptedOffer/:offerId',
@@ -96,11 +61,6 @@ export default new Router({
       path: '/showPortfolio/:artistId',
       name: 'showPortfolio',
       component: Portfolio
-    },
-    {
-      path: '/sentOffer',
-      name: 'sentOffer',
-      component: SentOffer
     },
     {
       path: '/receivePayment',
@@ -118,14 +78,14 @@ export default new Router({
       component: PersonalInfo
     },
     {
-      path: '/error',
-      name: 'error',
-      component: ErrorView
-    },
-    {
       path: '/makeOffer/:artistId',
       name: 'makeOffer',
       component: MakeOffer
-    }
+    },
+    {
+      path: '*',
+      name: 'error',
+      component: ErrorView
+    },
   ]
 })

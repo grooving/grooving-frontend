@@ -14,17 +14,30 @@
 
 <script>
 import PaymentCode from '@/components/PaymentCode.vue'
+import GSecurity from '@/security/GSecurity.js';
 
 export default {
-  name: 'receivePayment',
-  components: {
-    PaymentCode
-  },
-  props: {
+    name: 'receivePayment',
+    components: {
+        PaymentCode
+    },
+    props: {
         errors: {
             type: Boolean,
             default: false,
         },
+    },
+
+    data: function() {
+        return {
+            gsecurity: GSecurity,
+        }
+    },
+
+    beforeMount: function() {
+        if (!this.gsecurity.hasRole('ARTIST')) {
+            this.$router.push({name: "error"});
+        }
     },
 }
 </script>
