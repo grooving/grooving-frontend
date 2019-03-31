@@ -22,6 +22,9 @@
                         <router-link to="personalInfo"><img class="card-img-top foto" :src="userIcon"></router-link>
                         <h3 class="fotoText">{{userName}}</h3>
                     </div>
+                    <div v-if="offerStatus !== 'PENDING' && offerStatus !== 'CONTRACT_MADE'" class="cardTextId">
+                        <i class="material-icons iconOffer">bookmark</i><p style="word-break: break-all">{{statusMessage()}}</p>
+                    </div>
                 </div>
                 <div class="collapse" v-bind:id="noHashtag()">
                     <div class="form-group">
@@ -67,6 +70,11 @@
             return {
                 gsecurity: GSecurity,
                 gaxios: GAxios,
+                negotiationMessage: 'The offer is in a negotiation process.',
+                withdrawnMessage: 'The offer was withdrawn by the customer before it was accepted.',
+                rejectedMessage: 'The offer was rejected by the artist.',
+                canceledMessage: 'The offer was canceled after being accepted.',
+                paymentMessage: 'The payment has already been made.'
             }
         },
         
@@ -87,10 +95,6 @@
                 type: String,
                 default: 'Pontevedra',
             },
-            rejectURI: {
-                type: String,
-                default: '#'
-            },
             confirmURI: {
                 type: String,
                 default: '#'
@@ -107,11 +111,6 @@
                 type: String,
                 default: 'pending',
             },
-            offerURI: {
-                type: String,
-                default: 'offers'
-            }
-
         },
 
         methods: {
@@ -176,6 +175,19 @@
                     console.log(ex);
                 })
             },
+            statusMessage() {
+                if (this.offerStatus == "NEGOTIATION") {
+                    return this.negotiationMessage;
+                } else if (this.offerStatus == "WITHDRAWN") {
+                    return this.withdrawnMessage;
+                } else if (this.offerStatus == "REJECTED") {
+                    return this.rejectedMessage;
+                } else if (this.offerStatus == "CANCELED") {
+                    return this.canceledMessage;
+                } else if (this.offerID == "PAYMENT_MADE") {
+                    return this.paymentMessage;
+                }
+            }
         }
     }   
 
