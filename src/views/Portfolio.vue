@@ -1,7 +1,7 @@
 <template>
   <div>
-    <ArtistInfo :artistBanner="portfolioBanner" :artistName="portfolioName" :artistGenres="portfolioGenres" />
-    <ImageCarousel class="imageCarousel" />
+    <ArtistInfo :artistBanner="d_portfolioBanner" :artistName="d_portfolioName" :artistGenres="portfolioGenres" :artistImage="d_portfolioIcon"  />
+    <ImageCarousel class="imageCarousel" :photosInfo="d_portfolioImages" />
     <VideoCarousel class="videoCarousel" :videosInfo="d_portfolioVideos" :key="updateVideosKey"/>
     <Calendar class="availableDates" :availableDates="this.datos[0].availableDates"/>
   </div>
@@ -78,11 +78,12 @@ export default {
     var authorizedGAxios = GAxios;
     authorizedGAxios.get(endpoints.portfolio+this.$route.params['artistId']+"/")
       .then(response => {
-
+      		console.log(response)
           var portfolio = response.data;
 
           this.d_portfolioBanner = portfolio.banner;
           this.d_portfolioName = portfolio.artisticName;
+          this.d_portfolioIcon = portfolio.artist.photo;
           var media = portfolio.portfoliomodule_set;
           var genres = portfolio.artisticGender;
 
