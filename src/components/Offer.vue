@@ -244,6 +244,7 @@
         padding: 5px;
         vertical-align: middle !important;
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .3);
+
         
         
     }
@@ -278,7 +279,7 @@
         display: table-cell;
         vertical-align: middle;
         font-weight: bold;
-        font-size: 2.25vh;
+        font-size: 20px;
     }
 
     .cardTextDate{
@@ -410,7 +411,6 @@
         display: table-cell;
         vertical-align: middle;
         font-weight: bold;
-        font-size: 2.25vh;
     }
     .titleCard h3{
         margin-bottom: 0px;
