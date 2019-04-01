@@ -34,23 +34,45 @@ import GSecurity from '@/security/GSecurity.js';
 
 export default {
     name: 'RightMenu',
-    props: {
-        blur: Boolean,
-    },
+
     data: function(){
         return{
             gsecurity: GSecurity,
             userFirstName: '',
         }
     },
+    
     methods: {
         logout() {
-        this.gsecurity.deauthenticate();
-        this.$router.push({ path: "/" });
+            this.gsecurity.deauthenticate();
+            this.$router.push({ path: "/" });
+        },
+
+        refreshGSecurityData: function() {
+            this.userFirstName = this.gsecurity.getFirstName();
         }
     },
+
+    props: {
+        blur: Boolean,
+    },
+
+    created() {
+        // Retreive stored credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        // Update data that depends on GSecurity
+        this.refreshGSecurityData();
+    },
+
     beforeUpdate: function() {
-        this.userFirstName = this.gsecurity.getFirstName();
+        // Retreive stored credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        // Update data that depends on GSecurity
+        this.refreshGSecurityData();
     },
 }
 

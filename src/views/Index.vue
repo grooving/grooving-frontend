@@ -4,7 +4,7 @@
   <div class="banner2"><img class="d-block w-100 banner2" src="@/assets/img/banner2.png" alt="First slide" style="box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .2) !important;"></div>
   <div class="banner1"><img class="d-block w-100 banner1" src="@/assets/img/banner1.png" alt="First slide" style="box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .2) !important;"></div>
   </div>
-  <ArtistsList :showFilters="false" />
+  <ArtistsList :showFilters="false" :listTitle="'Artists'" />
   </div>
 
 </template>

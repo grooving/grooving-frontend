@@ -187,7 +187,7 @@ export default {
     }
   },
 
-  beforeCreate() {
+  created() {
     // Retreive store credentials
     this.gsecurity = GSecurity;
     this.gsecurity.obtainSavedCredentials();
@@ -343,6 +343,10 @@ export default {
 
   nav {
     height: 75px;
+  }
+
+  #navBarLogo{
+    margin-right: 0px;
   }
 
   .no-border {
