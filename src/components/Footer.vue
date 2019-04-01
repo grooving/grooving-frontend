@@ -2,7 +2,7 @@
     <div>
         <footer class="bg-light">
             <div class="info">
-                <router-link v-bind:to="aboutUsURI" class="link">About Us</router-link>
+                <router-link v-bind:to="aboutUsURI" class="link">About Us</router-link> | 
                 <router-link v-bind:to="FAQsURI" class="link">FAQs</router-link> | 
                 <router-link v-bind:to="termsURI" class="link">Terms of Use</router-link> | 
                 <span>Contact Us:</span> grupogrooving@gmail.com 
