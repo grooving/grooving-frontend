@@ -19,7 +19,10 @@
                         </div>
                     </div>
                     <div class="right-div right-text">
-                        <router-link to="personalInfo"><img class="card-img-top foto" :src="userIcon"></router-link>
+                        <router-link v-bind:to="{name: imageURI, params: {userName, customerSurnames, place, artistId: artistId }}">
+                            <img v-if="userIcon == null || userIcon == '' || userIcon == 'null'" src="@/assets/defaultPhoto.png" class="card-img-top foto" alt="Image">
+                            <img v-else v-bind:src="userIcon" :key="userIcon" class="card-img-top foto" alt="Image">
+                        </router-link>
                         <h3 class="fotoText">{{userName}}</h3>
                     </div>
                     <div v-if="offerStatus !== 'PENDING' && offerStatus !== 'CONTRACT_MADE'" class="cardTextId">
@@ -111,6 +114,18 @@
                 type: String,
                 default: 'pending',
             },
+            imageURI: {
+                type: String,
+                default: '',
+            },
+            customerSurnames:{
+                type: String,
+                default: '',
+            },
+            artistId: {
+                type: String,
+                default: '',
+            }
         },
 
         methods: {

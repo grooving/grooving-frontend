@@ -8,7 +8,7 @@
          <h2>Hello, <span>{{ userFirstName }}</span></h2>
             <ul class="navbar-nav mr-auto p-2 col align-self-center justify-content-center">
                 <li class="nav-item section">
-                    <router-link class="nav-link" to="personalInfo" data-toggle="collapse" data-target="#sidebar">My Account</router-link>
+                    <router-link class="nav-link" to="/personalInfo" data-toggle="collapse" data-target="#sidebar">My Account</router-link>
                     <b-dropdown-divider class="divider"/>
                 </li>
                 <li class="nav-item section" v-if="gsecurity.hasRole('ARTIST')">

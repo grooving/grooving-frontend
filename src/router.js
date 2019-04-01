@@ -19,6 +19,7 @@ import PaymentConfirmation from './views/PaymentConfirmation.vue'
 import PersonalInfo from './views/PersonalInfo.vue'
 import ErrorView from './views/ErrorView.vue'
 import MakeOffer from './views/MakeOffer.vue'
+import CustomerInfo from './views/CustomerInfo.vue'
 
 Vue.use(Router)
 
@@ -81,6 +82,12 @@ export default new Router({
       path: '/makeOffer/:artistId',
       name: 'makeOffer',
       component: MakeOffer
+    },
+    {
+      path: '/customerInfo',
+      name: 'customerInfo',
+      component: CustomerInfo,
+      props: true,
     },
     {
       path: '*',
