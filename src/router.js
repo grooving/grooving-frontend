@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Index.vue'
-import ArtistsList from './views/ArtistsList.vue'
+import ArtistSearch from './views/ArtistSearch.vue'
 import OffersList from './views/OffersList.vue'
 import OfferDetails from './views/OfferDetails.vue'
 import AcceptedOffer from './views/AcceptedOffer.vue'
@@ -27,17 +27,9 @@ export default new Router({
       component: Home
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    },    
-    {
       path: '/artist_search',
       name: 'artist_search',
-      component: ArtistsList
+      component: ArtistSearch
     },
     {
       path: '/offers',

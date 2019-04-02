@@ -150,12 +150,13 @@ export default {
       this.search();
     },
 
-    login() {
-      if (
-        this.gsecurity.authenticate(this.input.username, this.input.password)
-      ) {
+    login: async function() {
+
+      var log_result = await this.gsecurity.authenticate(this.input.username, this.input.password)
+
+      if (log_result)
         this.$router.push({ path: "/" });
-      }
+
     },
 
     refreshGSecurityData: function() {

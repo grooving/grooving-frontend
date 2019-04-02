@@ -1,9 +1,17 @@
 <template>
   <div>
     <ArtistInfo :artistBanner="d_portfolioBanner" :artistName="d_portfolioName" :artistGenres="portfolioGenres" :artistImage="d_portfolioIcon"  />
-    <ImageCarousel class="imageCarousel" :photosInfo="d_portfolioImages" />
+    <ImageCarousel class="imageCarousel" :photosInfo="d_portfolioImages" :key="updateImagesKey"/>
     <VideoCarousel class="videoCarousel" :videosInfo="d_portfolioVideos" :key="updateVideosKey"/>
-    <Calendar class="availableDates" :availableDates="this.datos[0].availableDates"/>
+    <div v-if="d_portfolioDays.length != 0" id="datesContainer" class="datesContainer">
+    	
+    	<div class="contentCalendar">
+    		<h3 class="availableDatesTitle" >Available dates</h3>
+    		<Calendar class="availableDates" :availableDates="this.datos[0].availableDates"/>
+    	</div>
+    </div>
+
+    
   </div>
 </template>
 
@@ -69,6 +77,7 @@ export default {
       d_portfolioBiography: '',
       d_portfolioImages: Array(),
       d_portfolioVideos: Array(),
+      d_portfolioDays: Array(),
       datos: Array(),
     }
   },
@@ -91,6 +100,7 @@ export default {
             var genre = genres[i];
             this.portfolioGenres.push(genre['name']);
           }
+
           var imgCounter = 0;
           var vidCounter = 0;
 
@@ -103,11 +113,16 @@ export default {
               vidCounter += 1;
             }
             if(elementMedia['type'] == 'PHOTO'){
-              this.d_portfolioImages.push(elementMedia['link'])
+              this.d_portfolioImages.push({id:imgCounter, imageURL:elementMedia['link']});
+              imgCounter += 1;
             }
           }
 
+          this.d_portfolioDays = portfolio.calendar_set[0]['days'];
+          //alert(this.d_portfolioDays.length);
+
           this.updateVideosKey += 1;
+          this.updateImagesKey += 1;
                 
     });
 
@@ -144,12 +159,55 @@ export default {
 
   .videoCarousel{
     padding-top: 30px;
+    padding-bottom: 20px;
   }
 
-  .availableDates{
-    padding-top: 30px;
-    margin-bottom: 35px;
+  .datesContainer{
+  	padding-bottom: 50px;
   }
+
+.contentCalendar{
+        width: 100%;
+        margin: 0 auto !important;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .availableDates{
+        text-align: left;
+        margin-left: 20px;
+        font-weight: semibold;
+    }
+
+    @media (max-width: 767px){
+    	.availableDatesTitle{
+    		display: none;
+    	}
+    }
+    @media (min-width: 768px){
+
+        .availableDatesTitle{
+            text-align: center;
+            font-weight: bold;
+            color: black;
+            font-family: "Archivo";
+            padding-top: 20px;
+            padding-bottom: 40px;
+
+
+        }
+        .contentCalendar{
+            width: 63%;
+            
+            margin: 0 auto !important;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, .5);
+            margin: 0 auto;
+        }
+    }
 
 </style>
 

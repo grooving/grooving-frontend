@@ -4,19 +4,66 @@
   <div class="banner2"><img class="d-block w-100 banner2" src="@/assets/img/banner2.png" alt="First slide" style="box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .2) !important;"></div>
   <div class="banner1"><img class="d-block w-100 banner1" src="@/assets/img/banner1.png" alt="First slide" style="box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .2) !important;"></div>
   </div>
-  <ArtistsList :showFilters="false" :listTitle="'Artists'" />
+  <div class="container-fluid">
+    <div class="container"><ArtistList :listTitle="'Artists'" :artistas="datos" /></div>
+  </div>
   </div>
 
 </template>
 
 <script>
   
-import ArtistsList from './ArtistsList.vue';
+import ArtistList from '@/components/ArtistList.vue';
+import GAxios from '@/utils/GAxios.js';
+import endpoints from '@/utils/endpoints.js';
+
+const showPortfolioBaseURI = '/showPortfolio/';
+const hiringBaseURI = '/makeOffer/';
 
 export default {
   name: 'index',
+
   components: {
-    ArtistsList
+    ArtistList
+  },
+
+  data: function(){
+    return{
+      datos: Array(),
+    }
+  },
+
+  methods:{
+    search: function(){
+      // Make the API call
+      GAxios.get(endpoints.artists).then(response => {
+
+        var artists = response.data.results;
+
+        for(var i = 0; i < artists.length; i++){
+          var genres = Array();
+
+          for(var g = 0; g < artists[i].portfolio.artisticGender.length; g++){
+            genres.push(artists[i].portfolio.artisticGender[g].name);
+          }
+
+          this.datos.push({
+            artistURI: showPortfolioBaseURI + artists[i].id, 
+            artistImage: artists[i].photo,
+            artistName: artists[i].portfolio.artisticName,
+            artistGenres: genres,
+            hireURI: hiringBaseURI + artists[i].id,
+          });
+
+        }
+      }).catch(ex => {
+          console.log(ex);
+      });
+    }
+  },
+
+  beforeMount(){
+    this.search();
   }
 }
 </script>
