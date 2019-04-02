@@ -18,6 +18,8 @@ import ArtistRegister from './views/ArtistRegister.vue'
 import EditPersonalInfo from './views/EditPersonalInfo.vue'
 import RegisterConfirmation from './views/RegisterConfirmation.vue'
 import PriceSelector from './views/PriceSelector.vue'
+import HiringSettings from './views/HiringSettings.vue'
+import EditCustom from './views/EditCustom.vue'
 
 Vue.use(Router)
 
@@ -108,6 +110,16 @@ export default new Router({
       path: '/priceSelector',
       name: 'priceSelector',
       component: PriceSelector,
+    },
+    {
+      path: '/hiringSettings',
+      name: 'hiringSettings',
+      component: HiringSettings,
+    },
+    {
+      path: '/editCustom',
+      name: 'editCustom',
+      component: EditCustom,
     },
     {
       path: '*',
