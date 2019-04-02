@@ -69,10 +69,12 @@
                   <b-button class="continueButton" variant="primary" size="sm" v-on:click="login()">SIGN IN</b-button>
                 </b-dropdown-form>
                 <b-dropdown-divider/>
+                <router-link to="newUser">
                 <b-dropdown-item-button class="dropdownButton">
                   <span>New around here? </span>
                   <span class="signUp">Sign up</span>
                 </b-dropdown-item-button>
+                </router-link>
               </b-dropdown>
             </li>
           </div>
@@ -224,6 +226,10 @@ export default {
 
 <style>
 
+  a:-webkit-any-link {
+    text-decoration: none;
+  }
+
   .btn-secondary {
     color: #212529;
     background-color: transparent;
@@ -255,6 +261,10 @@ export default {
     display: none;
   }
 
+  .dropdown-menu.show {
+    padding-bottom: 0px;
+  } 
+
   .material-icons:hover {
     background: -webkit-linear-gradient(left, #00fb82, #187fe6);
     -webkit-background-clip: text;
@@ -265,6 +275,7 @@ export default {
   .navbar {
     box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.3) !important;
   }
+  
 </style>
 
 
@@ -294,6 +305,8 @@ export default {
   .dropdownButton {
     color: gray;
     text-align: center;
+    padding-top: 12px;
+    padding-bottom: 12px;
   }
 
   .dropdownButton:hover {

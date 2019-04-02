@@ -4,18 +4,22 @@
             <div class="form-row">
                 <div class="form-group col-12">
                     <span class="card-title" style="font-weight:bold;font-size:30px;">Profile </span>
-                    <router-link v-bind:to="{name: 'editPersonalInfo', params: {}}">
-                        <i class="material-icons iconOffer">create</i>
+                    <router-link v-bind:to="{name: 'personalInfo', params: {}}">
+                        <i class="material-icons iconOffer">clear</i>
                     </router-link>
                     <h6 class="card-subtitle mb-2 text-muted">Basic info of your Grooving account, like your name and email.</h6>
                     <div style="width:100%;margin-top:25px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">FIRST NAME</p>
-                        <p class="card-text" style="float:right;">{{name}}</p>
+                        <b-form-group>
+                            <b-form-input v-model="name" v-bind:value="name" style="text-align: right"></b-form-input>
+                        </b-form-group>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:25px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">LAST NAME</p>
-                        <p class="card-text" style="float:right;">{{surnames}}</p>
+                        <b-form-group>
+                            <b-form-input v-model="surnames" v-bind:value="surnames" style="text-align: right"></b-form-input>
+                        </b-form-group>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:16px;">
@@ -35,7 +39,14 @@
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:16px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">PHONE</p>
-                        <p class="card-text" style="float:right;">{{phoneNumber}}</p>
+                        <b-form-group>
+                            <b-form-input v-model="phoneNumber" v-bind:value="phoneNumber" style="text-align: right"></b-form-input>
+                        </b-form-group>
+                    </div>
+                    <div class="continueButtonDiv">
+                        <div class="btn btn-primary continueButton">
+                            <span class="continueText">SAVE</span>
+                        </div>
                     </div>
                 </div>  
             </div>
@@ -45,7 +56,7 @@
 
 <script>
 export default {
-    name: "profileInfo",
+    name: "EditProfileInfo",
     props: {
         name: {
             type: String,
@@ -72,11 +83,11 @@ export default {
 </script>
 
 <style>
-
     
     a.router-link-active {
-        color: #187fe6 !important;
+        color: #00fb82 !important;
     }
+
 </style>
 
 
@@ -86,8 +97,48 @@ export default {
         padding: 10px;
     }
 
-    .form-group.col-12 {
-        margin-bottom: 0px;
+    .continueButton {
+        font-size: 22px;
+        font-weight: bold;
+        border: none;
+        border-radius: 30px;
+        width: 45%;
+        background-image: linear-gradient(to right, #00fb82, #187fe6);
+    }
+
+    .continueButton:hover{
+        background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
+    }
+
+    .continueButtonDiv {
+        margin-top: 30px;
+        margin-bottom: 5%;
+        display: flex;
+        justify-content: center;
+    }
+
+    input:focus{
+        border-color: #00fb82;
+        font-weight: semibold;
+        color:black;
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;   
+    }
+
+    input:hover{
+        border-color: #187fe6;
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .3) !important;
+    }
+
+    select:focus{
+        border-color: #00fb82;
+        font-weight: semibold;
+        color:black;
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;   
+    }
+
+    select:hover{
+        border-color: #187fe6;
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .5) !important;
     }
 
     @media (max-width:767px)  {

@@ -192,11 +192,6 @@ h2 {
     
 }
 
-.leftContent {
-    text-align: left;
-    overflow: auto;
-}
-
 .artistName {
     font-size: 32px;
     margin-bottom: 0px;
@@ -309,11 +304,6 @@ h2 {
     .cuerpoTarjeta {
         display: flex;
         align-items: center;
-    }
-
-    .leftContent {
-        text-align: left;
-        overflow: auto;
     }
 
     .artistName {

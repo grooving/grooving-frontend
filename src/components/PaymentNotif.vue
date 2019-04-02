@@ -116,11 +116,6 @@ export default {
         align-items: center;
     }
 
-    .leftContent {
-        text-align: left;
-        overflow: auto;
-    }
-
     .artistName {
         font-size: 32px;
         margin-bottom: 0px;
