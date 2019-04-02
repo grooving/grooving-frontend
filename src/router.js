@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Index.vue'
-import ArtistsList from './views/ArtistsList.vue'
+import ArtistSearch from './views/ArtistSearch.vue'
 import OffersList from './views/OffersList.vue'
 import DateSelection from './views/DateSelection.vue'
 import TimeSelection from './views/TimeSelection.vue'
@@ -41,7 +41,7 @@ export default new Router({
     {
       path: '/artist_search',
       name: 'artist_search',
-      component: ArtistsList
+      component: ArtistSearch
     },
     {
       path: '/offers',
