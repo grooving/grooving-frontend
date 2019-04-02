@@ -22,7 +22,7 @@
                     <hr/>
                     <div id="textCustomer" class="infoText"><span>Are you an artist?</span></div>
                     <router-link to="artistRegister">
-                        <b-button class="continueButton" variant="primary" size="sm" v-on:click="login()">JOIN US!</b-button>
+                        <b-button class="continueButton" variant="primary" size="sm">JOIN US!</b-button>
                     </router-link>
                 </b-form>
             </div>
@@ -59,6 +59,11 @@
 
         props: {
         },
+        
+        created() {
+            this.gsecurity = GSecurity;
+            this.gsecurity.obtainSavedCredentials();
+        },
 
         beforeMount: function() {
             if (this.gsecurity.isAuthenticated()) {
@@ -76,25 +81,25 @@
     .bothCards {
         display: flex;
         justify-content: center;
-        padding: 15px;
         margin-left: 10%;
         margin-right: 10%;
+        padding: 15px;
     }
 
     .continueButton {
-        font-size: 25px;
-        padding-left: 6%;
-        padding-right: 6%;
+        background-image: linear-gradient(to right, #00fb82, #187fe6);
         border: none;
         border-radius: 30px;
-        width: fit-content;
+        font-size: 25px;
         font-weight: bold;
-        background-image: linear-gradient(to right, #00fb82, #187fe6);
+        padding-left: 6%;
+        padding-right: 6%;
+        width: fit-content;
     }
     
     .continueButton:hover{
-        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;
         background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;   
     }
 
     .infoText {
@@ -104,9 +109,9 @@
 
     input:focus{
         border-color: #00fb82;
-        font-weight: semibold;
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;  
         color:black;
-        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;   
+        font-weight: semibold; 
     }
 
     input:hover{
@@ -116,9 +121,9 @@
 
     select:focus{
         border-color: #00fb82;
-        font-weight: semibold;
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;
         color:black;
-        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;   
+        font-weight: semibold;
     }
 
     select:hover{
@@ -128,45 +133,42 @@
     
 
     .tarjeta {
-        display: flex;
-        justify-content: center;
         align-items: center;
-        padding: 25px;
-        min-height: 335px;
-        min-width: 335px;
-        width: 25%;
         border-radius: 10px;
         box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, .3);
-        margin-right: 10px;
+        display: flex;
+        justify-content: center;
         margin-left: 10px;
+        margin-right: 10px;
+        min-height: 335px;
+        min-width: 335px;
+        padding: 25px;
+        width: 25%;
     }
 
     .title {
         display: inline-block;
         font-size: 50px;
-        margin-top: 5%;
         font-weight: bold;
+        margin-top: 5%;
     }
 
-     @media (max-width:767px)  {
-        .bothCards {
-            width: 100%;
-            margin: 0px;
-        }
+    @media (max-width:767px)  {
 
         .bothCards {
             display: block;
+            margin: 0px;
             padding: 0px;
+            width: 100%;
         }
 
         .tarjeta {
+            border-radius: 0px;
+            box-shadow: none;
+            margin: 0px;
             min-width: 320px;
             min-height: 200px;
             width: 100%;
-            margin: 0px;
-            box-shadow: none;
-            border-radius: 0px;
         }
-
     }
 </style>

@@ -203,7 +203,7 @@
                     return this.paymentMessage;
                 }
             }
-        }
+        },
     }   
 
 </script>

@@ -16,6 +16,7 @@ import NewUser from './views/NewUser.vue'
 import CustomerRegister from './views/CustomerRegister.vue'
 import ArtistRegister from './views/ArtistRegister.vue'
 import EditPersonalInfo from './views/EditPersonalInfo.vue'
+import RegisterConfirmation from './views/RegisterConfirmation.vue'
 
 Vue.use(Router)
 
@@ -96,6 +97,11 @@ export default new Router({
       path: '/editPersonalInfo',
       name: 'editPersonalInfo',
       component: EditPersonalInfo,
+    },
+    {
+      path: '/registerConfirmation',
+      name: 'registerConfirmation',
+      component: RegisterConfirmation,
     },
     {
       path: '*',

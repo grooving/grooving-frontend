@@ -3,8 +3,8 @@
         <form>
             <div class="form-row">
                 <div class="form-group col-12">
-                    <span class="card-title" style="font-weight:bold;font-size:30px;">Profile </span>
-                    <router-link v-bind:to="{name: 'editPersonalInfo', params: {}}">
+                    <span class="card-title" style="font-weight:bold;font-size:30px;margin-bottom:12px">Profile </span>
+                    <router-link v-bind:to="{name: 'editPersonalInfo', params: {}}" style="height: 28px; width: 28px; margin-bottom:12px;">
                         <i class="material-icons iconOffer">create</i>
                     </router-link>
                     <h6 class="card-subtitle mb-2 text-muted">Basic info of your Grooving account, like your name and email.</h6>
@@ -71,16 +71,11 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
-    
     a.router-link-active {
         color: #187fe6 !important;
     }
-</style>
-
-
-<style scoped>
 
     .content {
         padding: 10px;
@@ -90,11 +85,21 @@ export default {
         margin-bottom: 0px;
     }
 
+    .iconOffer  {
+         font-size: 28px;
+         float: right;
+    }
+
     @media (max-width:767px)  {
         .content{
             padding-top: 5%;
             margin-right: 3%;
             margin-left: 3%;
+        }
+
+        .iconOffer  {
+            font-size: 50px;
+            float: right;
         }
     }
 

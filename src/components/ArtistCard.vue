@@ -77,6 +77,12 @@ export default {
             default: ['Pop', 'Flamenco']
         },
     },
+
+    created() {
+        // Retreive store credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+    },
 }
 </script>
 

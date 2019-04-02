@@ -2,8 +2,8 @@
     <div id="wholePage">
         <div class="title"><p>Create your customer account!</p></div>
         <div class="bothCards">
-            <div id="signin" class="tarjeta">
-                <b-form>
+            <div id="signup" class="tarjeta">
+                <b-form action="/#/registerConfirmation/">
                     <label for="" class="subtitle">Account Information</label>
                     <b-form-group>
                         <b-form-input v-model="input.artisticName" placeholder="Artistic Name"></b-form-input>
@@ -75,18 +75,6 @@
         },
 
         methods: {
-            login() {
-                if (this.gsecurity.authenticate(this.input.username, this.input.password)) {
-                    this.$router.push({ path: "/" });
-                }
-            },
-            onFileChange(e) {
-                var files = e.target.files || e.dataTransfer.files;
-                if (!files.length) {
-                    return;
-                }
-                this.createImage(files[0]);
-            },
             createImage(file) {
                 var image = new Image();
                 var reader = new FileReader();
@@ -96,6 +84,15 @@
                     vm.image = e.target.result;
                 };
                 reader.readAsDataURL(file);
+            },
+            onFileChange(e) {
+                var files = e.target.files || e.dataTransfer.files;
+                if (!files.length) {
+                    return;
+                }
+                this.createImage(files[0]);
+                var fileName = files[0].name;
+                $('.custom-file-label').html(fileName);
             },
         },
 
@@ -125,19 +122,19 @@
     }
 
     .continueButton {
-        font-size: 25px;
-        padding-left: 6%;
-        padding-right: 6%;
+        background-image: linear-gradient(to right, #00fb82, #187fe6);
         border: none;
         border-radius: 30px;
-        width: fit-content;
+        font-size: 25px;
         font-weight: bold;
-        background-image: linear-gradient(to right, #00fb82, #187fe6);
+        padding-left: 6%;
+        padding-right: 6%;
+        width: fit-content;
     }
     
     .continueButton:hover{
-        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;
         background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;
     }
 
     .custom-file {
@@ -150,16 +147,11 @@
         text-align: left;
     }
 
-    .infoText {
-        font-size: 25px;
-        padding-bottom: 10px;
-    }
-
     input:focus{
         border-color: #00fb82;
-        font-weight: semibold;
-        color:black;
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;   
+        color:black;
+        font-weight: semibold;
     }
 
     input:hover{
@@ -168,20 +160,20 @@
     }
 
     .profileImage {
-        width: 45px;
-        height: 45px;
-        object-fit: cover;
         border-radius: 25px;
-        margin-bottom: 16px !important;
         display: block;
+        height: 45px;
         margin: auto;
+        margin-bottom: 16px !important;
+        object-fit: cover;
+        width: 45px;
     }
 
     select:focus{
         border-color: #00fb82;
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;
+        color:black;   
         font-weight: semibold;
-        color:black;
-        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;   
     }
 
     select:hover{
@@ -194,41 +186,41 @@
     }
 
     .tarjeta {
-        display: flex;
-        justify-content: center;
         align-items: center;
-        padding: 25px;
-        min-height: 335px;
-        min-width: 335px;
-        width: 25%;
         border-radius: 10px;
         box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, .3);
-        margin-right: 10px;
+        display: flex;
+        justify-content: center;
         margin-left: 10px;
+        margin-right: 10px;
+        min-height: 335px;
+        min-width: 335px;
+        padding: 25px;
+        width: 25%;
     }
 
     .title {
         display: inline-block;
         font-size: 50px;
-        margin-top: 5%;
         font-weight: bold;
+        margin-top: 5%;
     }
 
-     @media (max-width:767px)  {
+    @media (max-width:767px)  {
         .bothCards {
-            width: 100%;
-            margin: 0px;
             display: block;
+            margin: 0px;
             padding: 0px;
+            width: 100%;
         }
 
         .tarjeta {
+            border-radius: 0px;
+            box-shadow: none;
+            margin: 0px;
             min-width: 320px;
             min-height: 200px;
             width: 100%;
-            margin: 0px;
-            box-shadow: none;
-            border-radius: 0px;
         }
 
         .title {

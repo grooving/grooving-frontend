@@ -28,19 +28,35 @@
 <script>
 export default {
     name: "ReducedInfo",
+
+    components: {
+    },
+
+    data: function() {
+        return {
+        };
+    },
+
+
     props: {
         name: {
             type: String,
-            default: 'John'
+            default: ''
         },
         surnames: {
             type: String,
-            default: 'Pug Retriever'
+            default: ''
         },
         zone: {
             type: String,
-            default: 'Sevilla Este'
+            default: ''
         },
+    },
+
+    beforeMount: function() {
+        if (this.name == '') {
+            this.$router.push({name: "error"});
+        }
     },
 }
 </script>

@@ -1,10 +1,11 @@
 <template>
     <div class="content">
-        <form>
+        <form action="/#/personalInfo">
             <div class="form-row">
                 <div class="form-group col-12">
-                    <span class="card-title" style="font-weight:bold;font-size:30px;">Profile </span>
-                    <router-link v-bind:to="{name: 'personalInfo', params: {}}">
+                    
+                    <span style="font-weight:bold;font-size:30px;">Profile </span>
+                    <router-link v-bind:to="{name: 'personalInfo', params: {}}" style="height: 28px; width: 28px">
                         <i class="material-icons iconOffer">clear</i>
                     </router-link>
                     <h6 class="card-subtitle mb-2 text-muted">Basic info of your Grooving account, like your name and email.</h6>
@@ -44,9 +45,7 @@
                         </b-form-group>
                     </div>
                     <div class="continueButtonDiv">
-                        <div class="btn btn-primary continueButton">
-                            <span class="continueText">SAVE</span>
-                        </div>
+                        <b-button class="continueButton" variant="primary" size="sm" type="submit">SAVE</b-button>
                     </div>
                 </div>  
             </div>
@@ -82,15 +81,6 @@ export default {
 }
 </script>
 
-<style>
-    
-    a.router-link-active {
-        color: #00fb82 !important;
-    }
-
-</style>
-
-
 <style scoped>
 
     .content {
@@ -115,6 +105,11 @@ export default {
         margin-bottom: 5%;
         display: flex;
         justify-content: center;
+    }
+
+    .iconOffer  {
+         font-size: 28px;
+         float: right;
     }
 
     input:focus{
@@ -146,6 +141,11 @@ export default {
             padding-top: 5%;
             margin-right: 3%;
             margin-left: 3%;
+        }
+
+        .iconOffer  {
+            font-size: 50px;
+            float: right;
         }
     }
 
