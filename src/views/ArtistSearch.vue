@@ -6,8 +6,8 @@
           <FiltersSideMenu :filters_data="filter_parameters" @onFiltersChange="updateFilters" />
         </div>
         <div id="results" class="col-12 col-lg-8 col-xl-10" style="padding-left:0px; padding-right:0px;">
-            <div id="resultsContainer" class="container-fluid">
-              <ArtistList :artistas="datos" />
+            <div id="resultsContainer" class="container-fluid mt-0">
+              <ArtistList :artistas="datos" :listTitle="'Search Results'" />
             </div>
         </div>
       </div>
@@ -98,11 +98,10 @@ export default {
           }
 
           this.datos.push({
-            artistURI: showPortfolioBaseURI + artists[i].id, 
+            artistID: artists[i].id, 
             artistImage: artists[i].photo,
             artistName: artists[i].portfolio.artisticName,
             artistGenres: genres,
-            hireURI: hiringBaseURI + artists[i].id,
           });
 
         }

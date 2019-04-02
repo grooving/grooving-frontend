@@ -20,6 +20,7 @@ import PersonalInfo from './views/PersonalInfo.vue'
 import ErrorView from './views/ErrorView.vue'
 import MakeOffer from './views/MakeOffer.vue'
 import CustomerInfo from './views/CustomerInfo.vue'
+import TopArtists from './views/TopArtists.vue'
 
 Vue.use(Router)
 
@@ -85,6 +86,11 @@ export default new Router({
       path: '*',
       name: 'error',
       component: ErrorView
+    },
+    {
+      path: '/topArtists',
+      name: 'topArtists',
+      component: TopArtists,
     },
   ]
 })

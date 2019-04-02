@@ -4,7 +4,7 @@
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
             <div class="container-fluid">
                 <div class="container">
-                    <div class="right-div right-text" style="width: 100px; text-align: left; vertical-align: top;margin-bottom: 20px;">
+                    <div class="right-div right-text" style="width: 100px; text-align: left; vertical-align: top;">
                         <div class="priceCard"><h1>{{price}}$</h1><br>
                         </div>
                         <div  style="padding-top: 20px;">
@@ -25,6 +25,7 @@
                         </router-link>
                         <h3 class="fotoText">{{userName}}</h3>
                     </div>
+                    <hr class="mb-2"/>
                     <div v-if="offerStatus !== 'PENDING' && offerStatus !== 'CONTRACT_MADE'" class="cardTextId">
                         <i class="material-icons iconOffer">bookmark</i><p style="word-break: break-all">{{statusMessage()}}</p>
                     </div>
