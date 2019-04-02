@@ -2,7 +2,7 @@
 <div class="prueba">
     <div class="everything">
         <div class="paymentSelect">
-          <div class="paymentOptions"><ProfileInfo :name="userName" :surnames="userSurnames" :email="userEmail" :phoneNumber="userPhoneNumber" /></div>
+          <div class="paymentOptions"><ProfileInfo :name="name" :surnames="userSurnames" :email="userEmail" :phoneNumber="userPhoneNumber" :username="username"/></div>
         </div>
     </div>
 </div>
@@ -20,7 +20,7 @@ export default {
         ProfileInfo
     },
     props: {
-        userName:{
+        name:{
             type: String
         },
         userSurnames:{
@@ -30,6 +30,9 @@ export default {
             type: String
         },
         userPhoneNumber: {
+            type: String
+        },
+        username: {
             type: String
         }
     },
@@ -65,13 +68,11 @@ export default {
                         console.log(personalInformation);
                         console.log(response);
                         
-                        this.userName=personalInformation['first_name']
+                        this.name=personalInformation['first_name']
                         this.userSurnames = personalInformation['last_name'];
                         this.userEmail=personalInformation['email'];
                         this.userPhoneNumber = response.data.phone;
-
-
-                    
+                        this.username = personalInformation['username'];                    
                 });
             
             }
@@ -86,13 +87,11 @@ export default {
                         console.log(personalInformation);
                         console.log(response);
                         
-                        this.userName=personalInformation['first_name']
+                        this.name=personalInformation['first_name']
                         this.userSurnames = personalInformation['last_name'];
                         this.userEmail=personalInformation['email'];
                         this.userPhoneNumber = response.data.phone;
-
-
-                    
+                        this.username = personalInformation['username'];                    
                 });
             
             }

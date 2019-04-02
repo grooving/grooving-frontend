@@ -1,27 +1,23 @@
 <template>
-<div class="container-fluid">
-  <div class="container">
-    <div class="row">
-      
-      <div v-if="showFilters" id="filters_desktop" class="d-none d-lg-inline col-lg-4 col-xl-2">
-        <FiltersSideMenu :filters_data="filter_parameters" @onFiltersChange="updateFilters" />
-      </div>
-      <div id="results" :class="{'col-lg-8 col-xl-10' : showFilters}" class="col-12" style="padding-left:0px; padding-right:0px;">
-        <h1 class="titleView">{{listTitle}}</h1>
-        <div class="row">
-          <div v-for="artist in datos" :key="artist.artistURI" class="tarjeta col-12 col-md-6 col-xl-4">
-            <ArtistCard :artistImage="artist.artistImage" :artistName="artist.artistName" :artistGenres="artist.artistGenres" :artistURI="artist.artistURI" :hireURI="artist.hireURI" />
-          </div>
+  <div id="searchMainWrapper" class="container-fluid">
+    <div class="container">
+      <div class="row">
+        <div id="filtersDesktop" class="d-none d-lg-inline col-lg-4 col-xl-2">
+          <FiltersSideMenu :filters_data="filter_parameters" @onFiltersChange="updateFilters" />
+        </div>
+        <div id="results" class="col-12 col-lg-8 col-xl-10" style="padding-left:0px; padding-right:0px;">
+            <div id="resultsContainer" class="container-fluid">
+              <ArtistList :artistas="datos" />
+            </div>
         </div>
       </div>
+      <div id="floating-button" class="d-lg-none" @click="showFilterSelectionModal = !showFilterSelectionModal">
+        <a href="#" class="floating-btn vertical-center">
+          <i class="material-icons vertical-center">more_vert</i>
+        </a>
+      </div>
     </div>
-    <div v-if="showFilters" id="floating-button" class="d-lg-none" @click="showFilterSelectionModal = !showFilterSelectionModal">
-      <a href="#" class="floating-btn vertical-center">
-        <i class="material-icons vertical-center">more_vert</i>
-      </a>
-    </div>
-  </div>
-  <FiltersModalMenu :filters_data="filter_parameters" v-if="showFilterSelectionModal" @onFiltersChange="updateFilters" @filterSelectionClose="toggleFilterSelectionModal()"/>
+    <FiltersModalMenu :filters_data="filter_parameters" v-if="showFilterSelectionModal" @onFiltersChange="updateFilters" @filterSelectionClose="toggleFilterSelectionModal()"/>
   </div>
 </template>
 
@@ -29,20 +25,20 @@
 
 import FiltersSideMenu from '@/components/menus/FiltersSideMenu.vue';
 import FiltersModalMenu from '@/components/menus/FiltersModalMenu.vue';
-import ArtistCard from '@/components/ArtistCard.vue';
+import ArtistList from '@/components/ArtistList.vue';
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 
 const showPortfolioBaseURI = '/showPortfolio/';
-const hiringBaseURI = '/hiringType/';
+const hiringBaseURI = '/makeOffer/';
 
 export default {
-  name: 'ArtistsList',
+  name: 'ArtistSearch',
 
   components: {
-    ArtistCard,
     FiltersSideMenu,
-    FiltersModalMenu
+    FiltersModalMenu,
+    ArtistList,
   },
 
   data: function(){
@@ -108,6 +104,7 @@ export default {
             artistGenres: genres,
             hireURI: hiringBaseURI + artists[i].id,
           });
+
         }
       }).catch(ex => {
           console.log(ex);
@@ -117,11 +114,6 @@ export default {
 
   props:{
 
-    showFilters: {
-      type: Boolean,
-      default: true
-    },
-
     listTitle:{
       type: String,
       default: 'Search Results'
@@ -130,7 +122,6 @@ export default {
   },
 
   mounted: function(){
-    
     // Check if we want to filter artists
     var queries = this.$route.query;
 

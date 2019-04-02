@@ -70,7 +70,7 @@
             },
             cancelURI: {
                 type: String,
-                default: 'offers'
+                default: '/offers'
             },
             confirmURI: {
                 type: String,

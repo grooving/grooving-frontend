@@ -9,7 +9,7 @@
             <div class="row">
               <div v-for="oferta in pendingOffers" :key="oferta.offerID" class="tarjeta col-12 col-md-6 col-xl-6">
                 <Offer :offerID="oferta.offerID" :confirmURI="oferta.confirmURI" :date="oferta.date" :price="oferta.price" 
-                  :place="oferta.place" :userIcon="oferta.userIcon" :userName="oferta.userName"  :offerStatus="oferta.offerStatus"/>
+                  :place="oferta.place" :userIcon="oferta.userIcon" :userName="oferta.userName"  :offerStatus="oferta.offerStatus" :imageURI="oferta.imageURI" :customerSurnames="oferta.customerSurnames" :artistId="oferta.artistId"/>
               </div>
             </div>
             </span>
@@ -17,7 +17,7 @@
             <div class="row">
               <div v-for="oferta in acceptedOffers" :key="oferta.offerID" class="tarjeta col-12 col-md-6 col-xl-6">
                 <Offer :offerID="oferta.offerID" :confirmURI="oferta.confirmURI" :date="oferta.date" :price="oferta.price" 
-                  :place="oferta.place" :userIcon="oferta.userIcon" :userName="oferta.userName"  :offerStatus="oferta.offerStatus"/>
+                  :place="oferta.place" :userIcon="oferta.userIcon" :userName="oferta.userName"  :offerStatus="oferta.offerStatus" :imageURI="oferta.imageURI" :customerSurnames="oferta.customerSurnames" :artistId="oferta.artistId"/>
               </div>
             </div>
             </span>
@@ -25,7 +25,7 @@
             <div class="row">
               <div v-for="oferta in rejectedOffers" :key="oferta.offerID" class="tarjeta col-12 col-md-6 col-xl-6">
                 <Offer :offerID="oferta.offerID" :confirmURI="oferta.confirmURI" :date="oferta.date" :price="oferta.price" 
-                  :place="oferta.place" :userIcon="oferta.userIcon" :userName="oferta.userName"  :offerStatus="oferta.offerStatus"/>
+                  :place="oferta.place" :userIcon="oferta.userIcon" :userName="oferta.userName"  :offerStatus="oferta.offerStatus" :imageURI="oferta.imageURI" :customerSurnames="oferta.customerSurnames" :artistId="oferta.artistId"/>
               </div>
             </div>
             </span>
@@ -152,23 +152,50 @@ export default {
     var authorizedGAxios = GAxios;
     var GAxiosToken = this.gsecurity.getToken();
     authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
+    var URI;
 
-    authorizedGAxios.get(endpoints.offers)
+    if (this.gsecurity.hasRole('ARTIST')) {
+      URI = endpoints.artistOffers;
+    } else if (this.gsecurity.hasRole('CUSTOMER')) {
+      URI = endpoints.customerOffers;
+    }
+
+    authorizedGAxios.get(URI)
     .then(response => {
       console.log(response.data);
       var offers = response.data.results;
+
+      var name;
+      var icon;
+      var link;
+      var customerSurnames = '';
+      var artistId = '';
     
       for(var i = 0; i < offers.length; i++){
         var d = offers[i].date.split("T",2);
+        if (this.gsecurity.hasRole('ARTIST')) {
+          name = offers[i].eventLocation.customer.user.first_name;
+          icon = offers[i].eventLocation.customer.photo;
+          link = 'customerInfo';
+          customerSurnames = offers[i].eventLocation.customer.user.last_name;
+        } else if (this.gsecurity.hasRole('CUSTOMER')) {
+          name = offers[i].paymentPackage.portfolio.artist.user.first_name;
+          icon = offers[i].paymentPackage.portfolio.artist.photo;
+          link = 'showPortfolio';
+          artistId = offers[i].paymentPackage.portfolio.artist.id;
+        }
         this.offers.push({
           offerID: offers[i].id,
           offerStatus: offers[i].status,
           date: d[0],
           place: offers[i].eventLocation.zone.name,
-          userName: offers[i].eventLocation.customer.user.first_name,
-          userIcon: offers[i].eventLocation.customer.photo,
+          userName: name,
+          userIcon: icon,
           price: offers[i].price,
           confirmURI: acceptURI + offers[i].id,
+          imageURI: link,
+          customerSurnames: customerSurnames,
+          artistId: artistId,
         });
       }
     }).catch(ex => {

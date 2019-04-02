@@ -8,11 +8,11 @@
          <h2>Hello, <span>{{ userFirstName }}</span></h2>
             <ul class="navbar-nav mr-auto p-2 col align-self-center justify-content-center">
                 <li class="nav-item section">
-                    <router-link class="nav-link" to="personalInfo" data-toggle="collapse" data-target="#sidebar">My Account</router-link>
+                    <router-link class="nav-link" to="/personalInfo" data-toggle="collapse" data-target="#sidebar">My Account</router-link>
                     <b-dropdown-divider class="divider"/>
                 </li>
                 <li class="nav-item section" v-if="gsecurity.hasRole('ARTIST')">
-                    <router-link class="nav-link" to="showPortfolio" data-toggle="collapse" data-target="#sidebar">My Portfolio</router-link>
+                    <router-link class="nav-link" v-bind:to="'/showPortfolio/'+artistId + '/'" data-toggle="collapse" data-target="#sidebar">My Portfolio</router-link>
                     <b-dropdown-divider class="divider"/>
                 </li>
                 
@@ -34,23 +34,50 @@ import GSecurity from '@/security/GSecurity.js';
 
 export default {
     name: 'RightMenu',
-    props: {
-        blur: Boolean,
-    },
+
     data: function(){
         return{
             gsecurity: GSecurity,
             userFirstName: '',
+            artistId: '',
+            portfolioUrl: '/showPortfolio/'+artistId+'/'
         }
     },
+    
     methods: {
         logout() {
-        this.gsecurity.deauthenticate();
-        this.$router.push({ path: "/" });
+            this.gsecurity.deauthenticate();
+            this.$router.push({ path: "/" });
+        },
+
+        refreshGSecurityData: function() {
+            this.userFirstName = this.gsecurity.getFirstName();
+            this.artistId = this.gsecurity.getId();
         }
     },
+
+    props: {
+        blur: Boolean,
+    },
+
+    created() {
+        // Retreive stored credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+        //console.log("Holita");
+        //console.log(this.gsecurity);
+
+        // Update data that depends on GSecurity
+        this.refreshGSecurityData();
+    },
+
     beforeUpdate: function() {
-        this.userFirstName = this.gsecurity.getFirstName();
+        // Retreive stored credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        // Update data that depends on GSecurity
+        this.refreshGSecurityData();
     },
 }
 

@@ -149,12 +149,13 @@ export default {
       this.search();
     },
 
-    login() {
-      if (
-        this.gsecurity.authenticate(this.input.username, this.input.password)
-      ) {
+    login: async function() {
+
+      var log_result = await this.gsecurity.authenticate(this.input.username, this.input.password)
+
+      if (log_result)
         this.$router.push({ path: "/" });
-      }
+
     },
 
     refreshGSecurityData: function() {
@@ -203,7 +204,7 @@ export default {
     }
   },
 
-  beforeCreate() {
+  created() {
     // Retreive store credentials
     this.gsecurity = GSecurity;
     this.gsecurity.obtainSavedCredentials();
@@ -359,6 +360,10 @@ export default {
 
   nav {
     height: 75px;
+  }
+
+  #navBarLogo{
+    margin-right: 0px;
   }
 
   .no-border {

@@ -1,7 +1,6 @@
 <template>
     <div>
         <hr />
-        <TabbedSubMenu />
         <div style="width:100%">
             <ExtendedOffer :offerID="offer[0].offerID" :date="offer[0].date" :endingHour="offer[0].endingHour" :price="offer[0].price"
              :address="offer[0].address" :description="offer[0].description" :confirmURI="offer[0].confirmURI" />
@@ -23,7 +22,6 @@ export default {
   name: 'OfferDetails',
   
   components: {
-    TabbedSubMenu,
     ExtendedOffer,
   },
 
