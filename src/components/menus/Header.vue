@@ -101,7 +101,7 @@ export default {
       menu_links: [
         {
           text: "Top Artists",
-          link: "/artist_search",
+          link: "/topArtists",
           selected: true,
           requiedRoles: []
         },

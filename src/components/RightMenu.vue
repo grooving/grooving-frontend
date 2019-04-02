@@ -40,7 +40,7 @@ export default {
             gsecurity: GSecurity,
             userFirstName: '',
             artistId: '',
-            portfolioUrl: '/showPortfolio/'+artistId+'/'
+            portfolioUrl: '/showPortfolio/'+ this.artistId + '/'
         }
     },
     
