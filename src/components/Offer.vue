@@ -5,7 +5,7 @@
             <div class="container-fluid">
                 <div class="container">
                     <div class="right-div right-text" style="width: 100px; text-align: left; vertical-align: top;margin-bottom: 20px;">
-                        <div class="priceCard"><h1>{{price}}€</h1><br>
+                        <div class="priceCard"><h1>{{price}}$</h1><br>
                         </div>
                         <div  style="padding-top: 20px;">
                         <div class="cardTextDate"><i class="material-icons iconOffer">event_note</i><p><span style="margin-bottom: 1px;">{{date}}</span></p>

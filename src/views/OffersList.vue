@@ -136,6 +136,17 @@ export default {
       this.selectedTab = status;
     },
   },
+  created() {
+    // Retreive store credentials
+    this.gsecurity = GSecurity;
+    this.gsecurity.obtainSavedCredentials();
+
+    if(!this.$gsecurity.isAuthenticated()) {
+      console.log('Error')
+      location.replace("/#/*")
+      
+    }
+  },
 
   beforeMount: function() {
     var authorizedGAxios = GAxios;
@@ -148,10 +159,11 @@ export default {
       var offers = response.data.results;
     
       for(var i = 0; i < offers.length; i++){
+        var d = offers[i].date.split("T",2);
         this.offers.push({
           offerID: offers[i].id,
           offerStatus: offers[i].status,
-          date: offers[i].date,
+          date: d[0],
           place: offers[i].eventLocation.zone.name,
           userName: offers[i].eventLocation.customer.user.first_name,
           userIcon: offers[i].eventLocation.customer.photo,

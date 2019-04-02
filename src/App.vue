@@ -2,7 +2,7 @@
   <div id="app">
     <div class="content">
     <div class="Header">
-      <Header />
+      <Header @toBlur='blurred'/>
     </div>
     <div class="RightMenu">
       <RightMenu />
@@ -10,7 +10,7 @@
     <div class="LeftMenu">
       <LeftMenu />
     </div>
-    <router-view/>
+    <router-view id='test' class="test"/>
     </div>
     <footer><Footer/></footer>
   </div>
@@ -18,9 +18,9 @@
 
 <script>
 import Header from "./components/menus/Header.vue"
-import RightMenu from "./components/RightMenu.vue"
-import LeftMenu from "./components/LeftMenu.vue"
-import Footer from "./components/Footer.vue"
+import RightMenu from "./components/menus/RightMenu.vue"
+import LeftMenu from "./components/menus/LeftMenu.vue"
+import Footer from "./components/menus/Footer.vue"
 import GSecurity from "./security/GSecurity.js"
 
 export default {
@@ -31,18 +31,28 @@ export default {
 
   data: function(){
     return{
-      gsecurity: undefined,
+      gsecurity: GSecurity,
+    }
+  },
+  methods: {
+    blurred(a){
+      console.log(a)
+      if(a) {
+        console.log('Hi')
+        $((document.getElementById('test'))).css("filter", "blur(12px)");
+        $((document.getElementById('test'))).css("pointer-events", "none");
+
+      } else {
+        $((document.getElementById('test'))).css("filter", "blur(0px)");
+        $((document.getElementById('test'))).css("pointer-events", "auto");
+      }
     }
   },
 
   beforeCreate() {
-    
+    // Retreive store credentials
     this.gsecurity = GSecurity;
     this.gsecurity.obtainSavedCredentials();
-
-    if(!this.$gsecurity.isAuthenticated()) {
-      //this.$router.push({path: "/"});   
-    }
   },
 }
 
