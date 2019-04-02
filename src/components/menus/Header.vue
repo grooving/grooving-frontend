@@ -1,10 +1,10 @@
 <template>
   <div id="test1">
     <nav id="mainNavBar" class="navbar navbar-light bg-light">
-      <div id="navBarLeft" class="vertical-center">
+      <div id="navBarLeft" class="vertical-center" >
         <div id="navBarLogo" class="navbar-brand vertical-center">
-          <button class="d-inline d-md-none navbar-toggler no-border pt-0 collapsL" id="collapsL" role="button" data-toggle="collapse"
-          data-target="#sidebarleft" @click="sideMenus(1)">
+          <button class="d-inline d-md-none navbar-toggler no-border pt-0 collapsL" @click="sideMenus(1)" id="collapsL" role="button" data-toggle="collapse"
+          data-target="#sidebarleft" >
             <span class="navbar-toggler-icon"></span>
           </button>
           <router-link class="ml-2 vertical-center" to="/">
@@ -37,9 +37,9 @@
               </form>
             </div>
           </li>
-          <div id="navBarUserComponent">
+          <div id="navBarUserComponent" >
             <li v-if="gsecurity.isAuthenticated()" class="nav-item mx-2 right-float vertical-center ">
-              <button role="button" class="collaps" id="collaps" data-toggle="collapse" data-target="#sidebar" @click="sideMenus(2)">
+              <button role="button" class="collaps" id="collaps" @click="sideMenus(2)" data-toggle="collapse" data-target="#sidebar" >
                 <a class="nav-link vertical-center" href="#">
                   <img v-if="userPhoto == null || userPhoto == '' || userPhoto == 'null'" src="@/assets/defaultPhoto.png"
                   class="profileImage" alt="Profile Image">
@@ -95,6 +95,12 @@ export default {
   components: {
     Search
   },
+  watch:{
+    $route (to, from){
+        this.leftMenu = false;
+        this.rightMenu = false;
+    }
+  }, 
 
   data: function() {
     return {
@@ -235,6 +241,11 @@ export default {
 
     // Update data that depends on GSecurity
     this.refreshGSecurityData();
+
+  },
+  updated() {
+    this.leftMenu = false;
+    this.rightMenu = false;
   }
 };
 </script>

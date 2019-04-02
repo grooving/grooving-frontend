@@ -36,9 +36,7 @@ export default {
   },
   methods: {
     blurred(a){
-      console.log(a)
       if(a) {
-        console.log('Hi')
         $((document.getElementById('test'))).css("filter", "blur(12px)");
         $((document.getElementById('test'))).css("pointer-events", "none");
 
