@@ -12,7 +12,7 @@
                     <b-dropdown-divider class="divider"/>
                 </li>
                 <li class="nav-item section" v-if="gsecurity.hasRole('ARTIST')">
-                    <router-link class="nav-link" to="showPortfolio" data-toggle="collapse" data-target="#sidebar">My Portfolio</router-link>
+                    <router-link class="nav-link" v-bind:to="'/showPortfolio/'+artistId + '/'" data-toggle="collapse" data-target="#sidebar">My Portfolio</router-link>
                     <b-dropdown-divider class="divider"/>
                 </li>
                 
@@ -39,6 +39,8 @@ export default {
         return{
             gsecurity: GSecurity,
             userFirstName: '',
+            artistId: '',
+            portfolioUrl: '/showPortfolio/'+artistId+'/'
         }
     },
     
@@ -50,6 +52,7 @@ export default {
 
         refreshGSecurityData: function() {
             this.userFirstName = this.gsecurity.getFirstName();
+            this.artistId = this.gsecurity.getId();
         }
     },
 
@@ -61,6 +64,8 @@ export default {
         // Retreive stored credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+        //console.log("Holita");
+        //console.log(this.gsecurity);
 
         // Update data that depends on GSecurity
         this.refreshGSecurityData();
