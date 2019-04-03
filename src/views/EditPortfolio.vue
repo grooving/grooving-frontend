@@ -1,12 +1,16 @@
 <template>
   <div>
+    <EditArtistInfo />
     <EditImageCarousel />
+    <EditVideoCarousel />
   </div>
 </template>
 
 <script>
-
+import EditPhoto from '@/components/EditPhoto.vue'
+import EditArtistInfo from '@/components/portfolio/EditArtistInfo.vue'
 import EditImageCarousel from '@/components/portfolio/EditImageCarousel.vue';
+import EditVideoCarousel from '@/components/portfolio/EditVideoCarousel.vue';
 
 var portfolioDays = [];
 
@@ -14,6 +18,9 @@ export default {
   name: 'EditPortfolio',
   components: {
     EditImageCarousel,
+    EditPhoto,
+    EditArtistInfo,
+    EditVideoCarousel,
   },  
   props: {
     portfolioBanner: {
