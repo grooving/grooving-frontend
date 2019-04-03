@@ -109,7 +109,7 @@ export default {
       return this.offers.filter(item => (item.offerStatus == "CONTRACT_MADE" || item.offerStatus == "PAYMENT_MADE"));
     },
     rejectedOffers: function() {
-      return this.offers.filter(item => (item.offerStatus == "WITHDRAWN" || item.offerStatus == "REJECTED" || item.offerStatus == "CANCELED"));
+      return this.offers.filter(item => (item.offerStatus == "WITHDRAWN" || item.offerStatus == "REJECTED" || item.offerStatus == "CANCELLED_ARTIST" || item.offerStatus == "CANCELLED_CUSTOMER"));
     }
   },
 
@@ -179,10 +179,10 @@ export default {
           link = 'customerInfo';
           customerSurnames = offers[i].eventLocation.customer.user.last_name;
         } else if (this.gsecurity.hasRole('CUSTOMER')) {
-          name = offers[i].paymentPackage.portfolio.artist.user.first_name;
-          icon = offers[i].paymentPackage.portfolio.artist.photo;
+          name = offers[i].paymentPackage.portfolio.artisticName;
+          icon = offers[i].paymentPackage.portfolio.main_photo;
           link = 'showPortfolio';
-          artistId = offers[i].paymentPackage.portfolio.artist.id;
+          //artistId = offers[i].paymentPackage.portfolio.artist.id;
         }
         this.offers.push({
           offerID: offers[i].id,
