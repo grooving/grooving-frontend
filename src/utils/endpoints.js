@@ -9,6 +9,8 @@ export default{
     offer: '/offer/',
     customerPersonalInformation: '/customer/personalInformation/',
     artistPersonalInformation: '/artist/personalInformation/',
-    portfolio: '/portfolio/'
+    portfolio: '/portfolio/',
+    registerCustomer: '/signupCustomer/',
+    registerArtist: '/signupArtist/',
     
 }

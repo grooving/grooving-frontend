@@ -3,42 +3,51 @@
         <div class="title"><p>Create your customer account!</p></div>
         <div class="bothCards">
             <div id="signup" class="tarjeta">
-                <b-form action="/#/registerConfirmation/">
+                <b-form>
+                    <div id="errorsDiv" class="validationErrors vertical-center">
+                        <p style="margin: 0px;">{{errors}}</p>
+                    </div>
                     <label for="" class="subtitle">Account Information</label>
                     <b-form-group>
-                        <b-form-input v-model="input.username" placeholder="Username"></b-form-input>
+                        <b-form-input v-model="input.username" placeholder="Username" required></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input v-model="input.password" type="password" placeholder="Password"></b-form-input>
+                        <b-form-input v-model="input.password" type="password" placeholder="Password" minlength="8" required></b-form-input>
                     </b-form-group>
+                    <small class="form-text text-muted" style="margin-bottom:14px">
+                        Your password must be at least 8 characters long, and can't be contained in the username, first name, last name or e-mail address.</small>
                     <b-form-group>
-                        <b-form-input v-model="input.confirmPassword" type="password" placeholder="Confirm password"></b-form-input>
+                        <b-form-input v-model="input.confirmPassword" type="password" placeholder="Confirm password" minlength="8" required></b-form-input>
                     </b-form-group>
                     <hr/>
                     <label for="" class="subtitle">Personal Information</label>
-                    <div v-if="!image">
+                    <!-- <div v-if="!image">
                     </div>
                     <div v-else>
                         <img :src="image" class="profileImage"/>
-                    </div>
-                    <div class="custom-file">
+                    </div> -->
+                    <img v-if="input.photo" :src="input.photo" class="profileImage"/>
+                    <!-- <div class="custom-file">
                         <input type="file" class="custom-file-input" id="customFile" @change="onFileChange">
                         <label class="custom-file-label" for="customFile">Upload a Photo</label>
-                    </div>
+                    </div> -->
                     <b-form-group>
-                        <b-form-input v-model="input.firstName" placeholder="First Name"></b-form-input>
+                        <b-form-input type="url" v-model="input.photo" placeholder="Profile Photo URL"></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input v-model="input.lastName" placeholder="Last Name"></b-form-input>
+                        <b-form-input v-model="input.firstName" placeholder="First Name" required></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input v-model="input.email" type="email" placeholder="E-mail"></b-form-input>
+                        <b-form-input v-model="input.lastName" placeholder="Last Name" required></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input v-model="input.username" placeholder="Phone Number"></b-form-input>
+                        <b-form-input v-model="input.email" type="email" placeholder="E-mail" required></b-form-input>
+                    </b-form-group>
+                    <b-form-group>
+                        <b-form-input type="number" v-model="input.phoneNumber" placeholder="Phone Number"></b-form-input>
                     </b-form-group>
                     <h6 class="card-subtitle mb-2 text-muted">By creating an account you agree to <a href="/">Grooving's Terms and Conditions</a>.</h6>
-                    <b-button class="continueButton" variant="primary" size="sm" type="submit">SIGN IN</b-button>
+                    <b-button class="continueButton" variant="primary" size="sm" type="submit" v-on:click="createCustomer">SIGN IN</b-button>
                 </b-form>
             </div>
         </div>
@@ -46,6 +55,8 @@
 </template>
 
 <script>
+    import endpoints from '@/utils/endpoints.js';
+    import GAxios from '../utils/GAxios.js'
     import GSecurity from "@/security/GSecurity.js";
 
     export default {
@@ -56,7 +67,9 @@
 
         data: function() {
             return {
+                gaxios: GAxios,
                 gsecurity: GSecurity,
+                //image: "",
                 input: {
                     username: "",
                     password: "",
@@ -65,13 +78,14 @@
                     lastName: "",
                     email: "",
                     phoneNumber: "",
+                    photo: "",
                 },
-                image: "",
+                errors: "",
             };
         },
 
         methods: {
-            createImage(file) {
+            /*createImage(file) {
                 var image = new Image();
                 var reader = new FileReader();
                 var vm = this;
@@ -89,6 +103,26 @@
                 this.createImage(files[0]);
                 var fileName = files[0].name;
                 $('.custom-file-label').html(fileName);
+            },*/
+            createCustomer() {
+                GAxios.post(endpoints.registerCustomer, {
+                    "first_name": this.input.firstName,
+                    "last_name": this.input.lastName,
+                    "password": this.input.password,
+                    "confirm_password": this.input.confirmPassword,
+                    "username": this.input.username,
+                    "email": this.input.email,
+                    "photo": this.input.photo,
+                    "phoneNumber": this.input.phoneNumber,
+                }).then(response => {
+                    console.log(response);
+                    this.$router.push({name: "registerConfirmation"});
+                }).catch(ex => {
+                    console.log(ex.response.data);
+                    this.errors = ex.response.data[0];
+                    document.getElementById("errorsDiv").style.display = "block";
+                }) 
+
             },
         },
 
@@ -200,6 +234,19 @@
         font-size: 50px;
         font-weight: bold;
         margin-top: 5%;
+    }
+
+    .validationErrors{
+        background-color:#f50057;
+        border-radius: 5px;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
+        color:white;
+        display: none;
+        font-weight: bold;
+        height: 100%;
+        margin-bottom: 14px;
+        padding: 10px;
+        padding-top: 12px;
     }
 
     @media (max-width:767px)  {
