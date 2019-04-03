@@ -16,15 +16,15 @@
             </div>
         </div>
         <div class="sliderButton">
-          <div class="slider"><DoubleSlider/></div>
-          <div class="continueButtonDiv"><div @ups="updateTime(time, duration)" @click="timeSelected()" class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div @click="timeSelected()"></div>
+          <div class="slider"><DoubleSlider @timeUpdate="updateTime"/></div>
+          <router-link v-bind:to="nextStep" class="continueButtonDiv"><div  @click="timeSelected" class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div></router-link>
         </div>
     </div>
 </div>
 </template>
 
 <script>
-import DoubleSlider from '@/components/DoubleSlider.vue'
+import DoubleSlider from '@/components/makeOffer/DoubleSlider.vue'
 import {mapActions} from 'vuex';
 
 export default {
@@ -37,7 +37,8 @@ export default {
           time: {
             start: undefined,
             duration: undefined,    
-        }, 
+        },
+        nextStep: undefined, 
       }
   },
   props: {
@@ -63,15 +64,14 @@ export default {
         },
         price: {
           type: String,
-          default: '$63.00/h'
+          default: '63.00€/h'
         }
     },
-    
+    mounted() {
+        this.nextStep = '/addressInput/' + this.$route.params['artistId']
+    },
     methods: {
         ...mapActions(['setTime']),
-        addressSelected(address) {
-            this.setAddress(address);
-        },
         genresToString() {
 
             var res = "";
@@ -87,16 +87,14 @@ export default {
 
             return res;
         },
-        updateTime() {
-            console.log(time)
-            this.time.start = time;
+        updateTime(startHour, duration) {
+            this.time.start = startHour;
             this.time.duration = duration;
         },
         timeSelected() {
-            this.setTime( this.time);
-            this.$emit('timeSelected');
+            this.setTime(this.time);
         },
-    }
+    },
 }
 </script>
 

@@ -3,12 +3,12 @@
     <form>
         <div class="form-row">
             <div class="form-group col-12">
-                <textarea :value="location" type="text" class="form-control" style="resize: none;" 
-                    placeholder="Information about your event" rows="7"></textarea>
+                <textarea v-model="description" type="text" class="form-control" style="resize: none;" 
+                    placeholder="Add here relevant information about your event." rows="7"></textarea>
             </div>  
         </div>
-        <div class="continueButtonDiv"><div @click="eventDataSelected()"
-            class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div></div>
+        <router-link v-bind:to="nextStep" class="continueButtonDiv"><div v-bind:to="nextStep" @click="eventDataSelected()"
+            class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div></router-link>
     </form>
     </div>
 </template>
@@ -16,11 +16,13 @@
 <script>
 export default {
     name: "EventData",
+    data() {
+        return {
+            description: undefined,
+            nextStep: undefined,
+        }
+    },
     props: {
-        location: {
-            type: String,
-            default: 'Monday night party at the campus.'
-        },
         continueURI: {
             type: String,
             default: 'paymentSelector'
@@ -30,9 +32,12 @@ export default {
     },
     methods: {
         eventDataSelected(){
-            this.$emit('eventDataSelected', this.location);
+            this.$emit('eventDataSelected', this.description);
         }
-    }
+    },
+    mounted() {
+        this.nextStep = '/paymentSelector/' + this.$route.params['artistId']
+    },
 }
 </script>
 

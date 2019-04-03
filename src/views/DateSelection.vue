@@ -17,7 +17,7 @@
         </div>
         <div class="calendarButton">
           <div class="calendar"><Calendar @datePickerDate="calendarSelected" :availableDates="this.datos[0].availableDates"/></div>
-          <div class="continueButtonDiv"><div @click="dateSelected()" class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div></div>
+          <div class="continueButtonDiv" @click="dateSelected()" ><router-link v-bind:to="nextStep" class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></router-link></div>
         </div>
     </div>
 </div>
@@ -39,6 +39,7 @@ export default {
 
   data: function() {
       return {
+          nextStep: undefined,
           gsecurity: GSecurity,
           datos: Array(),
           fecha: '',
@@ -64,6 +65,9 @@ export default {
         });
 
   },
+  mounted() {
+    this.nextStep = '/timeSelection/' + this.$route.params['artistId']
+  },
 
   props: {
         artistURI: {
@@ -88,7 +92,7 @@ export default {
         },
         price: {
           type: String,
-          default: '$63.00/h'
+          default: '63.00€/h'
         }
     },
 
@@ -112,7 +116,6 @@ export default {
 
         dateSelected() {
             this.setDate(this.fecha);
-            this.$emit('dateSelected', this.fecha);
         },
 
         calendarSelected(){

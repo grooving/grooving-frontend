@@ -1,11 +1,11 @@
 <template>
     <div class="content">
         <div class="paymentOptions">
-            <p>Choose between</p>
-            <div class="continueButtonDiv"><div  class="btn btn-primary continueButton"><span class="continueText">PAYPAL</span></div @click="paymentOptionSelected()"></div>
+            <p>Select the payment method</p>
+            <!-- <div class="continueButtonDiv"><div  class="btn btn-primary continueButton"><span class="continueText">PAYPAL</span></div @click="paymentOptionSelected()"></div> -->
             <br>
-            <div class="continueButtonDiv"><div @click="paymentOptionSelected()"
-            class="btn btn-primary continueButton"><span class="continueText">CREDIT CARD</span></div></div>
+            <router-link v-bind:to="nextStep" class="continueButtonDiv"><div @click="paymentOptionSelected()"
+                class="btn btn-primary continueButton"><span class="continueText">CREDIT CARD</span></div></router-link>
         </div>
     </div>
 </template>
@@ -13,6 +13,11 @@
 <script>
 export default {
     name: "PaymentOptions",
+    data() {
+        return {
+            nextStep: undefined,
+        }
+    },
     props: {
         continueURI: {
             type: String,
@@ -23,9 +28,13 @@ export default {
     },
     methods: {
         paymentOptionSelected(){
-            this.$emit('paymentOptionSelected');
-        }
-    }
+            this.$emit('paymentOptionSelected', 'CREDITCARD');
+        },
+
+    },
+    mounted() {
+        this.nextStep = '/payment/' + this.$route.params['artistId']
+    },
 }
 </script>
 

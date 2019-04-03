@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import PaymentOptions from '@/components/PaymentOptions.vue'
+import PaymentOptions from '@/components/makeOffer/PaymentOptions.vue'
 
 export default {
   name: 'PaymentSelector',

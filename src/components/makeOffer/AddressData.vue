@@ -2,78 +2,51 @@
     <div class="content">
     <form>
         <div class="form-row">
-            <div class="form-group col-8">
-                <input maxlength="16" type="text" class="form-control" placeholder="Card number" :value="creditCardNumber">
-            </div>
-            <div class="form-group col-4">
-                <select id="inputState" class="form-control">
-                    <option v-if="creditCardBrand === 'visa'" selected>VISA</option>
-                    <option v-else>VISA</option>
-                    <option v-if="creditCardBrand === 'mastercard'" selected>Master Card</option>
-                    <option v-else>Master Card</option>
-                </select>
-            </div>
+            <div class="form-group col-12">
+                <input v-model="location" type="text" class="form-control" placeholder="Location">
+            </div>  
         </div>
         <div class="form-row">
             <div class="form-group col-12">
-                <input :value="name" type="text" class="form-control" placeholder="Name">
-            </div>
-            
+                <input v-model="zipcode" type="text" class="form-control" placeholder="Zip code">
+            </div>  
         </div>
-
         <div class="form-row">
-            <div class="form-group col entrada">
-                <input :value="month" min="1" max="12" type="number" class="form-control" placeholder="Month">
-            </div>
-            <div class="form-group col entrada">
-                <input :value="year" min="2019" type="number" class="form-control" placeholder="Year">
-            </div>
-            <div class="form-group col entrada">
-                <input :value="cvv" maxlength="3" type="text" class="form-control" placeholder="CVV">
-            </div>
+            <div class="form-group col-12">
+                <input v-model="street" type="text" class="form-control" placeholder="Street">
+            </div>  
         </div>
-        <router-link v-bind:to="'/offers'" 
-            class="btn btn-primary continueButton"><span class="continueText">SUBMIT</span></router-link>
+        <router-link v-bind:to="nextStep" class="continueButtonDiv" >
+            <div class="btn btn-primary continueButton" @click="addressDataSelected()">
+                <span class="continueText">CONTINUE</span></div></router-link>
 
     </form>
     </div>
 </template>
 
 <script>
+
 export default {
-    name: "CreditCardPayment",
-    props: {
-        creditCardNumber: {
-            type: String,
-            default: '4590114832997756'
-        },
-        creditCardBrand: {
-            type: String,
-            default: '',
-        },
-        name: {
-            type: String,
-            default: 'John Doe'
-        },
-        month: {
-            type: String,
-            default: '10'
-        },
-        year: {
-            type: String,
-            default: '2020'
-        },
-        cvv: {
-            type: String,
-            default: '754'
-        },
-        continueURI: {
-            type: String,
-            default: 'sentOffer'
-        } 
-    },
+    name: "AddressData",
     components: {
     },
+    
+    data() {
+        return {
+            location: undefined,
+            zipcode: undefined,
+            street: undefined,
+            nextStep: undefined,
+        }
+    },
+    mounted() {
+        this.nextStep = '/eventInput/' + this.$route.params['artistId']
+    },
+    methods: {
+        addressDataSelected(){
+            this.$emit('addressSelected', [this.location, this.zipcode, this.street]);
+        },
+    }
 }
 </script>
 
@@ -114,7 +87,6 @@ export default {
         width: fit-content;
         margin-top: 2%;
         font-weight: bold;
-        margin-top: 10%;
     
         background-image: linear-gradient(to right, #00fb82, #187fe6);
     }
@@ -143,13 +115,16 @@ export default {
         }
         
         form{
+            margin-top:5px;
+            width: 320px;
             margin-right: 4%;
             margin-left: 4%;
+            margin-bottom: 0;
         }
 
         .content{
             margin-left: 3%;
-            height: 300px;
+            height: 305px;
             border-radius: 10px;
             display: flex;
             align-items: center;

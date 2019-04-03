@@ -24,7 +24,8 @@
 </template>
 
 <script>
-import EventData from '@/components/EventData.vue'
+import EventData from '@/components/makeOffer/EventData.vue'
+import {mapActions} from 'vuex';
 
 export default {
   name: 'EventInput',
@@ -63,6 +64,7 @@ export default {
     },
 
     methods: {
+        ...mapActions(['setEventDescription']),
         genresToString() {
 
             var res = "";
@@ -79,8 +81,8 @@ export default {
             return res;
         },
 
-        eventData() {
-            this.$emit('eventData', arguments[0]);
+        eventData(description) {
+            this.setEventDescription(description);
         }
     }
 }

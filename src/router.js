@@ -23,7 +23,6 @@ import CustomerInfo from './views/CustomerInfo.vue'
 import TopArtists from './views/TopArtists.vue'
 import EditPortfolio from './views/EditPortfolio.vue'
 
-
 Vue.use(Router)
 
 export default new Router({
@@ -98,6 +97,51 @@ export default new Router({
       path: '/editPortfolio',
       name: 'editPortfolio',
       component: EditPortfolio,
+    },
+    {
+      path: '/hiringType/:artistId',
+      name: 'hiringType',
+      component: TypeOfHiring,
+    },
+    {
+      path: '/dateSelection/:artistId',
+      name: 'dateSelection',
+      component: DateSelection,
+    },
+    {
+      path: '/timeSelection/:artistId',
+      name: 'timeSelection',
+      component: TimeSelection,
+    },
+    {
+      path: '/eventInput/:artistId',
+      name: 'eventInput',
+      component: EventInput,
+    },
+    {
+      path: '/addressInput/:artistId',
+      name: 'addressInput',
+      component: AddressInput,
+    },
+    {
+      path: '/eventInput/:artistId',
+      name: 'eventInput',
+      component: EventInput,
+    },
+    {
+      path: '/paymentSelector/:artistId',
+      name: 'paymentSelector',
+      component: PaymentSelector,
+    },
+    {
+      path: '/payment/:artistId',
+      name: 'payment',
+      component: Payment,
+    },
+    {
+      path: '/sentOffer/',
+      name: 'sentOffer',
+      component: SentOffer,
     },
   ]
 })

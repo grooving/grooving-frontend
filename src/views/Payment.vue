@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import CreditCardPayment from '@/components/CreditCardPayment.vue'
+import CreditCardPayment from '@/components/makeOffer/CreditCardPayment.vue'
 
 export default {
   name: 'payment',
