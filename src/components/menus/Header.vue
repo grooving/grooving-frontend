@@ -30,7 +30,7 @@
             <div class="d-none d-md-inline nav-item">
               <form class="form-inline">
                 <input id="searchFormDesktop" v-model="searchQuery" class="form-control mr-sm-2" style="border-radius:100px;"
-                type="search" placeholder="Search" aria-label="Search">
+                type="search" placeholder="Search" aria-label="Search" @keypress.enter="search()">
                 <button class="btn" type="button" @click="search()">
                   <i class="material-icons align-middle">search</i>
                 </button>

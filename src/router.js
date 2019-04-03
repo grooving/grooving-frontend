@@ -21,6 +21,7 @@ import ErrorView from './views/ErrorView.vue'
 import MakeOffer from './views/MakeOffer.vue'
 import CustomerInfo from './views/CustomerInfo.vue'
 import TopArtists from './views/TopArtists.vue'
+import EditPortfolio from './views/EditPortfolio.vue'
 
 Vue.use(Router)
 
@@ -91,6 +92,11 @@ export default new Router({
       path: '/topArtists',
       name: 'topArtists',
       component: TopArtists,
+    },
+    {
+      path: '/editPortfolio',
+      name: 'editPortfolio',
+      component: EditPortfolio,
     },
   ]
 })
