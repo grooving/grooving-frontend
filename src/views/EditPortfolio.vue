@@ -1,20 +1,35 @@
 <template>
   <div>
+    <EditSubmenu @saveClicked="savePortfolio()" />
+    <EditArtistInfo />
     <EditImageCarousel />
+    <EditVideoCarousel />
   </div>
 </template>
 
 <script>
-
+import EditSubmenu from '@/components/menus/EditSubmenu.vue'
+import EditPhoto from '@/components/EditPhoto.vue'
+import EditArtistInfo from '@/components/portfolio/EditArtistInfo.vue'
 import EditImageCarousel from '@/components/portfolio/EditImageCarousel.vue';
+import EditVideoCarousel from '@/components/portfolio/EditVideoCarousel.vue';
+import GSecurity from '@/security/GSecurity.js'
+import GAxios from '@/utils/GAxios.js'
+import endpoints from '@/utils/endpoints.js'
 
 var portfolioDays = [];
 
 export default {
   name: 'EditPortfolio',
+
   components: {
+    EditSubmenu,
     EditImageCarousel,
+    EditPhoto,
+    EditArtistInfo,
+    EditVideoCarousel,
   },  
+
   props: {
     portfolioBanner: {
       type: String
@@ -59,6 +74,33 @@ export default {
       d_portfolioVideos: Array(),
       d_portfolioDays: Array(),
       datos: Array(),
+    }
+  },
+
+  methods: {
+    savePortfolio: function(){
+      let body = {
+        "id": 1,
+        "artisticName": "Cambios",
+        "biography": null,
+        "banner": "https://cdn-images-1.medium.com/max/1600/1*lTo8XHl8VKFh9mMG-tfcPg.jpeg",
+        "images": [],
+        "videos": [],
+        "main_photo": "https://cdn-images-1.medium.com/max/1600/1*lTo8XHl8VKFh9mMG-tfcPg.jpeg",
+
+      }
+
+      var authorizedGAxios = GAxios;
+      var GAxiosToken = this.gsecurity.getToken();
+      authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
+
+      authorizedGAxios.put(endpoints.portfolio + '1/', body)
+      .then(response => {
+        console.log(response.data);
+      }).catch(ex => {
+          console.log(ex);
+      });
+
     }
   },
   

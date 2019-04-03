@@ -37,7 +37,7 @@ export default {
     /* Initializes Owl Carousel */
     var containerWidth = $('#owl-container').width();
     containerWidth -= 20;
-    $('.owl-wrapper').css('width', windowWidth);
+    $('.owl-wrapper').css('width', containerWidth);
 
     /* Make it resizable */
     window.addEventListener('resize', function () { 

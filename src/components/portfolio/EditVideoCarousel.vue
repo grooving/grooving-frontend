@@ -4,7 +4,7 @@
       <div class="col-sm-12 col-md-8 horizontal-center">
         <div id="titleAndAdd" class="row">
           <div id="titleContainer" class="col-8 vertical-center">
-            <h3 class="title"><strong>Image Showcase</strong></h3>
+            <h3 class="title"><strong>Video Showcase</strong></h3>
           </div>
           <div id="buttonContainer" class="col-4 vertical-center">
             <button class="vertical-center addButton" @click="toggleImageURLInput">
@@ -33,9 +33,17 @@
 <script>
 import OwlImageCarousel from './OwlImageCarousel.vue';
 
+const ytThumbnail_01 = 'http://i3.ytimg.com/vi/';
+const ytThumbnail_02 = '/maxresdefault.jpg';
+const ytURI1 = 'https://www.youtube.com/watch?v=';
+const ytURI2 = 'http://www.youtube.com/watch?v=';
+const ytURI3 = 'https://m.youtube.com/watch?v=';
+const ytIDLength = 11;
+const videoPrueba ="replay";
+
 export default {
 
-  name: "EditImageCarousel",
+  name: "EditVideoCarousel",
 
   components:{
     OwlImageCarousel
@@ -64,11 +72,28 @@ export default {
     },
 
     add: function(){
+      
+      if(this.addImageURL){
+        // Get YT video ID in order to add its thumbnail
+        var ytVideoId, thumbnail;
 
-      if(this.addImageURL)
-      {
-        this.photosInfo.push({id: this.photosInfo.length, imageURL: this.addImageURL});
+        if(this.addImageURL.startsWith(ytURI1)){
+          ytVideoId = this.addImageURL.substring(ytURI1.length, ytURI1.length + ytIDLength)
+        }else if(this.addImageURL.startsWith(ytURI2)){
+          ytVideoId = this.addImageURL.substring(ytURI2.length, ytURI2.length + ytIDLength)
+        }else if(this.addImageURL.startsWith(ytURI3)){
+          ytVideoId = this.addImageURL.substring(ytURI3.length, ytURI3.length + ytIDLength)
+        }
+
+        //If it is not a yt video, we return a generic image
+        if(ytVideoId)
+          thumbnail = ytThumbnail_01 + ytVideoId + ytThumbnail_02;
+        else
+          thumbnail = "https://myaco.lemans.org/GED/content/4805C9CE-ECF4-4232-AEF4-3580948695DC.jpg";
+
+        this.photosInfo.push({id: this.photosInfo.length, imageURL: thumbnail});
         this.actualizador = this.actualizador + 1;
+
         this.addImageURL = '';
         this.toggleImageURLInput();
       }

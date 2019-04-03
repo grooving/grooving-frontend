@@ -3,7 +3,7 @@
     <ArtistInfo :artistBanner="d_portfolioBanner" :artistName="d_portfolioName" :artistGenres="portfolioGenres" :artistImage="d_portfolioIcon"  />
     <ImageCarousel class="imageCarousel" :photosInfo="d_portfolioImages" :key="updateImagesKey"/>
     <VideoCarousel class="videoCarousel" :videosInfo="d_portfolioVideos" :key="updateVideosKey"/>
-    <div v-if="d_portfolioDays.length != 0" id="datesContainer" class="datesContainer">
+    <div v-if="this.datos.length != 0" id="datesContainer" class="datesContainer">
     	
     	<div class="contentCalendar">
     		<h3 class="availableDatesTitle" >Available dates</h3>
@@ -92,37 +92,46 @@ export default {
 
           this.d_portfolioBanner = portfolio.banner;
           this.d_portfolioName = portfolio.artisticName;
-          this.d_portfolioIcon = portfolio.artist.photo;
-          var media = portfolio.portfoliomodule_set;
-          var genres = portfolio.artisticGender;
-
+          this.d_portfolioIcon = portfolio.main_photo;
+          var genres = portfolio.artisticGenders;
+          
           for(var i = 0; i < genres.length; i++){
             var genre = genres[i];
-            this.portfolioGenres.push(genre['name']);
+            this.portfolioGenres.push(genre);
+          }
+          
+         
+          var imageCounter = 0;
+          var pImages = portfolio.images;
+
+
+          for(var i = 0; i < pImages.length; i++){
+            var image = pImages[i];
+            this.d_portfolioImages.push({id:imageCounter, imageURL:image});
+
+          }
+          this.updateImagesKey += 1;
+
+          var videoCounter = 0;
+          var pVideos = portfolio.videos;
+
+
+          for(var i = 0; i < pVideos.length; i++){
+            var video = pVideos[i];
+            this.d_portfolioVideos.push({id:videoCounter, videoURL:video});
+            videoCounter = videoCounter+1;
           }
 
-          var imgCounter = 0;
-          var vidCounter = 0;
+          this.updateVideosKey += 1;
 
-          for(var i = 0; i < media.length; i++){
-
-            var elementMedia = media[i];
-            
-            if(elementMedia['type'] == 'VIDEO'){
-              this.d_portfolioVideos.push({id:vidCounter, videoURL:elementMedia['link']});
-              vidCounter += 1;
-            }
-            if(elementMedia['type'] == 'PHOTO'){
-              this.d_portfolioImages.push({id:imgCounter, imageURL:elementMedia['link']});
-              imgCounter += 1;
-            }
-          }
+          
 
           this.d_portfolioDays = portfolio.calendar_set[0]['days'];
           //alert(this.d_portfolioDays.length);
+          console.log(this.d_portfolioImages)
 
-          this.updateVideosKey += 1;
-          this.updateImagesKey += 1;
+          
+          
                 
     });
 
