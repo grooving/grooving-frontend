@@ -80,18 +80,19 @@ export default {
   methods: {
     savePortfolio: function(){
       let body = {
-        "id": 1,
-        "artisticName": "Cambios",
-        "biography": null,
-        "banner": "https://cdn-images-1.medium.com/max/1600/1*lTo8XHl8VKFh9mMG-tfcPg.jpeg",
-        "images": [],
-        "videos": [],
-        "main_photo": "https://cdn-images-1.medium.com/max/1600/1*lTo8XHl8VKFh9mMG-tfcPg.jpeg",
-
+        "id": 3,
+        "artisticName": "Hacked",
+        "biography": "Bio<3",
+        "banner": "https://zdnet4.cbsistatic.com/hub/i/r/2018/10/27/a91f96dc-04e5-46dc-a888-e267718604bd/thumbnail/770x578/a11ffcb8d9a6b3e27fe1813afaa2ad0e/iphone-xr-in-hand.jpg",
+        "images": ["https://zdnet4.cbsistatic.com/hub/i/r/2018/10/27/a91f96dc-04e5-46dc-a888-e267718604bd/thumbnail/770x578/a11ffcb8d9a6b3e27fe1813afaa2ad0e/iphone-xr-in-hand.jpg"],
+        "videos": ["https://www.youtube.com/watch?v=tdyQ-ebzFgk"],
+        "main_photo": "https://zdnet4.cbsistatic.com/hub/i/r/2018/10/27/a91f96dc-04e5-46dc-a888-e267718604bd/thumbnail/770x578/a11ffcb8d9a6b3e27fe1813afaa2ad0e/iphone-xr-in-hand.jpg",
+        "artisticGenders": ["Music", "DJ"]
       }
 
       var authorizedGAxios = GAxios;
       var GAxiosToken = this.gsecurity.getToken();
+      console.log('Este token ', GAxiosToken)
       authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
 
       authorizedGAxios.put(endpoints.portfolio + '1/', body)
