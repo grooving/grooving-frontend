@@ -22,6 +22,7 @@ import MakeOffer from './views/MakeOffer.vue'
 import CustomerInfo from './views/CustomerInfo.vue'
 import TopArtists from './views/TopArtists.vue'
 
+
 Vue.use(Router)
 
 export default new Router({

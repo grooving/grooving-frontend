@@ -25,6 +25,7 @@
 
 <script>
 import AddressData from '@/components/AddressData.vue'
+import {mapActions} from 'vuex';
 
 export default {
   name: 'AddressInput',
@@ -79,9 +80,10 @@ export default {
             return res;
         },
 
-        addressSelected() {
-            this.$emit('addressSelected', arguments[0], arguments[1], arguments[2])
-        }
+        addressSelected(address) {
+            this.setAddress(address);
+        },
+        ...mapActions(['setAddress']),
     }
 }
 </script>

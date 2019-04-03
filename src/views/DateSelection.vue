@@ -28,6 +28,7 @@ import Calendar from '@/components/Calendar.vue';
 import GAxios from '@/utils/GAxios.js';
 import GSecurity from '@/security/GSecurity.js';
 import endpoints from '@/utils/endpoints.js';
+import {mapActions} from 'vuex';
 
 export default {
   name: 'DateSelection',
@@ -92,6 +93,7 @@ export default {
     },
 
     methods: {
+        ...mapActions(['setDate']),
         genresToString() {
 
             var res = "";
@@ -109,6 +111,7 @@ export default {
         },
 
         dateSelected() {
+            this.setDate(this.fecha);
             this.$emit('dateSelected', this.fecha);
         },
 

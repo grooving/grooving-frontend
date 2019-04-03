@@ -17,7 +17,7 @@
         </div>
         <div class="sliderButton">
           <div class="slider"><DoubleSlider/></div>
-          <div class="continueButtonDiv"><div @click="timeSelected()" class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div @click="timeSelected()"></div>
+          <div class="continueButtonDiv"><div @ups="updateTime(time, duration)" @click="timeSelected()" class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div @click="timeSelected()"></div>
         </div>
     </div>
 </div>
@@ -25,11 +25,20 @@
 
 <script>
 import DoubleSlider from '@/components/DoubleSlider.vue'
+import {mapActions} from 'vuex';
 
 export default {
   name: 'TimeSelection',
   components: {
     DoubleSlider
+  },
+  data () {
+      return {
+          time: {
+            start: undefined,
+            duration: undefined,    
+        }, 
+      }
   },
   props: {
         artistURI: {
@@ -57,8 +66,12 @@ export default {
           default: '$63.00/h'
         }
     },
-
+    
     methods: {
+        ...mapActions(['setTime']),
+        addressSelected(address) {
+            this.setAddress(address);
+        },
         genresToString() {
 
             var res = "";
@@ -74,10 +87,15 @@ export default {
 
             return res;
         },
-
+        updateTime() {
+            console.log(time)
+            this.time.start = time;
+            this.time.duration = duration;
+        },
         timeSelected() {
+            this.setTime( this.time);
             this.$emit('timeSelected');
-        }
+        },
     }
 }
 </script>

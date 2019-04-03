@@ -10,7 +10,7 @@
     <div class="LeftMenu">
       <LeftMenu />
     </div>
-    <router-view id='test' class="test"/>
+    <router-view/>
     </div>
     <footer><Footer/></footer>
   </div>

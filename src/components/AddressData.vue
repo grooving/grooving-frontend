@@ -3,17 +3,17 @@
     <form>
         <div class="form-row">
             <div class="form-group col-12">
-                <input :value="location" type="text" class="form-control" placeholder="Location">
+                <input v-model="address.location" type="text" class="form-control" placeholder="Location">
             </div>  
         </div>
         <div class="form-row">
             <div class="form-group col-12">
-                <input :value="zipcode" type="text" class="form-control" placeholder="Zip code">
+                <input v-model="address.zipcode" type="text" class="form-control" placeholder="Zip code">
             </div>  
         </div>
         <div class="form-row">
             <div class="form-group col-12">
-                <input :value="street" type="text" class="form-control" placeholder="Street">
+                <input v-model="address.street" type="text" class="form-control" placeholder="Street">
             </div>  
         </div>
         <div class="continueButtonDiv"><div @click="addressDataSelected()" 
@@ -24,33 +24,24 @@
 </template>
 
 <script>
+
 export default {
     name: "AddressData",
-    props: {
-        location: {
-            type: String,
-            default: 'Sevilla'
-        },
-        zipcode: {
-            type: String,
-            default: '41802',
-        },
-        street: {
-            type: String,
-            default: 'C/ Reina Mercedes, 10'
-        },
-        continueURI: {
-            type: String,
-            default: 'eventInput'
-        } 
-    },
     components: {
     },
-
+    data() {
+        return {
+            address: {
+                location: undefined,
+                zipcode: undefined,
+                street: undefined,
+            }
+        }
+    },
     methods: {
         addressDataSelected(){
-            this.$emit('addressDataSelected', this.location, this.zipcode, this.street);
-        }
+            this.$emit('addressDataSelected', this.address);
+        },
     }
 }
 </script>
