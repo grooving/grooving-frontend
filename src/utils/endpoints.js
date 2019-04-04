@@ -12,5 +12,6 @@ export default{
     portfolio: '/portfolio/',
     registerCustomer: '/signupCustomer/',
     registerArtist: '/signupArtist/',
-    
+    customer: '/customer/',
+    artist: '/artist/',
 }
