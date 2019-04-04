@@ -63,7 +63,7 @@ export default new Router({
       component: ReceivePayment
     },
     {
-      path: '/paymentConfirmation',
+      path: '/paymentConfirmation/:offerId',
       name: 'paymentConfirmation',
       component: PaymentConfirmation
     },

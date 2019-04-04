@@ -9,6 +9,7 @@ export default{
     offer: '/offer/',
     customerPersonalInformation: '/customer/personalInformation/',
     artistPersonalInformation: '/artist/personalInformation/',
+    paymentCode:'/paymentCode/',
     portfolio: '/portfolio/'
     
 }
