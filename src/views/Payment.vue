@@ -41,11 +41,12 @@ export default {
   },
   data () {
       return {
+          gsecurity: GSecurity,
           creditCard: {
               number, name, month, year, cvv, 
           },
           date: {
-              now, startHour, duration
+              now, startHour, duration,
           },
           offer: {
               artistId, hiringType, location, zipcode, street, description,
@@ -102,7 +103,12 @@ export default {
 
         gpay(creditCard) {
 
-            this.creditCard = creditCard,
+            this.creditCard = Array();
+            this.creditCard.number = creditCard[0],
+            this.creditCard.name = creditCard[1],
+            this.creditCard.month = creditCard[2],
+            this.creditCard.year = creditCard[3],
+            this.creditCard.cvv = creditCard[4],
 
             this.offer.artistId = this.$store.getters.offer.artistId,
             this.offer.hiringType = this.$store.getters.offer.hiring,
@@ -124,10 +130,16 @@ export default {
 
             let body = {
                 'description': this.offer.description,
-                'date': this.date.date + 'T' + this.date.startHour,
+                'date': this.date.now + 'T' + this.date.startHour + ':00',
                 'hours': this.date.duration,
                 'paymentPackage_id': 1,
                 'eventLocation_id' : 1,
+                'transaction': {
+                    'holder': this.creditCard.name,
+                    'number': this.creditCard.number,
+                    'expirationDate': this.creditCard.month + this.creditCard.year,
+                    'cvv': this.creditCard.cvv,
+                }
             }
             console.log(body)
 
@@ -141,7 +153,18 @@ export default {
             });
 
         },
-    }
+    },
+    created() {
+        // Retreive store credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        if(!this.$gsecurity.isAuthenticated()) {
+        console.log('Error')
+        location.replace("/#/*")
+        
+        }
+    },
 }
 </script>
 

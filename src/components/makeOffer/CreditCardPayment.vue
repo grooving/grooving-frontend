@@ -26,7 +26,7 @@
                 <input v-model="month" min="1" max="12" type="number" class="form-control" placeholder="Month">
             </div>
             <div class="form-group col entrada">
-                <input v-model="year" min="2019" type="number" class="form-control" placeholder="Year">
+                <input v-model="year" min="19" maxlength="2" type="number" class="form-control" placeholder="Year">
             </div>
             <div class="form-group col entrada">
                 <input v-model="cvv" maxlength="3" type="text" class="form-control" placeholder="CVV">
@@ -66,11 +66,11 @@ export default {
         },
         month: {
             type: String,
-            default: '10'
+            default: '01'
         },
         year: {
             type: String,
-            default: '2020'
+            default: '20'
         },
         cvv: {
             type: String,

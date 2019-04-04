@@ -14,13 +14,10 @@ import EditPhoto from '@/components/EditPhoto.vue'
 import EditArtistInfo from '@/components/portfolio/EditArtistInfo.vue'
 import EditImageCarousel from '@/components/portfolio/EditImageCarousel.vue';
 import EditVideoCarousel from '@/components/portfolio/EditVideoCarousel.vue';
-<<<<<<< HEAD
 import EditAvailableDates from '@/components/portfolio/EditAvailableDates.vue';
-=======
 import GSecurity from '@/security/GSecurity.js'
 import GAxios from '@/utils/GAxios.js'
 import endpoints from '@/utils/endpoints.js'
->>>>>>> f76d263be414eb224bea83e6ab2a3c0822433fec
 
 var portfolioDays = [];
 
