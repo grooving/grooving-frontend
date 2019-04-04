@@ -35,7 +35,7 @@
                         <label class="custom-file-label" for="customFile">Upload a Photo</label>
                     </div> -->
                     <b-form-group>
-                        <b-form-input type="url" v-model="input.photo" placeholder="Profile Photo URL"></b-form-input>
+                        <b-form-input type="url" v-model="input.photo" placeholder="Profile Photo URL" maxlength="255"></b-form-input>
                     </b-form-group>
                     <b-form-group>
                         <b-form-input v-model="input.firstName" placeholder="First Name" required></b-form-input>
@@ -117,7 +117,7 @@
                     "username": this.input.username,
                     "email": this.input.email,
                     "photo": this.input.photo,
-                    "phoneNumber": this.input.phoneNumber,
+                    "phone": this.input.phoneNumber,
                 }).then(response => {
                     console.log(response);
                     this.$router.push({name: "registerConfirmation"});

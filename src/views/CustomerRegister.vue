@@ -113,7 +113,7 @@
                     "username": this.input.username,
                     "email": this.input.email,
                     "photo": this.input.photo,
-                    "phoneNumber": this.input.phoneNumber,
+                    "phone": this.input.phoneNumber,
                 }).then(response => {
                     console.log(response);
                     this.$router.push({name: "registerConfirmation"});
