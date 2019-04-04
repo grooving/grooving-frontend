@@ -3,37 +3,36 @@
     <form>
         <div class="form-row">
             <div class="form-group col-8">
-                <input maxlength="16" type="text" class="form-control" placeholder="Card number" :value="creditCardNumber">
+                <input maxlength="16" type="text" class="form-control" placeholder="Card number" v-model="number">
             </div>
             <div class="form-group col-4">
                 <select id="inputState" class="form-control">
-                    <option v-if="creditCardBrand === 'visa'" selected>VISA</option>
+                    <option v-if="creditCardBrand === 'VISA'" selected>VISA</option>
                     <option v-else>VISA</option>
-                    <option v-if="creditCardBrand === 'mastercard'" selected>Master Card</option>
+                    <option v-if="creditCardBrand === 'MASTERCARD'" selected>Master Card</option>
                     <option v-else>Master Card</option>
                 </select>
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-12">
-                <input :value="name" type="text" class="form-control" placeholder="Name">
+                <input v-model="name" type="text" class="form-control" placeholder="Name">
             </div>
             
         </div>
 
         <div class="form-row">
             <div class="form-group col entrada">
-                <input :value="month" min="1" max="12" type="number" class="form-control" placeholder="Month">
+                <input v-model="month" min="1" max="12" type="number" class="form-control" placeholder="Month">
             </div>
             <div class="form-group col entrada">
-                <input :value="year" min="2019" type="number" class="form-control" placeholder="Year">
+                <input v-model="year" min="2019" type="number" class="form-control" placeholder="Year">
             </div>
             <div class="form-group col entrada">
-                <input :value="cvv" maxlength="3" type="text" class="form-control" placeholder="CVV">
+                <input v-model="cvv" maxlength="3" type="text" class="form-control" placeholder="CVV">
             </div>
         </div>
-        <router-link v-bind:to="'/sentOffer/'" 
-            class="btn btn-primary continueButton"><span class="continueText">SUBMIT</span></router-link>
+        <div class="btn btn-primary continueButton" @click="finishPayment"><span class="continueText">SUBMIT</span></div>
 
     </form>
     </div>
@@ -42,6 +41,16 @@
 <script>
 export default {
     name: "CreditCardPayment",
+    data (){
+        return {
+            number: undefined,
+            make: undefined,
+            month,
+            year,
+            cvv,
+            name,
+        }
+    },
     props: {
         creditCardNumber: {
             type: String,
@@ -74,6 +83,11 @@ export default {
     },
     components: {
     },
+    methods: {
+        finishPayment() {
+            this.$emit('finishPayment', [this.number, this.name, this.month, this.year, this.cvv ])
+        }
+    }
 }
 </script>
 

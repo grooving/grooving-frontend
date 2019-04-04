@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="paymentDiv">
-          <div class="creditCardPayment"><CreditCardPayment/></div>
+          <div class="creditCardPayment"><CreditCardPayment @finishPayment="gpay"/></div>
         </div>
     </div>
 </div>
@@ -28,11 +28,29 @@
 
 <script>
 import CreditCardPayment from '@/components/makeOffer/CreditCardPayment.vue'
+import GAxios from '@/utils/GAxios.js';
+import endpoints from '@/utils/endpoints.js';
+import GSecurity from '@/security/GSecurity.js';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'payment',
+  computed: mapGetters(['offerAddress', 'offerDate', 'offer']),
   components: {
     CreditCardPayment
+  },
+  data () {
+      return {
+          creditCard: {
+              number, name, month, year, cvv, 
+          },
+          date: {
+              date, startHour, duration
+          },
+          offer: {
+              artistId, hiringType, location, zipcode, street, description,
+          },
+      }
   },
   props: {
         artistURI: {
@@ -80,7 +98,46 @@ export default {
             }
 
             return res;
-        }
+        },
+        gpay(creditCard) {
+            console.log(creditCard)
+            this.creditCard = creditCard,
+
+            this.offer.artistId = offer.artistId,
+            console.log('hi')
+            this.offer.hiringType = offer.hiring,
+            this.offer.location = offerAddress.location,
+            this.offer.zipcode = offerAddress.zipcode,
+            this.offer.street = offerAddress.street,
+            this.offer.description = offerAddress.description,
+
+            this.date.startHour = offerDate.hour,
+            this.date.date = offerDate.date,
+            this.date.duration = offerDate.duration;
+
+            var authorizedGAxios = GAxios;
+            var GAxiosToken = this.gsecurity.getToken();
+            authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
+
+            let body = {
+                'description': this.offer.description,
+                'date': this.date.date + 'T' + this.date.startHour,
+                'hours': this.date.duration,
+                'paymentPackage_id': 1,
+                'eventLocation_id' : 1,
+            }
+            console.log(body)
+
+            authorizedGAxios.post('/offer/', body)
+            .then(response => {
+            console.log(response.data);
+            var offers = response.data.results;
+
+            }).catch(ex => {
+                console.log(ex);
+            });
+
+        },
     }
 }
 </script>
