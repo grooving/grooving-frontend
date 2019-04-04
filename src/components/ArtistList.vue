@@ -14,7 +14,7 @@ import ArtistCard from '@/components/ArtistCard.vue';
 import GAxios from '@/utils/GAxios.js';
 
 const showPortfolioBaseURI = '/showPortfolio/';
-const hiringBaseURI = '/makeOffer/';
+const hiringBaseURI = '/hiringType/';
 
 export default {
   name: 'ArtistsList',

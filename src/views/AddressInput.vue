@@ -5,7 +5,7 @@
     <div class="everything">
         
          <div class="tarjeta">
-            <router-link v-bind:to="artistURI"><img v-bind:src="artistImage" class="card-img-top artistImage" alt="Artist's Image"></router-link>
+            <router-link id="1" v-bind:to="artistURI + this.$route.params['artistId']"><img v-bind:src="artistImage" class="card-img-top artistImage" alt="Artist's Image"></router-link>
             <div class="card-body cuerpoTarjeta">
                 <div class="leftContent">
                     <h5 class="card-title artistName">{{ artistName }}</h5>
@@ -17,14 +17,14 @@
             </div>
         </div>
         <div class="addDiv">
-          <div class="addressData"><AddressData @addressDataSelected="addressSelected" /></div>
+          <div class="addressData"><AddressData @addressSelected="addressSelected" /></div>
         </div>
     </div>
     </div>
 </template>
 
 <script>
-import AddressData from '@/components/AddressData.vue'
+import AddressData from '@/components/makeOffer/AddressData.vue'
 import {mapActions} from 'vuex';
 
 export default {
@@ -35,7 +35,7 @@ export default {
   props: {
         artistURI: {
             type: String,
-            default: '#'
+            default: '/showPortfolio/'
         },
         artistImage: {
             type: String,
@@ -64,6 +64,7 @@ export default {
     },
 
     methods: {
+        ...mapActions(['setAddress']),
         genresToString() {
 
             var res = "";
@@ -76,14 +77,12 @@ export default {
                     res += this.artistGenres[i];
                 }
             }
-
             return res;
         },
-
         addressSelected(address) {
+            console.log(address)
             this.setAddress(address);
         },
-        ...mapActions(['setAddress']),
     }
 }
 </script>

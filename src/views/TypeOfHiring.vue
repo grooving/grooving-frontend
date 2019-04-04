@@ -15,17 +15,18 @@
                 </div>
             </div>
         </div>
-        <div class="hiringType"><HiringType/></div>
+        <div class="hiringType"><HiringType @hiring="type"/></div>
 
     </div>
 </div>
 </template>
 
 <script>
-import HiringType from '@/components/HiringType.vue'
+import HiringType from '@/components/makeOffer/HiringType.vue'
+import {mapActions} from 'vuex';
 
 export default {
-  name: 'hiringType',
+  name: 'TypeOfHiring',
   components: {
     HiringType
   },
@@ -54,6 +55,8 @@ export default {
     },
 
     methods: {
+        ...mapActions(['setArtistId']),
+        ...mapActions(['setHiring']),
         genresToString() {
 
             var res = "";
@@ -68,6 +71,10 @@ export default {
             }
 
             return res;
+        },
+        type(type, artistId) {
+            this.setArtistId(artistId);
+            this.setHiring(type);
         }
     }
 }

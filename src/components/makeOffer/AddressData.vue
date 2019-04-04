@@ -3,21 +3,22 @@
     <form>
         <div class="form-row">
             <div class="form-group col-12">
-                <input v-model="address.location" type="text" class="form-control" placeholder="Location">
+                <input v-model="location" type="text" class="form-control" placeholder="Location">
             </div>  
         </div>
         <div class="form-row">
             <div class="form-group col-12">
-                <input v-model="address.zipcode" type="text" class="form-control" placeholder="Zip code">
+                <input v-model="zipcode" type="text" class="form-control" placeholder="Zip code">
             </div>  
         </div>
         <div class="form-row">
             <div class="form-group col-12">
-                <input v-model="address.street" type="text" class="form-control" placeholder="Street">
+                <input v-model="street" type="text" class="form-control" placeholder="Street">
             </div>  
         </div>
-        <div class="continueButtonDiv"><div @click="addressDataSelected()" 
-            class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div></div>
+        <router-link v-bind:to="nextStep" class="continueButtonDiv" >
+            <div class="btn btn-primary continueButton" @click="addressDataSelected()">
+                <span class="continueText">CONTINUE</span></div></router-link>
 
     </form>
     </div>
@@ -29,18 +30,21 @@ export default {
     name: "AddressData",
     components: {
     },
+    
     data() {
         return {
-            address: {
-                location: undefined,
-                zipcode: undefined,
-                street: undefined,
-            }
+            location: undefined,
+            zipcode: undefined,
+            street: undefined,
+            nextStep: undefined,
         }
+    },
+    mounted() {
+        this.nextStep = '/eventInput/' + this.$route.params['artistId']
     },
     methods: {
         addressDataSelected(){
-            this.$emit('addressDataSelected', this.address);
+            this.$emit('addressSelected', [this.location, this.zipcode, this.street]);
         },
     }
 }

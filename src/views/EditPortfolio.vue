@@ -1,5 +1,6 @@
 <template>
   <div>
+    <EditSubmenu @saveClicked="savePortfolio()" />
     <EditArtistInfo />
     <EditImageCarousel />
     <EditVideoCarousel />
@@ -8,23 +9,33 @@
 </template>
 
 <script>
+import EditSubmenu from '@/components/menus/EditSubmenu.vue'
 import EditPhoto from '@/components/EditPhoto.vue'
 import EditArtistInfo from '@/components/portfolio/EditArtistInfo.vue'
 import EditImageCarousel from '@/components/portfolio/EditImageCarousel.vue';
 import EditVideoCarousel from '@/components/portfolio/EditVideoCarousel.vue';
+<<<<<<< HEAD
 import EditAvailableDates from '@/components/portfolio/EditAvailableDates.vue';
+=======
+import GSecurity from '@/security/GSecurity.js'
+import GAxios from '@/utils/GAxios.js'
+import endpoints from '@/utils/endpoints.js'
+>>>>>>> f76d263be414eb224bea83e6ab2a3c0822433fec
 
 var portfolioDays = [];
 
 export default {
   name: 'EditPortfolio',
+
   components: {
+    EditSubmenu,
     EditImageCarousel,
     EditPhoto,
     EditArtistInfo,
     EditVideoCarousel,
     EditAvailableDates,
   },  
+
   props: {
     portfolioBanner: {
       type: String
@@ -69,6 +80,34 @@ export default {
       d_portfolioVideos: Array(),
       d_portfolioDays: Array(),
       datos: Array(),
+    }
+  },
+
+  methods: {
+    savePortfolio: function(){
+      let body = {
+        "id": 3,
+        "artisticName": "Hacked",
+        "biography": "Bio<3",
+        "banner": "https://zdnet4.cbsistatic.com/hub/i/r/2018/10/27/a91f96dc-04e5-46dc-a888-e267718604bd/thumbnail/770x578/a11ffcb8d9a6b3e27fe1813afaa2ad0e/iphone-xr-in-hand.jpg",
+        "images": ["https://zdnet4.cbsistatic.com/hub/i/r/2018/10/27/a91f96dc-04e5-46dc-a888-e267718604bd/thumbnail/770x578/a11ffcb8d9a6b3e27fe1813afaa2ad0e/iphone-xr-in-hand.jpg"],
+        "videos": ["https://www.youtube.com/watch?v=tdyQ-ebzFgk"],
+        "main_photo": "https://zdnet4.cbsistatic.com/hub/i/r/2018/10/27/a91f96dc-04e5-46dc-a888-e267718604bd/thumbnail/770x578/a11ffcb8d9a6b3e27fe1813afaa2ad0e/iphone-xr-in-hand.jpg",
+        "artisticGenders": ["Music", "DJ"]
+      }
+
+      var authorizedGAxios = GAxios;
+      var GAxiosToken = this.gsecurity.getToken();
+      console.log('Este token ', GAxiosToken)
+      authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
+
+      authorizedGAxios.put(endpoints.portfolio + '1/', body)
+      .then(response => {
+        console.log(response.data);
+      }).catch(ex => {
+          console.log(ex);
+      });
+
     }
   },
   

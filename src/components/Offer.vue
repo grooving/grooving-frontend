@@ -4,7 +4,7 @@
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
             <div class="container-fluid">
                 <div class="container">
-                    <div class="right-div right-text" style="width: 100px; text-align: left; vertical-align: top;margin-bottom: 20px;">
+                    <div class="right-div right-text" style="width: 100px; text-align: left; vertical-align: top;">
                         <div class="priceCard"><h1>{{price}}€</h1><br>
                         </div>
                         <div  style="padding-top: 20px;">
