@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="paymentDiv">
-          <div class="creditCardPayment"><CreditCardPayment @finishPayment="gpay"/></div>
+          <div class="creditCardPayment"><CreditCardPayment @finishPayment="gpay" /></div>
         </div>
     </div>
 </div>
@@ -45,7 +45,7 @@ export default {
               number, name, month, year, cvv, 
           },
           date: {
-              date, startHour, duration
+              now, startHour, duration
           },
           offer: {
               artistId, hiringType, location, zipcode, street, description,
@@ -99,21 +99,24 @@ export default {
 
             return res;
         },
+
         gpay(creditCard) {
-            console.log(creditCard)
+
             this.creditCard = creditCard,
 
-            this.offer.artistId = offer.artistId,
-            console.log('hi')
-            this.offer.hiringType = offer.hiring,
-            this.offer.location = offerAddress.location,
-            this.offer.zipcode = offerAddress.zipcode,
-            this.offer.street = offerAddress.street,
-            this.offer.description = offerAddress.description,
+            this.offer.artistId = this.$store.getters.offer.artistId,
+            this.offer.hiringType = this.$store.getters.offer.hiring,
+            this.offer.location = this.$store.getters.offerAddress.location,
+            this.offer.zipcode = this.$store.getters.offerAddress.zipcode,
+            this.offer.street = this.$store.getters.offerAddress.street,
+            this.offer.description = this.$store.getters.offerAddress.description,
 
-            this.date.startHour = offerDate.hour,
-            this.date.date = offerDate.date,
-            this.date.duration = offerDate.duration;
+            this.date = Array();
+            this.date.startHour = this.$store.getters.offerDate.hour,
+            this.date.now = this.$store.getters.offerDate.date,
+            this.date.duration = this.$store.getters.offerDate.duration;
+
+            console.log(this.creditCard)
 
             var authorizedGAxios = GAxios;
             var GAxiosToken = this.gsecurity.getToken();
