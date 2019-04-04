@@ -22,9 +22,18 @@
 
 <script>
 
+    import GAxios from '../utils/GAxios.js'
+    import GSecurity from '@/security/GSecurity.js';
+    import endpoints from '@/utils/endpoints.js';
+
     export default {
         name: 'PaymentConfirmation',
-        
+        data: function() {
+            return {
+                gsecurity: GSecurity,
+                gaxios: GAxios,
+            }
+        },
         props: {
             customerURI: {
                 type: String,
@@ -47,6 +56,62 @@
                 default: '$156.00'
             },
         },
+        mounted: function(){
+    
+            var authorizedGAxios = GAxios;
+            authorizedGAxios.get(endpoints.portfolio+this.$route.params['artistId']+"/")
+            .then(response => {
+                    console.log(response)
+                var portfolio = response.data;
+
+                this.d_portfolioBanner = portfolio.banner;
+                this.d_portfolioName = portfolio.artisticName;
+                this.d_portfolioIcon = portfolio.main_photo;
+                this.d_portfolioBiography = portfolio.biography;
+                var genres = portfolio.artisticGenders;
+                
+                for(var i = 0; i < genres.length; i++){
+                    var genre = genres[i];
+                    this.portfolioGenres.push(genre);
+                }
+                
+                
+                var imageCounter = 0;
+                var pImages = portfolio.images;
+
+
+                for(var i = 0; i < pImages.length; i++){
+                    var image = pImages[i];
+                    this.d_portfolioImages.push({id:imageCounter, imageURL:image});
+
+                }
+                this.updateImagesKey += 1;
+
+                var videoCounter = 0;
+                var pVideos = portfolio.videos;
+
+
+                for(var i = 0; i < pVideos.length; i++){
+                    var video = pVideos[i];
+                    this.d_portfolioVideos.push({id:videoCounter, videoURL:video});
+                    videoCounter = videoCounter+1;
+                }
+
+                this.updateVideosKey += 1;
+
+                
+
+                this.d_portfolioDays = portfolio.calendar_set[0]['days'];
+                //alert(this.d_portfolioDays.length);
+                console.log(this.d_portfolioImages)
+
+          
+          
+                
+    });
+
+
+    }
     }   
 
 </script>

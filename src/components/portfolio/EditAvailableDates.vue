@@ -50,9 +50,9 @@ export default {
         availableDates: {
             type: Array,
             default: [
-                new Date(2019, 2, 29),
-                new Date(2019, 2, 30),
-                new Date(2019, 2, 28)
+                new Date(2019, 3, 29),
+                new Date(2019, 3, 30),
+                new Date(2019, 3, 28)
             ],
         }
     },
@@ -116,8 +116,24 @@ export default {
 
 <style>
 
+.container{
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
 .acceptButton{
-    background-color:transparent;
+    background: -webkit-linear-gradient(left, #00fb82, #187fe6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    border: none;
+}
+
+.acceptButton:hover{
+    background: -webkit-linear-gradient(left, #14Ca9f, #1648d0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
     border: none;
 }
 

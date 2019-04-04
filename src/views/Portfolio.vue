@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ArtistInfo :artistBanner="d_portfolioBanner" :artistName="d_portfolioName" :artistGenres="portfolioGenres" :artistImage="d_portfolioIcon"  />
+    <ArtistInfo :artistBanner="d_portfolioBanner" :artistName="d_portfolioName" :artistGenres="portfolioGenres" :artistImage="d_portfolioIcon" :artistDescription="d_portfolioBiography" />
     <ImageCarousel class="imageCarousel" :photosInfo="d_portfolioImages" :key="updateImagesKey"/>
     <VideoCarousel class="videoCarousel" :videosInfo="d_portfolioVideos" :key="updateVideosKey"/>
     <div v-if="this.datos.length != 0" id="datesContainer" class="datesContainer">
@@ -93,6 +93,7 @@ export default {
           this.d_portfolioBanner = portfolio.banner;
           this.d_portfolioName = portfolio.artisticName;
           this.d_portfolioIcon = portfolio.main_photo;
+          this.d_portfolioBiography = portfolio.biography;
           var genres = portfolio.artisticGenders;
           
           for(var i = 0; i < genres.length; i++){
@@ -162,13 +163,15 @@ export default {
 
 <style scoped>
 
+
   .imageCarousel{
     padding-top: 20px;
+    padding-bottom: 50px;
   }
 
   .videoCarousel{
     padding-top: 30px;
-    padding-bottom: 20px;
+    padding-bottom: 50px;
   }
 
   .datesContainer{

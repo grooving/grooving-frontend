@@ -3,6 +3,7 @@
     <EditArtistInfo />
     <EditImageCarousel />
     <EditVideoCarousel />
+    <EditAvailableDates />
   </div>
 </template>
 
@@ -11,6 +12,7 @@ import EditPhoto from '@/components/EditPhoto.vue'
 import EditArtistInfo from '@/components/portfolio/EditArtistInfo.vue'
 import EditImageCarousel from '@/components/portfolio/EditImageCarousel.vue';
 import EditVideoCarousel from '@/components/portfolio/EditVideoCarousel.vue';
+import EditAvailableDates from '@/components/portfolio/EditAvailableDates.vue';
 
 var portfolioDays = [];
 
@@ -21,6 +23,7 @@ export default {
     EditPhoto,
     EditArtistInfo,
     EditVideoCarousel,
+    EditAvailableDates,
   },  
   props: {
     portfolioBanner: {
