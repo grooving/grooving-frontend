@@ -32,6 +32,7 @@ import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
 import { mapGetters } from 'vuex';
+import axios from 'axios';
 
 export default {
   name: 'payment',
@@ -128,28 +129,47 @@ export default {
             var GAxiosToken = this.gsecurity.getToken();
             authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
 
-            let body = {
+            let body_eventLocation = {
+                "name": this.offer.location,
+                "equipment": null,
+                "description": this.offer.description,
+                "address": this.offer.location,
+                "zone_id": 4
+            }
+
+            let body_offer = {
                 'description': this.offer.description,
                 'date': this.date.now + 'T' + this.date.startHour + ':00',
                 'hours': this.date.duration,
-                'paymentPackage_id': 1,
+                'paymentPackage_id': 2,
                 'eventLocation_id' : 1,
                 'transaction': {
                     'holder': this.creditCard.name,
                     'number': this.creditCard.number,
                     'expirationDate': this.creditCard.month + this.creditCard.year,
                     'cvv': this.creditCard.cvv,
-                }
+                },
             }
-            console.log(body)
 
-            authorizedGAxios.post('/offer/', body)
-            .then(response => {
-            console.log(response.data);
-            var offers = response.data.results;
+            console.log(body_offer)
 
-            }).catch(ex => {
-                console.log(ex);
+            authorizedGAxios.post('/eventlocation/', body_eventLocation)
+            .then((res) => {
+                console.log("Event Location Created...")
+                console.log(res)
+                
+                // Reference the brand-new eventLocation
+                body_offer['eventLocation_id'] = res.data.id
+
+                return authorizedGAxios.post('/offer/', body_offer);
+            })
+            .then((res) => {
+                console.log("Offer Created...")
+                console.log(res)
+            })
+            .catch((err) => {
+                console.log("Error while processing one of the requests")
+                console.log(err)
             });
 
         },

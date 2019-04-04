@@ -35,8 +35,8 @@ export default {
   data () {
       return {
           time: {
-            start: undefined,
-            duration: undefined,    
+            start: '00:00',
+            duration: 23.5,    
         },
         nextStep: undefined, 
       }
