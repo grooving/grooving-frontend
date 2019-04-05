@@ -1,0 +1,162 @@
+<template>
+<div>
+    
+    <div class="everything">
+        <div class="tarjeta">
+            <router-link v-bind:to="artistURI"><img v-bind:src="artistImage" class="card-img-top artistImage" alt="Artist's Image"></router-link>
+            <div class="card-body cuerpoTarjeta">
+                <div class="leftContent">
+                    <h5 class="card-title artistName">{{ artistName }}</h5>
+                    <span class="card-text artistGenres">{{ artistGenres }}</span>
+                </div>
+                <div v-if="price!=null" class="rightContent">
+                    <p class="price">{{ price }}€/h</p>
+                </div>
+                <div v-if="totalPrice!=null" class="rightContent">
+                    <p class="price">Total: <br>{{ totalPrice }}€</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</template>
+
+<script>
+import DoubleSlider from '@/components/makeOffer/DoubleSlider.vue'
+import {mapActions} from 'vuex';
+
+export default {
+  name: 'TimeSelection',
+  components: {
+    DoubleSlider
+  },
+  data () {
+      return {
+          time: {
+            start: '00:00',
+            duration: 23.5,    
+        },
+        nextStep: undefined, 
+      }
+  },
+  props: {
+        artistId: {
+            type: Number,
+            default: 1
+        },
+        artistURI: {
+            type: String,
+            default: '/showPortfolio/'
+        },
+        artistImage: {
+            type: String,
+            default: 'http://www.tiumag.com/wp-content/uploads/rosalia-2018-2-705x564.jpg',
+        },
+        artistName: {
+            type: String,
+            default: 'ROSALÍA'
+        },
+        artistGenres: {
+            type: Array,
+            default: 'Pop, Flamenco'
+        },
+        price: {
+          type: String,
+          default: null
+        },
+        totalPrice: {
+          type: Number,
+          default: null
+        },
+    },
+    methods: {
+
+    },
+    beforeMount() {
+        this.artistURI += this.artistId + '/';
+    }
+}
+</script>
+
+<style>
+
+
+</style>
+
+<style scoped>
+    * {
+        font-family: "Archivo"
+    }
+    .card-img-top {
+      border-top-left-radius: 0px;
+      border-top-right-radius: 0px;
+    }
+
+    .tarjeta {
+        width: 100%;
+        box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, .2);
+        margin-bottom: 10px;
+    }
+
+    .artistImage {
+        object-fit: cover;
+        max-height: 200px;
+    }
+
+    .cuerpoTarjeta {
+        display: flex;
+        align-items: center;
+    }
+
+    .leftContent {
+        text-align: left;
+        overflow: auto;
+    }
+
+    .artistName {
+        font-size: 32px;
+        margin-bottom: 0px;
+        padding-bottom: 0px;
+        word-wrap: break-word;
+    }
+
+    .artistGenres {
+        color: #187FE6;
+        font-size: 18px;
+        word-wrap: break-word;
+    }
+
+    .rightContent {
+        padding-left: 20px;
+        margin-left: auto;
+        margin-right: 0px;
+    }
+
+    .price {
+        font-size: 35px;
+        margin-bottom: 0px;
+        color: #187FE6;
+    }
+
+    .artistImage {
+        border-radius: 0px;
+    }
+
+    @media (min-width:768px)  {
+        .tarjeta {
+            min-width: 335px;
+            width: 25%;
+            border-radius: 10px;
+            box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, .2);
+            margin-right: 10px;
+        }
+
+        .artistImage {
+            border-radius: 10px 10px 0px 0px;
+        }
+        
+        
+    }
+
+</style>

@@ -7,7 +7,7 @@
             <h3 class="title"><strong>Image Showcase</strong></h3>
           </div>
           <div id="buttonContainer" class="col-4 vertical-center">
-            <button class="vertical-center addButton" @click="toggleImageURLInput">
+            <button type="button" class="vertical-center addButton" @click="toggleImageURLInput">
               <i v-if="showAddURL" class="material-icons arrowIcon addURLButton">cancel</i>
               <i v-else class="material-icons arrowIcon addURLButton">add_circle</i>
             </button>
@@ -23,7 +23,7 @@
     <div id="bottomContainer" class="row">
         <div id="owl-container" class="col-sm-12 col-md-8 horizontal-center">
           <div class="owl-wrapper">
-            <OwlImageCarousel :photosInfo="photosInfo" :key="actualizador" @deleteImage="deleteCarouselImage" />
+            <OwlImageCarousel :photosInfo="d_photosInfo" :key="actualizador" @deleteImage="deleteCarouselImage" />
           </div>
         </div>
     </div>
@@ -46,16 +46,16 @@ export default {
       showAddURL: false,
       addImageURL: "",
       actualizador: 0,
-      photosInfo: [
-              {id: 0, imageURL: "https://4c79id2ej5i11apui01ll2wc-wpengine.netdna-ssl.com/wp-content/uploads/2018/09/Charli-XCX-Gallery-1.jpg", link: '#'}
-            ],
+      d_photosInfo: [],
     }
   },
 
   methods: {
 
     deleteCarouselImage: function(id){
-      this.photosInfo = this.photosInfo.filter(x => x.id != id);
+      this.d_photosInfo = this.d_photosInfo.filter(x => x.id != id);
+      this.$parent.d_portfolioImages = this.d_photosInfo;
+
       this.actualizador++;
     },
 
@@ -65,10 +65,11 @@ export default {
 
     add: function(){
 
-      if(this.addImageURL)
-      {
-        this.photosInfo.push({id: this.photosInfo.length, imageURL: this.addImageURL});
+      if(this.addImageURL){
+        this.d_photosInfo.push({id: this.d_photosInfo.length, imageURL: this.addImageURL});
+        this.$parent.d_portfolioImages = this.d_photosInfo;
         this.actualizador = this.actualizador + 1;
+
         this.addImageURL = '';
         this.toggleImageURLInput();
       }
@@ -76,6 +77,15 @@ export default {
 
   },
 
+  props: {
+    photosInfo: {
+      type: Array,
+    }
+  },
+
+  created() {
+    this.d_photosInfo = this.$props.photosInfo;
+  }
 }
 </script>
 

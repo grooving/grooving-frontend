@@ -14,7 +14,7 @@
     </div>
 
     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-      <div class="bodies">{{fareDescription}}  
+      <div class="bodies">{{fareDescription}} {{farePrice}}€/h <br>
            <router-link v-bind:to="artistURI" class="continueButtonDiv"><div @click="selectType('FARE')"
             class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div></router-link>
       </div>  
@@ -71,7 +71,11 @@ export default {
         },
         fareDescription: {
             type: String,
-            default: "Fare hiring type description.",
+            default: "In this type of contract you set the duration of the event. Price: ",
+        },
+        farePrice: {
+            type: String,
+            default: "",
         },
         customDescription: {
             type: String,

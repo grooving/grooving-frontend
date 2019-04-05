@@ -1,11 +1,9 @@
 <template>
     <div>
-    <div class="cancelButtonDiv"><router-link v-bind:to="cancelURI" class="btn btn-primary cancelButton">
-        <span class="continueText">CANCEL</span></router-link></div>
-        <b-button v-for="(selected,index) in selectedGenres" v-bind:key="selected" @click="deleteGenre(index)" class="btt">{{selected.title}}</b-button>
+        <b-button v-for="(genre, index) in selectedGenres" v-bind:key="genre.id" v-bind:index="index" @click="deleteGenre(index)" class="btt">{{genre.title}}</b-button>
         
         <template v-if="add">
-            <b-button v-bind:key="selected" @click="displaySelect" class="bttn">+</b-button>
+            <b-button @click="displaySelect" class="bttn">+</b-button>
         </template>
 
         <template v-if="select">
@@ -17,8 +15,8 @@
                 </template>
                 
                 </b-form-select>
-                <b-button class="btt" type="button" variant="primary" v-bind:key="index" 
-                    v-model="newGenre" @click="addGenre(index)">Submit</b-button>
+                <b-button class="btt" type="button" variant="primary" 
+                    v-model="newGenre" @click="addGenre()">Submit</b-button>
             </b-form>
         </template>
   </div>
@@ -26,105 +24,112 @@
 
 <script>
 export default {
-    mounted() {
-            for (let i = 0; i < this.genres.length; i++) {
-                for(let x = 0; x < this.selectedGenres.length; x++)
-                if(this.genres[i].title == this.selectedGenres[x].title) {
-                    this.genres.splice(i,1);                    
-                }
-            }
-        },
+
+  name: "EditGenre",
+
   data() {
     return {
         select:  false,
         add: true,
         genres:[ 
-      {
-        id: 1,
-        title: 'Art Punk',
-      },
-      {
-        id: 2,
-        title: 'Crust Punk',
-      },
-      {
-        id: 3,
-        title: 'College Rock'
-      },
-      {
-        id: 4,
-        title: 'Britpunk',
-      },
-      {
-        id: 5,
-        title: 'Alternative Rock',
-      },
-      {
-        id: 6,
-        title: 'Jazz'
-      },
-      {
-        id: 7,
-        title: 'Punk',
-      },
-      {
-        id: 10,
-        title: 'Rock',
-      },
-      {
-        id:11,
-        title: 'Pop'
-      },
-      {
-        id: 12,
-        title: 'Alternative',
-      },
-      {
-        id: 8,
-        title: 'Crust',
-      },
-      {
-        id: 9,
-        title: "Opera"
-      },
-     ],
+        {
+          id: 1,
+          title: 'Art Punk',
+        },
+        {
+          id: 2,
+          title: 'Crust Punk',
+        },
+        {
+          id: 3,
+          title: 'College Rock'
+        },
+        {
+          id: 4,
+          title: 'Britpunk',
+        },
+        {
+          id: 5,
+          title: 'Alternative Rock',
+        },
+        {
+          id: 6,
+          title: 'Jazz'
+        },
+        {
+          id: 7,
+          title: 'Punk',
+        },
+        {
+          id: 10,
+          title: 'Rock',
+        },
+        {
+          id:11,
+          title: 'Pop'
+        },
+        {
+          id: 12,
+          title: 'Alternative',
+        },
+        {
+          id: 8,
+          title: 'Crust',
+        },
+        {
+          id: 9,
+          title: "Opera"
+        }],
         selectedGenres: [
-                  {
-        id: 8,
-        title: 'Crust',
-      },
-      {
-        id: 9,
-        title: "Opera"
-      },
-        ],
+          {
+            id: 8,
+            title: 'Crust',
+          },
+          {
+            id: 9,
+            title: "Opera"
+          }],
         newGenre: null,
-	}
+	  }
   },
+
+  mounted() {
+    for (let i = 0; i < this.genres.length; i++) {
+        for(let x = 0; x < this.selectedGenres.length; x++)
+          if(this.genres[i].title == this.selectedGenres[x].title) {
+              this.genres.splice(i,1);                    
+          }
+    }
+  },
+
   methods: {
-      deleteGenre(index) {
-          this.genres.push(this.selectedGenres[index]);
-          this.selectedGenres.splice(index,1);
-      },
-      addGenre(index){
-          if(!this.selectedGenres.includes(this.newGenre)) {
-              this.selectedGenres.push(this.newGenre);
-          }
-          for (let i = 0; i < this.genres.length; i++) {
-              if (this.genres[i].title == this.newGenre.title) {
-                  this.genres.splice(i,1);
-              }              
-          }
-              this.select = false;   
-              this.add = true;   
-      },
-      displaySelect() {
-          this.select = true;
-          this.add = false;
-      },
+
+    deleteGenre(index) {
+        this.genres.push(this.selectedGenres[index]);
+        this.selectedGenres.splice(index,1);
+    },
+
+    addGenre(){
+      if(!this.selectedGenres.includes(this.newGenre)) {
+          this.selectedGenres.push(this.newGenre);
+      }
+      
+      for (let i = 0; i < this.genres.length; i++) {
+          if (this.genres[i].title == this.newGenre.title) {
+              this.genres.splice(i,1);
+          }              
+      }
+
+      this.select = false;   
+      this.add = true;   
+    },
+
+    displaySelect() {
+      this.select = true;
+      this.add = false;
+    },
   }
 }
-
 </script>
 
 <style scoped>

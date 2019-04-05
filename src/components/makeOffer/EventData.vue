@@ -7,7 +7,7 @@
                     placeholder="Add here relevant information about your event." rows="7"></textarea>
             </div>  
         </div>
-        <router-link v-bind:to="nextStep" class="continueButtonDiv"><div v-bind:to="nextStep" @click="eventDataSelected()"
+        <router-link v-bind:to="nextStep" class="continueButtonDiv"><div @click="eventDataSelected()"
             class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div></router-link>
     </form>
     </div>
@@ -19,24 +19,22 @@ export default {
     data() {
         return {
             description: undefined,
-            nextStep: undefined,
         }
     },
     props: {
         continueURI: {
             type: String,
             default: 'paymentSelector'
-        } 
-    },
-    components: {
+        },
+        nextStep: {
+            type: String,
+            default: '',
+        },
     },
     methods: {
         eventDataSelected(){
             this.$emit('eventDataSelected', this.description);
         }
-    },
-    mounted() {
-        this.nextStep = '/paymentSelector/' + this.$route.params['artistId']
     },
 }
 </script>

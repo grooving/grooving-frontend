@@ -37,6 +37,7 @@
 import Calendar from '@/components/Calendar.vue';
 
 export default {
+<<<<<<< HEAD
     name: "EditAvailableDates",
     data () {
         return {
@@ -44,6 +45,17 @@ export default {
             availableDates: this.$attrs.availableDates,
             stringToDates: Array,
             
+=======
+    name: "Calendar",
+    props: {
+        availableDates: {
+            type: Array,
+            default: function() { return [
+                new Date(2019, 3, 29),
+                new Date(2019, 3, 30),
+                new Date(2019, 3, 28)
+            ]},
+>>>>>>> 0cc8899189f73daafb034e343b97eeb4c5860586
         }
     },
 

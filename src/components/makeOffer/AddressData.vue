@@ -28,15 +28,17 @@
 
 export default {
     name: "AddressData",
-    components: {
+    props: {
+        nextStep: {
+            type: String,
+            default: '',
+        },
     },
-    
     data() {
         return {
             location: undefined,
             zipcode: undefined,
             street: undefined,
-            nextStep: undefined,
         }
     },
     mounted() {
@@ -124,7 +126,7 @@ export default {
 
         .content{
             margin-left: 3%;
-            height: 305px;
+            height: 290px;
             border-radius: 10px;
             display: flex;
             align-items: center;

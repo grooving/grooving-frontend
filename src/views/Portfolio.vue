@@ -3,15 +3,19 @@
     <ArtistInfo :artistBanner="d_portfolioBanner" :artistName="d_portfolioName" :artistGenres="portfolioGenres" :artistImage="d_portfolioIcon" :artistDescription="d_portfolioBiography" />
     <ImageCarousel class="imageCarousel" :photosInfo="d_portfolioImages" :key="updateImagesKey"/>
     <VideoCarousel class="videoCarousel" :videosInfo="d_portfolioVideos" :key="updateVideosKey"/>
-    <div v-if="this.datos.length != 0" id="datesContainer" class="datesContainer">
-    	
+    <div v-if="this.datos.length != 0" id="datesContainer" class="datesContainer">	
     	<div class="contentCalendar">
     		<h3 class="availableDatesTitle" >Available dates</h3>
     		<Calendar class="availableDates" :availableDates="this.datos[0].availableDates"/>
     	</div>
     </div>
-
-    
+    <router-link v-if="!hideEditButton" :to="'/editPortfolio/' + artistId" class="floating-btn vertical-center">
+      <div id="floating-button">
+        <div :to="artistId" class="floating-btn vertical-center">
+          <i class="material-icons vertical-center">edit</i>
+        </div>
+      </div>
+    </router-link>
   </div>
 </template>
 
@@ -70,7 +74,9 @@ export default {
     
     return{
       gsecurity: GSecurity,
+      artistId: -1,
       updateVideosKey: 0,
+      updateImagesKey: 0,
       d_portfolioBanner: '',
       d_portfolioIcon: '',
       d_portfolioName:'',
@@ -81,9 +87,23 @@ export default {
       datos: Array(),
     }
   },
+
+  computed: {
+
+    hideEditButton(){
+      return !this.artistId || this.gsecurity.isAnonymous() || this.artistId != this.gsecurity.getId();
+    }
+
+  },
   
+<<<<<<< HEAD
   beforeMount: function(){
     
+=======
+  mounted: function(){
+    this.artistId = this.$route.params['artistId'];
+
+>>>>>>> 0cc8899189f73daafb034e343b97eeb4c5860586
     var authorizedGAxios = GAxios;
     authorizedGAxios.get(endpoints.portfolio+this.$route.params['artistId']+"/")
       .then(response => {
@@ -177,6 +197,21 @@ export default {
   	padding-bottom: 50px;
   }
 
+  .floating-btn{
+    position:fixed;
+    width:60px;
+    height:60px;
+    bottom:40px;
+    right:40px;
+    z-index: 10;
+    background-image: linear-gradient(to right, #00fb82, #187fe6);
+    color:#FFF;
+    border-radius:50px;
+    text-align:center;
+    box-shadow: 2px 2px 3px #999;
+    text-decoration:none;
+  }
+
 .contentCalendar{
         width: 100%;
         margin: 0 auto !important;
@@ -219,6 +254,12 @@ export default {
             margin: 0 auto;
         }
     }
+
+  .vertical-center{
+    display: flex; 
+    align-items: center;  /*Aligns vertically center */
+    justify-content: center; /*Aligns horizontally center */
+  }
 
 </style>
 

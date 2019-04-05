@@ -7,7 +7,7 @@
             <h3 class="title"><strong>Video Showcase</strong></h3>
           </div>
           <div id="buttonContainer" class="col-4 vertical-center">
-            <button class="vertical-center addButton" @click="toggleImageURLInput">
+            <button type="button" class="vertical-center addButton" @click="toggleImageURLInput">
               <i v-if="showAddURL" class="material-icons arrowIcon addURLButton">cancel</i>
               <i v-else class="material-icons arrowIcon addURLButton">add_circle</i>
             </button>
@@ -23,7 +23,7 @@
     <div id="bottomContainer" class="row">
         <div id="owl-container" class="col-sm-12 col-md-8 horizontal-center">
           <div class="owl-wrapper">
-            <OwlImageCarousel :photosInfo="photosInfo" :key="actualizador" @deleteImage="deleteCarouselImage" />
+            <OwlImageCarousel :photosInfo="d_photosInfo" :key="actualizador" @deleteImage="deleteCarouselImage" />
           </div>
         </div>
     </div>
@@ -33,13 +33,16 @@
 <script>
 import OwlImageCarousel from './OwlImageCarousel.vue';
 
+// YT URI used to obtain the thumbnail
 const ytThumbnail_01 = 'http://i3.ytimg.com/vi/';
 const ytThumbnail_02 = '/maxresdefault.jpg';
+
+// Allowed URIs
 const ytURI1 = 'https://www.youtube.com/watch?v=';
 const ytURI2 = 'http://www.youtube.com/watch?v=';
-const ytURI3 = 'https://m.youtube.com/watch?v=';
+
+// Length of the YT ID
 const ytIDLength = 11;
-const videoPrueba ="replay";
 
 export default {
 
@@ -54,16 +57,23 @@ export default {
       showAddURL: false,
       addImageURL: "",
       actualizador: 0,
-      photosInfo: [
-              {id: 0, imageURL: "https://4c79id2ej5i11apui01ll2wc-wpengine.netdna-ssl.com/wp-content/uploads/2018/09/Charli-XCX-Gallery-1.jpg", link: '#'}
-            ],
+
+      // Array containing URLs of thumbnails
+      d_photosInfo: Array(),
+
+      // Array containing the actual links
+      d_videosInfo: Array(),
     }
   },
 
   methods: {
 
     deleteCarouselImage: function(id){
-      this.photosInfo = this.photosInfo.filter(x => x.id != id);
+      // Update the 3 references: photos, videos and the parent
+      this.d_photosInfo = this.d_photosInfo.filter(x => x.id != id);
+      this.d_videosInfo = this.d_videosInfo.filter(x => x.id != id);
+      this.$parent.d_portfolioVideos = this.d_videosInfo;
+
       this.actualizador++;
     },
 
@@ -71,35 +81,51 @@ export default {
       this.showAddURL = !this.showAddURL;
     },
 
+    getThumbnail: function(ytURL){
+        var ytVideoId;
+        var substringBeginIndex = ytURL.startsWith(ytURI1) ? ytURI1.length : ytURI2.length;
+
+        ytVideoId = ytURL.substring(substringBeginIndex, substringBeginIndex + ytIDLength);
+        return ytThumbnail_01 + ytVideoId + ytThumbnail_02;
+    },
+
     add: function(){
       
-      if(this.addImageURL){
-        // Get YT video ID in order to add its thumbnail
-        var ytVideoId, thumbnail;
+      if(this.addImageURL && (this.addImageURL.startsWith(ytURI1) || this.addImageURL.startsWith(ytURI2))){
 
-        if(this.addImageURL.startsWith(ytURI1)){
-          ytVideoId = this.addImageURL.substring(ytURI1.length, ytURI1.length + ytIDLength)
-        }else if(this.addImageURL.startsWith(ytURI2)){
-          ytVideoId = this.addImageURL.substring(ytURI2.length, ytURI2.length + ytIDLength)
-        }else if(this.addImageURL.startsWith(ytURI3)){
-          ytVideoId = this.addImageURL.substring(ytURI3.length, ytURI3.length + ytIDLength)
+        var thumbnail = this.getThumbnail(this.addImageURL);
+
+        if(thumbnail){
+          this.d_photosInfo.push({id: this.d_photosInfo.length, imageURL: thumbnail});
+          this.d_videosInfo.push({id: this.d_videosInfo.length, videoURL: this.addImageURL});
+          this.$parent.d_portfolioVideos = this.d_videosInfo;
+
+          this.actualizador++;
+          this.addImageURL = '';
+          this.toggleImageURLInput();
         }
 
-        //If it is not a yt video, we return a generic image
-        if(ytVideoId)
-          thumbnail = ytThumbnail_01 + ytVideoId + ytThumbnail_02;
-        else
-          thumbnail = "https://myaco.lemans.org/GED/content/4805C9CE-ECF4-4232-AEF4-3580948695DC.jpg";
-
-        this.photosInfo.push({id: this.photosInfo.length, imageURL: thumbnail});
-        this.actualizador = this.actualizador + 1;
-
-        this.addImageURL = '';
-        this.toggleImageURLInput();
       }
     },
 
   },
+
+  props: {
+    videosInfo: {
+      type: Array,
+    }
+  },
+
+  created() {
+    this.d_videosInfo = this.$props.videosInfo;
+
+    for(var i = 0; i < this.d_videosInfo.length; i++){
+      this.d_photosInfo.push({id: i, imageURL: this.getThumbnail(this.d_videosInfo[i]['videoURL'])});
+    }
+
+    console.log(this.d_photosInfo)
+    
+  }
 
 }
 </script>

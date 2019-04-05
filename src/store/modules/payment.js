@@ -13,6 +13,17 @@ const state = {
     offer: {
         hiring: undefined,
         artistId: undefined,
+        totalPrice: undefined,
+    },
+    artist: {
+        artistId: undefined, 
+        artisticName: undefined, 
+        main_photo: undefined, 
+        genres: undefined,
+    },
+    farePackage: {
+        packageId: undefined, 
+        priceHour: undefined,
     }
 };
 
@@ -20,12 +31,13 @@ const getters = {
     offerAddress: state => state.address,
     offerDate: state => state.date,
     offerHour: state => state.hour,
+    offerFarePack: state => state.farePackage,
+    offerArtist: state => state.artist,
     offer: state => state.offer,
 };
 
 const actions = {
     setAddress (state, address) {
-        console.log('Ma', arguments)
         state.commit('setAddress', address)
     },
     setEventDescription (state, description) {
@@ -40,8 +52,13 @@ const actions = {
     setHiring (state, hiring) {
         state.commit('setHiring', hiring)
     },
-    setArtistId (state, artistId) {
-        state.commit('setArtistId', artistId)
+    setFarePackage (state, fareP) {
+        console.log(fareP);
+        state.commit('setFarePackage', fareP)
+    },
+    setArtist (state, artist) {
+        console.log('Hi');
+        state.commit('setArtist', artist)
     },
 };
 
@@ -60,12 +77,22 @@ const mutations = {
     setTime(state, time) {
         state.date.hour = time.start;
         state.date.duration = time.duration;
+        var d = state.date.duration;
+        var p = parseFloat(state.farePackage.priceHour);
+        state.offer.totalPrice = d*p;
     },
     setHiring(state, hiring) {
         state.offer.hiring = hiring;
     },
-    setArtistId(state, artistId) {
-        state.offer.artistId = artistId;
+    setFarePackage(state, fareP) {
+        state.farePackage.packageId = fareP.id;
+        state.farePackage.priceHour = fareP.priceHour;
+    },
+    setArtist(state, artist) {
+        state.artist.artistId = artist.artistId;
+        state.artist.artisticName = artist.artisticName;
+        state.artist.main_photo = artist.main_photo;
+        state.artist.genres = artist.genres;
     },
 };
 
