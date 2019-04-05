@@ -24,7 +24,7 @@
           </div>
           <div class="row contentCalendar">
               <div class="col-sm-12 col-md-8 horizontal-center">
-                  <div><vuejs-datepicker id="calendario" @selected="deleteDate" :highlighted="highlighted" :disabledDates="disabledDates" :value="currentDate" :full-month-name="true" :inline="true"></vuejs-datepicker></div>
+                  <Calendar class="availableDates" :availableDates="this.availableDates" :stringToDates="this.stringToDates"/>
               </div>
           </div>
       </div>
@@ -34,51 +34,37 @@
 
 <script>
 
-
-
-var yesterday = new Date();
-yesterday.setDate(yesterday.getDate()-1);
-
-var availableDates = []
-/*availableDates.push(new Date(2019, 2, 29));
-availableDates.push(new Date(2019, 2, 30));
-availableDates.push(new Date(2019, 2, 28));*/
+import Calendar from '@/components/Calendar.vue';
 
 export default {
-    name: "Calendar",
-    props: {
-        availableDates: {
-            type: Array,
-            default: [
-                new Date(2019, 3, 29),
-                new Date(2019, 3, 30),
-                new Date(2019, 3, 28)
-            ],
-        }
-    },
-    components: {
-        vuejsDatepicker
-    },
+    name: "EditAvailableDates",
     data () {
         return {
-            currentDate: new Date(),
-            disabledDates: {
-                to: yesterday
-            },
-            highlighted: {
-                dates: this.availableDates
-            },
-
-            toggleAddURL: true
+            toggleAddURL:false,
+            availableDates: this.$attrs.availableDates,
+            stringToDates: Array,
+            
         }
     },
 
-    methods: {
+    props: {
+    },
+
+    components: {
+        vuejsDatepicker, Calendar
+    },
+
+    methods:{
         addRejectedDate: function (event) {
             var fecha = document.getElementById("inputFecha").value;
-            var fecha2 = new Date(fecha)
-            var fecha3 =new Date(fecha2.getFullYear(), fecha2.getMonth(), fecha2.getDate());
-            this.availableDates.push(fecha3);
+            this.availableDates.push(fecha);
+
+            var res = Array();
+
+            for (var i = 0; i < this.availableDates.length; i++) { 
+                res.push(new Date(this.availableDates[i]));
+            }
+            this.stringToDates = res;
         },
         changeToggle: function(event) {
             if(this.toggleAddURL==false){
@@ -87,40 +73,18 @@ export default {
             else{
                 this.toggleAddURL=false;
             }
-        },
-        deleteDate: function(event){
-            //alert(this.availableDates);
-            //alert(event);
-            var collection = this.availableDates,
-                d = new Date(event.getFullYear(), event.getMonth(), event.getDate()),
-                idx;
-
-            //alert(collection);
-            idx = collection.map(Number).indexOf(+d);
-            //alert(idx);
-            
-            if(idx!=-1){
-                var confirmar = confirm("Are you sure you wanna delete this date?");
-                if(confirmar == true){
-                    this.availableDates.splice(idx, 1);
-                }
-                
-            }
-            
         }
+        
+    }
 
-
-  }
 }
 </script>
 
 <style scoped>
-
 .container{
     padding-top: 50px;
     padding-bottom: 50px;
 }
-
 .acceptButton{
     background: -webkit-linear-gradient(left, #00fb82, #187fe6);
     -webkit-background-clip: text;
@@ -128,7 +92,6 @@ export default {
     -webkit-text-fill-color: transparent;
     border: none;
 }
-
 .acceptButton:hover{
     background: -webkit-linear-gradient(left, #14Ca9f, #1648d0);
     -webkit-background-clip: text;
@@ -136,21 +99,17 @@ export default {
     -webkit-text-fill-color: transparent;
     border: none;
 }
-
 .vertical-center{
     display: flex !important; 
     align-items: center !important;  /*Aligns vertically center */
     vertical-align: middle;
   }
-
 .titleCalendar{
     color: green !important;
 }
-
 .horizontal-center{
     margin: 0 auto;
   }
-
   @media (max-width: 576px) {
     .artistImage {
       object-fit: cover;
@@ -159,7 +118,6 @@ export default {
       border-radius: 10px 10px 10px 10px;
     }
   }
-
   @media (min-width: 576px) {
     .artistImage {
       object-fit: cover;
@@ -170,7 +128,6 @@ export default {
   }
     .horizontal-center{
         margin: 0 auto;
-
     }
     .contentForm{
         padding-top: 10px !important;
@@ -178,17 +135,14 @@ export default {
         display:flex;
         align-content: center;
     }
-
     .form-inline .formulario{
         margin: 0 auto !important;
     }
-
     .vdp-datepicker__calendar {
         width: 100%;
         border: 0px;
         margin-top: 10px;
     }
-
     .container-fluid{
         width: 100% !important;
         margin: 0 auto !important;
@@ -196,14 +150,11 @@ export default {
         padding-right: 10px;
         padding-top: 10px;
         padding-bottom: 10px;
-
     }
-
     input:hover{
         border-color: #187fe6;
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .3) !important;
     }
-
     input:focus{
         border-color: #00fb82 !important;
         font-weight: semibold;
@@ -211,7 +162,6 @@ export default {
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;
         
     }
-
     .continueButton {
         font-size: 18px;
         border: none;
@@ -221,18 +171,14 @@ export default {
         margin-left: 2%;
         background-image: linear-gradient(to right, #00fb82, #187fe6);
     }
-
     .continueButton:hover{
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;
         background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
     }
-
-
     .availableDates{
         text-align: left;
         font-weight: semibold;
     }
-
     @media (min-width: 768px){
         .vdp-datepicker__calendar {
             width: 100% !important;
@@ -240,13 +186,11 @@ export default {
             margin-top: 10px;
             margin: 0 auto !important;
         }
-
         .availableDates{
             text-align: center;
             margin-bottom: 20px;
             font-weight: semibold;
         }
-
         .contentCalendar{
             padding-top: 20px !important;
             width: 65% !important;
@@ -258,10 +202,8 @@ export default {
             padding-bottom: 10px;
             border-radius: 10px;
             box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, .5);
-
         }
     }
-
     
     .vdp-datepicker__calendar header span {
         font-weight: bold;
@@ -275,28 +217,22 @@ export default {
         color: black !important;
     }
     
-
     .vdp-datepicker__calendar .cell.highlighted{
         background-image: linear-gradient(to right, #92ffca, #8dc4fc) !important;
         border-radius: 25px;
         color: black !important;
         border: solid white;
-
     }
-
     .vdp-datepicker__calendar .cell.selected.cell.highlighted {
         background-image: linear-gradient(to right, #00fb82, #187fe6) !important;
         color: white !important;
         font-weight: bolder;
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .5) !important;
     }
-
     .vdp-datepicker__calendar .cell.selected:hover {
         background-image: linear-gradient(to right, #00fb82, #187fe6);
         border-radius: 25px;
     }
-
-
     
 </style>
 

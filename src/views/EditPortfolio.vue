@@ -4,7 +4,7 @@
     <EditArtistInfo />
     <EditImageCarousel />
     <EditVideoCarousel />
-    <EditAvailableDates />
+    <EditAvailableDates :availableDates="this.d_portfolioDays" />
   </div>
 </template>
 
@@ -108,70 +108,26 @@ export default {
     }
   },
   
-  mounted: function(){
+  beforeMount: function(){
     
-    var authorizedGAxios = GAxios;
-    authorizedGAxios.get(endpoints.portfolio+this.$route.params['artistId']+"/")
-      .then(response => {
-      		console.log(response)
-          var portfolio = response.data;
-
-          this.d_portfolioBanner = portfolio.banner;
-          this.d_portfolioName = portfolio.artisticName;
-          this.d_portfolioIcon = portfolio.artist.photo;
-          var media = portfolio.portfoliomodule_set;
-          var genres = portfolio.artisticGender;
-
-          for(var i = 0; i < genres.length; i++){
-            var genre = genres[i];
-            this.portfolioGenres.push(genre['name']);
-          }
-
-          var imgCounter = 0;
-          var vidCounter = 0;
-
-          for(var i = 0; i < media.length; i++){
-
-            var elementMedia = media[i];
-            
-            if(elementMedia['type'] == 'VIDEO'){
-              this.d_portfolioVideos.push({id:vidCounter, videoURL:elementMedia['link']});
-              vidCounter += 1;
-            }
-            if(elementMedia['type'] == 'PHOTO'){
-              this.d_portfolioImages.push({id:imgCounter, imageURL:elementMedia['link']});
-              imgCounter += 1;
-            }
-          }
-
-          this.d_portfolioDays = portfolio.calendar_set[0]['days'];
-          //alert(this.d_portfolioDays.length);
-
-          this.updateVideosKey += 1;
-          this.updateImagesKey += 1;
-                
-    });
-
-
       var authorizedGAxios = GAxios;
       if (this.gsecurity.isAuthenticated()) {
         var GAxiosToken = this.gsecurity.getToken();
         authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
       }
 
-      authorizedGAxios.get('/artist' + endpoints.calendar + this.$route.params['artistId'] + '/')
+      authorizedGAxios.get('/calendar/'+this.gsecurity.getId() +'/')
         .then(response => {
             var calendar = response.data;
-            console.log(calendar[0].days)
-
-            this.datos.push({
-                availableDates: calendar[0].days,
-            })
+            console.log(calendar)
+            this.d_portfolioDays=calendar.days;
 
         }).catch(ex => {
             console.log(ex);
         });
 
+
+      
   }
 
 }

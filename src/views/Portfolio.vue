@@ -82,7 +82,7 @@ export default {
     }
   },
   
-  mounted: function(){
+  beforeMount: function(){
     
     var authorizedGAxios = GAxios;
     authorizedGAxios.get(endpoints.portfolio+this.$route.params['artistId']+"/")
@@ -128,7 +128,6 @@ export default {
           
 
           this.d_portfolioDays = portfolio.calendar_set[0]['days'];
-          //alert(this.d_portfolioDays.length);
           console.log(this.d_portfolioImages)
 
           
