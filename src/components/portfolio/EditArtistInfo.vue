@@ -3,8 +3,6 @@
     <div class="content overlap">
         <div v-if="errors === true" class="validationErrors vertical-center">
             <p>Sorry! Something went wrong. Try again later.</p>
-            <!--<p>Error en el numero</p>
-            <p>Error en el mes</p>-->
         </div>
         <div class="bannerIcon">
             <img class="card-img-top banner" :src="artistBanner"/>       
@@ -13,20 +11,20 @@
             <img class="card-img-top icon" :src="artistImage"/>
         </div>
         <div class="inputForm">
-        <input class="form-control inputName" type="text" id="inputName" placeholder="Name" :value="artistName">
+        <input required class="form-control inputName" type="text" id="inputName" placeholder="Name" v-model="$parent.d_portfolioArtisticName">
         </div>
         <div class="inputForm">
         <span class="card-text artistGenres">{{ genresToString() }}</span>
         </div>
         <div class="inputForm">
-            <textarea :value="artistDescription" class="form-control inputDescription" id="" rows="3" placeholder="Description"></textarea>
+            <textarea required v-model="$parent.d_portfolioBiography" class="form-control inputDescription" id="" rows="3" placeholder="Description"></textarea>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    name: "ArtistInfo",
+    name: "EditArtistInfo",
     props: {
         artistURI: {
             type: String,

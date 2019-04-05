@@ -57,7 +57,7 @@ class GSecurity {
     }
 
     setId(id){
-        if(typeof id === 'number' && id >= -1)
+        if(Number(id) >= -1)
             this._id = id;
     }
 
@@ -178,7 +178,7 @@ class GSecurity {
     }
 
     isAnonymous(){
-        return this.getToken() ? true : false;
+        return !this.getToken() ? true : false;
     }
     
     hasRole(role){

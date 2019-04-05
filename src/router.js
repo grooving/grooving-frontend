@@ -94,7 +94,7 @@ export default new Router({
       component: TopArtists,
     },
     {
-      path: '/editPortfolio',
+      path: '/editPortfolio/:artistId',
       name: 'editPortfolio',
       component: EditPortfolio,
     },
