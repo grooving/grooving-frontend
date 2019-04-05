@@ -4,7 +4,7 @@
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
             <div class="container-fluid">
                 <div class="container">
-                    <div class="right-div right-text" style="width: 100px; text-align: left; vertical-align: top;margin-bottom: 20px;">
+                    <div class="right-div right-text" style="width: 100px; text-align: left; vertical-align: top;">
                         <div class="priceCard"><h1>{{price}}€</h1><br>
                         </div>
                         <div  style="padding-top: 20px;">
@@ -19,14 +19,24 @@
                         </div>
                     </div>
                     <div class="right-div right-text">
-                        <router-link to="personalInfo"><img class="card-img-top foto" :src="userIcon"></router-link>
+                        <router-link v-bind:to="{name: imageURI, params: {userName, customerSurnames, place, artistId: artistId }}">
+                            <img v-if="userIcon == null || userIcon == '' || userIcon == 'null'" src="@/assets/defaultPhoto.png" class="card-img-top foto" alt="Image">
+                            <img v-else v-bind:src="userIcon" :key="userIcon" class="card-img-top foto" alt="Image">
+                        </router-link>
                         <h3 class="fotoText">{{userName}}</h3>
+                    </div>
+                    <hr class="mb-2"/>
+                    <div v-if="offerStatus !== 'PENDING' && offerStatus !== 'CONTRACT_MADE'" class="cardTextId">
+                        <i class="material-icons iconOffer">bookmark</i><p style="word-break: break-all">{{statusMessage()}}</p>
+                    </div>
+                    <div v-if="reason !== '' && reason != null" class="cardTextId">
+                       <p style="word-break: break-all"><span style="font-weight: bold;">&nbsp;Reason: </span> {{reason}}</p>
                     </div>
                 </div>
                 <div class="collapse" v-bind:id="noHashtag()">
                     <div class="form-group">
                         <label for="rejectionReason">Please, confirm your rejection:</label>
-                        <textarea style="resize: none;" class="form-control" id="rejectionReason" rows="4" placeholder="You can explain the reason why you are rejecting this offer. It will be shown to the person that contacted you."></textarea>
+                        <textarea v-model="reason" style="resize: none;" class="form-control" id="rejectionReason" rows="4" placeholder="You can explain the reason why you are rejecting this offer. It will be shown to the person that contacted you."></textarea>
                     </div>
                     <div class="row container">
                         <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="enableOfferButtons()" class="btn btn-primary cancelButton" 
@@ -39,7 +49,7 @@
                             <button class="btn btn-primary confirmButton" v-on:click="cancelOffer"><span class="continueText">CONFIRM</span></button></div>
                     </div>
                 </div>
-                <div v-if="offerStatus === 'PENDING' && gsecurity.hasRole('ARTIST')" class="row container" v-bind:id="buttonsId()">
+                <div v-if="offerStatus === 'PENDING'" class="row container" v-bind:id="buttonsId()">
                     <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="disableOfferButtons()" class="btn btn-primary rejectButton" 
                         data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">REJECT</span></a></div>
                     <div v-if="offerStatus === 'PENDING' && gsecurity.hasRole('ARTIST')" class="right-div right-text2">
@@ -67,6 +77,12 @@
             return {
                 gsecurity: GSecurity,
                 gaxios: GAxios,
+                negotiationMessage: 'The offer is in a negotiation process.',
+                withdrawnMessage: 'The offer was withdrawn by the customer before it was accepted.',
+                rejectedMessage: 'The offer was rejected by the artist.',
+                cancelledArtistMessage: 'The offer was canceled by the artist after being accepted.',
+                cancelledCustomerMessage: 'The offer was canceled by the customer after being accepted.',
+                paymentMessage: 'The payment has already been made.',
             }
         },
         
@@ -87,10 +103,6 @@
                 type: String,
                 default: 'Pontevedra',
             },
-            rejectURI: {
-                type: String,
-                default: '#'
-            },
             confirmURI: {
                 type: String,
                 default: '#'
@@ -107,11 +119,22 @@
                 type: String,
                 default: 'pending',
             },
-            offerURI: {
+            imageURI: {
                 type: String,
-                default: 'offers'
+                default: '',
+            },
+            customerSurnames:{
+                type: String,
+                default: '',
+            },
+            artistId: {
+                type: String,
+                default: '',
+            },
+            reason: {
+                type: String,
+                default: '',
             }
-
         },
 
         methods: {
@@ -138,45 +161,100 @@
                 var GAxiosToken = this.gsecurity.getToken();
                 authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
 
-                authorizedGAxios.put(endpoints.offer + this.offerID + '/', {
-                    "status": "REJECTED",
-                }).then(response => {
-                    console.log(response);
-                    window.location.reload();
-                }).catch(ex => {
-                    console.log(ex);
-                })
-
+                if (this.reason != '') {
+                    authorizedGAxios.put(endpoints.offer + this.offerID + '/', {
+                        "status": "REJECTED",
+                        "reason": this.reason,
+                    }).then(response => {
+                        console.log(response);
+                        window.location.reload();
+                    }).catch(ex => {
+                        console.log(ex);
+                    })
+                } else {
+                    authorizedGAxios.put(endpoints.offer + this.offerID + '/', {
+                        "status": "REJECTED",
+                    }).then(response => {
+                        console.log(response);
+                        window.location.reload();
+                    }).catch(ex => {
+                        console.log(ex);
+                    })
+                }
             },
             cancelOffer() {
                 var authorizedGAxios = GAxios;
                 var GAxiosToken = this.gsecurity.getToken();
                 authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
 
-                authorizedGAxios.put(endpoints.offer + this.offerID + '/', {
-                    "status": "CANCELED",
-                }).then(response => {
-                    console.log(response);
-                    window.location.reload();
-                }).catch(ex => {
-                    console.log(ex);
-                })
+                var status = 'CANCELLED_ARTIST';
+                if (this.gsecurity.hasRole('CUSTOMER')) {
+                    status = 'CANCELLED_CUSTOMER';
+                }
+
+                if (this.reason != '') {
+                    authorizedGAxios.put(endpoints.offer + this.offerID + '/', {
+                        "status": status,
+                        "reason": this.reason,
+                    }).then(response => {
+                        console.log(response);
+                        window.location.reload();
+                    }).catch(ex => {
+                        console.log(ex);
+                    })
+                } else {
+                    authorizedGAxios.put(endpoints.offer + this.offerID + '/', {
+                        "status": status,
+                    }).then(response => {
+                        console.log(response);
+                        window.location.reload();
+                    }).catch(ex => {
+                        console.log(ex);
+                    })
+                }
             },
             withdrawnOffer() {
                 var authorizedGAxios = GAxios;
                 var GAxiosToken = this.gsecurity.getToken();
                 authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
 
-                authorizedGAxios.put(endpoints.offer + this.offerID + '/', {
-                    "status": "WITHDRAWN",
-                }).then(response => {
-                    console.log(response);
-                    window.location.reload();
-                }).catch(ex => {
-                    console.log(ex);
-                })
+                if (this.reason != '') {
+                    authorizedGAxios.put(endpoints.offer + this.offerID + '/', {
+                        "status": "WITHDRAWN",
+                        "reason": this.reason,
+                    }).then(response => {
+                        console.log(response);
+                        window.location.reload();
+                    }).catch(ex => {
+                        console.log(ex);
+                    })
+                } else {
+                    authorizedGAxios.put(endpoints.offer + this.offerID + '/', {
+                        "status": "WITHDRAWN",
+                    }).then(response => {
+                        console.log(response);
+                        window.location.reload();
+                    }).catch(ex => {
+                        console.log(ex);
+                    })
+                }
             },
-        }
+            statusMessage() {
+                if (this.offerStatus == "NEGOTIATION") {
+                    return this.negotiationMessage;
+                } else if (this.offerStatus == "WITHDRAWN") {
+                    return this.withdrawnMessage;
+                } else if (this.offerStatus == "REJECTED") {
+                    return this.rejectedMessage;
+                } else if (this.offerStatus == "CANCELLED_ARTIST") {
+                    return this.cancelledArtistMessage;
+                } else if (this.offerStatus == "CANCELLED_CUSTOMER") {
+                    return this.cancelledCustomerMessage;
+                } else if (this.offerStatus == "PAYMENT_MADE") {
+                    return this.paymentMessage;
+                }
+            }
+        },
     }   
 
 </script>
@@ -217,6 +295,7 @@
         padding: 5px;
         vertical-align: middle !important;
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .3);
+
         
         
     }
@@ -251,7 +330,7 @@
         display: table-cell;
         vertical-align: middle;
         font-weight: bold;
-        font-size: 2.25vh;
+        font-size: 20px;
     }
 
     .cardTextDate{
@@ -383,7 +462,6 @@
         display: table-cell;
         vertical-align: middle;
         font-weight: bold;
-        font-size: 2.25vh;
     }
     .titleCard h3{
         margin-bottom: 0px;

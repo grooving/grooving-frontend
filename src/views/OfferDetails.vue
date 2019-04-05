@@ -1,7 +1,6 @@
 <template>
     <div>
         <hr />
-        <TabbedSubMenu />
         <div style="width:100%">
             <ExtendedOffer :offerID="offer[0].offerID" :date="offer[0].date" :endingHour="offer[0].endingHour" :price="offer[0].price"
              :address="offer[0].address" :description="offer[0].description" :confirmURI="offer[0].confirmURI" />
@@ -23,7 +22,6 @@ export default {
   name: 'OfferDetails',
   
   components: {
-    TabbedSubMenu,
     ExtendedOffer,
   },
 
@@ -33,26 +31,32 @@ export default {
       offer: Array(),
       }
   },
-  beforeMount() {
-    var authorizedGAxios = GAxios;
-    var GAxiosToken = this.gsecurity.getToken();
-    authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
-    authorizedGAxios.get(endpoints.offer + this.$route.params['offerId'] + '/')
-    .then(response => {
-      var off = response.data;
-      
-      this.offer.push({
-        offerID: off.id,
-        date: off.date,
-        endingHour: off.hours,
-        description: off.description,
-        address: off.eventLocation.address,
-        price: off.price,
-        confirmURI: acceptURI + off.id,
+  beforeMount: function() {
+    if (!this.gsecurity.hasRole('ARTIST')) {
+      this.$router.push({name: "error"});
+
+    } else {
+
+      var authorizedGAxios = GAxios;
+      var GAxiosToken = this.gsecurity.getToken();
+      authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
+      authorizedGAxios.get(endpoints.offer + this.$route.params['offerId'] + '/')
+      .then(response => {
+        var off = response.data;
+        
+        this.offer.push({
+          offerID: off.id,
+          date: off.date,
+          endingHour: off.hours,
+          description: off.description,
+          address: off.eventLocation.address,
+          price: off.price,
+          confirmURI: acceptURI + off.id,
+        });
+      }).catch(ex => {
+          console.log(ex);
       });
-    }).catch(ex => {
-        console.log(ex);
-    });
+    }
   },
 }
 </script>

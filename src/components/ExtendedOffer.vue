@@ -70,7 +70,7 @@
             },
             cancelURI: {
                 type: String,
-                default: 'offers'
+                default: '/offers'
             },
             confirmURI: {
                 type: String,
@@ -82,18 +82,19 @@
                 var authorizedGAxios = GAxios;
                 var GAxiosToken = this.gsecurity.getToken();
                 authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
-                console.log(this.$route.params['offerId'] + ' Hi');
                 
                 authorizedGAxios.put(endpoints.offer + this.$route.params['offerId'] + '/', 
                 {
-                    "status": "REJECTED",
+                    "status": "CONTRACT_MADE",
                 })
-                this.$router.push({path: '/offers/'})
                     .then(response => {
                         console.log(response);
                 }).catch(ex => {
                     console.log(ex);
+                }).then(()=> {
+                    this.$router.push({path: '/offers/'})
                 });
+                
                 },
             },
     }   

@@ -4,10 +4,12 @@ export default{
     eventlocation: '/eventlocation/',
     login: '/api/login/',
     offer: '/offer/',
-    offers: '/offers/',
-    offer: '/offer/',
+    artistOffers: '/artist/offers/',
+    customerOffers: '/customer/offers/',
     customerPersonalInformation: '/customer/personalInformation/',
     artistPersonalInformation: '/artist/personalInformation/',
-    portfolio: '/portfolio/'
+    paymentCode:'/paymentCode/',
+    portfolio: '/portfolio/',
+    artistPayPackage: '/artist/paymentPackages/',
     
 }

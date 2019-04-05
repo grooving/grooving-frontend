@@ -4,29 +4,70 @@
         <div class="form-row">
             <div class="form-group col-12">
                 <p class="title">Type the code:</p>
-                <input :value="code" type="text" class="form-control" placeholder="XXXX-XXXX-XXXX-XXXX">
+                <input id="inputCode" type="text" class="form-control" placeholder="XXXX-XXXX-XXXX-XXXX">
             </div>  
         </div>
-        <div class="continueButtonDiv"><router-link v-bind:to="continueURI" 
-            class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></router-link></div>
+        <div class="continueButtonDiv"><button v-bind:to="continueURI" v-on:click="receivePayment()"
+            class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></button></div>
 
     </form>
     </div>
 </template>
 
 <script>
+
+import GAxios from '@/utils/GAxios.js';
+import endpoints from '@/utils/endpoints.js';
+import GSecurity from '@/security/GSecurity.js';
+
 export default {
     name: "paymentCode",
+    data: function(){
+    	return{
+    		gsecurity: GSecurity,
+    		gaxios: GAxios
+    	}
+    },
     props: {
         code: {
             type: String,
-            default: '1234-5678-9012-3456'
+            default: ''
         },
         continueURI: {
             type: String,
             default: 'paymentConfirmation'
         } 
     },
+    methods: {
+    	receivePayment(){
+    		var code = document.getElementById("inputCode").value;
+
+			var authorizedGAxios = GAxios;
+            var GAxiosToken = this.gsecurity.getToken();
+            authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
+            //authorizedGAxios.defaults.headers.common['Content-Type'] = 'application/json';
+            console.log(code);
+    		authorizedGAxios.put(endpoints.paymentCode, {
+                "paymentCode":code
+    			}).then(response => {
+                    console.log(response);
+                    var userPicture = response.data.photo;
+                    var userName = response.data.name;
+                    var offerPrice = response.data.price;
+                    //var offerID = response.data.offerId;
+                    var arrayOffer = [userPicture, userName, offerPrice];
+
+                    this.$emit('offerDetails', arrayOffer);
+                    this.$router.push('/paymentConfirmation');
+	      		}).catch(ex => {
+                    this.$emit('errorPayment', true);
+	      			console.log(ex);
+	      		})
+
+    	}
+    }
+   
+
 }
 </script>
 

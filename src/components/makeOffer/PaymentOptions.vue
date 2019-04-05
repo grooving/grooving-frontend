@@ -1,0 +1,111 @@
+<template>
+    <div class="content">
+        <div class="paymentOptions">
+            <p>Select the payment method</p>
+            <!-- <div class="continueButtonDiv"><div  class="btn btn-primary continueButton"><span class="continueText">PAYPAL</span></div @click="paymentOptionSelected()"></div> -->
+            <br>
+            <router-link v-bind:to="nextStep" class="continueButtonDiv"><div @click="paymentOptionSelected()"
+                class="btn btn-primary continueButton"><span class="continueText">CREDIT CARD</span></div></router-link>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    name: "PaymentOptions",
+    data() {
+        return {
+            nextStep: undefined,
+        }
+    },
+    props: {
+        continueURI: {
+            type: String,
+            default: 'payment'
+        } 
+    },
+    components: {
+    },
+    methods: {
+        paymentOptionSelected(){
+            this.$emit('paymentOptionSelected', 'CREDITCARD');
+        },
+
+    },
+    mounted() {
+        this.nextStep = '/payment/' + this.$route.params['artistId']
+    },
+}
+</script>
+
+<style scoped>
+
+    .continueButton{
+        width: 60%;
+        color: white !important;
+        font-weight: bold;
+        border-radius: 25px;
+
+        font-size: 22px;
+                
+        border: none;
+
+
+        background-image: linear-gradient(to right, #00fb82, #187fe6);
+    }
+
+    .continueButton:hover{
+        background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;
+    } 
+
+    @media (max-width:768px)  {
+        .content{
+            padding-top: 5%;
+            margin-right: 40%;
+            margin-left: 40%;
+            width: 300px;
+
+        }   
+    }
+        
+    @media (min-width:768px)  {
+
+        .content{
+            background-color:white;
+            height: 295px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+            padding-left: 35px;
+            padding-right: 35px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, .3);
+
+        }
+
+        .continueButton{
+            width: 100%;
+            color: white !important;
+            font-weight: bold;
+            border-radius: 25px;
+
+            font-size: 22px;
+                    
+            border: none;
+
+
+            background-image: linear-gradient(to right, #00fb82, #187fe6);
+        }
+
+        .continueButton:hover{
+            background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
+            box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;
+        }
+    }
+
+
+</style>

@@ -3,148 +3,74 @@
     <div class="title"><p style="text-align: left !important;">Choose a time range</p></div>
     
     <div class="everything">
-        <div class="tarjeta">
-            <router-link v-bind:to="artistURI"><img v-bind:src="artistImage" class="card-img-top artistImage" alt="Artist's Image"></router-link>
-            <div class="card-body cuerpoTarjeta">
-                <div class="leftContent">
-                    <h5 class="card-title artistName">{{ artistName }}</h5>
-                    <span class="card-text artistGenres">{{ genresToString() }}</span>
-                </div>
-                <div class="rightContent">
-                    <p class="price">{{ price }}</p>
-                </div>
-            </div>
+        <div class="artistCard"><ArtistCard 
+            :artistName="this.artistData.artisticName" :artistImage="this.artistData.main_photo" 
+            :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :price="this.priceHour"/>
         </div>
-        <div class="sliderButton">
-          <div class="slider"><DoubleSlider/></div>
-          <div class="continueButtonDiv"><div @click="timeSelected()" class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div @click="timeSelected()"></div>
+        <div class="sliderButton" >
+          <div class="slider" ><DoubleSlider @timeUpdate="updateTime"/></div>
+          <router-link v-bind:to="nextStep" class="continueButtonDiv"><div style="margin: 10%;" @click="timeSelected" class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div></router-link>
         </div>
     </div>
 </div>
 </template>
 
 <script>
-import DoubleSlider from '@/components/DoubleSlider.vue'
+import DoubleSlider from '@/components/makeOffer/DoubleSlider.vue'
+import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
+import {mapActions} from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'TimeSelection',
+  computed: mapGetters(['offerArtist', 'offerFarePack']),
   components: {
-    DoubleSlider
+    DoubleSlider, ArtistCard
   },
-  props: {
-        artistURI: {
-            type: String,
-            default: 'showPortfolio'
+  data () {
+      return {
+          artistData: {
+              artistId: undefined,
+              artisticName: undefined,
+              main_photo: undefined,
+              genres: undefined,
+          },
+          priceHour: undefined,
+          time: {
+            start: '00:00',
+            duration: 23.5,    
         },
-        artistImage: {
-            type: String,
-            default: 'http://www.tiumag.com/wp-content/uploads/rosalia-2018-2-705x564.jpg',
-        },
-        artistName: {
-            type: String,
-            default: 'ROSALÍA'
-        },
-        artistGenres: {
-            type: Array,
-            default: ['Pop', 'Flamenco']
-        },
-        continueURI: {
-            type: String,
-            default: 'addressInput'
-        },
-        price: {
-          type: String,
-          default: '$63.00/h'
-        }
+        nextStep: undefined, 
+      }
+  },
+    mounted() {
+        this.artistData.artistId = this.$store.getters.offerArtist.artistId;
+        this.artistData.artisticName = this.$store.getters.offerArtist.artisticName;
+        this.artistData.main_photo = this.$store.getters.offerArtist.main_photo;
+        this.artistData.genres = this.$store.getters.offerArtist.genres;
+
+        this.priceHour = this.$store.getters.offerFarePack.priceHour;
+
+        this.nextStep = '/addressInput/' + this.artistData.artistId;
     },
-
     methods: {
-        genresToString() {
-
-            var res = "";
-            var i = 0;
-
-            for (i = 0; i < this.artistGenres.length; i++) { 
-                if (i != this.artistGenres.length - 1) {
-                    res += this.artistGenres[i] + ", ";
-                } else {
-                    res += this.artistGenres[i];
-                }
-            }
-
-            return res;
+        ...mapActions(['setTime']),
+        updateTime(startHour, duration) {
+            this.time.start = startHour;
+            this.time.duration = duration;
         },
-
         timeSelected() {
-            this.$emit('timeSelected');
-        }
-    }
+            this.setTime(this.time);
+        },
+    },
 }
 </script>
-
-<style>
-
-.vdp-datepicker__calendar {
-  width: 100%;
-  border: 0px;
-  margin-top: 10px;
-}
-
-</style>
 
 <style scoped>
     * {
         font-family: "Archivo"
     }
-    .card-img-top {
-      border-top-left-radius: 0px;
-      border-top-right-radius: 0px;
-    }
-
-    .tarjeta {
-        width: 100%;
-        box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, .2);
-    }
-
-    .artistImage {
-        object-fit: cover;
-        max-height: 200px;
-    }
-
-    .cuerpoTarjeta {
-        display: flex;
-        align-items: center;
-    }
-
-    .leftContent {
-        text-align: left;
-        overflow: auto;
-    }
-
-    .artistName {
-        font-size: 32px;
-        margin-bottom: 0px;
-        padding-bottom: 0px;
-        word-wrap: break-word;
-    }
-
-    .artistGenres {
-        color: #187FE6;
-        font-size: 18px;
-        word-wrap: break-word;
-    }
-
-    .rightContent {
-        padding-left: 20px;
-        margin-left: auto;
-        margin-right: 0px;
-    }
-
-    .price {
-        font-size: 35px;
-        margin-bottom: 0px;
-        color: #187FE6;
-    }
+    
 
     .continueButton {
         font-size: 22px;
@@ -180,27 +106,18 @@ export default {
         .sliderButton {
             padding-top: 5%;
             margin-right: 3%;
-            margin-left: 3%;
+            margin-left: 5%;
         }
     }
 
     @media (min-width:768px)  {
-        .tarjeta {
-            min-width: 335px;
-            width: 25%;
-
-            border-radius: 10px;
-            box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, .2);
-            margin-right: 10px;
-        }
-
-        .artistImage {
-            border-radius: 10px 10px 0px 0px;
-        }
+        
 
         .sliderButton  {
             margin-left: 5%;
-            width: 40%;
+            width: 100%;
+            max-width: 400px;
+            min-width: 300px;
             margin-top: 0%;
             padding-top: 7%;
             padding-left: 5%;
@@ -223,8 +140,8 @@ export default {
             margin-top: 5%;
             text-align: center;
             padding: 15px;
-            margin-left: 10%;
-            margin-right: 10%;
+            margin-left: 30%;
+            margin-right: 30%;
             margin-top:0%;
         }
 

@@ -65,7 +65,8 @@ export default {
         },
         nextStepDescription: function(){
             this.description = arguments[0];
-            this.createOffers();
+            this.nextStep();
+            //this.createOffers();
         },
 
         createOffers: function(){
@@ -92,7 +93,13 @@ export default {
             });
 
         }
-    }
+    },
+
+    beforeMount: function() {
+        if (!this.gsecurity.hasRole('CUSTOMER')) {
+            this.$router.push({name: "error"});
+        }
+    },
 }
 </script>
 

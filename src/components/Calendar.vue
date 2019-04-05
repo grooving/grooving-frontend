@@ -6,8 +6,13 @@
 
 <script>
 
+var today = new Date();
 var yesterday = new Date();
-yesterday.setDate(yesterday.getDate()-1);
+yesterday.setFullYear(today.getFullYear(), today.getMonth(), today.getDate() - 1)
+yesterday.setHours(23)
+yesterday.setMinutes(59)
+yesterday.setSeconds(59)
+yesterday.setMilliseconds(999)
 
 export default {
     name: "Calendar",

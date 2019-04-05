@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Index.vue'
-import ArtistsList from './views/ArtistsList.vue'
+import ArtistSearch from './views/ArtistSearch.vue'
 import OffersList from './views/OffersList.vue'
 import DateSelection from './views/DateSelection.vue'
 import TimeSelection from './views/TimeSelection.vue'
@@ -19,6 +19,9 @@ import PaymentConfirmation from './views/PaymentConfirmation.vue'
 import PersonalInfo from './views/PersonalInfo.vue'
 import ErrorView from './views/ErrorView.vue'
 import MakeOffer from './views/MakeOffer.vue'
+import CustomerInfo from './views/CustomerInfo.vue'
+import TopArtists from './views/TopArtists.vue'
+import EditPortfolio from './views/EditPortfolio.vue'
 
 Vue.use(Router)
 
@@ -30,17 +33,9 @@ export default new Router({
       component: Home
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    },    
-    {
       path: '/artist_search',
       name: 'artist_search',
-      component: ArtistsList
+      component: ArtistSearch
     },
     {
       path: '/offers',
@@ -48,44 +43,9 @@ export default new Router({
       component: OffersList
     },
     {
-      path: '/dateSelection/:artistId',
-      name: 'dateSelection',
-      component: DateSelection
-    },
-    {
-      path: '/timeSelection',
-      name: 'timeSelection',
-      component: TimeSelection
-    },
-    {
       path: '/offerDetails/:offerId',
       name: 'offerDetails',
       component: OfferDetails
-    },
-    {
-      path: '/addressInput',
-      name: 'addressInput',
-      component: AddressInput
-    },
-    {
-      path: '/eventInput',
-      name: 'eventInput',
-      component: EventInput
-    },
-    {
-      path: '/hiringType',
-      name: 'hiringType',
-      component: TypeOfHiring
-    },
-    {
-      path: '/paymentSelector',
-      name: 'paymentSelector',
-      component: PaymentSelector
-    },
-    {
-      path: '/payment',
-      name: 'payment',
-      component: Payment
     },
     {
       path: '/acceptedOffer/:offerId',
@@ -96,11 +56,6 @@ export default new Router({
       path: '/showPortfolio/:artistId',
       name: 'showPortfolio',
       component: Portfolio
-    },
-    {
-      path: '/sentOffer',
-      name: 'sentOffer',
-      component: SentOffer
     },
     {
       path: '/receivePayment',
@@ -118,14 +73,70 @@ export default new Router({
       component: PersonalInfo
     },
     {
-      path: '/error',
+      path: '/makeOffer/:artistId',
+      name: 'makeOffer',
+      component: MakeOffer
+    },
+    {
+      path: '/customerInfo',
+      name: 'customerInfo',
+      component: CustomerInfo,
+      props: true,
+    },
+    {
+      path: '*',
       name: 'error',
       component: ErrorView
     },
     {
-      path: '/makeOffer/:artistId',
-      name: 'makeOffer',
-      component: MakeOffer
-    }
+      path: '/topArtists',
+      name: 'topArtists',
+      component: TopArtists,
+    },
+    {
+      path: '/editPortfolio/:artistId',
+      name: 'editPortfolio',
+      component: EditPortfolio,
+    },
+    {
+      path: '/hiringType/:artistId',
+      name: 'hiringType',
+      component: TypeOfHiring,
+    },
+    {
+      path: '/dateSelection/:artistId',
+      name: 'dateSelection',
+      component: DateSelection,
+    },
+    {
+      path: '/timeSelection/:artistId',
+      name: 'timeSelection',
+      component: TimeSelection,
+    },
+    {
+      path: '/eventInput/:artistId',
+      name: 'eventInput',
+      component: EventInput,
+    },
+    {
+      path: '/addressInput/:artistId',
+      name: 'addressInput',
+      component: AddressInput,
+    },
+    {
+      path: '/paymentSelector/:artistId',
+      name: 'paymentSelector',
+      component: PaymentSelector,
+    },
+    {
+      path: '/payment/:artistId',
+      name: 'payment',
+      component: Payment,
+    },
+    {
+      path: '/sentOffer/',
+      name: 'sentOffer',
+      component: SentOffer,
+    },
   ]
 })

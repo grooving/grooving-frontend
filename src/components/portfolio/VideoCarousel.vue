@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div v-if="videosInfo.length != 0" class="container-fluid">
       <div class="owl-wrapper horizontal-center">
           <div class="row" style="padding-bottom: 15px">
             <div class="col-sm-12 col-md-8 horizontal-center">
