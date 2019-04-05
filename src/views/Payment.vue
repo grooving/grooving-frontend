@@ -35,13 +35,24 @@ export default {
         return {
             gsecurity: GSecurity,
             creditCard: {
-                number, name, month, year, cvv, 
+                numbe: undefined, 
+                name: undefined, 
+                month: undefined, 
+                year: undefined, 
+                cvv: undefined, 
             },
             date: {
-                now, startHour, duration,
+                now: undefined, 
+                startHour: undefined, 
+                duration: undefined,
             },
             offer: {
-                artistId, hiringType, location, zipcode, street, description,
+                artistId: undefined, 
+                hiringType: undefined, 
+                location: undefined, 
+                zipcode: undefined, 
+                street: undefined, 
+                description: undefined,
             },
             artistData: {
                 artistId: undefined,
@@ -134,6 +145,7 @@ export default {
         },
     },
     mounted() {
+
         this.artistData.artistId = this.$store.getters.offerArtist.artistId;
         this.artistData.artisticName = this.$store.getters.offerArtist.artisticName;
         this.artistData.main_photo = this.$store.getters.offerArtist.main_photo;
@@ -143,7 +155,7 @@ export default {
 
         this.nextStep = '/eventInput/' + this.artistData.artistId;
 
-        console.log(this.totalPrice);
+        
     },
     created() {
         // Retreive store credentials
