@@ -6,10 +6,10 @@ export default{
     offer: '/offer/',
     artistOffers: '/artist/offers/',
     customerOffers: '/customer/offers/',
-    offer: '/offer/',
     customerPersonalInformation: '/customer/personalInformation/',
     artistPersonalInformation: '/artist/personalInformation/',
     paymentCode:'/paymentCode/',
-    portfolio: '/portfolio/'
+    portfolio: '/portfolio/',
+    artistPayPackage: '/artist/paymentPackages/',
     
 }

@@ -124,11 +124,6 @@ export default new Router({
       component: AddressInput,
     },
     {
-      path: '/eventInput/:artistId',
-      name: 'eventInput',
-      component: EventInput,
-    },
-    {
       path: '/paymentSelector/:artistId',
       name: 'paymentSelector',
       component: PaymentSelector,

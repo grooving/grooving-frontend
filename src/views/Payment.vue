@@ -7,20 +7,11 @@
         <p>Error en el mes</p>-->
     </div>
     <div class="everything">
-        <div class="tarjeta">
-            <a v-bind:href="artistURI"><img v-bind:src="artistImage" class="card-img-top artistImage" alt="Artist's Image"></a>
-            <div class="card-body cuerpoTarjeta">
-                <div class="leftContent">
-                    <h5 class="card-title artistName">{{ artistName }}</h5>
-                    <span class="card-text artistGenres">{{ genresToString() }}</span>
-                </div>
-                <div class="rightContent">
-                    <p class="price">{{ price }}</p>
-                </div>
-            </div>
+        <div class="artistCard"><ArtistCard :artistName="this.artistData.artisticName" :artistImage="this.artistData.main_photo" 
+            :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.totalPrice"/>
         </div>
         <div class="paymentDiv">
-          <div class="creditCardPayment"><CreditCardPayment @finishPayment="gpay" /></div>
+          <div class="creditCardPayment" style="min-width:400px;"><CreditCardPayment @finishPayment="gpay" /></div>
         </div>
     </div>
 </div>
@@ -28,80 +19,48 @@
 
 <script>
 import CreditCardPayment from '@/components/makeOffer/CreditCardPayment.vue'
+import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
 import { mapGetters } from 'vuex';
-import axios from 'axios';
 
 export default {
-  name: 'payment',
-  computed: mapGetters(['offerAddress', 'offerDate', 'offer']),
-  components: {
-    CreditCardPayment
-  },
-  data () {
-      return {
-          gsecurity: GSecurity,
-          creditCard: {
-              number, name, month, year, cvv, 
-          },
-          date: {
-              now, startHour, duration,
-          },
-          offer: {
-              artistId, hiringType, location, zipcode, street, description,
-          },
-      }
-  },
-  props: {
-        artistURI: {
-            type: String,
-            default: '#'
-        },
-        artistImage: {
-            type: String,
-            default: 'http://www.tiumag.com/wp-content/uploads/rosalia-2018-2-705x564.jpg',
-        },
-        artistName: {
-            type: String,
-            default: 'ROSALÍA'
-        },
-        artistGenres: {
-            type: Array,
-            default: ['Pop', 'Flamenco']
-        },
-        continueURI: {
-            type: String,
-            default: '#'
-        },
-        price: {
-          type: String,
-          default: '$63.00/h'
-        },
-        errors: {
-            type: Boolean,
-            default: false
+    name: 'payment',
+    computed: mapGetters(['offerAddress', 'offerDate', 'offer', 'offerArtist', 'offerFarePack']),
+    components: {
+        CreditCardPayment, ArtistCard
+    },
+    data () {
+        return {
+            gsecurity: GSecurity,
+            creditCard: {
+                number, name, month, year, cvv, 
+            },
+            date: {
+                now, startHour, duration,
+            },
+            offer: {
+                artistId, hiringType, location, zipcode, street, description,
+            },
+            artistData: {
+                artistId: undefined,
+                artisticName: undefined,
+                main_photo: undefined, 
+                genres: undefined,
+            },
+            totalPrice: undefined,
+            nextStep: undefined,
+            farePackageId: undefined,
         }
     },
-
-    methods: {
-        genresToString() {
-
-            var res = "";
-            var i = 0;
-
-            for (i = 0; i < this.artistGenres.length; i++) { 
-                if (i != this.artistGenres.length - 1) {
-                    res += this.artistGenres[i] + ", ";
-                } else {
-                    res += this.artistGenres[i];
-                }
+    props: {
+            errors: {
+                type: Boolean,
+                default: false
             }
-
-            return res;
         },
-
+    methods: {
         gpay(creditCard) {
 
             this.creditCard = Array();
@@ -123,7 +82,7 @@ export default {
             this.date.now = this.$store.getters.offerDate.date,
             this.date.duration = this.$store.getters.offerDate.duration;
 
-            console.log(this.creditCard)
+            this.farePackageId = this.$store.getters.offerFarePack.packageId;
 
             var authorizedGAxios = GAxios;
             var GAxiosToken = this.gsecurity.getToken();
@@ -141,7 +100,7 @@ export default {
                 'description': this.offer.description,
                 'date': this.date.now + 'T' + this.date.startHour + ':00',
                 'hours': this.date.duration,
-                'paymentPackage_id': 2,
+                'paymentPackage_id': this.farePackageId,
                 'eventLocation_id' : 1,
                 'transaction': {
                     'holder': this.creditCard.name,
@@ -174,6 +133,18 @@ export default {
 
         },
     },
+    mounted() {
+        this.artistData.artistId = this.$store.getters.offerArtist.artistId;
+        this.artistData.artisticName = this.$store.getters.offerArtist.artisticName;
+        this.artistData.main_photo = this.$store.getters.offerArtist.main_photo;
+        this.artistData.genres = this.$store.getters.offerArtist.genres;
+
+        this.totalPrice = this.$store.getters.offer.totalPrice;
+
+        this.nextStep = '/eventInput/' + this.artistData.artistId;
+
+        console.log(this.totalPrice);
+    },
     created() {
         // Retreive store credentials
         this.gsecurity = GSecurity;
@@ -185,90 +156,13 @@ export default {
         
         }
     },
+
 }
 </script>
-
-<style>
-
-.vdp-datepicker__calendar {
-  width: 100%;
-  border: 0px;
-  margin-top: 10px;
-}
-
-</style>
 
 <style scoped>
     * {
         font-family: "Archivo"
-    }
-    .card-img-top {
-      border-top-left-radius: 0px;
-      border-top-right-radius: 0px;
-    }
-
-    .tarjeta {
-        width: 100%;
-        box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, .3);
-    }
-
-    .artistImage {
-        object-fit: cover;
-        max-height: 200px;
-    }
-
-    .cuerpoTarjeta {
-        display: flex;
-        align-items: center;
-    }
-
-    .leftContent {
-        text-align: left;
-        overflow: auto;
-    }
-
-    .artistName {
-        font-size: 32px;
-        margin-bottom: 0px;
-        padding-bottom: 0px;
-        word-wrap: break-word;
-    }
-
-    .artistGenres {
-        color: #187FE6;
-        font-size: 18px;
-        word-wrap: break-word;
-    }
-
-    .rightContent {
-        padding-left: 20px;
-        margin-left: auto;
-        margin-right: 0px;
-    }
-
-    .price {
-        font-size: 35px;
-        margin-bottom: 0px;
-        color: #187FE6;
-    }
-
-    .continueButton {
-        font-size: 22px;
-                
-        border: none;
-        border-radius: 30px;
-        width: 65%;
-
-        background-image: linear-gradient(to right, #00fb82, #187fe6);
-    }
-
-    .continueButton:hover{
-        background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
-    }
-
-    .continueButtonDiv {
-        margin-top: 30px;
-        margin-bottom: 10%;
     }
 
     .title {
@@ -285,36 +179,10 @@ export default {
             height: 100%;
             padding-top: 5%;
         }
-
         
     }
 
     @media (min-width:768px)  {
-
-        .tarjeta {
-            min-width: 335px;
-            width: 25%;
-            border-radius: 10px;
-            box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, .3);
-            margin-right: 10px;
-        }
-
-        .calendarButton  {
-            margin-left: 5%;
-            width: 50%;
-            margin-top: 0%;
-            margin-right: 0%;
-            display: inline-block;
-        }
-      
-        .continueButtonDiv {
-            margin-top: 15px;
-        }
-
-
-        .artistImage{
-            border-radius: 10px 10px 0px 0px;
-        }
       
         .everything {
             display: flex;
@@ -323,8 +191,8 @@ export default {
             margin-top: 5%;
             text-align: center;
             padding: 15px;
-            margin-left: 10%;
-            margin-right: 10%;
+            margin-left: 35%;
+            margin-right: 35%;
             margin-top:0%;
         }
         .title {
