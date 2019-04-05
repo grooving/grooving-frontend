@@ -1,10 +1,16 @@
 <template>
   <div>
-    <EditSubmenu @saveClicked="savePortfolio()" />
-    <EditArtistInfo />
-    <EditImageCarousel />
-    <EditVideoCarousel />
-    <EditAvailableDates />
+    <form v-on:submit.prevent="savePortfolio()">
+      <EditSubmenu :artistId="artistId" />
+      <div v-if="errors" class="validationErrors vertical-center">
+        <p>Sorry! Something went wrong. Try again later.</p>
+      </div>
+      <EditArtistInfo />
+
+      <EditImageCarousel :photosInfo="d_portfolioImages" :key="updateImagesKey" />
+      <EditVideoCarousel :videosInfo="d_portfolioVideos" :key="updateVideosKey" />
+      <EditAvailableDates />
+    </form>
   </div>
 </template>
 
@@ -15,6 +21,7 @@ import EditArtistInfo from '@/components/portfolio/EditArtistInfo.vue'
 import EditImageCarousel from '@/components/portfolio/EditImageCarousel.vue';
 import EditVideoCarousel from '@/components/portfolio/EditVideoCarousel.vue';
 import EditAvailableDates from '@/components/portfolio/EditAvailableDates.vue';
+
 import GSecurity from '@/security/GSecurity.js'
 import GAxios from '@/utils/GAxios.js'
 import endpoints from '@/utils/endpoints.js'
@@ -32,6 +39,119 @@ export default {
     EditVideoCarousel,
     EditAvailableDates,
   },  
+
+  data: function(){
+    
+    return{
+      gsecurity: GSecurity,
+      updateVideosKey: 0,
+      updateImagesKey: 0,
+      artistId: -1,
+      errors: false,
+
+      // Artist Info
+      d_portfolioBanner: '',
+      d_portfolioMainPhoto: '',
+      d_portfolioArtisticName:'',
+      d_portfolioBiography: '',
+      d_portfolioGenres: Array(),
+
+      // Carousel
+      d_portfolioImages: [], 
+      d_portfolioVideos: [],  
+
+      //Calendar
+      datos: Array(),
+      d_portfolioDays: Array(),
+    }
+  },
+
+  methods: {
+
+    // Given a carousel-dictionary, returns an array consisting of the 
+    // URLs used on the carousel
+    extractURLS: function(collection, key){
+      var res = Array();
+      
+      for(var i = 0; i < collection.length; i++)
+        res.push(collection[i][key])
+
+      return res;
+    },
+
+    // Loads portfolio data
+    retreivePortfolio: function(){
+    
+      GAxios.get(endpoints.portfolio + this.artistId + "/")
+      .then(response => {
+          var portfolio = response.data;
+
+          this.d_portfolioBanner = portfolio.banner;
+          this.d_portfolioArtisticName = portfolio.artisticName;
+          this.d_portfolioMainPhoto = portfolio.main_photo;
+          this.d_portfolioBiography = portfolio.biography;
+
+          // Genres
+          var genres = portfolio.artisticGenders;
+          
+          for(var i = 0; i < genres.length; i++){
+            var genre = genres[i];
+            this.d_portfolioGenres.push(genre);
+          }
+          
+          // Images
+          var pImages = portfolio.images;
+
+          for(var i = 0; i < pImages.length; i++){
+            var image = pImages[i];
+            this.d_portfolioImages.push({id:i, imageURL:image});
+          }
+
+          this.updateImagesKey += 1;
+
+          // Videos
+          var pVideos = portfolio.videos;
+
+          for(var i = 0; i < pVideos.length; i++){
+            var video = pVideos[i];
+            this.d_portfolioVideos.push({id:i, videoURL:video}, );
+          }
+
+          this.updateVideosKey += 1;
+  
+      }).catch( () => {
+        this.errors = true;
+      });
+    },
+
+    savePortfolio: function(){
+
+      var authorizedGAxios = GAxios;
+      var GAxiosToken = this.gsecurity.getToken();
+      authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
+
+      let body = {
+        "id": this.artistId,
+        "artisticName": this.d_portfolioArtisticName,
+        "biography": this.d_portfolioBiography,
+        "banner": this.d_portfolioBanner,
+        "images": this.extractURLS(this.d_portfolioImages, 'imageURL'),
+        "videos": this.extractURLS(this.d_portfolioVideos, 'videoURL'),
+        "main_photo": this.d_portfolioMainPhoto,
+        "artisticGenders": ["Flamenco"]
+      }
+
+      authorizedGAxios.put(endpoints.portfolio + this.artistId + '/', body)
+      .then(response => {
+        console.log(response.data);
+        this.$router.push("/showPortfolio/1")
+      }).catch(ex => {
+          console.log(ex);
+          this.errors = true;
+      });
+
+    },
+  },
 
   props: {
     portfolioBanner: {
@@ -64,120 +184,31 @@ export default {
     }
   },
 
-  data: function(){
-    
-    return{
-      gsecurity: GSecurity,
-      updateVideosKey: 0,
-      d_portfolioBanner: '',
-      d_portfolioIcon: '',
-      d_portfolioName:'',
-      d_portfolioBiography: '',
-      d_portfolioImages: Array(),
-      d_portfolioVideos: Array(),
-      d_portfolioDays: Array(),
-      datos: Array(),
-    }
-  },
-
-  methods: {
-    savePortfolio: function(){
-      let body = {
-        "id": 3,
-        "artisticName": "Hacked",
-        "biography": "Bio<3",
-        "banner": "https://zdnet4.cbsistatic.com/hub/i/r/2018/10/27/a91f96dc-04e5-46dc-a888-e267718604bd/thumbnail/770x578/a11ffcb8d9a6b3e27fe1813afaa2ad0e/iphone-xr-in-hand.jpg",
-        "images": ["https://zdnet4.cbsistatic.com/hub/i/r/2018/10/27/a91f96dc-04e5-46dc-a888-e267718604bd/thumbnail/770x578/a11ffcb8d9a6b3e27fe1813afaa2ad0e/iphone-xr-in-hand.jpg"],
-        "videos": ["https://www.youtube.com/watch?v=tdyQ-ebzFgk"],
-        "main_photo": "https://zdnet4.cbsistatic.com/hub/i/r/2018/10/27/a91f96dc-04e5-46dc-a888-e267718604bd/thumbnail/770x578/a11ffcb8d9a6b3e27fe1813afaa2ad0e/iphone-xr-in-hand.jpg",
-        "artisticGenders": ["Music", "DJ"]
-      }
-
-      var authorizedGAxios = GAxios;
-      var GAxiosToken = this.gsecurity.getToken();
-      console.log('Este token ', GAxiosToken)
-      authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
-
-      authorizedGAxios.put(endpoints.portfolio + '1/', body)
-      .then(response => {
-        console.log(response.data);
-      }).catch(ex => {
-          console.log(ex);
-      });
-
-    }
+  created() {
+    // Retreive store credentials
+    this.gsecurity = GSecurity;
+    this.gsecurity.obtainSavedCredentials();
   },
   
-  mounted: function(){
+  beforeMount: function(){
     
-    var authorizedGAxios = GAxios;
-    authorizedGAxios.get(endpoints.portfolio+this.$route.params['artistId']+"/")
-      .then(response => {
-      		console.log(response)
-          var portfolio = response.data;
+    this.artistId = Number(this.$route.params['artistId']);
 
-          this.d_portfolioBanner = portfolio.banner;
-          this.d_portfolioName = portfolio.artisticName;
-          this.d_portfolioIcon = portfolio.artist.photo;
-          var media = portfolio.portfoliomodule_set;
-          var genres = portfolio.artisticGender;
+    // Check if the user is granted to access
+    if(!this.artistId || this.gsecurity.isAnonymous() || this.artistId != this.gsecurity.getId())
+      this.$router.push("/*");
 
-          for(var i = 0; i < genres.length; i++){
-            var genre = genres[i];
-            this.portfolioGenres.push(genre['name']);
-          }
-
-          var imgCounter = 0;
-          var vidCounter = 0;
-
-          for(var i = 0; i < media.length; i++){
-
-            var elementMedia = media[i];
-            
-            if(elementMedia['type'] == 'VIDEO'){
-              this.d_portfolioVideos.push({id:vidCounter, videoURL:elementMedia['link']});
-              vidCounter += 1;
-            }
-            if(elementMedia['type'] == 'PHOTO'){
-              this.d_portfolioImages.push({id:imgCounter, imageURL:elementMedia['link']});
-              imgCounter += 1;
-            }
-          }
-
-          this.d_portfolioDays = portfolio.calendar_set[0]['days'];
-          //alert(this.d_portfolioDays.length);
-
-          this.updateVideosKey += 1;
-          this.updateImagesKey += 1;
-                
-    });
-
-
-      var authorizedGAxios = GAxios;
-      if (this.gsecurity.isAuthenticated()) {
-        var GAxiosToken = this.gsecurity.getToken();
-        authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
-      }
-
-      authorizedGAxios.get('/artist' + endpoints.calendar + this.$route.params['artistId'] + '/')
-        .then(response => {
-            var calendar = response.data;
-            console.log(calendar[0].days)
-
-            this.datos.push({
-                availableDates: calendar[0].days,
-            })
-
-        }).catch(ex => {
-            console.log(ex);
-        });
-
-  }
+    this.retreivePortfolio();
+  },
 
 }
 </script>
 
 <style scoped>
+
+    *{
+        font-family: "Archivo"
+    }
 
   .imageCarousel{
     padding-top: 20px;
@@ -233,6 +264,17 @@ export default {
             box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, .5);
             margin: 0 auto;
         }
+    }
+
+
+    .validationErrors{
+        background-color:#f50057;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);
+        
+        color:white;
+        font-weight: bold;
+        height: 100%;
+        padding-top: 12px;
     }
 
 </style>

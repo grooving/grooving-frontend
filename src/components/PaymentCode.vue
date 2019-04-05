@@ -51,12 +51,14 @@ export default {
                 "paymentCode":code
     			}).then(response => {
                     console.log(response);
-                    //var userPicture = response.data.photo;
-                    //var userName = response.data.name;
-                    //var offerPrice = response.data.price;
-                    var offerID = response.data.offerId;
-                    
-                    this.$router.push('/paymentConfirmation/'+offerID);
+                    var userPicture = response.data.photo;
+                    var userName = response.data.name;
+                    var offerPrice = response.data.price;
+                    //var offerID = response.data.offerId;
+                    var arrayOffer = [userPicture, userName, offerPrice];
+
+                    this.$emit('offerDetails', arrayOffer);
+                    this.$router.push('/paymentConfirmation');
 	      		}).catch(ex => {
                     this.$emit('errorPayment', true);
 	      			console.log(ex);

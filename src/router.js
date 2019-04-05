@@ -63,7 +63,7 @@ export default new Router({
       component: ReceivePayment
     },
     {
-      path: '/paymentConfirmation/:offerId',
+      path: '/paymentConfirmation',
       name: 'paymentConfirmation',
       component: PaymentConfirmation
     },
@@ -94,7 +94,7 @@ export default new Router({
       component: TopArtists,
     },
     {
-      path: '/editPortfolio',
+      path: '/editPortfolio/:artistId',
       name: 'editPortfolio',
       component: EditPortfolio,
     },

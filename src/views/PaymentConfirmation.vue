@@ -1,16 +1,21 @@
 <template>
     <div class="everything">
+        
         <div class="tarjeta">
-            <a v-bind:href="customerURI"><img v-bind:src="customerImage" class="card-img-top customerImage" alt="Artist's Image"></a>
+            <a v-bind:href="customerURI">
+                <img v-if="!userPhoto" src="@/assets/defaultPhoto.png" class="card-img-top customerImage" alt="Artist's Image">
+                <img v-else v-bind:src="userPhoto" class="card-img-top customerImage" alt="Artist's Image">
+            </a>
             <div class="card-body cuerpoTarjeta cuerpoTarjetaTop">
                 <div class="leftContent">
-                    <h5 class="card-title customerName">{{ customerName }}</h5>
+                    <h5 class="card-title customerName">{{ this.userName }}</h5>
                 </div>
                 <div class="rightContent">
-                    <p class="price">{{ price }}</p>
+                    <p class="price">{{ this.offerPrice }}€</p>
                 </div>
+                <hr>
             </div>
-            <hr/>
+            <hr>
             <div class="card-body cuerpoTarjeta">
                 <div class="confirmation"><img class="tick" src="@/assets/img/approved_tick.png"/>
                     <p class="price">{{sentText}}</p>
@@ -25,13 +30,19 @@
     import GAxios from '../utils/GAxios.js'
     import GSecurity from '@/security/GSecurity.js';
     import endpoints from '@/utils/endpoints.js';
+    import { mapGetters } from 'vuex';
+    import {mapActions} from 'vuex';
 
     export default {
         name: 'PaymentConfirmation',
+        computed: mapGetters(['offer']),
         data: function() {
             return {
                 gsecurity: GSecurity,
                 gaxios: GAxios,
+                userName: '',
+                userPhoto: '',
+                offerPrice: ''
             }
         },
         props: {
@@ -56,62 +67,24 @@
                 default: '$156.00'
             },
         },
-        mounted: function(){
-    
-            var authorizedGAxios = GAxios;
-            authorizedGAxios.get(endpoints.portfolio+this.$route.params['artistId']+"/")
-            .then(response => {
-                    console.log(response)
-                var portfolio = response.data;
+        methods: {
+            ...mapActions(['setPaymentConfirmation']),
+        },
+        beforeMount() {
+            console.log("holita");
 
-                this.d_portfolioBanner = portfolio.banner;
-                this.d_portfolioName = portfolio.artisticName;
-                this.d_portfolioIcon = portfolio.main_photo;
-                this.d_portfolioBiography = portfolio.biography;
-                var genres = portfolio.artisticGenders;
-                
-                for(var i = 0; i < genres.length; i++){
-                    var genre = genres[i];
-                    this.portfolioGenres.push(genre);
-                }
-                
-                
-                var imageCounter = 0;
-                var pImages = portfolio.images;
+            var paymentConfirmation = this.$store.getters.paymentConfirmation;
+            if(!paymentConfirmation || !paymentConfirmation.userName){
+                this.$router.push("/error")
+            }
+            this.userName = this.$store.getters.paymentConfirmation.userName;
+            console.log(this.userName);
+            this.userPhoto = this.$store.getters.paymentConfirmation.userPhoto;
+            this.offerPrice = this.$store.getters.paymentConfirmation.offerPrice;
 
-
-                for(var i = 0; i < pImages.length; i++){
-                    var image = pImages[i];
-                    this.d_portfolioImages.push({id:imageCounter, imageURL:image});
-
-                }
-                this.updateImagesKey += 1;
-
-                var videoCounter = 0;
-                var pVideos = portfolio.videos;
-
-
-                for(var i = 0; i < pVideos.length; i++){
-                    var video = pVideos[i];
-                    this.d_portfolioVideos.push({id:videoCounter, videoURL:video});
-                    videoCounter = videoCounter+1;
-                }
-
-                this.updateVideosKey += 1;
-
-                
-
-                this.d_portfolioDays = portfolio.calendar_set[0]['days'];
-                //alert(this.d_portfolioDays.length);
-                console.log(this.d_portfolioImages)
-
-          
-          
-                
-    });
-
-
-    }
+            this.setPaymentConfirmation(undefined);
+            
+        }
     }   
 
 </script>

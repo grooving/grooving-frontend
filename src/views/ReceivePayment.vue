@@ -6,7 +6,7 @@
     <div class="title"><p>Receive your payments</p></div>
     <div class="everything">
         <div class="paymentSelect">
-          <div class="paymentOptions"><PaymentCode @errorPayment="showErrors" /></div>
+          <div class="paymentOptions"><PaymentCode @errorPayment="showErrors" @offerDetails="detailsOffer" /></div>
         </div>
     </div>
 </div>
@@ -15,6 +15,7 @@
 <script>
 import PaymentCode from '@/components/PaymentCode.vue'
 import GSecurity from '@/security/GSecurity.js';
+import {mapActions} from 'vuex';
 
 export default {
     name: 'receivePayment',
@@ -43,7 +44,16 @@ export default {
     methods: {
         showErrors(value){
             this.errors=value;
+        },
+        ...mapActions(['setPaymentConfirmation']),
+        detailsOffer(value){
+            console.log("HOLA");
+            console.log(value);
+
+            this.setPaymentConfirmation(value);
+
         }
+
     }
 }
 </script>

@@ -29,8 +29,8 @@
                     <div v-if="offerStatus !== 'PENDING' && offerStatus !== 'CONTRACT_MADE'" class="cardTextId">
                         <i class="material-icons iconOffer">bookmark</i><p style="word-break: break-all">{{statusMessage()}}</p>
                     </div>
-                    <div v-if="reason != ''" class="cardTextId">
-                       <p style="word-break: break-all"><span style="font-weight: bold;">Reason: </span> {{reason}}</p>
+                    <div v-if="reason !== '' && reason != null" class="cardTextId">
+                       <p style="word-break: break-all"><span style="font-weight: bold;">&nbsp;Reason: </span> {{reason}}</p>
                     </div>
                 </div>
                 <div class="collapse" v-bind:id="noHashtag()">
@@ -83,7 +83,6 @@
                 cancelledArtistMessage: 'The offer was canceled by the artist after being accepted.',
                 cancelledCustomerMessage: 'The offer was canceled by the customer after being accepted.',
                 paymentMessage: 'The payment has already been made.',
-                reason: '',
             }
         },
         
@@ -129,6 +128,10 @@
                 default: '',
             },
             artistId: {
+                type: String,
+                default: '',
+            },
+            reason: {
                 type: String,
                 default: '',
             }
