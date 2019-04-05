@@ -49,7 +49,7 @@ export default {
         },
         artistGenres: {
             type: Array,
-            default: ['Pop', 'PC Music', 'Alternative']
+            default: function() { return ['Pop', 'PC Music', 'Alternative']}
         },
         artistBanner: {
             type: String,

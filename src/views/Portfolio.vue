@@ -76,6 +76,7 @@ export default {
       gsecurity: GSecurity,
       artistId: -1,
       updateVideosKey: 0,
+      updateImagesKey: 0,
       d_portfolioBanner: '',
       d_portfolioIcon: '',
       d_portfolioName:'',

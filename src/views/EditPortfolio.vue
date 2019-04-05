@@ -1,8 +1,12 @@
 <template>
   <div>
-    <form  v-on:submit.prevent="savePortfolio()">
-      <EditSubmenu />
+    <form v-on:submit.prevent="savePortfolio()">
+      <EditSubmenu :artistId="artistId" />
+      <div v-if="errors" class="validationErrors vertical-center">
+        <p>Sorry! Something went wrong. Try again later.</p>
+      </div>
       <EditArtistInfo />
+
       <EditImageCarousel :photosInfo="d_portfolioImages" :key="updateImagesKey" />
       <EditVideoCarousel :videosInfo="d_portfolioVideos" :key="updateVideosKey" />
       <EditAvailableDates />
@@ -43,6 +47,7 @@ export default {
       updateVideosKey: 0,
       updateImagesKey: 0,
       artistId: -1,
+      errors: false,
 
       // Artist Info
       d_portfolioBanner: '',
@@ -82,7 +87,7 @@ export default {
           var portfolio = response.data;
 
           this.d_portfolioBanner = portfolio.banner;
-          this.d_portfolioName = portfolio.artisticName;
+          this.d_portfolioArtisticName = portfolio.artisticName;
           this.d_portfolioMainPhoto = portfolio.main_photo;
           this.d_portfolioBiography = portfolio.biography;
 
@@ -114,6 +119,8 @@ export default {
 
           this.updateVideosKey += 1;
   
+      }).catch( () => {
+        this.errors = true;
       });
     },
 
@@ -140,6 +147,7 @@ export default {
         this.$router.push("/showPortfolio/1")
       }).catch(ex => {
           console.log(ex);
+          this.errors = true;
       });
 
     },
@@ -198,6 +206,10 @@ export default {
 
 <style scoped>
 
+    *{
+        font-family: "Archivo"
+    }
+
   .imageCarousel{
     padding-top: 20px;
   }
@@ -252,6 +264,17 @@ export default {
             box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, .5);
             margin: 0 auto;
         }
+    }
+
+
+    .validationErrors{
+        background-color:#f50057;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);
+        
+        color:white;
+        font-weight: bold;
+        height: 100%;
+        padding-top: 12px;
     }
 
 </style>

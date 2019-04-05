@@ -7,7 +7,7 @@
             <h3 class="title"><strong>Video Showcase</strong></h3>
           </div>
           <div id="buttonContainer" class="col-4 vertical-center">
-            <button class="vertical-center addButton" @click="toggleImageURLInput">
+            <button ype="button" class="vertical-center addButton" @click="toggleImageURLInput">
               <i v-if="showAddURL" class="material-icons arrowIcon addURLButton">cancel</i>
               <i v-else class="material-icons arrowIcon addURLButton">add_circle</i>
             </button>

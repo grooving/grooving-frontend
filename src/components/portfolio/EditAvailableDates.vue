@@ -49,11 +49,11 @@ export default {
     props: {
         availableDates: {
             type: Array,
-            default: [
+            default: function() { return [
                 new Date(2019, 3, 29),
                 new Date(2019, 3, 30),
                 new Date(2019, 3, 28)
-            ],
+            ]},
         }
     },
     components: {

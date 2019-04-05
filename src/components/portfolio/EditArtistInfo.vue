@@ -1,9 +1,6 @@
 <template>
 
     <div class="content overlap">
-        <div v-if="errors === true" class="validationErrors vertical-center">
-            <p>Sorry! Something went wrong. Try again later.</p>
-        </div>
         <div class="bannerIcon">
             <img class="card-img-top banner" :src="artistBanner"/>       
         </div>
@@ -11,10 +8,10 @@
             <img class="card-img-top icon" :src="artistImage"/>
         </div>
         <div class="inputForm">
-        <input required class="form-control inputName" type="text" id="inputName" placeholder="Name" v-model="$parent.d_portfolioArtisticName">
+        <input required v-model="$parent.d_portfolioArtisticName" class="form-control inputName" type="text" id="inputName" placeholder="Name">
         </div>
         <div class="inputForm">
-        <span class="card-text artistGenres">{{ genresToString() }}</span>
+            <EditGenre />
         </div>
         <div class="inputForm">
             <textarea required v-model="$parent.d_portfolioBiography" class="form-control inputDescription" id="" rows="3" placeholder="Description"></textarea>
@@ -23,8 +20,13 @@
 </template>
 
 <script>
+import EditGenre from '@/components/portfolio/EditGenre.vue'
+
 export default {
     name: "EditArtistInfo",
+    components: {
+        EditGenre,
+    },
     props: {
         artistURI: {
             type: String,
@@ -40,7 +42,7 @@ export default {
         },
         artistGenres: {
             type: Array,
-            default: ['Pop', 'PC Music', 'Alternative']
+            default: function() { return ['Pop', 'PC Music', 'Alternative']}
         },
         artistBanner: {
             type: String,

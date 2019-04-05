@@ -6,7 +6,7 @@
                     <div class="col">
                         <div id="backButtonWrapper" class="btn buttonWrapper" style="float: left;">
                             <button>
-                                <router-link class="vertical-center buttonLinks" to="/showPortfolio">
+                                <router-link class="vertical-center buttonLinks" :to="'/showPortfolio/' +  artistId">
                                     <i class="material-icons arrowIcon">arrow_back</i>
                                 </router-link>
                             </button>
@@ -29,13 +29,19 @@
 </template>
 
 <script>
-
 export default {
     name: 'EditSubmenu',
 
     methods: {
         saveClicked: function(){
             this.$emit('saveClicked');
+        }
+    },
+
+    props:{
+        artistId:{
+            type: Number,
+            default: 0
         }
     }
 }
