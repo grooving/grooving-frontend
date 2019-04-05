@@ -134,7 +134,7 @@ export default new Router({
       component: Payment,
     },
     {
-      path: '/sentOffer/',
+      path: '/sentOffer/:artistId',
       name: 'sentOffer',
       component: SentOffer,
     },

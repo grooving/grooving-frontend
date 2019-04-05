@@ -9,7 +9,7 @@
         </div>
         <div class="calendarButton">
           <div class="calendar" style="width: 320px;"><Calendar @datePickerDate="calendarSelected" :availableDates="this.datos[0].availableDates"/></div>
-          <div class="continueButtonDiv" @click="dateSelected()" ><router-link v-bind:to="nextStep" class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></router-link></div>
+          <div class="continueButtonDiv" @click="dateSelected()" ><div class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div></div>
         </div>
     </div>
 </div>
@@ -46,7 +46,11 @@ export default {
           fecha: '',
       }
   },
-
+    created() {
+        // Retreive store credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+    },
   beforeMount: function() {
       var authorizedGAxios = GAxios;
       var GAxiosToken = this.gsecurity.getToken();
@@ -64,9 +68,6 @@ export default {
         }).catch(ex => {
             console.log(ex);
         });
-
-
-
   },
   mounted() {
 
@@ -79,11 +80,20 @@ export default {
 
         this.nextStep = '/timeSelection/' + this.artistData.artistId;
 
+         // Retreive store credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+        if(!this.$gsecurity.hasRole('CUSTOMER') || this.artistData.artistId != this.$route.params['artistId'] 
+            || !this.priceHour) {
+
+            console.log('Error')
+            location.replace("/#/*")
+        }
   },
     methods: {
         ...mapActions(['setDate']),
         dateSelected() {
-            this.setDate(this.fecha);
+            this.setDate(this.fecha).then(() => this.$router.push(this.nextStep));
         },
 
         calendarSelected(){

@@ -6,7 +6,7 @@
         <div class="artistCard"><ArtistCard 
             :artistName="this.artistData.artisticName" :artistImage="this.artistData.main_photo" 
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId"/></div>
-        <div class="hiringType"><HiringType @hiring="type" 
+        <div class="hiringType"><HiringType @hiring="type"
             :farePrice="this.farePackage.priceHour"  /></div>
     </div>
 </div>
@@ -27,6 +27,8 @@ export default {
     },
     data() {
         return {
+            gsecurity: GSecurity,
+            nextStep: undefined,
             artistData: Array(),
             farePackage: {
                 id: undefined, 
@@ -40,6 +42,9 @@ export default {
         ...mapActions(['setFarePackage']),
         type(type, artistId) {
             this.setHiring(type);
+            if(type == 'FARE') {
+                this.setFarePackage(this.farePackage).then(() => this.$router.push(this.nextStep));
+            }
         }
     },
     created() {
@@ -47,17 +52,16 @@ export default {
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
 
-        if(!this.$gsecurity.isAuthenticated()) {
-        console.log('Error')
-        location.replace("/#/*")
-        
+        if(!this.$gsecurity.hasRole('CUSTOMER')) {
+
+            console.log('Error')
+            location.replace("/#/*")
         }
     },
     beforeMount() {
         var authorizedGAxios = GAxios;
     authorizedGAxios.get(endpoints.portfolio+this.$route.params['artistId']+"/")
       .then(response => {
-      		console.log('Portfolio ' ,response)
           var portfolio = response.data;
           
           var genres = portfolio.artisticGenders;
@@ -76,8 +80,8 @@ export default {
               artisticName: portfolio.artisticName, 
               genres: portfolioGenres};
 
-          console.log('Datos artista ', this.artistData)
           this.setArtist(this.artistData);
+          this.nextStep = '/dateSelection/' + this.artistData.artistId;
 
         }).catch(ex => {
             console.log(ex);
@@ -85,7 +89,7 @@ export default {
 
     authorizedGAxios.get(endpoints.artistPayPackage+this.$route.params['artistId']+"/")
       .then(response => {
-      		console.log(response)
+          console.log(response)
           var paymentPackages = response.data;
           for(var i = 0; i< paymentPackages.length; i++) {
               var payPack = paymentPackages[i];
@@ -94,10 +98,6 @@ export default {
                 this.farePackage.priceHour = payPack.fare.priceHour;
               }
           }
-          
-          console.log('Datos fare package ' ,this.farePackage)
-          this.setFarePackage(this.farePackage);
-
         }).catch(ex => {
             console.log(ex);
         });

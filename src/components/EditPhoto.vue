@@ -14,31 +14,37 @@
                 <img class="profile_photo" src="@/assets/img/approved_tick.png" @click="showPhotoInput()"/>
              </div>
         </div></div>
-        <div v-if='editBanner' class="inputForm">
-            <input class="form-control inputBannerURL" type="text" id="inputBannerURL" 
-                placeholder="Add the URL of your new banner" :value="newBanner">
-        </div>
-        <div v-if='editPhoto' class="inputForm">
-            <input class="form-control inputPhotoURL" type="text" id="inputPhotoURL" 
-                placeholder="Add the URL of your new profile image" :value="newPhoto">
+        <div class="container-fluid horizontal-center">
+            <div id="topContainer" class="row">
+                <div class="col-sm-12 col-md-8 horizontal-center">
+                    <div v-if='editBanner' class="inputForm ">
+                        <input class="form-control inputBannerURL" type="text" id="inputBannerURL" 
+                            placeholder="Add the URL of your new banner" :value="newBanner">
+                    </div>
+                    <div v-if='editPhoto' class="inputForm">
+                        <input class="form-control inputPhotoURL" type="text" id="inputPhotoURL" 
+                            placeholder="Add the URL of your new profile image" :value="newPhoto">
+                    </div>
+
+                    <div id="urlForm" class="row py-2" v-if="editPhoto">
+                    <div class="col-12 vertical-center">
+                        <input @keypress.enter="add()" type="text" v-model="newPhoto" class="form-control" 
+                            placeholder="Add the URL of your new profile image" />
+                    </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div>
-            {{ offerAddress.location }}
         </div>
     </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 
 export default {
     name: "EditPhoto",
-    computed: mapGetters(['offerAddress']),
     props: {
-        artistURI: {
-            type: String,
-            default: '#'
-        },
         artistImage: {
             type: String,
             default: 'https://thefader-res.cloudinary.com/private_images/c_limit,w_1024/c_crop,h_481,w_924,x_0,y_99,f_auto,q_auto:eco/Charli-XCX-Pop2-Credit_Charlotte-Rutherford_aiuv0d/Charli-XCX-Pop2-Credit_Charlotte-Rutherford_aiuv0d.jpg',

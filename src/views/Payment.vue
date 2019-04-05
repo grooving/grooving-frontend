@@ -103,7 +103,7 @@ export default {
                 "name": this.offer.location,
                 "equipment": null,
                 "description": this.offer.description,
-                "address": this.offer.location,
+                "address": this.offer.street + ', ' + this.offer.zipcode,
                 "zone_id": 4
             }
 
@@ -140,9 +140,17 @@ export default {
             .catch((err) => {
                 console.log("Error while processing one of the requests")
                 console.log(err)
+            })
+            .then(()=> {
+                this.$router.push({path: this.nextStep})
+                    
             });
-
         },
+    },
+    created() {
+        // Retreive store credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
     },
     mounted() {
 
@@ -152,10 +160,16 @@ export default {
         this.artistData.genres = this.$store.getters.offerArtist.genres;
 
         this.totalPrice = this.$store.getters.offer.totalPrice;
+        this.offer.location = this.$store.getters.offerAddress.location;
 
-        this.nextStep = '/eventInput/' + this.artistData.artistId;
+        this.nextStep = '/sentOffer/' + this.artistData.artistId;
 
-        
+        if(!this.$gsecurity.hasRole('CUSTOMER') || this.artistData.artistId != this.$route.params['artistId'] 
+            || !this.offer.location) {
+                
+            console.log('Error')
+            location.replace("/#/*")
+        }        
     },
     created() {
         // Retreive store credentials
@@ -163,9 +177,8 @@ export default {
         this.gsecurity.obtainSavedCredentials();
 
         if(!this.$gsecurity.isAuthenticated()) {
-        console.log('Error')
-        location.replace("/#/*")
-        
+            console.log('Error')
+            location.replace("/#/*")
         }
     },
 

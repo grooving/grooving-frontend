@@ -63,21 +63,7 @@ export default {
     },
 
     methods: {
-        genresToString() {
-
-            var res = "";
-            var i = 0;
-
-            for (i = 0; i < this.artistGenres.length; i++) { 
-                if (i != this.artistGenres.length - 1) {
-                    res += this.artistGenres[i] + ", ";
-                } else {
-                    res += this.artistGenres[i];
-                }
-            }
-
-            return res;
-        }
+    
     }
 }
 </script>

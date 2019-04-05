@@ -17,12 +17,13 @@
 <script>
 import EventData from '@/components/makeOffer/EventData.vue'
 import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
+import GSecurity from '@/security/GSecurity.js';
 import {mapActions} from 'vuex';
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'EventInput',
-  computed: mapGetters(['offerArtist', 'offer']),
+  computed: mapGetters(['offerArtist', 'offer', 'offerAddress']),
   components: {
     EventData, ArtistCard
   },
@@ -34,10 +35,17 @@ export default {
               main_photo: undefined,
               genres: undefined,
           },
+          gsecurity: GSecurity,
           totalPrice: undefined,
+          address: undefined,
           nextStep: undefined,
       }
   },
+  created() {
+        // Retreive store credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+    },
   mounted() {
         this.artistData.artistId = this.$store.getters.offerArtist.artistId;
         this.artistData.artisticName = this.$store.getters.offerArtist.artisticName;
@@ -45,8 +53,16 @@ export default {
         this.artistData.genres = this.$store.getters.offerArtist.genres;
 
         this.totalPrice = this.$store.getters.offer.totalPrice;
+        this.address = this.$store.getters.offerAddress.location;
 
         this.nextStep = '/paymentSelector/' + this.artistData.artistId;
+
+        if(!this.$gsecurity.hasRole('CUSTOMER') || this.artistData.artistId != this.$route.params['artistId'] 
+            || !this.address) {
+                
+            console.log('Error')
+            location.replace("/#/*")
+        }
     },
     methods: {
         ...mapActions(['setEventDescription']),

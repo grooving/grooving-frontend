@@ -51,15 +51,15 @@ export default {
         },
         artistImage: {
             type: String,
-            default: 'http://www.tiumag.com/wp-content/uploads/rosalia-2018-2-705x564.jpg',
+            default: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/No_image_3x4.svg/1024px-No_image_3x4.svg.png',
         },
         artistName: {
             type: String,
-            default: 'ROSALÍA'
+            default: 'NO DATA'
         },
         artistGenres: {
             type: Array,
-            default: 'Pop, Flamenco'
+            default: 'Genre 1, Genre 2'
         },
         price: {
           type: String,

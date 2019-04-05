@@ -6,6 +6,7 @@
         <p>Sorry! Something went wrong. Try again later.</p>
       </div>
       <EditArtistInfo />
+      <EditPhoto :artistImage="this.d_portfolioMainPhoto" :artistBanner="this.d_portfolioBanner" :key="updatePhotosKey"/>
 
       <EditImageCarousel :photosInfo="d_portfolioImages" :key="updateImagesKey" />
       <EditVideoCarousel :videosInfo="d_portfolioVideos" :key="updateVideosKey" />

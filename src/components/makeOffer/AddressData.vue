@@ -1,25 +1,23 @@
 <template>
     <div class="content">
-    <form>
+    <form v-on:submit.prevent="addressDataSelected()">
         <div class="form-row">
             <div class="form-group col-12">
-                <input v-model="location" type="text" class="form-control" placeholder="Location">
+                <input v-model="street" type="text" class="form-control" placeholder="Street" required>
             </div>  
         </div>
         <div class="form-row">
             <div class="form-group col-12">
-                <input v-model="zipcode" type="text" class="form-control" placeholder="Zip code">
+                <input v-model="zipcode" type="number" class="form-control" placeholder="Zip code" required>
             </div>  
         </div>
         <div class="form-row">
             <div class="form-group col-12">
-                <input v-model="street" type="text" class="form-control" placeholder="Street">
+                <input v-model="location" type="text" class="form-control" placeholder="Location" required>
             </div>  
         </div>
-        <router-link v-bind:to="nextStep" class="continueButtonDiv" >
-            <div class="btn btn-primary continueButton" @click="addressDataSelected()">
-                <span class="continueText">CONTINUE</span></div></router-link>
-
+        <button class="btn btn-primary continueButton" >
+                <span class="continueText">CONTINUE</span></button>
     </form>
     </div>
 </template>
