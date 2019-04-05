@@ -96,14 +96,9 @@ export default {
 
   },
   
-<<<<<<< HEAD
-  beforeMount: function(){
-    
-=======
   mounted: function(){
     this.artistId = this.$route.params['artistId'];
 
->>>>>>> 0cc8899189f73daafb034e343b97eeb4c5860586
     var authorizedGAxios = GAxios;
     authorizedGAxios.get(endpoints.portfolio+this.$route.params['artistId']+"/")
       .then(response => {

@@ -195,11 +195,6 @@ export default {
     }
   },
 
-<<<<<<< HEAD
-
-      
-  }
-=======
   created() {
     // Retreive store credentials
     this.gsecurity = GSecurity;
@@ -216,7 +211,6 @@ export default {
 
     this.retreivePortfolio();
   },
->>>>>>> 0cc8899189f73daafb034e343b97eeb4c5860586
 
 }
 </script>

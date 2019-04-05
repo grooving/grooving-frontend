@@ -24,7 +24,7 @@
           </div>
           <div class="row contentCalendar">
               <div class="col-sm-12 col-md-8 horizontal-center">
-                  <Calendar class="availableDates" :availableDates="this.availableDates" :stringToDates="this.stringToDates"/>
+                    <div><vuejs-datepicker :value="model.date" v-model="model.date" :disabledDates="disabledDates"  :full-month-name="true" :inline="true"></vuejs-datepicker></div>
               </div>
           </div>
       </div>
@@ -34,49 +34,53 @@
 
 <script>
 
-import Calendar from '@/components/Calendar.vue';
+var today = new Date();
+var yesterday = new Date();
+yesterday.setFullYear(today.getFullYear(), today.getMonth(), today.getDate() - 1)
+yesterday.setHours(23)
+yesterday.setMinutes(59)
+yesterday.setSeconds(59)
+yesterday.setMilliseconds(999)
 
 export default {
-<<<<<<< HEAD
     name: "EditAvailableDates",
     data () {
         return {
             toggleAddURL:false,
-            availableDates: this.$attrs.availableDates,
             stringToDates: Array,
-            
-=======
-    name: "Calendar",
-    props: {
-        availableDates: {
-            type: Array,
-            default: function() { return [
-                new Date(2019, 3, 29),
-                new Date(2019, 3, 30),
-                new Date(2019, 3, 28)
-            ]},
->>>>>>> 0cc8899189f73daafb034e343b97eeb4c5860586
+            model: {
+                date: "",
+            },
+            disabledDates: {},
         }
     },
 
     props: {
+        availableDates: Array,
     },
 
     components: {
-        vuejsDatepicker, Calendar
+        vuejsDatepicker,
     },
 
     methods:{
         addRejectedDate: function (event) {
             var fecha = document.getElementById("inputFecha").value;
             this.availableDates.push(fecha);
-
+            
             var res = Array();
+            res.push(new Date(fecha));
 
-            for (var i = 0; i < this.availableDates.length; i++) { 
+            for (var i = 0; i < this.availableDates.length; i++) {
                 res.push(new Date(this.availableDates[i]));
             }
+
             this.stringToDates = res;
+
+            this.disabledDates = {
+                to: yesterday,
+                dates: this.stringToDates,
+            }
         },
         changeToggle: function(event) {
             if(this.toggleAddURL==false){
@@ -85,10 +89,26 @@ export default {
             else{
                 this.toggleAddURL=false;
             }
+        },
+        getFechas: function() {
+            return this.disabledDates;
         }
-        
-    }
+    },
 
+    created: function() {
+        var res = Array();
+
+        for (var i = 0; i < this.availableDates.length; i++) { 
+            res.push(new Date(this.availableDates[i]));
+        }
+
+        this.stringToDates = res;
+
+        this.disabledDates = {
+            to: yesterday,
+            dates: this.stringToDates,
+        }
+    },        
 }
 </script>
 
