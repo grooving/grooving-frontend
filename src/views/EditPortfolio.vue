@@ -9,7 +9,7 @@
 
       <EditImageCarousel :photosInfo="d_portfolioImages" :key="updateImagesKey" />
       <EditVideoCarousel :videosInfo="d_portfolioVideos" :key="updateVideosKey" />
-      <EditAvailableDates :availableDates="this.d_portfolioDays" />
+      <EditAvailableDates :availableDates="d_portfolioDays" :key="updateCalendatKey"/>
     </form>
   </div>
 </template>
@@ -26,7 +26,6 @@ import GSecurity from '@/security/GSecurity.js'
 import GAxios from '@/utils/GAxios.js'
 import endpoints from '@/utils/endpoints.js'
 
-var portfolioDays = [];
 
 export default {
   name: 'EditPortfolio',
@@ -46,6 +45,7 @@ export default {
       gsecurity: GSecurity,
       updateVideosKey: 0,
       updateImagesKey: 0,
+      updateCalendatKey: 0,
       artistId: -1,
       errors: false,
 
@@ -62,7 +62,7 @@ export default {
 
       //Calendar
       datos: Array(),
-      d_portfolioDays: Array(),
+      d_portfolioDays: [],
     }
   },
 
@@ -90,6 +90,8 @@ export default {
           this.d_portfolioArtisticName = portfolio.artisticName;
           this.d_portfolioMainPhoto = portfolio.main_photo;
           this.d_portfolioBiography = portfolio.biography;
+
+          
 
           // Genres
           var genres = portfolio.artisticGenders;
@@ -124,19 +126,24 @@ export default {
       });
 
       var authorizedGAxios = GAxios;
-      var GAxiosToken = this.gsecurity.getToken();
-      authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
+          var GAxiosToken = this.gsecurity.getToken();
+          authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
 
-      authorizedGAxios.get('/calendar/'+this.gsecurity.getId() +'/')
-        .then(response => {
-            var calendar = response.data;
-            console.log(calendar)
-            this.d_portfolioDays=calendar.days;
-      });
+          authorizedGAxios.get('/calendar/'+this.gsecurity.getId() +'/')
+            .then(response => {
+                var calendar = response.data;
+                console.log(calendar)
+                this.d_portfolioDays=calendar.days;
+                console.log(this.d_portfolioDays)
+
+                this.updateCalendatKey += 1;
+          });
+
+      
     },
 
     savePortfolio: function(){
-
+      
       var authorizedGAxios = GAxios;
       var GAxiosToken = this.gsecurity.getToken();
       authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
@@ -150,7 +157,12 @@ export default {
         "videos": this.extractURLS(this.d_portfolioVideos, 'videoURL'),
         "main_photo": this.d_portfolioMainPhoto,
         "artisticGenders": ["Flamenco"]
-      }
+      };
+
+      let body_calendar = {
+        "days": this.d_portfolioDays,
+        "portfolio":this.$route.params['artistId']
+      };
 
       authorizedGAxios.put(endpoints.portfolio + this.artistId + '/', body)
       .then(response => {
@@ -160,6 +172,17 @@ export default {
           console.log(ex);
           this.errors = true;
       });
+
+      authorizedGAxios.put(endpoints.calendar + this.artistId + '/', body_calendar)
+      .then(response => {
+        console.log(response.data);
+        this.$router.push("/showPortfolio/1")
+      }).catch(ex => {
+          console.log(ex);
+          this.errors = true;
+      });
+
+
 
     },
   },
