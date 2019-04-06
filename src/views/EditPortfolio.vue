@@ -169,7 +169,7 @@ export default {
       authorizedGAxios.put(endpoints.portfolio + this.artistId + '/', body)
       .then(response => {
         console.log(response.data);
-        this.$router.push("/showPortfolio/1")
+        this.$router.push("/showPortfolio/"+this.artistId)
       }).catch(ex => {
           console.log(ex);
           this.errors = true;
@@ -178,7 +178,7 @@ export default {
       authorizedGAxios.put(endpoints.calendar + this.artistId + '/', body_calendar)
       .then(response => {
         console.log(response.data);
-        this.$router.push("/showPortfolio/1")
+        this.$router.push("/showPortfolio/"+this.artistId)
       }).catch(ex => {
           console.log(ex);
           this.errors = true;

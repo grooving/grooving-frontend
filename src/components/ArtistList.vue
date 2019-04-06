@@ -3,7 +3,7 @@
     <h1 class="titleView">{{listTitle}}</h1>
     <div class="row">
       <div v-for="artist in artistas" :key="artist.artistURI" class="tarjeta col-12 col-md-6 col-xl-4">
-        <ArtistCard :artistImage="artist.artistImage" :artistName="artist.artistName" :artistGenres="artist.artistGenres" :artistURI="getArtistURI(artist.artistID)" :hireURI="getHireURI(artist.artistID)" />
+        <ArtistCard :artistImage="artist.artistImage" :artistName="artist.artistName" :artistGenres="artist.artistGenres" :artistId="artist.artistID" />
       </div>
     </div>
   </div>
@@ -12,9 +12,6 @@
 <script>
 import ArtistCard from '@/components/ArtistCard.vue';
 import GAxios from '@/utils/GAxios.js';
-
-const showPortfolioBaseURI = '/showPortfolio/';
-const hiringBaseURI = '/hiringType/';
 
 export default {
   name: 'ArtistsList',
@@ -35,16 +32,6 @@ export default {
     }
 
   },
-
-  methods:{
-    getArtistURI(artistID){
-      return showPortfolioBaseURI + artistID;
-    },
-
-    getHireURI(artistID){
-      return hiringBaseURI + artistID;
-    },
-  }
 }
 
 </script>
