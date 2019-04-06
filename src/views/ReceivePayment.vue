@@ -46,11 +46,13 @@ export default {
             this.errors=value;
         },
         ...mapActions(['setPaymentConfirmation']),
+        
         detailsOffer(value){
             console.log("HOLA");
             console.log(value);
 
             this.setPaymentConfirmation(value);
+
 
         }
 

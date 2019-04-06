@@ -12,7 +12,7 @@
                     <b-dropdown-divider class="divider"/>
                 </li>
                 <li class="nav-item section" v-if="gsecurity.hasRole('ARTIST')">
-                    <router-link class="nav-link" v-bind:to="'/showPortfolio/'+artistId + '/'" data-toggle="collapse" data-target="#sidebar">My Portfolio</router-link>
+                    <router-link class="nav-link" v-bind:to="'/showPortfolio/'+this.artistId + '/'" data-toggle="collapse" data-target="#sidebar">My Portfolio</router-link>
                     <b-dropdown-divider class="divider"/>
                 </li>
                 
@@ -39,8 +39,7 @@ export default {
         return{
             gsecurity: GSecurity,
             userFirstName: '',
-            artistId: '',
-            portfolioUrl: '/showPortfolio/'+ this.artistId + '/'
+            artistId: ''
         }
     },
     
@@ -52,7 +51,9 @@ export default {
 
         refreshGSecurityData: function() {
             this.userFirstName = this.gsecurity.getFirstName();
+            console.log(this.userFirstName);
             this.artistId = this.gsecurity.getId();
+            console.log(this.artistId);
         }
     },
 
