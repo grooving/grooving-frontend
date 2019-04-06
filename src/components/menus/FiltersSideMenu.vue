@@ -19,22 +19,64 @@
                 </div>
             </div>
             <hr />
-            <span>Other Options</span>
+            <div class="row filter-item">
+                <div class="col vertical-center">
+                    <span>Score </span>
+                </div>
+                <div class="col right-alignment">
+                    <button :class="buttonFilterStatus == 0 ? 'filterButtonDisabled' : 'filterButton'" class="vertical-center" style="height: 25px; float:right" @click="changeScoreFilter()">
+                    <div class="vertical-center filterButtonText" style="margin: 0 auto; color:white;">
+                        <strong><i style="float:right" class="material-icons">{{scoreFilterImage}}</i></strong>
+                    </div>
+                    </button> 
+                </div>
+            </div>
+            <hr />
+            <div class="row filter-item">
+                <div class="col vertical-center">
+                    <span>Zones</span>
+                </div>
+            </div>
+            <div class="row filter-item">
+                <b-form-select v-model="selectedZone" style="width:90%; margin:0 auto;" @change="changeZone()">
+                    <option :value="null">Please select an option</option>
+                    <option value="a">&nbsp;&nbsp;Option A</option>
+                    <option value="b">&nbsp;&nbsp;Option B</option>
+                    <option value="a">&nbsp;&nbsp;Option A</option>
+                    <option value="a">&nbsp;&nbsp;Option A</option>
+                    <option value="a">&nbsp;&nbsp;Option A</option>
+                    <option value="a">&nbsp;&nbsp;Option A</option>
+                    <option :value="null">Please select an option</option>
+                    <option value="a">&nbsp;&nbsp;Option A</option>
+                    <option value="a">&nbsp;&nbsp;Option A</option>
+                    <option value="a">&nbsp;&nbsp;Option A</option>
+                    <option value="a">&nbsp;&nbsp;Option A</option>
+                    <option value="a">&nbsp;&nbsp;Option A</option>
+                </b-form-select>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 export default {
+
     name:'FiltersSideMenu',
-    props:{
-        filters_data: Array
-    },
+
     data: function(){
         return{
             title: "Filter by",
+            buttonFilterStatus: 0,
+            selectedZone: undefined,
         }
     },
+
+    computed:{
+        scoreFilterImage(){
+            return this.buttonFilterStatus < 2 ? 'keyboard_arrow_up' : 'keyboard_arrow_down';
+        }
+    },
+
     methods:{
         onFiltersChange: function (event){
             this.$props.filters_data[event.target.id].selected = !this.$props.filters_data[event.target.id].selected;
@@ -48,9 +90,61 @@ export default {
                 }
             }
 
-            this.$emit('onFiltersChange', status);
+            // New filters, including Sort & Zones
+            var newStatus = Array();
+
+            newStatus.push(this.selectedZone);
+            newStatus.push(this.buttonFilterStatus);
+
+            this.$emit('onFiltersChange', status, newStatus);
+        },
+
+        changeScoreFilter: function(){
+            this.buttonFilterStatus = ++this.buttonFilterStatus % 3;
+            
+            var status = Array();
+
+            for(var key in this.$props.filters_data){
+                var value = this.$props.filters_data[key];
+
+                if(value.selected){
+                    status.push(value.id);
+                }
+            }
+
+            // New filters, including Sort & Zones
+            var newStatus = Array();
+
+            newStatus.push(this.selectedZone);
+            newStatus.push(this.buttonFilterStatus);
+
+            this.$emit('onFiltersChange', status, newStatus);
+        },
+
+        changeZone: function(){
+            var status = Array();
+
+            for(var key in this.$props.filters_data){
+                var value = this.$props.filters_data[key];
+
+                if(value.selected){
+                    status.push(value.id);
+                }
+            }
+
+            // New filters, including Sort & Zones
+            var newStatus = Array();
+
+            newStatus.push(this.selectedZone);
+            newStatus.push(this.buttonFilterStatus);
+
+            this.$emit('onFiltersChange', status, newStatus);
         }
-    }
+    },
+
+    props:{
+        filters_data: Array,
+    },
 }
 </script>
 
@@ -69,6 +163,39 @@ export default {
     .contenido{
         padding-top: 10px; 
         padding-bottom: 20px;
+    }
+
+    .filterButton {
+        font-size: 24px;
+        font-weight:bold;
+        
+        border: none;
+        border-radius: 30px;
+
+        background-image: linear-gradient(to right, #00fb82, #187fe6);
+    }
+
+    .filterButton:hover{
+        background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
+    }
+
+    .filterButtonDisabled {
+        font-size: 24px;
+        font-weight:bold;
+        
+        border: none;
+        border-radius: 30px;
+
+        background-image: linear-gradient(to right, #a2a2a2, #474747);
+    }
+
+    .filterButtonDisabled:hover{
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;
+        background-image: linear-gradient(to right, #515151, #232323) !important;
+    }
+
+    .filterButtonText {
+        padding: 0px 10px 0px 10px;
     }
 
     .right-alignment{

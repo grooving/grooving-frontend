@@ -3,34 +3,37 @@
         <form>
             <div class="form-row">
                 <div class="form-group col-12">
-                    <h5 class="card-title" style="font-weight:bold;font-size:30px;">Profile</h5>
+                    <span class="card-title" style="font-weight:bold;font-size:30px;margin-bottom:12px">Profile </span>
+                    <router-link v-bind:to="{name: 'editPersonalInfo', params: {}}" style="height: 28px; width: 28px; margin-bottom:12px;">
+                        <i class="material-icons iconOffer">create</i>
+                    </router-link>
                     <h6 class="card-subtitle mb-2 text-muted">Basic info of your Grooving account, like your name and email.</h6>
-                    <div style="width:100%;margin-top:25px;">
+                    <div style="width:100%;margin-top:25px;overflow:auto;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">FIRST NAME</p>
                         <p class="card-text" style="float:right;">{{name}}</p>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
-                    <div style="width:100%;margin-top:25px;">
+                    <div style="width:100%;margin-top:25px;overflow:auto;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">LAST NAME</p>
                         <p class="card-text" style="float:right;">{{surnames}}</p>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
-                    <div style="width:100%;margin-top:16px;">
+                    <div style="width:100%;margin-top:16px;overflow:auto;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">USERNAME</p>
                         <p class="card-text" style="float:right;">{{username}}</p>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
-                    <div style="width:100%;margin-top:16px;">
+                    <div style="width:100%;margin-top:16px;overflow:auto;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">PASSWORD</p>
                         <p class="card-text" style="float:right;">&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;</p>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
-                    <div style="width:100%;margin-top:16px;">
+                    <div style="width:100%;margin-top:16px;overflow:auto;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">EMAIL</p>
                         <p class="card-text" style="float:right;">{{email}}</p>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
-                    <div style="width:100%;margin-top:16px;">
+                    <div style="width:100%;margin-top:16px;overflow:auto;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">PHONE</p>
                         <p class="card-text" style="float:right;">{{phoneNumber}}</p>
                     </div>
@@ -69,6 +72,11 @@ export default {
 </script>
 
 <style scoped>
+
+    a.router-link-active {
+        color: #187fe6 !important;
+    }
+
     .content {
         padding: 10px;
     }
@@ -77,11 +85,21 @@ export default {
         margin-bottom: 0px;
     }
 
+    .iconOffer  {
+         font-size: 28px;
+         float: right;
+    }
+
     @media (max-width:767px)  {
         .content{
             padding-top: 5%;
             margin-right: 3%;
             margin-left: 3%;
+        }
+
+        .iconOffer  {
+            font-size: 50px;
+            float: right;
         }
     }
 

@@ -143,7 +143,6 @@ export default {
           
 
           this.d_portfolioDays = portfolio.calendar_set[0]['days'];
-          //alert(this.d_portfolioDays.length);
           console.log(this.d_portfolioImages)
 
           

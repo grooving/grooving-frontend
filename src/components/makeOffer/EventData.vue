@@ -41,7 +41,7 @@ export default {
 
 <style scoped>
     
-    input:hover{
+    textarea:hover{
         border-color: #187fe6;
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .3) !important;
     }
@@ -51,7 +51,7 @@ export default {
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .5) !important;
     }
 
-    input:focus{
+    textarea:focus{
         border-color: #00fb82;
         font-weight: semibold;
         color:black;

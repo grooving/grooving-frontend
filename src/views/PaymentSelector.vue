@@ -21,6 +21,7 @@
 <script>
 import PaymentOptions from '@/components/makeOffer/PaymentOptions.vue'
 import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
+import GSecurity from '@/security/GSecurity.js';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -37,7 +38,9 @@ export default {
                 main_photo: undefined,
                 genres: undefined,
             },
+            gsecurity: GSecurity,
             totalPrice: undefined,
+            address: undefined,
             nextStep: undefined,
         }
     },
@@ -46,6 +49,11 @@ export default {
             this.$emit('paymentSelected');
         }
     },
+    created() {
+        // Retreive store credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+    },
     mounted() {
         this.artistData.artistId = this.$store.getters.offerArtist.artistId;
         this.artistData.artisticName = this.$store.getters.offerArtist.artisticName;
@@ -53,8 +61,16 @@ export default {
         this.artistData.genres = this.$store.getters.offerArtist.genres;
 
         this.totalPrice = this.$store.getters.offer.totalPrice;
+        this.address = this.$store.getters.offerAddress.location;
 
         this.nextStep = '/payment/' + this.artistData.artistId;
+
+        if(!this.$gsecurity.hasRole('CUSTOMER') || this.artistData.artistId != this.$route.params['artistId'] 
+            || !this.address) {
+                
+            console.log('Error')
+            location.replace("/#/*")
+        }
     },
 
 }

@@ -12,7 +12,6 @@ const state = {
     },
     offer: {
         hiring: undefined,
-        artistId: undefined,
         totalPrice: undefined,
     },
     artist: {
@@ -30,10 +29,9 @@ const state = {
 const getters = {
     offerAddress: state => state.address,
     offerDate: state => state.date,
-    offerHour: state => state.hour,
-    offerFarePack: state => state.farePackage,
-    offerArtist: state => state.artist,
     offer: state => state.offer,
+    offerArtist: state => state.artist,
+    offerFarePack: state => state.farePackage,
 };
 
 const actions = {
@@ -53,12 +51,13 @@ const actions = {
         state.commit('setHiring', hiring)
     },
     setFarePackage (state, fareP) {
-        console.log(fareP);
         state.commit('setFarePackage', fareP)
     },
     setArtist (state, artist) {
-        console.log('Hi');
         state.commit('setArtist', artist)
+    },
+    setFinal (state) {
+        state.commit('setFinal')
     },
 };
 
@@ -77,6 +76,8 @@ const mutations = {
     setTime(state, time) {
         state.date.hour = time.start;
         state.date.duration = time.duration;
+
+        // Calculate offer total price
         var d = state.date.duration;
         var p = parseFloat(state.farePackage.priceHour);
         state.offer.totalPrice = d*p;
@@ -89,10 +90,42 @@ const mutations = {
         state.farePackage.priceHour = fareP.priceHour;
     },
     setArtist(state, artist) {
+
+        // Set artist data
         state.artist.artistId = artist.artistId;
         state.artist.artisticName = artist.artisticName;
         state.artist.main_photo = artist.main_photo;
         state.artist.genres = artist.genres;
+
+        // Reset store
+        state.farePackage.packageId = undefined;
+        state.farePackage.priceHour = undefined;
+        state.date.hour = undefined;
+        state.date.date = undefined;
+        state.date.duration = undefined;
+        state.offer.totalPrice = undefined;
+        state.offer.hiring = undefined;
+        state.address.zipcode = undefined;
+        state.address.location = undefined;
+        state.address.street = undefined;
+        state.address.description = undefined;
+
+    },
+    setFinal(state) {
+
+        // Reset store
+        state.farePackage.packageId = undefined;
+        state.farePackage.priceHour = undefined;
+        state.date.hour = undefined;
+        state.date.date = undefined;
+        state.date.duration = undefined;
+        state.offer.totalPrice = undefined;
+        state.offer.hiring = undefined;
+        state.address.zipcode = undefined;
+        state.address.location = undefined;
+        state.address.street = undefined;
+        state.address.description = undefined;
+
     },
 };
 

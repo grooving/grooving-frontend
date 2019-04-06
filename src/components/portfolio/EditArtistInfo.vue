@@ -1,12 +1,6 @@
 <template>
 
     <div class="content overlap">
-        <div class="bannerIcon">
-            <img class="card-img-top banner" :src="artistBanner"/>       
-        </div>
-        <div class="artistIcon">
-            <img class="card-img-top icon" :src="artistImage"/>
-        </div>
         <div class="inputForm">
         <input required v-model="$parent.d_portfolioArtisticName" class="form-control inputName" type="text" id="inputName" placeholder="Name">
         </div>
@@ -61,24 +55,6 @@ export default {
             default: true
         }
     },
-
-    methods: {
-        genresToString() {
-
-            var res = "";
-            var i = 0;
-
-            for (i = 0; i < this.artistGenres.length; i++) { 
-                if (i != this.artistGenres.length - 1) {
-                    res += this.artistGenres[i] + ", ";
-                } else {
-                    res += this.artistGenres[i];
-                }
-            }
-
-            return res;
-        }
-    }
 }
 </script>
 

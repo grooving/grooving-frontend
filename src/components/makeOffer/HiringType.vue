@@ -15,8 +15,8 @@
 
     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
       <div class="bodies">{{fareDescription}} {{farePrice}}€/h <br>
-           <router-link v-bind:to="artistURI" class="continueButtonDiv"><div @click="selectType('FARE')"
-            class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div></router-link>
+           <div class="continueButtonDiv"><div @click="selectType('FARE')"
+            class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div></div>
       </div>  
     </div>
   </div>
@@ -205,11 +205,6 @@ h2 {
     
 }
 
-.leftContent {
-    text-align: left;
-    overflow: auto;
-}
-
 .artistName {
     font-size: 32px;
     margin-bottom: 0px;
@@ -322,11 +317,6 @@ h2 {
     .cuerpoTarjeta {
         display: flex;
         align-items: center;
-    }
-
-    .leftContent {
-        text-align: left;
-        overflow: auto;
     }
 
     .artistName {

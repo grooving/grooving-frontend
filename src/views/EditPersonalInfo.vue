@@ -2,25 +2,24 @@
 <div class="prueba">
     <div class="everything">
         <div class="paymentSelect">
-          <div class="paymentOptions"><ProfileInfo :name="name" :surnames="userSurnames" :email="userEmail" :phoneNumber="userPhoneNumber" :username="username"/></div>
+          <div class="paymentOptions"><EditProfileInfo :name="name" :surnames="userSurnames" :email="userEmail" :phoneNumber="userPhoneNumber" :username="username"/></div>
         </div>
     </div>
 </div>
 </template>
 
 <script>
-import ProfileInfo from '@/components/ProfileInfo.vue';
+import EditProfileInfo from '@/components/EditProfileInfo.vue';
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
 
 export default {
-    name: 'PersonalInfo',
-
+    name: 'EditPersonalInfo',
     components: {
-        ProfileInfo
+        EditProfileInfo
     },
-
+    
     data: function() {
         return {
             gsecurity: GSecurity,
@@ -62,7 +61,7 @@ export default {
                         this.userSurnames = personalInformation['last_name'];
                         this.userEmail=personalInformation['email'];
                         this.userPhoneNumber = response.data.phone;
-                        this.username = personalInformation['username'];
+                        this.username = personalInformation['username'];                    
                 });
             
             }
@@ -81,7 +80,7 @@ export default {
                         this.userSurnames = personalInformation['last_name'];
                         this.userEmail=personalInformation['email'];
                         this.userPhoneNumber = response.data.phone;
-                        this.username = personalInformation['username'];
+                        this.username = personalInformation['username'];                    
                 });
             
             }

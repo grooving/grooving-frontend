@@ -8,8 +8,14 @@ export default{
     customerOffers: '/customer/offers/',
     customerPersonalInformation: '/customer/personalInformation/',
     artistPersonalInformation: '/artist/personalInformation/',
-    paymentCode:'/paymentCode/',
     portfolio: '/portfolio/',
-    artistPayPackage: '/artist/paymentPackages/',
-    
+    paymentPackages: '/artist/paymentPackages/',
+    paymentPackage: '/paymentPackage/',
+    custom: '/custom/',
+    registerCustomer: '/signupCustomer/',
+    registerArtist: '/signupArtist/',
+    customer: '/customer/',
+    artist: '/artist/',
+    paymentCode:'/paymentCode/',
+    artistPayPackage: '/artist/paymentPackages/', 
 }

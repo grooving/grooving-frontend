@@ -7,7 +7,7 @@
                     <h5 class="card-title artistName">{{ artistName }}</h5>
                     <span class="card-text artistGenres">{{ genresToString() }}</span>
                 </div>
-                <div v-if="gsecurity.hasRole('CUSTOMER')" class="rightContent">
+                <div v-if="gsecurity.hasRole('CUSTOMER') || !gsecurity.isAuthenticated()" class="rightContent">
                     <router-link v-bind:to="hireURI" class="btn btn-primary hireButton"><span class="hireText">HIRE</span></router-link>
                 </div>
             </div>
@@ -20,33 +20,27 @@ import GSecurity from '@/security/GSecurity.js';
 
 export default {
     name: "ArtistCard",
-    props: {
-        artistURI: {
-            type: String,
-            default: 'showPortfolio'
-        },
-        artistImage: {
-            type: String,
-            default: 'https://img.europapress.es/fotoweb/fotonoticia_20181107115306_1920.jpg',
-        },
-        artistName: {
-            type: String,
-            default: 'ROSALÍA'
-        },
-        artistGenres: {
-            type: Array,
-            default: ['Pop', 'Flamenco']
-        },
-        hireURI: {
-            type: String,
-            default: 'hiringType'
-        }
+
+    components: {
+
     },
+
     data: function(){
         return{
             gsecurity: GSecurity,
         }
     },
+
+    computed: {
+        hireURI: function() {
+            if (!this.gsecurity.isAuthenticated()) {
+                return 'newUser';
+            } else if (this.gsecurity.hasRole('CUSTOMER')) {
+                return 'makeOffer';
+            }
+        }
+    },
+    
     methods: {
         genresToString() {
 
@@ -63,7 +57,32 @@ export default {
 
             return res;
         }
-    }
+    },
+
+    props: {
+        artistURI: {
+            type: String,
+            default: '/showPortfolio'
+        },
+        artistImage: {
+            type: String,
+            default: 'https://img.europapress.es/fotoweb/fotonoticia_20181107115306_1920.jpg',
+        },
+        artistName: {
+            type: String,
+            default: 'ROSALÍA'
+        },
+        artistGenres: {
+            type: Array,
+            default: ['Pop', 'Flamenco']
+        },
+    },
+
+    created() {
+        // Retreive store credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+    },
 }
 </script>
 
@@ -72,13 +91,9 @@ export default {
         font-family: "Archivo"
     }
 
-    .tarjeta {
-        max-width: 400px;
-        width: 95%;
-        min-width: 290px;
-        margin: 0 auto !important;
-        border-radius: 20px;
-        box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, .2);
+    .artistGenres {
+        color: #187FE6;
+        font-size: 18px;
     }
 
     .artistImage {
@@ -89,32 +104,15 @@ export default {
         border-radius: 20px 20px 0px 0px;
     }
 
-    .cuerpoTarjeta {
-        display: flex;
-        align-items: center; 
-    }
-
-    .leftContent {
-        float: left;
-        text-align: left;
-        width: 65%;
-    }
-
     .artistName {
         font-weight: bold;
         font-size: 2rem;
         word-break: break-word;
     }
 
-    .artistGenres {
-        color: #187FE6;
-        font-size: 18px;
-    }
-
-    .rightContent {
-        float: right;
-        text-align: center;
-        padding-left: 20px;
+    .cuerpoTarjeta {
+        display: flex;
+        align-items: center; 
     }
 
     .hireButton {
@@ -133,6 +131,27 @@ export default {
 
     .hireText {
         padding: 0px 10px 0px 10px;
+    }
+
+    .leftContent {
+        float: left;
+        text-align: left;
+        width: 65%;
+    }
+
+    .rightContent {
+        float: right;
+        text-align: center;
+        padding-left: 20px;
+    }
+
+    .tarjeta {
+        max-width: 400px;
+        width: 95%;
+        min-width: 290px;
+        margin: 0 auto !important;
+        border-radius: 20px;
+        box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, .2);
     }
 
 </style>

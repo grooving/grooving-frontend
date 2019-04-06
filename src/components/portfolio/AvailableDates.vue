@@ -47,13 +47,9 @@ export default {
 
     methods: {
         addRejectedDate: function (event) {
-            alert("HOLA!!");
-
             var fecha = document.getElementById("inputFecha").value;
-            alert(fecha);
             var fecha2 = new Date(fecha);
 
-            alert(fecha2);
             rejectedDates.push(fecha2);
         }
   }

@@ -22,6 +22,15 @@ import MakeOffer from './views/MakeOffer.vue'
 import CustomerInfo from './views/CustomerInfo.vue'
 import TopArtists from './views/TopArtists.vue'
 import EditPortfolio from './views/EditPortfolio.vue'
+import NewUser from './views/NewUser.vue'
+import CustomerRegister from './views/CustomerRegister.vue'
+import ArtistRegister from './views/ArtistRegister.vue'
+import EditPersonalInfo from './views/EditPersonalInfo.vue'
+import RegisterConfirmation from './views/RegisterConfirmation.vue'
+import PriceSelector from './views/PriceSelector.vue'
+import HiringSettings from './views/HiringSettings.vue'
+import EditCustom from './views/EditCustom.vue'
+import CreateCustom from './views/CreateCustom.vue'
 
 Vue.use(Router)
 
@@ -84,6 +93,52 @@ export default new Router({
       props: true,
     },
     {
+      path: '/newUser',
+      name: 'newUser',
+      component: NewUser,
+    },
+    {
+      path: '/customerRegister',
+      name: 'customerRegister',
+      component: CustomerRegister,
+    },
+    {
+      path: '/artistRegister',
+      name: 'artistRegister',
+      component: ArtistRegister,
+    },
+    {
+      path: '/editPersonalInfo',
+      name: 'editPersonalInfo',
+      component: EditPersonalInfo,
+    },
+    {
+      path: '/registerConfirmation',
+      name: 'registerConfirmation',
+      component: RegisterConfirmation,
+    },
+    {
+      path: '/priceSelector',
+      name: 'priceSelector',
+      component: PriceSelector,
+    },
+    {
+      path: '/hiringSettings',
+      name: 'hiringSettings',
+      component: HiringSettings,
+    },
+    {
+      path: '/editCustom',
+      name: 'editCustom',
+      component: EditCustom,
+      props: true,
+    },
+    {
+      path: '/createCustom',
+      name: 'createCustom',
+      component: CreateCustom,
+    },
+    {
       path: '*',
       name: 'error',
       component: ErrorView
@@ -134,7 +189,7 @@ export default new Router({
       component: Payment,
     },
     {
-      path: '/sentOffer/',
+      path: '/sentOffer/:artistId',
       name: 'sentOffer',
       component: SentOffer,
     },

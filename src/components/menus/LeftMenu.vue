@@ -7,7 +7,7 @@
          <h2 class="title">Menu</h2>
             <ul class="navbar-nav mr-auto p-2 col align-self-center justify-content-center">
                 <li class="nav-item section">
-                    <router-link class="nav-link" to="artist_search" data-toggle="collapse" data-target="#sidebarleft" >Top Artists</router-link> 
+                    <router-link class="nav-link" to="/artist_search" data-toggle="collapse" data-target="#sidebarleft" >Top Artists</router-link> 
                     <b-dropdown-divider class="divider"/>
                 </li>
                 <li v-if="gsecurity.isAuthenticated()" class="nav-item section">
