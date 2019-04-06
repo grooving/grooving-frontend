@@ -1,40 +1,37 @@
 <template>
 
-    <div class="content overlap">
+    <div class="content overlap ">
+        <div class="card">
         <div class="bannerIcon">
             <img class="card-img-top banner" :src="artistBanner"/>
-            <div class="card-img-overlay " id="overBanner">
-                <img class="overBanner" src="@/assets/img/approved_tick.png" @click="showBannerInput()"/>
-             </div>       
+            <div class="card-img-overlay" style="top: -20px;">
+                <img class="profile_photo overBanner" src="@/assets/img/bin1.png" @click="showBannerInput()"/>
+             </div>
+        </div>
         </div>
         <div class="card">
         <div class="artistIcon">
             <img class="card-img-top icon" :src="artistImage"/>
              <div class="card-img-overlay" style="top: -20px;">
-                <img class="profile_photo" src="@/assets/img/approved_tick.png" @click="showPhotoInput()"/>
+                <img class="profile_photo"  src="@/assets/img/bin1.png" @click="showPhotoInput()"/>
              </div>
         </div></div>
-        <div class="container-fluid horizontal-center">
-            <div id="topContainer" class="row">
-                <div class="col-sm-12 col-md-8 horizontal-center">
+        <div >
+            <div >
+                <div >
                     <div v-if='editBanner' class="inputForm ">
-                        <input class="form-control inputBannerURL" type="text" id="inputBannerURL" 
-                            placeholder="Add the URL of your new banner" :value="newBanner">
-                    </div>
-                    <div v-if='editPhoto' class="inputForm">
-                        <input class="form-control inputPhotoURL" type="text" id="inputPhotoURL" 
-                            placeholder="Add the URL of your new profile image" :value="newPhoto">
+                        <input @keypress.prevent class="form-control" type="text"  
+                            placeholder="Add the URL of your new banner" v-model="$parent.d_portfolioBanner">
                     </div>
 
-                    <div id="urlForm" class="row py-2" v-if="editPhoto">
-                    <div class="col-12 vertical-center">
-                        <input @keypress.enter="add()" type="text" v-model="newPhoto" class="form-control" 
+                    <div class="inputForm" v-if="editPhoto">
+                        <input @keypress.prevent type="text" v-model="$parent.d_portfolioMainPhoto" class="form-control" 
                             placeholder="Add the URL of your new profile image" />
-                    </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <div>
         </div>
     </div>
@@ -45,6 +42,10 @@
 export default {
     name: "EditPhoto",
     props: {
+        artistURI: {
+            type: String,
+            default: '#'
+        },
         artistImage: {
             type: String,
             default: 'https://thefader-res.cloudinary.com/private_images/c_limit,w_1024/c_crop,h_481,w_924,x_0,y_99,f_auto,q_auto:eco/Charli-XCX-Pop2-Credit_Charlotte-Rutherford_aiuv0d/Charli-XCX-Pop2-Credit_Charlotte-Rutherford_aiuv0d.jpg',
@@ -73,6 +74,9 @@ export default {
         showBannerInput(){
             this.editBanner = true;
         }, 
+        add() {
+
+        }
     },
 
 }
@@ -82,6 +86,15 @@ export default {
     * {
         font-family: "Archivo"
     }
+    .card {
+        border: none;
+    }
+
+    .vertical-center{
+        align-items: center;  /*Aligns vertically center */
+        justify-content: center; /*Aligns horizontally center */
+    }
+
     .artistIcon{
         height: 75px;
     }
@@ -100,14 +113,19 @@ export default {
 
     }
 
+    .content {
+        margin-bottom: 20px;
+    }
+
     .overBanner {
-        background-color: grey; opacity:0.85; 
+        background-color: grey; opacity:0.80; 
         cursor: pointer; 
         height: 50px !important;
         width: 50px !important;
-        top: 11.5rem;
-        left: 0.7rem;
+        border-radius: 50%;
         float: right;
+        top: 6rem;
+        right: -0.5rem;
     }
 
     .bannerIcon img{
@@ -123,6 +141,8 @@ export default {
 
     .inputForm{
         margin-bottom: 10px;
+        margin-left: 5%;
+        margin-right: 5%;
     }
 
     input:hover{
@@ -139,26 +159,26 @@ export default {
     }
 
     .profile_photo {
-      background-color: grey; opacity:0.85; 
+      background-color: grey; opacity:0.80; 
       cursor: pointer; 
     }
 
     .rating span{
         font-size: 30px;
     }
-    
-    
-    
 
     @media (min-width: 800px){
 
+        .inputForm {
+            margin-left:18%;
+            margin-right:18%;
+        }
         .artistIcon img{
             border-radius: 100px;
             text-align: center;
             object-fit: cover;
             height: 10rem;
             width: 10rem;
-
             position: relative;
             z-index: 2;
             box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, .5); 
@@ -181,11 +201,15 @@ export default {
 
         }
 
-        #overBanner {
-            float:right;
-            height: 50px;
-            widows: 50px;
-        }
+    .overBanner {
+        background-color: grey; opacity:0.85; 
+        cursor: pointer; 
+        height: 50px !important;
+        width: 50px !important;
+        float: right;
+        top: 15rem;
+        right: -0.5rem;
+    }
         
     }
 

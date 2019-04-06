@@ -1,12 +1,6 @@
 <template>
 
     <div class="content overlap">
-        <div class="bannerIcon">
-            <img class="card-img-top banner" :src="artistBanner"/>       
-        </div>
-        <div class="artistIcon">
-            <img class="card-img-top icon" :src="artistImage"/>
-        </div>
         <div class="inputForm">
         <input required v-model="$parent.d_portfolioArtisticName" class="form-control inputName" type="text" id="inputName" placeholder="Name">
         </div>
@@ -61,10 +55,6 @@ export default {
             default: true
         }
     },
-
-    methods: {
-    
-    }
 }
 </script>
 
