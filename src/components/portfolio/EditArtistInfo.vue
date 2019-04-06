@@ -1,32 +1,26 @@
 <template>
 
     <div class="content overlap">
-        <div v-if="errors === true" class="validationErrors vertical-center">
-            <p>Sorry! Something went wrong. Try again later.</p>
-            <!--<p>Error en el numero</p>
-            <p>Error en el mes</p>-->
-        </div>
-        <div class="bannerIcon">
-            <img class="card-img-top banner" :src="artistBanner"/>       
-        </div>
-        <div class="artistIcon">
-            <img class="card-img-top icon" :src="artistImage"/>
+        <div class="inputForm">
+        <input required v-model="$parent.d_portfolioArtisticName" class="form-control inputName" type="text" id="inputName" placeholder="Name">
         </div>
         <div class="inputForm">
-        <input class="form-control inputName" type="text" id="inputName" placeholder="Name" :value="artistName">
+            <EditGenre />
         </div>
         <div class="inputForm">
-        <span class="card-text artistGenres">{{ genresToString() }}</span>
-        </div>
-        <div class="inputForm">
-            <textarea :value="artistDescription" class="form-control inputDescription" id="" rows="3" placeholder="Description"></textarea>
+            <textarea required v-model="$parent.d_portfolioBiography" class="form-control inputDescription" id="" rows="3" placeholder="Description"></textarea>
         </div>
     </div>
 </template>
 
 <script>
+import EditGenre from '@/components/portfolio/EditGenre.vue'
+
 export default {
-    name: "ArtistInfo",
+    name: "EditArtistInfo",
+    components: {
+        EditGenre,
+    },
     props: {
         artistURI: {
             type: String,
@@ -42,7 +36,7 @@ export default {
         },
         artistGenres: {
             type: Array,
-            default: ['Pop', 'PC Music', 'Alternative']
+            default: function() { return ['Pop', 'PC Music', 'Alternative']}
         },
         artistBanner: {
             type: String,
@@ -61,24 +55,6 @@ export default {
             default: true
         }
     },
-
-    methods: {
-        genresToString() {
-
-            var res = "";
-            var i = 0;
-
-            for (i = 0; i < this.artistGenres.length; i++) { 
-                if (i != this.artistGenres.length - 1) {
-                    res += this.artistGenres[i] + ", ";
-                } else {
-                    res += this.artistGenres[i];
-                }
-            }
-
-            return res;
-        }
-    }
 }
 </script>
 

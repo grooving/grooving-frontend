@@ -9,7 +9,7 @@
             <div class="row">
               <div v-for="oferta in pendingOffers" :key="oferta.offerID" class="tarjeta col-12 col-md-6 col-xl-6">
                 <Offer :offerID="oferta.offerID" :confirmURI="oferta.confirmURI" :date="oferta.date" :price="oferta.price" 
-                  :place="oferta.place" :userIcon="oferta.userIcon" :userName="oferta.userName"  :offerStatus="oferta.offerStatus" :imageURI="oferta.imageURI" :customerSurnames="oferta.customerSurnames" :artistId="oferta.artistId"/>
+                  :place="oferta.place" :userIcon="oferta.userIcon" :userName="oferta.userName"  :offerStatus="oferta.offerStatus" :imageURI="oferta.imageURI" :customerSurnames="oferta.customerSurnames" :artistId="oferta.artistId" :reason="oferta.reason"/>
               </div>
             </div>
             </span>
@@ -17,7 +17,7 @@
             <div class="row">
               <div v-for="oferta in acceptedOffers" :key="oferta.offerID" class="tarjeta col-12 col-md-6 col-xl-6">
                 <Offer :offerID="oferta.offerID" :confirmURI="oferta.confirmURI" :date="oferta.date" :price="oferta.price" 
-                  :place="oferta.place" :userIcon="oferta.userIcon" :userName="oferta.userName"  :offerStatus="oferta.offerStatus" :imageURI="oferta.imageURI" :customerSurnames="oferta.customerSurnames" :artistId="oferta.artistId"/>
+                  :place="oferta.place" :userIcon="oferta.userIcon" :userName="oferta.userName"  :offerStatus="oferta.offerStatus" :imageURI="oferta.imageURI" :customerSurnames="oferta.customerSurnames" :artistId="oferta.artistId" :reason="oferta.reason"/>
               </div>
             </div>
             </span>
@@ -25,7 +25,7 @@
             <div class="row">
               <div v-for="oferta in rejectedOffers" :key="oferta.offerID" class="tarjeta col-12 col-md-6 col-xl-6">
                 <Offer :offerID="oferta.offerID" :confirmURI="oferta.confirmURI" :date="oferta.date" :price="oferta.price" 
-                  :place="oferta.place" :userIcon="oferta.userIcon" :userName="oferta.userName"  :offerStatus="oferta.offerStatus" :imageURI="oferta.imageURI" :customerSurnames="oferta.customerSurnames" :artistId="oferta.artistId"/>
+                  :place="oferta.place" :userIcon="oferta.userIcon" :userName="oferta.userName"  :offerStatus="oferta.offerStatus" :imageURI="oferta.imageURI" :customerSurnames="oferta.customerSurnames" :artistId="oferta.artistId" :reason="oferta.reason"/>
               </div>
             </div>
             </span>
@@ -109,7 +109,7 @@ export default {
       return this.offers.filter(item => (item.offerStatus == "CONTRACT_MADE" || item.offerStatus == "PAYMENT_MADE"));
     },
     rejectedOffers: function() {
-      return this.offers.filter(item => (item.offerStatus == "WITHDRAWN" || item.offerStatus == "REJECTED" || item.offerStatus == "CANCELED"));
+      return this.offers.filter(item => (item.offerStatus == "WITHDRAWN" || item.offerStatus == "REJECTED" || item.offerStatus == "CANCELLED_ARTIST" || item.offerStatus == "CANCELLED_CUSTOMER"));
     }
   },
 
@@ -136,6 +136,17 @@ export default {
       this.selectedTab = status;
     },
   },
+  created() {
+    // Retreive store credentials
+    this.gsecurity = GSecurity;
+    this.gsecurity.obtainSavedCredentials();
+
+    if(!this.$gsecurity.isAuthenticated()) {
+      console.log('Error')
+      location.replace("/#/*")
+      
+    }
+  },
 
   beforeMount: function() {
     var authorizedGAxios = GAxios;
@@ -161,21 +172,22 @@ export default {
       var artistId = '';
     
       for(var i = 0; i < offers.length; i++){
+        var d = offers[i].date.split("T",2);
         if (this.gsecurity.hasRole('ARTIST')) {
           name = offers[i].eventLocation.customer.user.first_name;
           icon = offers[i].eventLocation.customer.photo;
           link = 'customerInfo';
           customerSurnames = offers[i].eventLocation.customer.user.last_name;
         } else if (this.gsecurity.hasRole('CUSTOMER')) {
-          name = offers[i].paymentPackage.portfolio.artist.user.first_name;
-          icon = offers[i].paymentPackage.portfolio.artist.photo;
+          name = offers[i].paymentPackage.portfolio.artisticName;
+          icon = offers[i].paymentPackage.portfolio.main_photo;
           link = 'showPortfolio';
-          artistId = offers[i].paymentPackage.portfolio.artist.id;
+          //artistId = offers[i].paymentPackage.portfolio.artist.id;
         }
         this.offers.push({
           offerID: offers[i].id,
           offerStatus: offers[i].status,
-          date: offers[i].date,
+          date: d[0],
           place: offers[i].eventLocation.zone.name,
           userName: name,
           userIcon: icon,
@@ -184,6 +196,7 @@ export default {
           imageURI: link,
           customerSurnames: customerSurnames,
           artistId: artistId,
+          reason: offers[i].reason,
         });
       }
     }).catch(ex => {

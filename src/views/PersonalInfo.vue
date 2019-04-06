@@ -15,32 +15,22 @@ import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
 
 export default {
-    name: 'personalInfo',
+    name: 'PersonalInfo',
+
     components: {
         ProfileInfo
     },
-    props: {
-        name:{
-            type: String
-        },
-        userSurnames:{
-            type: String
-        },
-        userEmail: {
-            type: String
-        },
-        userPhoneNumber: {
-            type: String
-        },
-        username: {
-            type: String
-        }
-    },
-    
+
     data: function() {
         return {
             gsecurity: GSecurity,
-        }
+
+            name: '',
+            userSurnames: '',
+            username: '',
+            userEmail: '',
+            userPhoneNumber: '',
+        };
     },
 
     beforeMount: function(){
@@ -72,7 +62,7 @@ export default {
                         this.userSurnames = personalInformation['last_name'];
                         this.userEmail=personalInformation['email'];
                         this.userPhoneNumber = response.data.phone;
-                        this.username = personalInformation['username'];                    
+                        this.username = personalInformation['username'];
                 });
             
             }
@@ -91,7 +81,7 @@ export default {
                         this.userSurnames = personalInformation['last_name'];
                         this.userEmail=personalInformation['email'];
                         this.userPhoneNumber = response.data.phone;
-                        this.username = personalInformation['username'];                    
+                        this.username = personalInformation['username'];
                 });
             
             }

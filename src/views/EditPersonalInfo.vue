@@ -19,28 +19,17 @@ export default {
     components: {
         EditProfileInfo
     },
-    props: {
-        name:{
-            type: String
-        },
-        userSurnames:{
-            type: String
-        },
-        userEmail: {
-            type: String
-        },
-        userPhoneNumber: {
-            type: String
-        },
-        username: {
-            type: String
-        }
-    },
     
     data: function() {
         return {
             gsecurity: GSecurity,
-        }
+
+            name: '',
+            userSurnames: '',
+            username: '',
+            userEmail: '',
+            userPhoneNumber: '',
+        };
     },
 
     beforeMount: function(){

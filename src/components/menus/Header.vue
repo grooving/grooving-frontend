@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div id="test1">
     <nav id="mainNavBar" class="navbar navbar-light bg-light">
-      <div id="navBarLeft" class="vertical-center">
+      <div id="navBarLeft" class="vertical-center" >
         <div id="navBarLogo" class="navbar-brand vertical-center">
-          <button class="d-inline d-md-none navbar-toggler no-border pt-0" role="button" data-toggle="collapse"
-          data-target="#sidebarleft" @click="sideMenus()">
+          <button class="d-inline d-md-none navbar-toggler no-border pt-0 collapsL" @click="sideMenus(1)" id="collapsL" role="button" data-toggle="collapse"
+          data-target="#sidebarleft" >
             <span class="navbar-toggler-icon"></span>
           </button>
           <router-link class="ml-2 vertical-center" to="/">
@@ -30,16 +30,16 @@
             <div class="d-none d-md-inline nav-item">
               <form class="form-inline">
                 <input id="searchFormDesktop" v-model="searchQuery" class="form-control mr-sm-2" style="border-radius:100px;"
-                type="search" placeholder="Search" aria-label="Search">
+                type="search" placeholder="Search" aria-label="Search" @keypress.enter="search()">
                 <button class="btn" type="button" @click="search()">
                   <i class="material-icons align-middle">search</i>
                 </button>
               </form>
             </div>
           </li>
-          <div id="navBarUserComponent">
-            <li v-if="gsecurity.isAuthenticated()" class="nav-item mx-2 right-float vertical-center">
-              <button role="button" class="collaps" data-toggle="collapse" data-target="#sidebar" @click="sideMenus()">
+          <div id="navBarUserComponent" >
+            <li v-if="gsecurity.isAuthenticated()" class="nav-item mx-2 right-float vertical-center ">
+              <button role="button" class="collaps" id="collaps" @click="sideMenus(2)" data-toggle="collapse" data-target="#sidebar" >
                 <a class="nav-link vertical-center" href="#">
                   <img v-if="userPhoto == null || userPhoto == '' || userPhoto == 'null'" src="@/assets/defaultPhoto.png"
                   class="profileImage" alt="Profile Image">
@@ -97,13 +97,19 @@ export default {
   components: {
     Search
   },
+  watch:{
+    $route (to, from){
+        this.leftMenu = false;
+        this.rightMenu = false;
+    }
+  }, 
 
   data: function() {
     return {
       menu_links: [
         {
           text: "Top Artists",
-          link: "/artist_search",
+          link: "/topArtists",
           selected: true,
           requiedRoles: []
         },
@@ -122,7 +128,8 @@ export default {
         { text: "FAQs", link: "/#", selected: false, requiedRoles: [] }
       ],
       showSearchMenu: false,
-      sideMenu: false,
+      leftMenu: false,
+      rightMenu: false,
       searchQuery: "",
       input: {
         username: "",
@@ -168,14 +175,29 @@ export default {
       window.location.reload();
     },
 
-    sideMenus: function() {
-      this.sideMenu = !this.sideMenu;
+    sideMenus(a) {
+      if(a == 1) {
+        if(this.rightMenu && !this.leftMenu) {
+          $('#collaps').click();
+          this.rightMenu = false;
+        } 
+        this.leftMenu = !this.leftMenu;
+      } 
+      if (a == 2) {
+          if(!this.rightMenu && this.leftMenu) {
+            $('#collapsL').click();
+            this.leftMenu = false;
+          }
+          this.rightMenu = !this.rightMenu;
+      }
       this.loginDisabled = !this.loginDisabled;
 
-      if (this.sideMenu) {
+      if (this.leftMenu || this.rightMenu) {
         $(document.body).css("overflow", "hidden");
+        this.$emit('toBlur', true);
       } else {
         $(document.body).css("overflow", "");
+        this.$emit('toBlur', false);
       }
     },
 
@@ -221,6 +243,11 @@ export default {
 
     // Update data that depends on GSecurity
     this.refreshGSecurityData();
+
+  },
+  updated() {
+    this.leftMenu = false;
+    this.rightMenu = false;
   }
 };
 </script>

@@ -7,6 +7,9 @@
 </template>
 
 <script>
+
+import GSecurity from "@/security/GSecurity.js";
+
 export default {
   name: 'ErrorView',
   props: {
@@ -14,6 +17,17 @@ export default {
       type: String,
       default: "Try again later."
     }
+  },
+  data() {
+    return {
+      gsecurity: GSecurity,
+    }  
+  },
+
+  beforeCreate() {
+    // Retreive store credentials
+    this.gsecurity = GSecurity;
+    this.gsecurity.obtainSavedCredentials();
   },
 }
 </script>

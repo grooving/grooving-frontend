@@ -8,14 +8,14 @@
             data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
       <h5 class="mb-0">
         <button class="Hbutton">
-          <h5 class="titles">Performance</h5>
+          <h5 class="titles">Fare</h5>
         </button>
       </h5>
     </div>
 
     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-      <div class="bodies">{{performanceDescription}}  
-           <div class="continueButtonDiv"><div @click="selectType"
+      <div class="bodies">{{fareDescription}} {{farePrice}}€/h <br>
+           <div class="continueButtonDiv"><div @click="selectType('FARE')"
             class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div></div>
       </div>  
     </div>
@@ -25,14 +25,14 @@
             data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
       <h5 class="mb-0">
         <button class="Hbutton">
-          <h5 class="titles">Fare</h5>
+          <h5 class="titles">Performance</h5>
         </button>
       </h5>
     </div>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-      <div class="bodies">{{fareDescription}} 
-           <div class="continueButtonDiv"><router-link v-bind:to="'#'" 
-            class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></router-link></div>
+      <div class="bodies">{{performanceDescription}} 
+           <!-- <div class="continueButtonDiv"><router-link v-bind:to="'#'" 
+            class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></router-link></div> -->
       </div>
     </div>
   </div>
@@ -47,8 +47,8 @@
     </div>
     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
       <div class="bodies">{{customDescription}}
-           <div class="continueButtonDiv"><router-link v-bind:to="'#'" 
-            class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></router-link></div>
+           <!-- <div class="continueButtonDiv"><router-link v-bind:to="'#'" 
+            class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></router-link></div> -->
       </div>
     </div>
   </div>
@@ -59,18 +59,27 @@
 <script>
 export default {
   name: 'HiringType',
+  data(){
+      return {
+          artistURI: undefined,
+      }
+  },
   props: {
         performanceDescription: {
             type: String,
-            default: "Performance hiring type description."
+            default: "Coming soon."
         },
         fareDescription: {
             type: String,
-            default: "Fare hiring type description.",
+            default: "In this type of contract you set the duration of the event. Price: ",
+        },
+        farePrice: {
+            type: String,
+            default: "",
         },
         customDescription: {
             type: String,
-            default: "Custom hiring type description."
+            default: "Coming soon."
         },
         artistImage: {
             type: String,
@@ -86,7 +95,7 @@ export default {
         },
         continueURI: {
             type: String,
-            default: 'dateSelection'
+            default: '/dateSelection/'
         },
         price: {
           type: String,
@@ -109,10 +118,14 @@ export default {
             return res;
         },
 
-        selectType() {
-            this.$parent.$emit('hiring' , '');
+        selectType(type) {
+            var a = this.$route.params['artistId']
+            this.$emit('hiring' ,type, a);
         }
-    }
+    },
+    mounted(){
+        this.artistURI = '/dateSelection/' + this.$route.params['artistId']
+    },
 
 }
 

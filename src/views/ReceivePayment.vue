@@ -1,12 +1,12 @@
 <template>
 <div class="prueba">
-    <div class="title"><p>Receive your payments</p></div>
     <div v-if="errors === true" class="validationErrors">
         <p>Sorry! Something went wrong. Try again later.</p>
     </div>
+    <div class="title"><p>Receive your payments</p></div>
     <div class="everything">
         <div class="paymentSelect">
-          <div class="paymentOptions"><PaymentCode/></div>
+          <div class="paymentOptions"><PaymentCode @errorPayment="showErrors" @offerDetails="detailsOffer" /></div>
         </div>
     </div>
 </div>
@@ -15,6 +15,7 @@
 <script>
 import PaymentCode from '@/components/PaymentCode.vue'
 import GSecurity from '@/security/GSecurity.js';
+import {mapActions} from 'vuex';
 
 export default {
     name: 'receivePayment',
@@ -39,6 +40,23 @@ export default {
             this.$router.push({name: "error"});
         }
     },
+
+    methods: {
+        showErrors(value){
+            this.errors=value;
+        },
+        ...mapActions(['setPaymentConfirmation']),
+        
+        detailsOffer(value){
+            console.log("HOLA");
+            console.log(value);
+
+            this.setPaymentConfirmation(value);
+
+
+        }
+
+    }
 }
 </script>
 
@@ -51,17 +69,17 @@ export default {
         display: none;
     }
 
-    @media (max-width:767px)  {
-        .validationErrors{
+    .validationErrors{
             background-color:#f50057;
             box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);
             
             color:white;
             font-weight: bold;
             height: 100%;
-            padding-top: 5%;
+            display:block;
+            align-content: center;
+            padding-top: 15px;
         }
-    }
 
     @media (min-width:768px)  {
       
@@ -88,20 +106,7 @@ export default {
             font-weight: bold;
         }
 
-        .validationErrors{
-            padding-top: 10px;
-            padding-bottom: 0.25px;
-            color: #c62828;
-            font-weight: semibold;
-            border-color: green;
-            width: 50%;
-            margin: 0 auto;
-            height: auto;
-            border-radius: 5px;
-            align-items: center;
-            text-align: center;
-            box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .5);
-        }        
+               
     }
 
 </style>

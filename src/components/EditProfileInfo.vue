@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-        <form action="/#/personalInfo">
+        <form @submit="saveInfo">
             <div class="form-row">
                 <div class="form-group col-12">
                     
@@ -12,14 +12,14 @@
                     <div style="width:100%;margin-top:25px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">FIRST NAME</p>
                         <b-form-group>
-                            <b-form-input v-model="name" v-bind:value="name" style="text-align: right"></b-form-input>
+                            <b-form-input v-model="name" v-bind:value="name" style="text-align: right" required></b-form-input>
                         </b-form-group>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:25px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">LAST NAME</p>
                         <b-form-group>
-                            <b-form-input v-model="surnames" v-bind:value="surnames" style="text-align: right"></b-form-input>
+                            <b-form-input v-model="surnames" v-bind:value="surnames" style="text-align: right" required></b-form-input>
                         </b-form-group>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
@@ -41,7 +41,7 @@
                     <div style="width:100%;margin-top:16px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">PHONE</p>
                         <b-form-group>
-                            <b-form-input v-model="phoneNumber" v-bind:value="phoneNumber" style="text-align: right"></b-form-input>
+                            <b-form-input v-model="phoneNumber" v-bind:value="phoneNumber" style="text-align: right" type="number"></b-form-input>
                         </b-form-group>
                     </div>
                     <div class="continueButtonDiv">
@@ -54,29 +54,92 @@
 </template>
 
 <script>
+import endpoints from '@/utils/endpoints.js';
+import GAxios from '../utils/GAxios.js'
+import GSecurity from "@/security/GSecurity.js";
+
 export default {
     name: "EditProfileInfo",
-    props: {
-        name: {
-            type: String,
-            //default: 'John'
+
+    components: {
+    },
+
+    data: function() {
+        return {
+            name: '',
+            surnames: '',
+            username: '',
+            email: '',
+            phoneNumber: '',
+
+            errors: "",
+        };
+    },
+
+    methods: {
+        saveInfo() {
+            var uri = '';
+            if (this.gsecurity.hasRole('ARTIST')) {
+                uri = endpoints.artist;
+            } else if (this.gsecurity.hasRole('CUSTOMER')) {
+                uri = endpoints.customer;
+            }
+
+            GAxios.put(uri + this.gsecurity.getId() + '/', {
+                "first_name": this.name,
+                "last_name": this.surnames,
+                "phone": this.phoneNumber,
+                "photo": this.gsecurity.getPhoto(),
+            }).then(response => {
+                console.log(response);
+                this.$router.push({name: "personalInfo"});
+            }).catch(ex => {
+                console.log(ex);
+                if (ex.reponse != null) {
+                    this.errors = ex.response.data[0];
+                    document.getElementById("errorsDiv").style.display = "block";
+                }
+            }) 
         },
-        surnames: {
-            type: String,
-            //default: 'Pug Retriever'
-        },
-        email: {
-            type: String,
-            //default: 'johnpug@pugsftw.com'
-        },
-        phoneNumber: {
-            type: String,
-            //default: '633017787'
-        },
-        username: {
-            type: String,
-            default: 'josembell'
+    },
+
+    beforeMount: function(){
+
+        if (!this.gsecurity.isAuthenticated()) {
+            this.$router.push({name: "error"});
+
+        } else {
+            var GAxiosToken = this.gsecurity.getToken();
+            var authorizedGAxios = GAxios;
+            authorizedGAxios.defaults.headers.common['Authorization'] = 'Token '+ GAxiosToken;
+            var role = this.gsecurity.getRole();
+            var uri = '';
+
+            if (role == 'CUSTOMER') {
+                uri = endpoints.customerPersonalInformation;
+            } else if (role == 'ARTIST') {
+                uri = endpoints.artistPersonalInformation;
+            }
+            
+            authorizedGAxios.get(uri)
+                .then(response => {
+                    var personalInformation = response.data.user;
+                    console.log(personalInformation);
+                    console.log(response);
+                    
+                    this.name = personalInformation['first_name']
+                    this.surnames = personalInformation['last_name'];
+                    this.email = personalInformation['email'];
+                    this.phoneNumber = response.data.phone;
+                    this.username = personalInformation['username'];                    
+                });            
         }
+    },
+
+    created() {
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+        this.refreshGSecurityData();
     },
 }
 </script>

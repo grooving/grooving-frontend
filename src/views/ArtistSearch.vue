@@ -6,8 +6,8 @@
           <FiltersSideMenu :filters_data="filter_parameters" @onFiltersChange="updateFilters" />
         </div>
         <div id="results" class="col-12 col-lg-8 col-xl-10" style="padding-left:0px; padding-right:0px;">
-            <div id="resultsContainer" class="container-fluid">
-              <ArtistList :artistas="datos" />
+            <div id="resultsContainer" class="container-fluid mt-0">
+              <ArtistList :artistas="datos" :listTitle="'Search Results'" />
             </div>
         </div>
       </div>
@@ -47,6 +47,9 @@ export default {
             {id: 0, text: "Genre", filterName: "artisticGender", selected: false},
             {id: 1, text: "Artist Name", filterName: "artisticName", selected: true}
         ], 
+        new_filters:[
+          'zone', 'order'
+        ],
         showFilterSelectionModal: false,
         datos: Array(),
       }
@@ -74,6 +77,23 @@ export default {
         }
       }
 
+      // New filters: Sort and Zones
+      var zone = arguments[1][0];
+      var order = arguments[1][1];
+
+      if(zone){
+        this.$route.query[this.new_filters[0]] = zone;
+      }else{
+        delete this.$route.query[this.new_filters[0]];
+      }
+
+      if(order){
+        this.$route.query[this.new_filters[1]] = order == 1 ? 'asc' : 'desc';
+      }else{
+        delete this.$route.query[this.new_filters[1]];
+      }
+
+
       this.datos = Array();
       this.search(this.$route.query);
     },
@@ -83,7 +103,9 @@ export default {
       GAxios.get(endpoints.artists, {
         params: {
           ...(queries[this.filter_parameters[0].filterName] != undefined ? { "artisticGender": queries[this.filter_parameters[0].filterName]} : {}),
-          ...(queries[this.filter_parameters[1].filterName] != undefined ? { "artisticName": queries[this.filter_parameters[1].filterName] } : {})
+          ...(queries[this.filter_parameters[1].filterName] != undefined ? { "artisticName": queries[this.filter_parameters[1].filterName] } : {}),
+          ...(queries[this.new_filters[0]] != undefined ? { "zone": queries[this.new_filters[0]] } : {}),
+          ...(queries[this.new_filters[1]] != undefined ? { "order": queries[this.new_filters[1]] } : {})
         }
       })
       .then(response => {
@@ -98,11 +120,10 @@ export default {
           }
 
           this.datos.push({
-            artistURI: showPortfolioBaseURI + artists[i].id, 
+            artistID: artists[i].id, 
             artistImage: artists[i].photo,
             artistName: artists[i].portfolio.artisticName,
             artistGenres: genres,
-            hireURI: hiringBaseURI + artists[i].id,
           });
 
         }

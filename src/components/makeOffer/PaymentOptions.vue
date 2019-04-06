@@ -1,11 +1,11 @@
 <template>
     <div class="content">
         <div class="paymentOptions">
-            <p>Choose between</p>
-            <div class="continueButtonDiv"><div  class="btn btn-primary continueButton"><span class="continueText">PAYPAL</span></div @click="paymentOptionSelected()"></div>
+            <p>Select the payment method</p>
+            <!-- <div class="continueButtonDiv"><div  class="btn btn-primary continueButton"><span class="continueText">PAYPAL</span></div @click="paymentOptionSelected()"></div> -->
             <br>
-            <div class="continueButtonDiv"><div @click="paymentOptionSelected()"
-            class="btn btn-primary continueButton"><span class="continueText">CREDIT CARD</span></div></div>
+            <router-link v-bind:to="nextStep" class="continueButtonDiv"><div @click="paymentOptionSelected()"
+                class="btn btn-primary continueButton"><span class="continueText">CREDIT CARD</span></div></router-link>
         </div>
     </div>
 </template>
@@ -13,6 +13,11 @@
 <script>
 export default {
     name: "PaymentOptions",
+    data() {
+        return {
+            nextStep: undefined,
+        }
+    },
     props: {
         continueURI: {
             type: String,
@@ -23,9 +28,13 @@ export default {
     },
     methods: {
         paymentOptionSelected(){
-            this.$emit('paymentOptionSelected');
-        }
-    }
+            this.$emit('paymentOptionSelected', 'CREDITCARD');
+        },
+
+    },
+    mounted() {
+        this.nextStep = '/payment/' + this.$route.params['artistId']
+    },
 }
 </script>
 
@@ -48,15 +57,15 @@ export default {
     .continueButton:hover{
         background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;
-    }
-
-    
+    } 
 
     @media (max-width:768px)  {
         .content{
             padding-top: 5%;
-            margin-right: 3%;
-            margin-left: 3%;
+            margin-right: 40%;
+            margin-left: 40%;
+            width: 300px;
+
         }   
     }
         
@@ -64,10 +73,13 @@ export default {
 
         .content{
             background-color:white;
-            height: 305px;
+            height: 295px;
             width: 100%;
             display: flex;
             align-items: center;
+            justify-content: center;
+
+            text-align: center;
             padding-left: 35px;
             padding-right: 35px;
             border-radius: 10px;
