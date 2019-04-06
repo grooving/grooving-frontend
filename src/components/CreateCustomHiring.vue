@@ -1,12 +1,9 @@
 <template>
     <div class="content">
-        <form v-on:submit="updateCustom">
+        <form v-on:submit="createCustom">
             <div class="form-row">
                 <div class="form-group col-12">
                     <span style="font-weight:bold;font-size:30px;">Custom Hiring </span>
-                    <router-link v-bind:to="{name: 'hiringSettings', params: {}}" style="height: 28px; width: 28px">
-                        <i class="material-icons iconOffer">clear</i>
-                    </router-link>
                     <h6 class="card-subtitle mb-2 text-muted">The customer can decide the amount of money he will pay, so you may set a minimun price. </h6>
                     <div style="width:100%;margin-top:25px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">MINIMUM PRICE</p>
@@ -32,17 +29,17 @@ import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
 
 export default {
-    name: "EditCustomHiring",
+    name: "CreateCustomHiring",
 
-    props: {
-        minimumPrice: {},
-        packageId: {},
-        customId: {},
+    data: function() {
+        return {
+            minimumPrice: 10,
+        }
     },
 
     methods: {
-        updateCustom() {
-            GAxios.post(endpoints.custom + this.customId + '/', {
+        createCustom() {
+            GAxios.post(endpoints.custom, {
                 "minimumPrice": this.minimumPrice,
             }).then(response => {
                 console.log(response);

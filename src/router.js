@@ -20,6 +20,7 @@ import RegisterConfirmation from './views/RegisterConfirmation.vue'
 import PriceSelector from './views/PriceSelector.vue'
 import HiringSettings from './views/HiringSettings.vue'
 import EditCustom from './views/EditCustom.vue'
+import CreateCustom from './views/CreateCustom.vue'
 
 Vue.use(Router)
 
@@ -120,6 +121,12 @@ export default new Router({
       path: '/editCustom',
       name: 'editCustom',
       component: EditCustom,
+      props: true,
+    },
+    {
+      path: '/createCustom',
+      name: 'createCustom',
+      component: CreateCustom,
     },
     {
       path: '*',

@@ -4,14 +4,19 @@
             <div class="form-row">
                 <div class="form-group col-12">
                     <span class="card-title" style="font-weight:bold;font-size:30px;margin-bottom:12px">Custom Hiring </span>
-                    <router-link v-bind:to="{name: 'editCustom', params: {}}" style="height: 28px; width: 28px; margin-bottom:12px;">
+                    <router-link v-if="!empty" v-bind:to="{name: 'editCustom', params: {minimumPrice, packageId, customId}}" style="height: 28px; width: 28px; margin-bottom:12px;">
                         <i class="material-icons iconOffer">create</i>
                     </router-link>
                     <h6 class="card-subtitle mb-2 text-muted">The customer can decide the amount of money he will pay, so you may set a minimun price. </h6>
-                    <div style="width:100%;margin-top:25px;">
+                    <div v-if="!empty" style="width:100%;margin-top:25px;overflow:auto;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">MINIMUM PRICE</p>
                         <p class="card-text" style="float:right;">{{minimumPrice}} €/h</p>
                     </div>
+                    <router-link v-else v-bind:to="{name: 'createCustom'}">
+                        <div class="continueButtonDiv">
+                            <b-button class="continueButton" variant="primary" size="sm" type="submit">ADD NEW</b-button>
+                        </div>
+                    </router-link>
                 </div>  
             </div>
         </form>
@@ -23,9 +28,11 @@ export default {
     name: "CustomHiring",
 
     props: {
-        minimumPrice: {
-            type: Number,
-            default: 8,
+        packageId: {},
+        minimumPrice: {},
+        customId: {},
+        empty: {
+            default: false,
         },
     },
 }
@@ -41,8 +48,30 @@ export default {
         padding: 10px;
     }
 
+    .continueButton {
+        font-size: 22px;
+        font-weight: bold;
+        border: none;
+        border-radius: 30px;
+        width: 45%;
+        background-image: linear-gradient(to right, #00fb82, #187fe6);
+    }
+
+    .continueButton:hover{
+        background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
+    }
+
+    .continueButtonDiv {
+        margin-top: 30px;
+        margin-bottom: 5%;
+        display: flex;
+        justify-content: center;
+    }
+
+
     .form-group.col-12 {
         margin-bottom: 0px;
+        min-height: 170px;
     }
 
     .iconOffer  {

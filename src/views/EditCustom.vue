@@ -2,7 +2,7 @@
 <div class="prueba">
     <div class="everything">
         <div class="paymentSelect">
-          <div class="paymentOptions"><EditCustomHiring :minimumPrice="minimumPrice"/></div>
+          <div class="paymentOptions"><EditCustomHiring :minimumPrice="minimumPrice" :packageId="packageId" :customId="customId"/></div>
         </div>
     </div>
 </div>
@@ -15,7 +15,7 @@ import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
 
 export default {
-    name: 'EditPersonalInfo',
+    name: 'EditCustom',
 
     components: {
         EditCustomHiring
@@ -28,9 +28,9 @@ export default {
     },
 
     props: {
-        minimumPrice: {
-            type: Number,
-        },
+        minimumPrice: {},
+        packageId: {},
+        customId: {},
     },
 
     beforeMount: function(){
@@ -38,7 +38,7 @@ export default {
         if (!this.gsecurity.hasRole('ARTIST')) {
             this.$router.push({name: "error"});
         }
-    }
+    },
 }
 </script>
 
