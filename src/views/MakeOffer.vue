@@ -65,7 +65,8 @@ export default {
         },
         nextStepDescription: function(){
             this.description = arguments[0];
-            this.createOffers();
+            this.nextStep();
+            //this.createOffers();
         },
 
         createOffers: function(){

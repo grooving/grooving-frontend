@@ -3,15 +3,25 @@ import Router from 'vue-router'
 import Home from './views/Index.vue'
 import ArtistSearch from './views/ArtistSearch.vue'
 import OffersList from './views/OffersList.vue'
+import DateSelection from './views/DateSelection.vue'
+import TimeSelection from './views/TimeSelection.vue'
 import OfferDetails from './views/OfferDetails.vue'
+import AddressInput from './views/AddressInput.vue'
+import EventInput from './views/EventInput.vue'
+import TypeOfHiring from './views/TypeOfHiring.vue'
+import PaymentSelector from './views/PaymentSelector.vue'
+import Payment from './views/Payment.vue'
 import AcceptedOffer from './views/AcceptedOffer.vue'
 import Portfolio from './views/Portfolio.vue'
+import SentOffer from './views/SentOffer.vue'
 import ReceivePayment from './views/ReceivePayment.vue'
 import PaymentConfirmation from './views/PaymentConfirmation.vue'
 import PersonalInfo from './views/PersonalInfo.vue'
 import ErrorView from './views/ErrorView.vue'
 import MakeOffer from './views/MakeOffer.vue'
 import CustomerInfo from './views/CustomerInfo.vue'
+import TopArtists from './views/TopArtists.vue'
+import EditPortfolio from './views/EditPortfolio.vue'
 import NewUser from './views/NewUser.vue'
 import CustomerRegister from './views/CustomerRegister.vue'
 import ArtistRegister from './views/ArtistRegister.vue'
@@ -107,6 +117,56 @@ export default new Router({
       path: '*',
       name: 'error',
       component: ErrorView
+    },
+    {
+      path: '/topArtists',
+      name: 'topArtists',
+      component: TopArtists,
+    },
+    {
+      path: '/editPortfolio/:artistId',
+      name: 'editPortfolio',
+      component: EditPortfolio,
+    },
+    {
+      path: '/hiringType/:artistId',
+      name: 'hiringType',
+      component: TypeOfHiring,
+    },
+    {
+      path: '/dateSelection/:artistId',
+      name: 'dateSelection',
+      component: DateSelection,
+    },
+    {
+      path: '/timeSelection/:artistId',
+      name: 'timeSelection',
+      component: TimeSelection,
+    },
+    {
+      path: '/eventInput/:artistId',
+      name: 'eventInput',
+      component: EventInput,
+    },
+    {
+      path: '/addressInput/:artistId',
+      name: 'addressInput',
+      component: AddressInput,
+    },
+    {
+      path: '/paymentSelector/:artistId',
+      name: 'paymentSelector',
+      component: PaymentSelector,
+    },
+    {
+      path: '/payment/:artistId',
+      name: 'payment',
+      component: Payment,
+    },
+    {
+      path: '/sentOffer/:artistId',
+      name: 'sentOffer',
+      component: SentOffer,
     },
   ]
 })

@@ -1,16 +1,21 @@
 <template>
     <div class="everything">
+        
         <div class="tarjeta">
-            <a v-bind:href="customerURI"><img v-bind:src="customerImage" class="card-img-top customerImage" alt="Artist's Image"></a>
+            <a v-bind:href="customerURI">
+                <img v-if="!userPhoto" src="@/assets/defaultPhoto.png" class="card-img-top customerImage" alt="Artist's Image">
+                <img v-else v-bind:src="userPhoto" class="card-img-top customerImage" alt="Artist's Image">
+            </a>
             <div class="card-body cuerpoTarjeta cuerpoTarjetaTop">
                 <div class="leftContent">
-                    <h5 class="card-title customerName">{{ customerName }}</h5>
+                    <h5 class="card-title customerName">{{ this.userName }}</h5>
                 </div>
                 <div class="rightContent">
-                    <p class="price">{{ price }}</p>
+                    <p class="price">{{ this.offerPrice }}€</p>
                 </div>
+                <hr>
             </div>
-            <hr/>
+            <hr>
             <div class="card-body cuerpoTarjeta">
                 <div class="confirmation"><img class="tick" src="@/assets/img/approved_tick.png"/>
                     <p class="price">{{sentText}}</p>
@@ -22,9 +27,24 @@
 
 <script>
 
+    import GAxios from '../utils/GAxios.js'
+    import GSecurity from '@/security/GSecurity.js';
+    import endpoints from '@/utils/endpoints.js';
+    import { mapGetters } from 'vuex';
+    import {mapActions} from 'vuex';
+
     export default {
         name: 'PaymentConfirmation',
-        
+        computed: mapGetters(['offer']),
+        data: function() {
+            return {
+                gsecurity: GSecurity,
+                gaxios: GAxios,
+                userName: '',
+                userPhoto: '',
+                offerPrice: ''
+            }
+        },
         props: {
             customerURI: {
                 type: String,
@@ -47,6 +67,24 @@
                 default: '$156.00'
             },
         },
+        methods: {
+            ...mapActions(['setPaymentConfirmation']),
+        },
+        beforeMount() {
+            console.log("holita");
+
+            var paymentConfirmation = this.$store.getters.paymentConfirmation;
+            if(!paymentConfirmation || !paymentConfirmation.userName){
+                this.$router.push("/error")
+            }
+            this.userName = this.$store.getters.paymentConfirmation.userName;
+            console.log(this.userName);
+            this.userPhoto = this.$store.getters.paymentConfirmation.userPhoto;
+            this.offerPrice = this.$store.getters.paymentConfirmation.offerPrice;
+
+            this.setPaymentConfirmation(undefined);
+            
+        }
     }   
 
 </script>

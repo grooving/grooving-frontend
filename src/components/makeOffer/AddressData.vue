@@ -1,37 +1,51 @@
 <template>
     <div class="content">
-    <form>
+    <form v-on:submit.prevent="addressDataSelected()">
         <div class="form-row">
             <div class="form-group col-12">
-                <textarea :value="location" type="text" class="form-control" style="resize: none;" 
-                    placeholder="Information about your event" rows="7"></textarea>
+                <input v-model="street" type="text" class="form-control" placeholder="Street" required>
             </div>  
         </div>
-        <div class="continueButtonDiv"><div @click="eventDataSelected()"
-            class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div></div>
+        <div class="form-row">
+            <div class="form-group col-12">
+                <input v-model="zipcode" type="number" class="form-control" placeholder="Zip code" required>
+            </div>  
+        </div>
+        <div class="form-row">
+            <div class="form-group col-12">
+                <input v-model="location" type="text" class="form-control" placeholder="Location" required>
+            </div>  
+        </div>
+        <button class="btn btn-primary continueButton" >
+                <span class="continueText">CONTINUE</span></button>
     </form>
     </div>
 </template>
 
 <script>
+
 export default {
-    name: "EventData",
+    name: "AddressData",
     props: {
-        location: {
+        nextStep: {
             type: String,
-            default: 'Monday night party at the campus.'
+            default: '',
         },
-        continueURI: {
-            type: String,
-            default: 'paymentSelector'
-        } 
     },
-    components: {
+    data() {
+        return {
+            location: undefined,
+            zipcode: undefined,
+            street: undefined,
+        }
+    },
+    mounted() {
+        this.nextStep = '/eventInput/' + this.$route.params['artistId']
     },
     methods: {
-        eventDataSelected(){
-            this.$emit('eventDataSelected', this.location);
-        }
+        addressDataSelected(){
+            this.$emit('addressSelected', [this.location, this.zipcode, this.street]);
+        },
     }
 }
 </script>
@@ -71,6 +85,7 @@ export default {
         border: none;
         border-radius: 30px;
         width: fit-content;
+        margin-top: 2%;
         font-weight: bold;
     
         background-image: linear-gradient(to right, #00fb82, #187fe6);
@@ -109,7 +124,7 @@ export default {
 
         .content{
             margin-left: 3%;
-            height: 305px;
+            height: 290px;
             border-radius: 10px;
             display: flex;
             align-items: center;

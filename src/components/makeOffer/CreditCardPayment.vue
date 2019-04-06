@@ -2,22 +2,37 @@
     <div class="content">
     <form>
         <div class="form-row">
-            <div class="form-group col-12">
-                <input :value="location" type="text" class="form-control" placeholder="Location">
-            </div>  
+            <div class="form-group col-8">
+                <input maxlength="16" type="text" class="form-control" placeholder="Card number" v-model="number">
+            </div>
+            <div class="form-group col-4">
+                <select id="inputState" class="form-control">
+                    <option v-if="creditCardBrand === 'VISA'" selected>VISA</option>
+                    <option v-else>VISA</option>
+                    <option v-if="creditCardBrand === 'MASTERCARD'" selected>Master Card</option>
+                    <option v-else>Master Card</option>
+                </select>
+            </div>
         </div>
         <div class="form-row">
             <div class="form-group col-12">
-                <input :value="zipcode" type="text" class="form-control" placeholder="Zip code">
-            </div>  
+                <input v-model="name" type="text" class="form-control" placeholder="Name">
+            </div>
+            
         </div>
+
         <div class="form-row">
-            <div class="form-group col-12">
-                <input :value="street" type="text" class="form-control" placeholder="Street">
-            </div>  
+            <div class="form-group col entrada">
+                <input v-model="month" min="1" max="12" type="number" class="form-control" placeholder="Month">
+            </div>
+            <div class="form-group col entrada">
+                <input v-model="year" min="19" maxlength="2" type="number" class="form-control" placeholder="Year">
+            </div>
+            <div class="form-group col entrada">
+                <input v-model="cvv" maxlength="3" type="text" class="form-control" placeholder="CVV">
+            </div>
         </div>
-        <div class="continueButtonDiv"><div @click="addressDataSelected()" 
-            class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div></div>
+        <div class="btn btn-primary continueButton" @click="finishPayment"><span class="continueText">SUBMIT</span></div>
 
     </form>
     </div>
@@ -25,31 +40,52 @@
 
 <script>
 export default {
-    name: "AddressData",
+    name: "CreditCardPayment",
+    data (){
+        return {
+            number: undefined,
+            make: undefined,
+            month,
+            year,
+            cvv,
+            name,
+        }
+    },
     props: {
-        location: {
+        creditCardNumber: {
             type: String,
-            default: 'Sevilla'
+            default: '4590114832997756'
         },
-        zipcode: {
+        creditCardBrand: {
             type: String,
-            default: '41802',
+            default: '',
         },
-        street: {
+        name: {
             type: String,
-            default: 'C/ Reina Mercedes, 10'
+            default: 'John Doe'
+        },
+        month: {
+            type: String,
+            default: '01'
+        },
+        year: {
+            type: String,
+            default: '20'
+        },
+        cvv: {
+            type: String,
+            default: '754'
         },
         continueURI: {
             type: String,
-            default: 'eventInput'
+            default: 'sentOffer'
         } 
     },
     components: {
     },
-
     methods: {
-        addressDataSelected(){
-            this.$emit('addressDataSelected', this.location, this.zipcode, this.street);
+        finishPayment() {
+            this.$emit('finishPayment', [this.number, this.name, this.month, this.year, this.cvv ])
         }
     }
 }
@@ -92,6 +128,7 @@ export default {
         width: fit-content;
         margin-top: 2%;
         font-weight: bold;
+        margin-top: 10%;
     
         background-image: linear-gradient(to right, #00fb82, #187fe6);
     }
@@ -120,16 +157,13 @@ export default {
         }
         
         form{
-            margin-top:5px;
-            width: 320px;
             margin-right: 4%;
             margin-left: 4%;
-            margin-bottom: 0;
         }
 
         .content{
             margin-left: 3%;
-            height: 305px;
+            height: 300px;
             border-radius: 10px;
             display: flex;
             align-items: center;

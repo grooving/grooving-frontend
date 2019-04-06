@@ -89,6 +89,29 @@ export default {
         background-image: linear-gradient(to right, #00fb82, #187fe6);
     }
 
+    .vdp-datepicker__calendar .cell.selected.cell.highlighted {
+        background-image: linear-gradient(to right, #00fb82, #187fe6) !important;
+        color: white !important;
+        font-weight: bolder;
+        border: solid white;
+        /*box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .5) !important;*/
+    }
+
+    .vdp-datepicker__calendar .cell.highlighted {
+        background-image: linear-gradient(to right, #92ffca, #8dc4fc) !important;
+        border-radius: 25px;
+        border: solid white;
+    }
+
+    .vdp-datepicker__calendar .cell.highlighted:hover{
+        background-image: linear-gradient(to right, #e57373, #ffcc80) !important;
+    }
+
+    .vdp-datepicker__calendar .cell.selected.cell.highlighted:hover{
+        background-image: linear-gradient(to right, #c62828, #ef6c00) !important;
+        border: solid white;
+    }
+
 </style>
 
 <style scoped>

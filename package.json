@@ -14,7 +14,8 @@
     "heroku-ssl-redirect": "0.0.4",
     "owl.carousel": "^2.3.4",
     "vue": "^2.6.6",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vuex": "^3.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.5.0",

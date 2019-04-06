@@ -7,165 +7,187 @@
         <p>Error en el mes</p>-->
     </div>
     <div class="everything">
-        <div class="tarjeta">
-            <a v-bind:href="artistURI"><img v-bind:src="artistImage" class="card-img-top artistImage" alt="Artist's Image"></a>
-            <div class="card-body cuerpoTarjeta">
-                <div class="leftContent">
-                    <h5 class="card-title artistName">{{ artistName }}</h5>
-                    <span class="card-text artistGenres">{{ genresToString() }}</span>
-                </div>
-                <div class="rightContent">
-                    <p class="price">{{ price }}</p>
-                </div>
-            </div>
+        <div class="artistCard"><ArtistCard :artistName="this.artistData.artisticName" :artistImage="this.artistData.main_photo" 
+            :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.totalPrice"/>
         </div>
         <div class="paymentDiv">
-          <div class="creditCardPayment"><CreditCardPayment/></div>
+          <div class="creditCardPayment" style="min-width:400px;"><CreditCardPayment @finishPayment="gpay" /></div>
         </div>
     </div>
 </div>
 </template>
 
 <script>
-import CreditCardPayment from '@/components/CreditCardPayment.vue'
+import CreditCardPayment from '@/components/makeOffer/CreditCardPayment.vue'
+import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
+import GAxios from '@/utils/GAxios.js';
+import endpoints from '@/utils/endpoints.js';
+import GSecurity from '@/security/GSecurity.js';
+import { mapGetters } from 'vuex';
 
 export default {
-  name: 'payment',
-  components: {
-    CreditCardPayment
-  },
-  props: {
-        artistURI: {
-            type: String,
-            default: '#'
+    name: 'payment',
+    computed: mapGetters(['offerAddress', 'offerDate', 'offer', 'offerArtist', 'offerFarePack']),
+    components: {
+        CreditCardPayment, ArtistCard
+    },
+    data () {
+        return {
+            gsecurity: GSecurity,
+            creditCard: {
+                numbe: undefined, 
+                name: undefined, 
+                month: undefined, 
+                year: undefined, 
+                cvv: undefined, 
+            },
+            date: {
+                now: undefined, 
+                startHour: undefined, 
+                duration: undefined,
+            },
+            offer: {
+                artistId: undefined, 
+                hiringType: undefined, 
+                location: undefined, 
+                zipcode: undefined, 
+                street: undefined, 
+                description: undefined,
+            },
+            artistData: {
+                artistId: undefined,
+                artisticName: undefined,
+                main_photo: undefined, 
+                genres: undefined,
+            },
+            totalPrice: undefined,
+            nextStep: undefined,
+            farePackageId: undefined,
+        }
+    },
+    props: {
+            errors: {
+                type: Boolean,
+                default: false
+            }
         },
-        artistImage: {
-            type: String,
-            default: 'http://www.tiumag.com/wp-content/uploads/rosalia-2018-2-705x564.jpg',
+    methods: {
+        gpay(creditCard) {
+
+            this.creditCard = Array();
+            this.creditCard.number = creditCard[0],
+            this.creditCard.name = creditCard[1],
+            this.creditCard.month = creditCard[2],
+            this.creditCard.year = creditCard[3],
+            this.creditCard.cvv = creditCard[4],
+
+            this.offer.artistId = this.$store.getters.offer.artistId,
+            this.offer.hiringType = this.$store.getters.offer.hiring,
+            this.offer.location = this.$store.getters.offerAddress.location,
+            this.offer.zipcode = this.$store.getters.offerAddress.zipcode,
+            this.offer.street = this.$store.getters.offerAddress.street,
+            this.offer.description = this.$store.getters.offerAddress.description,
+
+            this.date = Array();
+            this.date.startHour = this.$store.getters.offerDate.hour,
+            this.date.now = this.$store.getters.offerDate.date,
+            this.date.duration = this.$store.getters.offerDate.duration;
+
+            this.farePackageId = this.$store.getters.offerFarePack.packageId;
+
+            var authorizedGAxios = GAxios;
+            var GAxiosToken = this.gsecurity.getToken();
+            authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
+
+            let body_eventLocation = {
+                "name": this.offer.location,
+                "equipment": null,
+                "description": this.offer.description,
+                "address": this.offer.street + ', ' + this.offer.zipcode,
+                "zone_id": 4
+            }
+
+            let body_offer = {
+                'description': this.offer.description,
+                'date': this.date.now + 'T' + this.date.startHour + ':00',
+                'hours': this.date.duration,
+                'paymentPackage_id': this.farePackageId,
+                'eventLocation_id' : 1,
+                'transaction': {
+                    'holder': this.creditCard.name,
+                    'number': this.creditCard.number,
+                    'expirationDate': this.creditCard.month + this.creditCard.year,
+                    'cvv': this.creditCard.cvv,
+                },
+            }
+
+            console.log(body_offer)
+
+            authorizedGAxios.post('/eventlocation/', body_eventLocation)
+            .then((res) => {
+                console.log("Event Location Created...")
+                console.log(res)
+                
+                // Reference the brand-new eventLocation
+                body_offer['eventLocation_id'] = res.data.id
+
+                return authorizedGAxios.post('/offer/', body_offer);
+            })
+            .then((res) => {
+                console.log("Offer Created...")
+                console.log(res)
+            })
+            .catch((err) => {
+                console.log("Error while processing one of the requests")
+                console.log(err)
+            })
+            .then(()=> {
+                this.$router.push({path: this.nextStep})
+                    
+            });
         },
-        artistName: {
-            type: String,
-            default: 'ROSALÍA'
-        },
-        artistGenres: {
-            type: Array,
-            default: ['Pop', 'Flamenco']
-        },
-        continueURI: {
-            type: String,
-            default: '#'
-        },
-        price: {
-          type: String,
-          default: '$63.00/h'
-        },
-        errors: {
-            type: Boolean,
-            default: false
+    },
+    created() {
+        // Retreive store credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+    },
+    mounted() {
+
+        this.artistData.artistId = this.$store.getters.offerArtist.artistId;
+        this.artistData.artisticName = this.$store.getters.offerArtist.artisticName;
+        this.artistData.main_photo = this.$store.getters.offerArtist.main_photo;
+        this.artistData.genres = this.$store.getters.offerArtist.genres;
+
+        this.totalPrice = this.$store.getters.offer.totalPrice;
+        this.offer.location = this.$store.getters.offerAddress.location;
+
+        this.nextStep = '/sentOffer/' + this.artistData.artistId;
+
+        if(!this.$gsecurity.hasRole('CUSTOMER') || this.artistData.artistId != this.$route.params['artistId'] 
+            || !this.offer.location) {
+                
+            console.log('Error')
+            location.replace("/#/*")
+        }        
+    },
+    created() {
+        // Retreive store credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        if(!this.$gsecurity.isAuthenticated()) {
+            console.log('Error')
+            location.replace("/#/*")
         }
     },
 
-    methods: {
-        genresToString() {
-
-            var res = "";
-            var i = 0;
-
-            for (i = 0; i < this.artistGenres.length; i++) { 
-                if (i != this.artistGenres.length - 1) {
-                    res += this.artistGenres[i] + ", ";
-                } else {
-                    res += this.artistGenres[i];
-                }
-            }
-
-            return res;
-        }
-    }
 }
 </script>
-
-<style>
-
-.vdp-datepicker__calendar {
-  width: 100%;
-  border: 0px;
-  margin-top: 10px;
-}
-
-</style>
 
 <style scoped>
     * {
         font-family: "Archivo"
-    }
-    .card-img-top {
-      border-top-left-radius: 0px;
-      border-top-right-radius: 0px;
-    }
-
-    .tarjeta {
-        width: 100%;
-        box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, .3);
-    }
-
-    .artistImage {
-        object-fit: cover;
-        max-height: 200px;
-    }
-
-    .cuerpoTarjeta {
-        display: flex;
-        align-items: center;
-    }
-
-    .leftContent {
-        text-align: left;
-        overflow: auto;
-    }
-
-    .artistName {
-        font-size: 32px;
-        margin-bottom: 0px;
-        padding-bottom: 0px;
-        word-wrap: break-word;
-    }
-
-    .artistGenres {
-        color: #187FE6;
-        font-size: 18px;
-        word-wrap: break-word;
-    }
-
-    .rightContent {
-        padding-left: 20px;
-        margin-left: auto;
-        margin-right: 0px;
-    }
-
-    .price {
-        font-size: 35px;
-        margin-bottom: 0px;
-        color: #187FE6;
-    }
-
-    .continueButton {
-        font-size: 22px;
-                
-        border: none;
-        border-radius: 30px;
-        width: 65%;
-
-        background-image: linear-gradient(to right, #00fb82, #187fe6);
-    }
-
-    .continueButton:hover{
-        background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
-    }
-
-    .continueButtonDiv {
-        margin-top: 30px;
-        margin-bottom: 10%;
     }
 
     .title {
@@ -182,36 +204,10 @@ export default {
             height: 100%;
             padding-top: 5%;
         }
-
         
     }
 
     @media (min-width:768px)  {
-
-        .tarjeta {
-            min-width: 335px;
-            width: 25%;
-            border-radius: 10px;
-            box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, .3);
-            margin-right: 10px;
-        }
-
-        .calendarButton  {
-            margin-left: 5%;
-            width: 50%;
-            margin-top: 0%;
-            margin-right: 0%;
-            display: inline-block;
-        }
-      
-        .continueButtonDiv {
-            margin-top: 15px;
-        }
-
-
-        .artistImage{
-            border-radius: 10px 10px 0px 0px;
-        }
       
         .everything {
             display: flex;
@@ -220,8 +216,8 @@ export default {
             margin-top: 5%;
             text-align: center;
             padding: 15px;
-            margin-left: 10%;
-            margin-right: 10%;
+            margin-left: 35%;
+            margin-right: 35%;
             margin-top:0%;
         }
         .title {

@@ -6,7 +6,6 @@ export default{
     offer: '/offer/',
     artistOffers: '/artist/offers/',
     customerOffers: '/customer/offers/',
-    offer: '/offer/',
     customerPersonalInformation: '/customer/personalInformation/',
     artistPersonalInformation: '/artist/personalInformation/',
     portfolio: '/portfolio/',
@@ -14,4 +13,6 @@ export default{
     registerArtist: '/signupArtist/',
     customer: '/customer/',
     artist: '/artist/',
+    paymentCode:'/paymentCode/',
+    artistPayPackage: '/artist/paymentPackages/', 
 }
