@@ -16,12 +16,12 @@
             <div id="signup" class="tarjeta border-top">
                 <b-form>
                     <div id="textCustomer" class="infoText"><span>New to Grooving?</span></div>
-                    <router-link to="customerRegister">
+                    <router-link to="/customerRegister">
                         <b-button class="continueButton" variant="primary" size="sm">SIGN UP!</b-button>
                     </router-link>
                     <hr/>
                     <div id="textCustomer" class="infoText"><span>Are you an artist?</span></div>
-                    <router-link to="artistRegister">
+                    <router-link to="/artistRegister">
                         <b-button class="continueButton" variant="primary" size="sm">JOIN US!</b-button>
                     </router-link>
                 </b-form>
