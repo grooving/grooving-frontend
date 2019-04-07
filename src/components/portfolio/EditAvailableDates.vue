@@ -190,9 +190,7 @@ export default {
     },
 
     created: function() {
-        console.log("HOAAAAAAA");
         console.log(this.availableDates);
-        console.log("EEE")
         var res = Array();
 
         for (var i = 0; i < this.availableDates.length; i++) { 

@@ -21,4 +21,7 @@ export default{
     performance: '/performance/',
     fare: '/fare/',
     zones: '/zones/',
+    rating: '/customer/rating/',
+    genres: '/artisticGenders/',
+    
 }
