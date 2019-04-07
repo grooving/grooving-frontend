@@ -1,6 +1,7 @@
 <template>
   <div>
-    <ArtistInfo :artistBanner="d_portfolioBanner" :artistName="d_portfolioName" :artistGenres="portfolioGenres" :artistImage="d_portfolioIcon" :artistDescription="d_portfolioBiography" />
+    <ArtistInfo :artistBanner="d_portfolioBanner" :artistName="d_portfolioName" :artistGenres="portfolioGenres" 
+      :artistImage="d_portfolioIcon" :artistDescription="d_portfolioBiography" :artistRating="rating"/>
     <ImageCarousel class="imageCarousel" :photosInfo="d_portfolioImages" :key="updateImagesKey"/>
     <VideoCarousel class="videoCarousel" :videosInfo="d_portfolioVideos" :key="updateVideosKey"/>
     <div v-if="this.datos.length != 0" id="datesContainer" class="datesContainer">	
@@ -28,6 +29,8 @@ import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
 import Calendar from '@/components/Calendar.vue';
+
+import {mapActions} from 'vuex';
 
 var portfolioDays = [];
 
@@ -85,37 +88,41 @@ export default {
       d_portfolioVideos: Array(),
       d_portfolioDays: Array(),
       datos: Array(),
+      rating: undefined,
     }
   },
 
   computed: {
 
     hideEditButton(){
-      return !this.artistId || this.gsecurity.isAnonymous() || this.artistId != this.gsecurity.getId();
+      return !this.$gsecurity.hasRole('ARTIST')||!this.artistId || this.gsecurity.isAnonymous() || this.artistId != this.gsecurity.getId();
     }
 
   },
-  
+  methods: {
+      ...mapActions(['setCurrentGenres']),
+  },
   mounted: function(){
     this.artistId = this.$route.params['artistId'];
 
     var authorizedGAxios = GAxios;
     authorizedGAxios.get(endpoints.portfolio+this.$route.params['artistId']+"/")
       .then(response => {
-      		console.log(response)
           var portfolio = response.data;
 
           this.d_portfolioBanner = portfolio.banner;
           this.d_portfolioName = portfolio.artisticName;
           this.d_portfolioIcon = portfolio.main_photo;
           this.d_portfolioBiography = portfolio.biography;
-          var genres = portfolio.artisticGenders;
+          this.rating = portfolio.artist.rating;
+          var genres = portfolio.artisticGender;
           
           for(var i = 0; i < genres.length; i++){
             var genre = genres[i];
+            delete genre.parentGender;
             this.portfolioGenres.push(genre);
           }
-          
+          this.setCurrentGenres(this.portfolioGenres);
          
           var imageCounter = 0;
           var pImages = portfolio.images;
@@ -143,7 +150,6 @@ export default {
           
 
           this.d_portfolioDays = portfolio.calendar_set[0]['days'];
-          console.log(this.d_portfolioImages)
 
           
           
@@ -160,7 +166,6 @@ export default {
       authorizedGAxios.get('/artist' + endpoints.calendar + this.$route.params['artistId'] + '/')
         .then(response => {
             var calendar = response.data;
-            console.log(calendar[0].days)
 
             this.datos.push({
                 availableDates: calendar[0].days,

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="card tarjeta">
-            <router-link v-bind:to="artistURI"><img v-bind:src="artistImage" onerror="this.src='https://cdn.pixabay.com/photo/2016/02/19/11/36/microphone-1209816_960_720.jpg'" class="card-img-top artistImage" alt="Artist's Image"></router-link>
+            <router-link v-bind:to="portfolioURI"><img v-bind:src="artistImage" onerror="this.src='https://cdn.pixabay.com/photo/2016/02/19/11/36/microphone-1209816_960_720.jpg'" class="card-img-top artistImage" alt="Artist's Image"></router-link>
             <div class="card-body cuerpoTarjeta">
                 <div class="leftContent">
                     <h5 class="card-title artistName">{{ artistName }}</h5>
@@ -18,12 +18,13 @@
 <script>
 import GSecurity from '@/security/GSecurity.js';
 
+const showPortfolioBaseURI = '/showPortfolio/';
+const hiringBaseURI = '/hiringType/';
+const registerURI = '/newUser/';
+
+
 export default {
     name: "ArtistCard",
-
-    components: {
-
-    },
 
     data: function(){
         return{
@@ -32,12 +33,17 @@ export default {
     },
 
     computed: {
+
         hireURI: function() {
             if (!this.gsecurity.isAuthenticated()) {
-                return 'newUser';
+                return registerURI;
             } else if (this.gsecurity.hasRole('CUSTOMER')) {
-                return 'makeOffer';
+                return hiringBaseURI + this.$props.artistId;
             }
+        },
+
+        portfolioURI: function() {
+            return showPortfolioBaseURI + this.$props.artistId;
         }
     },
     
@@ -60,10 +66,6 @@ export default {
     },
 
     props: {
-        artistURI: {
-            type: String,
-            default: '/showPortfolio'
-        },
         artistImage: {
             type: String,
             default: 'https://img.europapress.es/fotoweb/fotonoticia_20181107115306_1920.jpg',
@@ -76,6 +78,10 @@ export default {
             type: Array,
             default: ['Pop', 'Flamenco']
         },
+        artistId:{
+            type: Number,
+            default: 0
+        }
     },
 
     created() {

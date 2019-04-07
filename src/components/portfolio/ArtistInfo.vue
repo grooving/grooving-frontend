@@ -73,9 +73,9 @@ export default {
 
             for (i = 0; i < this.artistGenres.length; i++) { 
                 if (i != this.artistGenres.length - 1) {
-                    res += this.artistGenres[i] + ", ";
+                    res += this.artistGenres[i].name + ", ";
                 } else {
-                    res += this.artistGenres[i];
+                    res += this.artistGenres[i].name;
                 }
             }
 

@@ -17,5 +17,11 @@ export default{
     customer: '/customer/',
     artist: '/artist/',
     paymentCode:'/paymentCode/',
-    artistPayPackage: '/artist/paymentPackages/', 
+    artistPayPackage: '/artist/paymentPackages/',
+    performance: '/performance/',
+    fare: '/fare/',
+    zones: '/zones/',
+    rating: '/customer/rating/',
+    genres: '/artisticGenders/',
+    
 }
