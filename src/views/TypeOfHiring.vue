@@ -60,8 +60,11 @@ export default {
     },
     beforeMount() {
         var authorizedGAxios = GAxios;
-    authorizedGAxios.get(endpoints.portfolio+this.$route.params['artistId']+"/")
-      .then(response => {
+        var GAxiosToken = this.gsecurity.getToken();
+        authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
+
+        authorizedGAxios.get(endpoints.portfolio+this.$route.params['artistId']+"/")
+        .then(response => {
           var portfolio = response.data;
           
           var genres = portfolio.artisticGenders;
@@ -87,7 +90,6 @@ export default {
             console.log(ex);
         });
 
-    console.log(this.$route.params['artistId'])
     authorizedGAxios.get(endpoints.artistPayPackage+this.$route.params['artistId']+"/")
       .then(response => {
           var paymentPackages = response.data;
