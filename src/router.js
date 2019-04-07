@@ -33,6 +33,8 @@ import EditCustom from './views/EditCustom.vue'
 import CreateCustom from './views/CreateCustom.vue'
 import CreatePerformance from './views/CreatePerformance.vue'
 import EditPerformance from './views/EditPerformance.vue'
+import EditFare from './views/EditFare.vue'
+import CreateFare from './views/CreateFare.vue'
 
 Vue.use(Router)
 
@@ -142,6 +144,12 @@ export default new Router({
       props: true,
     },
     {
+      path: '/editFare',
+      name: 'editFare',
+      component: EditFare,
+      props: true,
+    },
+    {
       path: '/createCustom',
       name: 'createCustom',
       component: CreateCustom,
@@ -150,6 +158,11 @@ export default new Router({
       path: '/createPerformance',
       name: 'createPerformance',
       component: CreatePerformance,
+    },
+    {
+      path: '/createFare',
+      name: 'createFare',
+      component: CreateFare,
     },
     {
       path: '*',

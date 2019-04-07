@@ -3,7 +3,7 @@
     <div class="everything">
         <div class="paymentSelect">
             <div v-for="p in farePackages" :key="p.package_id">
-                <div class="paymentOptions"><FareHiring :fixedPrice="p.fare.priceHour"/></div>
+                <div class="paymentOptions"><FareHiring :fixedPrice="p.fare.priceHour" :packageId="p.package_id" :fareId="p.fare_id"/></div>
             </div>
             <hr>
         </div>

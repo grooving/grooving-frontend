@@ -18,5 +18,6 @@ export default{
     artist: '/artist/',
     paymentCode:'/paymentCode/',
     artistPayPackage: '/artist/paymentPackages/',
-    performance: '/performance/'
+    performance: '/performance/',
+    fare: '/fare/'
 }
