@@ -31,6 +31,8 @@ import PriceSelector from './views/PriceSelector.vue'
 import HiringSettings from './views/HiringSettings.vue'
 import EditCustom from './views/EditCustom.vue'
 import CreateCustom from './views/CreateCustom.vue'
+import CreatePerformance from './views/CreatePerformance.vue'
+import EditPerformance from './views/EditPerformance.vue'
 
 Vue.use(Router)
 
@@ -134,9 +136,20 @@ export default new Router({
       props: true,
     },
     {
+      path: '/editPerformance',
+      name: 'editPerformance',
+      component: EditPerformance,
+      props: true,
+    },
+    {
       path: '/createCustom',
       name: 'createCustom',
       component: CreateCustom,
+    },
+    {
+      path: '/createPerformance',
+      name: 'createPerformance',
+      component: CreatePerformance,
     },
     {
       path: '*',

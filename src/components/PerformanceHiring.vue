@@ -4,7 +4,8 @@
             <div class="form-row">
                 <div class="form-group col-12">
                     <span class="card-title" style="font-weight:bold;font-size:30px;margin-bottom:12px">Performance Hiring </span>
-                    <router-link v-bind:to="{name: 'editCustom', params: {}}" style="height: 28px; width: 28px; margin-bottom:12px;">
+                    
+                    <router-link v-bind:to="{name: 'editPerformance', params: {description, duration, fixedPrice, packageId, performanceId}}" style="height: 28px; width: 28px; margin-bottom:12px;">
                         <i class="material-icons iconOffer">create</i>
                     </router-link>
                     <h6 class="card-subtitle mb-2 text-muted">You can define your own shows indicating its description, duration and price. </h6>
@@ -33,18 +34,11 @@ export default {
     name: "PerformanceHiring",
 
     props: {
-        description: {
-            type: String,
-            default: '',
-        },
-        duration: {
-            type: Number,
-            default: 3,
-        },
-        fixedPrice: {
-            type: Number,
-            default: 50,
-        }
+        description: {},
+        duration: {},
+        fixedPrice: {},
+        packageId: {},
+        performanceId: {}
     },
 }
 </script>
