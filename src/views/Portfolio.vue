@@ -95,7 +95,7 @@ export default {
   computed: {
 
     hideEditButton(){
-      return !this.artistId || this.gsecurity.isAnonymous() || this.artistId != this.gsecurity.getId();
+      return !this.$gsecurity.hasRole('ARTIST')||!this.artistId || this.gsecurity.isAnonymous() || this.artistId != this.gsecurity.getId();
     }
 
   },

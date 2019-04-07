@@ -74,9 +74,6 @@ export default {
 
     }
   },
-  beforeCreate() {
-    
-  },
   methods: {
     ...mapActions(['setCurrentGenres', 'setAllGenres', 'setFinal']),
     // Given a carousel-dictionary, returns an array consisting of the 
@@ -253,7 +250,7 @@ export default {
     this.artistId = Number(this.$route.params['artistId']);
 
     // Check if the user is granted to access
-    if(!this.artistId || this.gsecurity.isAnonymous() || this.artistId != this.gsecurity.getId())
+    if(!this.artistId || this.gsecurity.isAnonymous() || this.artistId != this.gsecurity.getId() || !this.$gsecurity.hasRole('ARTIST'))
       this.$router.push("/*");
 
     this.retreivePortfolio();
