@@ -59,18 +59,22 @@ export default {
         }
     },
     beforeMount() {
+
         var authorizedGAxios = GAxios;
         var GAxiosToken = this.gsecurity.getToken();
         authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
 
-        authorizedGAxios.get(endpoints.portfolio+this.$route.params['artistId']+"/")
+        // Artist Information - Left Card
+        authorizedGAxios.get(endpoints.portfolio + this.$route.params['artistId'] + "/")
         .then(response => {
+
           var portfolio = response.data;
           
-          var genres = portfolio.artisticGenders;
+          var genres = portfolio.artisticGender;
           var portfolioGenres = '';
+
           for(var i = 0; i < genres.length; i++){
-            var genre = genres[i];
+            var genre = genres[i].name;
             portfolioGenres += genre;
             if(i == 3) {
                 break;
@@ -81,7 +85,8 @@ export default {
               artistId: portfolio.artist.id, 
               main_photo: portfolio.main_photo, 
               artisticName: portfolio.artisticName, 
-              genres: portfolioGenres};
+              genres: portfolioGenres
+          };
 
           this.setArtist(this.artistData);
           this.nextStep = '/dateSelection/' + this.artistData.artistId;
@@ -90,11 +95,17 @@ export default {
             console.log(ex);
         });
 
-    authorizedGAxios.get(endpoints.artistPayPackage+this.$route.params['artistId']+"/")
+    // Hiring Types - Right Card
+    authorizedGAxios.get(endpoints.artistPayPackage + this.$route.params['artistId'] + "/")
       .then(response => {
+
           var paymentPackages = response.data;
-          for(var i = 0; i< paymentPackages.length; i++) {
+
+          for(var i = 0; i < paymentPackages.length; i++) {
+              
               var payPack = paymentPackages[i];
+              
+              // Fare Packages
               if(payPack.fare_id != null) {
                 this.farePackage.id = payPack.id;
                 this.farePackage.priceHour = payPack.fare.priceHour;
