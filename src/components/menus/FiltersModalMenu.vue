@@ -39,11 +39,6 @@
                         </div>
                         <hr>
                         <!-- Selector Filters -->
-                        <div id="zones" class="row filter-item">
-                            <div class="col vertical-center">
-                                <span style="margin-left: 0px">Zones</span>
-                            </div>
-                        </div>
                         <div id="selectorFilters" v-for="item in selector_filters" :key="item.text">
                             <div class="row filter-item">
                                 <div class="col vertical-center">
@@ -80,47 +75,45 @@
         return{
             title: "Filter by",
             buttonFilterStatus: 0,
-            selectedZone: undefined,
-        }
-    },
-
-    computed:{
-        scoreFilterImage(){
-            return this.buttonFilterStatus < 2 ? 'keyboard_arrow_up' : 'keyboard_arrow_down';
+            singleSelectorValue: undefined,
         }
     },
 
     methods: {
-        onFiltersChange: function (event){
-            this.$props.filters_data[event.target.id].selected = !this.$props.filters_data[event.target.id].selected;
+
+        tristateIcon(item_id){
+
+            if(this.$props.tristate_filters[item_id] && this.$props.tristate_filters[item_id].value < 2)
+                return 'keyboard_arrow_up';
+            else
+                return 'keyboard_arrow_down';
         },
+
+        onSimpleFiltersChange: function (event){
+            // (De)Select the Filter the user chose
+            this.$props.simple_filters[event.target.id].value = !this.$props.simple_filters[event.target.id].value;
+        },
+
+        onTristateFiltersChange: function(event){
+            // (De)Select the Filter the user chose
+            this.$props.tristate_filters[event.target.id].value = ++this.$props.tristate_filters[event.target.id].value % 3;
+        },
+
+        onSelectorFiltersChange: function(selector_id){
+            // (De)Select the Filter the user chose
+            this.$props.selector_filters[selector_id].value = this.singleSelectorValue;
+        },
+
         onConfirmFilters: function (){
-            var status = Array();
-
-            for(var key in this.$props.filters_data){
-                var value = this.$props.filters_data[key];
-
-                if(value.selected){
-                    status.push(value.id);
-                }
-            }
-
-            // New filters, including Sort & Zones
-            var newStatus = Array();
-
-            newStatus.push(this.selectedZone);
-            newStatus.push(this.buttonFilterStatus);
-
-            this.$emit('onFiltersChange', status, newStatus);
+            this.$emit('onFiltersChange');
             this.$emit('filterSelectionClose');
         },
-        changeScoreFilter: function(){
-            this.buttonFilterStatus = ++this.buttonFilterStatus % 3;
-        }
     },
 
     props:{
-        filters_data: Array
+        simple_filters: Array,
+        tristate_filters: Array,
+        selector_filters: Array,
     },
 
   };
@@ -194,6 +187,39 @@
     .grooving-button-text {
         padding: 0px 20px 0px 20px;
         color: white;
+    }
+
+    .tristate {
+        font-size: 24px;
+        font-weight:bold;
+        
+        border: none;
+        border-radius: 30px;
+
+        background-image: linear-gradient(to right, #00fb82, #187fe6);
+    }
+
+    .tristate:hover{
+        background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
+    }
+
+    .tristateDeac {
+        font-size: 24px;
+        font-weight:bold;
+        
+        border: none;
+        border-radius: 30px;
+
+        background-image: linear-gradient(to right, #a2a2a2, #474747);
+    }
+
+    .tristateDeac:hover{
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;
+        background-image: linear-gradient(to right, #515151, #232323) !important;
+    }
+
+    .tristateText {
+        padding: 0px 10px 0px 10px;
     }
 
     header{

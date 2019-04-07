@@ -17,7 +17,7 @@
         </a>
       </div>
     </div>
-    <FiltersModalMenu :filters_data="filter_parameters" v-if="showFilterSelectionModal" @onFiltersChange="updateFilters" @filterSelectionClose="toggleFilterSelectionModal()"/>
+    <FiltersModalMenu :simple_filters="simple_filters" :tristate_filters="tristate_filters" :selector_filters="selector_filters" v-if="showFilterSelectionModal" @onFiltersChange="updateFilters" @filterSelectionClose="toggleFilterSelectionModal()"/>
   </div>
 </template>
 
