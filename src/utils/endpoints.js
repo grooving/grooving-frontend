@@ -11,5 +11,7 @@ export default{
     paymentCode:'/paymentCode/',
     portfolio: '/portfolio/',
     artistPayPackage: '/artist/paymentPackages/',
+    rating: '/customer/rating/',
+    genres: '/artisticGenders/',
     
 }

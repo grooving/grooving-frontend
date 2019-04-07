@@ -29,6 +29,49 @@
                     <div v-if="offerStatus !== 'PENDING' && offerStatus !== 'CONTRACT_MADE'" class="cardTextId">
                         <i class="material-icons iconOffer">bookmark</i><p style="word-break: break-all">{{statusMessage()}}</p>
                     </div>
+                    <div v-if="offerStatus == 'PAYMENT_MADE' && gsecurity.hasRole('CUSTOMER') && ratingD !== null" class="cardTextId">
+                        <div class="rating"><br v-if="rating == null && ratingD !== null">
+
+                            <span class="ratingOK" v-if="ratingD >= 1">★</span>
+                            <span v-else>☆</span>
+                            
+                            <span class="ratingOK" v-if="ratingD >= 2">★</span>
+                            <span v-else>☆</span>
+                            
+                            <span class="ratingOK" v-if="ratingD >= 3">★</span>
+                            <span v-else>☆</span>
+                            
+                            <span class="ratingOK" v-if="ratingD >= 4">★</span>
+                            <span v-else>☆</span>
+                            
+                            <span class="ratingOK" v-if="ratingD >= 5">★</span>
+                            <span v-else>☆</span>
+                        </div>
+                        <div v-if="rating == null && ratingD !== null" class="cardTextId">
+                            <p>Thank you for rating the artist!</p>
+                        </div>
+                    </div>
+                    <div v-if="offerStatus == 'PAYMENT_MADE' && gsecurity.hasRole('CUSTOMER') && ratingD == null" class="cardTextId">
+                        <p style="word-break: break-all">Rate now the artist:&nbsp;</p>
+                            <div class="rating">
+
+                                <span class="ratingOK" v-if="ratingD !== null && ratingD>= 1">★</span>
+                                <span v-else class="toRate" @click="rateDone(1)">☆</span>
+                                
+                                <span class="ratingOK" v-if="ratingD !== null && ratingD >= 2">★</span>
+                                <span v-else class="toRate" @click="rateDone(2)">☆</span>
+                                
+                                <span class="ratingOK" v-if="ratingD !== null && ratingD >= 3">★</span>
+                                <span v-else class="toRate" @click="rateDone(3)">☆</span>
+                                
+                                <span class="ratingOK" v-if="ratingD !== null && ratingD >= 4">★</span>
+                                <span v-else class="toRate" @click="rateDone(4)">☆</span>
+                                
+                                <span class="ratingOK" v-if="ratingD !== null && ratingD >= 5">★</span>
+                                <span v-else class="toRate" @click="rateDone(5)">☆</span>
+                            </div>
+                            
+                    </div>
                     <div v-if="reason !== '' && reason != null" class="cardTextId">
                        <p style="word-break: break-all"><span style="font-weight: bold;">&nbsp;Reason: </span> {{reason}}</p>
                     </div>
@@ -83,6 +126,7 @@
                 cancelledArtistMessage: 'The offer was canceled by the artist after being accepted.',
                 cancelledCustomerMessage: 'The offer was canceled by the customer after being accepted.',
                 paymentMessage: 'The payment has already been made.',
+                ratingD: null,
             }
         },
         
@@ -134,9 +178,15 @@
             reason: {
                 type: String,
                 default: '',
+            },
+            rating: {
+                type: Number,
+                default: null,
             }
         },
-
+        beforeMount () {
+            this.ratingD = this.rating;
+        },
         methods: {
             hashtag() {
                 return "#offer" + this.offerID;
@@ -155,7 +205,24 @@
                 document.getElementById(this.buttonsId()).style.display='inline-block';
                 return false;
             },
+            rateDone(n) {
+                this.ratingD = n;
 
+                var authorizedGAxios = GAxios;
+                var GAxiosToken = this.gsecurity.getToken();
+                authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
+
+                if (this.ratingD != null) {
+                    authorizedGAxios.post(endpoints.rating + this.offerID + '/', {
+                        "score": this.ratingD,
+                        "comment": "",
+                    }).then(response => {
+                        console.log(response);
+                    }).catch(ex => {
+                        console.log(ex);
+                    })
+                } 
+            },
             rejectOffer() {
                 var authorizedGAxios = GAxios;
                 var GAxiosToken = this.gsecurity.getToken();
@@ -295,9 +362,6 @@
         padding: 5px;
         vertical-align: middle !important;
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .3);
-
-        
-        
     }
 
     .titleCard{
@@ -331,6 +395,29 @@
         vertical-align: middle;
         font-weight: bold;
         font-size: 20px;
+    }
+
+    .rating span{
+        font-size: 30px;
+    }
+    
+    .rating{
+        margin-bottom: 10px;
+        margin-top: -15px;
+        
+    }
+
+    .ratingOK{
+        background: -webkit-linear-gradient(#00fb82, #187fe6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .toRate:hover {
+        background-color: -webkit-linear-gradient(#00fb82, #187fe6);
+        background: -webkit-linear-gradient(#00fb82, #187fe6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
     .cardTextDate{

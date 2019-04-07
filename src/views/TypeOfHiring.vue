@@ -87,9 +87,9 @@ export default {
             console.log(ex);
         });
 
+    console.log(this.$route.params['artistId'])
     authorizedGAxios.get(endpoints.artistPayPackage+this.$route.params['artistId']+"/")
       .then(response => {
-          console.log(response)
           var paymentPackages = response.data;
           for(var i = 0; i< paymentPackages.length; i++) {
               var payPack = paymentPackages[i];

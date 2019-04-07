@@ -17,7 +17,7 @@
             <div class="row">
               <div v-for="oferta in acceptedOffers" :key="oferta.offerID" class="tarjeta col-12 col-md-6 col-xl-6">
                 <Offer :offerID="oferta.offerID" :confirmURI="oferta.confirmURI" :date="oferta.date" :price="oferta.price" 
-                  :place="oferta.place" :userIcon="oferta.userIcon" :userName="oferta.userName"  :offerStatus="oferta.offerStatus" :imageURI="oferta.imageURI" :customerSurnames="oferta.customerSurnames" :artistId="oferta.artistId" :reason="oferta.reason"/>
+                  :rating="oferta.rating" :place="oferta.place" :userIcon="oferta.userIcon" :userName="oferta.userName"  :offerStatus="oferta.offerStatus" :imageURI="oferta.imageURI" :customerSurnames="oferta.customerSurnames" :artistId="oferta.artistId" :reason="oferta.reason"/>
               </div>
             </div>
             </span>
@@ -170,7 +170,8 @@ export default {
       var link;
       var customerSurnames = '';
       var artistId = '';
-    
+      var rating;
+
       for(var i = 0; i < offers.length; i++){
         var d = offers[i].date.split("T",2);
         if (this.gsecurity.hasRole('ARTIST')) {
@@ -183,6 +184,13 @@ export default {
           icon = offers[i].paymentPackage.portfolio.main_photo;
           link = 'showPortfolio';
           //artistId = offers[i].paymentPackage.portfolio.artist.id;
+        }
+        if(offers[i].status == "PAYMENT_MADE") {
+          try {
+            rating = offers[i].rating.score;
+          } catch {
+            rating = null;
+          }
         }
         this.offers.push({
           offerID: offers[i].id,
@@ -197,6 +205,7 @@ export default {
           customerSurnames: customerSurnames,
           artistId: artistId,
           reason: offers[i].reason,
+          rating: rating,       
         });
       }
     }).catch(ex => {

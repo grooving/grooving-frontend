@@ -6,7 +6,7 @@
         <p>Sorry! Something went wrong. Try again later.</p>
       </div>
       <EditPhoto :artistImage="this.d_portfolioMainPhoto" :artistBanner="this.d_portfolioBanner"/>
-      <EditArtistInfo />
+      <EditArtistInfo/>
        
 
       <EditImageCarousel :photosInfo="d_portfolioImages" :key="updateImagesKey" />
@@ -28,10 +28,13 @@ import GSecurity from '@/security/GSecurity.js'
 import GAxios from '@/utils/GAxios.js'
 import endpoints from '@/utils/endpoints.js'
 
+import {mapActions} from 'vuex';
+import { mapGetters } from 'vuex';
+
 
 export default {
   name: 'EditPortfolio',
-
+  computed: mapGetters(['genres']),
   components: {
     EditSubmenu,
     EditImageCarousel,
@@ -65,11 +68,17 @@ export default {
       //Calendar
       datos: Array(),
       d_portfolioDays: [],
+
+      //New genres
+      namesOfNewGenres: [],
+
     }
   },
-
+  beforeCreate() {
+    
+  },
   methods: {
-
+    ...mapActions(['setCurrentGenres', 'setAllGenres', 'setFinal']),
     // Given a carousel-dictionary, returns an array consisting of the 
     // URLs used on the carousel
     extractURLS: function(collection, key){
@@ -80,6 +89,7 @@ export default {
 
       return res;
     },
+
 
     // Loads portfolio data
     retreivePortfolio: function(){
@@ -93,15 +103,15 @@ export default {
           this.d_portfolioMainPhoto = portfolio.main_photo;
           this.d_portfolioBiography = portfolio.biography;
 
-          
-
           // Genres
-          var genres = portfolio.artisticGenders;
+          var genres = portfolio.artisticGender;
           
           for(var i = 0; i < genres.length; i++){
             var genre = genres[i];
+            delete genre.parentGender;
             this.d_portfolioGenres.push(genre);
           }
+
           
           // Images
           var pImages = portfolio.images;
@@ -127,6 +137,16 @@ export default {
         this.errors = true;
       });
 
+      GAxios.get(endpoints.genres)
+      .then(response => {
+          var genres = response.data;
+
+          this.setAllGenres(genres)
+
+      }).catch( () => {
+        this.errors = true;
+      });
+
       var authorizedGAxios = GAxios;
           var GAxiosToken = this.gsecurity.getToken();
           authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
@@ -134,13 +154,12 @@ export default {
           authorizedGAxios.get('/calendar/'+this.gsecurity.getId() +'/')
             .then(response => {
                 var calendar = response.data;
-                console.log(calendar)
                 this.d_portfolioDays=calendar.days;
-                console.log(this.d_portfolioDays)
 
                 this.updateCalendatKey += 1;
           });
 
+      
       
     },
 
@@ -150,6 +169,12 @@ export default {
       var GAxiosToken = this.gsecurity.getToken();
       authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
 
+      var newGenres = this.$store.getters.genres.newGenres;
+      for(var i = 0; i < newGenres.length; i++){
+            var genre = newGenres[i].name;
+            this.namesOfNewGenres.push(genre);
+      }
+
       let body = {
         "id": this.artistId,
         "artisticName": this.d_portfolioArtisticName,
@@ -158,9 +183,8 @@ export default {
         "images": this.extractURLS(this.d_portfolioImages, 'imageURL'),
         "videos": this.extractURLS(this.d_portfolioVideos, 'videoURL'),
         "main_photo": this.d_portfolioMainPhoto,
-        "artisticGenders": ["Flamenco"]
+        "artisticGenders": this.namesOfNewGenres,
       };
-
       let body_calendar = {
         "days": this.d_portfolioDays,
         "portfolio":this.$route.params['artistId']
@@ -168,7 +192,6 @@ export default {
 
       authorizedGAxios.put(endpoints.portfolio + this.artistId + '/', body)
       .then(response => {
-        console.log(response.data);
         this.$router.push("/showPortfolio/1")
       }).catch(ex => {
           console.log(ex);
@@ -177,14 +200,13 @@ export default {
 
       authorizedGAxios.put(endpoints.calendar + this.artistId + '/', body_calendar)
       .then(response => {
-        console.log(response.data);
         this.$router.push("/showPortfolio/1")
       }).catch(ex => {
           console.log(ex);
           this.errors = true;
       });
 
-
+      this.setFinal();
 
     },
   },

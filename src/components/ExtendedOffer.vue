@@ -7,7 +7,7 @@
                     <div class="details">
                     <p class="card-text"><span style="font-weight: bold;">Date: </span>{{ date }}</p>
                     <p class="card-text"><span style="font-weight: bold;">Duration: </span>{{ startingHour }} {{ endingHour }}h</p>
-                    <p class="card-text"><span style="font-weight: bold;">Price: </span>${{ price }}</p>
+                    <p class="card-text"><span style="font-weight: bold;">Price: </span>{{ price }}€</p>
                     <p class="card-text"><span style="font-weight: bold;">Address: </span>{{ address }}</p>
                     </div>
                     <div class="description">
