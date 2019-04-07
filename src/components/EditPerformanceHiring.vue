@@ -1,13 +1,14 @@
 <template>
     <div class="content">
-        <form v-on:submit="createPerformance">
+        
+        <form v-on:submit="updatePerformance">
             <div class="form-row">
                 <div class="form-group col-12">
                     <span style="font-weight:bold;font-size:30px;">Performance Hiring </span>
-                    <router-link to="hiringSettings" style="height: 28px; width: 28px">
+                    <router-link to="/hiringSettings" style="height: 28px; width: 28px">
                         <i class="material-icons iconOffer">clear</i>
                     </router-link>
-                    <h6 class="card-subtitle mb-2 text-muted">You can define your own shows indicating its description, duration and price.</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">You can define your own shows indicating its description, duration and price. </h6>
                     <div style="width:100%;margin-top:25px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">DESCRIPTION</p>
                         <div class="input-group">
@@ -47,22 +48,24 @@ import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
 
 export default {
-    name: "CreatePerformanceHiring",
+    name: "EditPerformanceHiring",
 
-    data: function() {
-        return {
-            description:"",
-            duration: "",
-            fixedPrice: "",
-        }
+    props: {
+        description: {},
+        duration: {},
+        fixedPrice: {},
+        packageId: {},
+        performanceId: {},
+        
     },
 
     methods: {
-        createPerformance() {
-            GAxios.post(endpoints.performance, {
+        updatePerformance() {
+            //alert(this.duration);
+            GAxios.post(endpoints.performance + this.performanceId + '/', {
                 "info": this.description,
-                "hours": this.duration,
-                "price": this.fixedPrice
+                "hours":this.duration,
+                "price":this.fixedPrice,
             }).then(response => {
                 console.log(response);
                 this.$router.push({name: "hiringSettings"});

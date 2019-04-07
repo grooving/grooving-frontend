@@ -18,7 +18,7 @@
         </div>
         <div class="paymentSelect">
             <div v-for="p in performancePackages" :key="p.package_id">
-                <div class="paymentOptions"><PerformanceHiring :duration="p.performance.hours" :description="p.performance.info" :fixedPrice="p.performance.price"/></div>
+                <div class="paymentOptions"><PerformanceHiring :duration="p.performance.hours" :description="p.performance.info" :fixedPrice="p.performance.price" :packageId="p.package_id" :performanceId="p.performance_id"/></div>
             </div>
             <div v-if="performancePackages.length == 0" class="content">
                 <form>
