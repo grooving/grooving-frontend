@@ -60,8 +60,11 @@ export default {
     },
     beforeMount() {
         var authorizedGAxios = GAxios;
-    authorizedGAxios.get(endpoints.portfolio+this.$route.params['artistId']+"/")
-      .then(response => {
+        var GAxiosToken = this.gsecurity.getToken();
+        authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
+
+        authorizedGAxios.get(endpoints.portfolio+this.$route.params['artistId']+"/")
+        .then(response => {
           var portfolio = response.data;
           
           var genres = portfolio.artisticGenders;
@@ -87,20 +90,20 @@ export default {
             console.log(ex);
         });
 
-    authorizedGAxios.get(endpoints.artistPayPackage+this.$route.params['artistId']+"/")
-      .then(response => {
-          console.log(response)
-          var paymentPackages = response.data;
-          for(var i = 0; i< paymentPackages.length; i++) {
-              var payPack = paymentPackages[i];
-              if(payPack.fare_id != null) {
-                this.farePackage.id = payPack.id;
-                this.farePackage.priceHour = payPack.fare.priceHour;
-              }
-          }
-        }).catch(ex => {
-            console.log(ex);
-        });
+        authorizedGAxios.get(endpoints.artistPayPackage+this.$route.params['artistId']+"/")
+        .then(response => {
+            console.log(response)
+            var paymentPackages = response.data;
+            for(var i = 0; i< paymentPackages.length; i++) {
+                var payPack = paymentPackages[i];
+                if(payPack.fare_id != null) {
+                    this.farePackage.id = payPack.id;
+                    this.farePackage.priceHour = payPack.fare.priceHour;
+                }
+            }
+            }).catch(ex => {
+                console.log(ex);
+            });
     },
 }
 </script>
