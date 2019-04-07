@@ -18,4 +18,5 @@ export default{
     artist: '/artist/',
     paymentCode:'/paymentCode/',
     artistPayPackage: '/artist/paymentPackages/', 
+    zones: '/zones/',
 }

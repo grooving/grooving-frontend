@@ -3,11 +3,11 @@
     <div class="container">
       <div class="row">
         <div id="filtersDesktop" class="d-none d-lg-inline col-lg-4 col-xl-2">
-          <FiltersSideMenu :filters_data="filter_parameters" @onFiltersChange="updateFilters" />
+          <FiltersSideMenu :simple_filters="simple_filters" :tristate_filters="tristate_filters" :selector_filters="selector_filters" @onFiltersChange="updateFilters" />
         </div>
         <div id="results" class="col-12 col-lg-8 col-xl-10" style="padding-left:0px; padding-right:0px;">
             <div id="resultsContainer" class="container-fluid mt-0">
-              <ArtistList :artistas="datos" :listTitle="'Search Results'" />
+              <ArtistList :artistas="datos_artistas" :listTitle="'Search Results'" />
             </div>
         </div>
       </div>
@@ -26,6 +26,7 @@
 import FiltersSideMenu from '@/components/menus/FiltersSideMenu.vue';
 import FiltersModalMenu from '@/components/menus/FiltersModalMenu.vue';
 import ArtistList from '@/components/ArtistList.vue';
+
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 
@@ -43,15 +44,22 @@ export default {
 
   data: function(){
     return {
-        filter_parameters: [
-            {id: 0, text: "Genre", filterName: "artisticGender", selected: false},
-            {id: 1, text: "Artist Name", filterName: "artisticName", selected: true}
+        simple_filters: [
+            {id: 0, text: "Genre", filterName: "artisticGender", value: false},
+            {id: 1, text: "Artist Name", filterName: "artisticName", value: true}
+        ],
+        tristate_filters: [
+            {id: 0, text: "Score", filterName: "order", value: 0},
         ], 
-        new_filters:[
-          'zone', 'order'
+        selector_filters:[
+            {id: 0, text: "Zones", filterName: "zone", value: 0, data: [
+              {id: 0, text: "España", value: "0", depth: 0},
+              {id: 0, text: "Andalucia", value: "1", depth: 1},
+              {id: 0, text: "Sevilla", value: "2", depth: 2}
+            ]},
         ],
         showFilterSelectionModal: false,
-        datos: Array(),
+        datos_artistas: Array(),
       }
   },
 
@@ -62,51 +70,53 @@ export default {
     },
 
     updateFilters: function() {
-      var selected = Array();
+      
+      // Simple Filters
+      // Either delete or ipdate route's query parameters to match 
+      // the selected filters
 
-      for(var i = 0; i < arguments[0].length; i++){
-        selected.push(arguments[0][i]);
+      for(var i = 0; i < this.simple_filters.length; i++){
+        var filter_item = this.simple_filters[i];
+        if(filter_item.value)
+          this.$route.query[filter_item.filterName] = document.getElementById('searchFormDesktop').value
+        else
+          delete this.$route.query[filter_item.filterName]
       }
 
-      for(var j = 0; j < this.filter_parameters.length; j++){
-        if(selected.includes(this.filter_parameters[j].id)){
-          this.filter_parameters[j].selected = true;
-          this.$route.query[this.filter_parameters[j].filterName] = document.getElementById('searchFormDesktop').value
-        }else{
-          delete this.$route.query[this.filter_parameters[j].filterName]
-        }
+      // TriState Filters
+
+      for(var i = 0; i < this.tristate_filters.length; i++){
+        var filter_item = this.tristate_filters[i];
+
+        if(filter_item.value == 0)
+          delete this.$route.query[filter_item.filterName];
+        else if(filter_item.value == 1)
+          this.$route.query[filter_item.filterName] = 'asc';
+        else
+          this.$route.query[filter_item.filterName] = 'desc';
+
       }
 
-      // New filters: Sort and Zones
-      var zone = arguments[1][0];
-      var order = arguments[1][1];
+      // Selector Filters
 
-      if(zone){
-        this.$route.query[this.new_filters[0]] = zone;
-      }else{
-        delete this.$route.query[this.new_filters[0]];
+      for(var i = 0; i < this.selector_filters.length; i++){
+        var filter_item = this.selector_filters[i];
+
+        if(filter_item.value)
+          this.$route.query[filter_item.filterName] = filter_item.value;
+        else
+          delete this.$route.query[filter_item.filterName]
       }
 
-      if(order){
-        this.$route.query[this.new_filters[1]] = order == 1 ? 'asc' : 'desc';
-      }else{
-        delete this.$route.query[this.new_filters[1]];
-      }
-
-
-      this.datos = Array();
+      // Reset data
+      this.datos_artistas = Array();
       this.search(this.$route.query);
     },
 
     search: function(queries){
       // Make the API call
       GAxios.get(endpoints.artists, {
-        params: {
-          ...(queries[this.filter_parameters[0].filterName] != undefined ? { "artisticGender": queries[this.filter_parameters[0].filterName]} : {}),
-          ...(queries[this.filter_parameters[1].filterName] != undefined ? { "artisticName": queries[this.filter_parameters[1].filterName] } : {}),
-          ...(queries[this.new_filters[0]] != undefined ? { "zone": queries[this.new_filters[0]] } : {}),
-          ...(queries[this.new_filters[1]] != undefined ? { "order": queries[this.new_filters[1]] } : {})
-        }
+        params: queries
       })
       .then(response => {
 
@@ -119,7 +129,7 @@ export default {
             genres.push(artists[i].portfolio.artisticGender[g].name);
           }
 
-          this.datos.push({
+          this.datos_artistas.push({
             artistID: artists[i].id, 
             artistImage: artists[i].photo,
             artistName: artists[i].portfolio.artisticName,
@@ -142,13 +152,44 @@ export default {
 
   },
 
-  mounted: function(){
+  beforeMount: function(){
     // Check if we want to filter artists
     var queries = this.$route.query;
 
     // If either of the filers is set, we update their values
-    this.filter_parameters[0].selected = queries[this.filter_parameters[0].filterName] != undefined;
-    this.filter_parameters[1].selected = queries[this.filter_parameters[1].filterName] != undefined;
+    this.simple_filters[0].value = queries[this.simple_filters[0].filterName] != undefined;
+    this.simple_filters[1].value = queries[this.simple_filters[1].filterName] != undefined;
+
+    // Obtain zones tree...
+    GAxios.get(endpoints.zones, {
+      params: {
+        'tree': true
+      }
+    }).then(response => {
+
+      var root = response.data;
+      var tree = Array();
+
+      tree.push({id:root['id'], text: root['name'], value: root['name'], depth: 0})
+
+      for(var i=0; i < root['children'].length; i++){
+        // For each Comunidad Autónoma
+        var ca = root['children'][i];
+        tree.push({id:ca['id'], text: ca['name'], value: ca['name'], depth: 1})
+
+        for(var j=0; j < ca['children'].length; j++){
+          // For each provincia
+          var provincia = ca['children'][j];
+          tree.push({id:provincia['id'], text: provincia['name'], value: provincia['name'], depth: 2})
+        }
+      }
+
+      console.log(tree)
+
+      this.selector_filters[0].data = tree;
+
+      
+    })
 
     this.search(queries);
   },

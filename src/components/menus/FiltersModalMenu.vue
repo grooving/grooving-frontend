@@ -11,54 +11,54 @@
                         <hr>
                     </div>
                     <div id="switchers" class="col">
-                        <div v-for="item in filters_data" :key="item.id" class="row filter-item horizontal-center">
+                        <!-- Simple Filters -->
+                        <div v-for="item in simple_filters" :key="item.text" class="row filter-item horizontal-center">
                             <div id="filterTitle" class="col-6 vertical-center pl-0">
                                 <span style="margin-left: 0px; text-align: left;">{{item.text}}</span>
                             </div>
                             <div class="col-6 right-alignment pr-0">
                                 <label class="switch" style="margin:0px;">
-                                    <input :id="item.id" type="checkbox" :checked="item.selected ? true : false" @change="onFiltersChange($event)">
+                                    <input :id="item.id" type="checkbox" :checked="item.value ? true : false" @change="onSimpleFiltersChange($event)">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
                         </div>
                         <hr>
-                        <!-- Sorting -->
-                        <div id="sorting" class="row filter-item">
+                        <!-- TriState Filters -->
+                        <div id="tristateFilters" v-for="item in tristate_filters" :key="item.text" class="row filter-item">
                             <div class="col vertical-center">
-                                <span style="margin-left: 0px">Score</span>
+                                <span style="margin-left: 0px">{{item.text}}</span>
                             </div>
                             <div class="col right-alignment">
-                                <button :class="buttonFilterStatus == 0 ? 'filterButtonDisabled' : 'filterButton'" class="vertical-center" style="height: 25px; width: 55px; float:right; margin-right: 0px;" @click="changeScoreFilter()">
-                                    <div class="vertical-center filterButtonText" style="margin: 0 auto; color:white; padding: 0px;">
-                                        <strong><i style="float:right" class="material-icons">{{scoreFilterImage}}</i></strong>
+                                <button :class="item.value == 0 ? 'tristateDeac' : 'tristate'" class="vertical-center" style="height: 25px; float:right" :id="item.id" @click="onTristateFiltersChange($event)">
+                                    <div class="vertical-center tristateText" style="margin: 0 auto; color:white;" :id="item.id">
+                                        <strong><i style="float:right" class="material-icons" :id="item.id">{{tristateIcon(item.id)}}</i></strong>
                                     </div>
                                 </button> 
                             </div>
                         </div>
                         <hr>
-                        <!-- Zones -->
+                        <!-- Selector Filters -->
                         <div id="zones" class="row filter-item">
                             <div class="col vertical-center">
                                 <span style="margin-left: 0px">Zones</span>
                             </div>
                         </div>
-                        <div id="dropdown" class="row filter-item">
-                            <b-form-select v-model="selectedZone" style="width:90%; margin:0 auto;">
-                                <option :value="null">Please select an option</option>
-                                <option value="a">&nbsp;&nbsp;Option A</option>
-                                <option value="b">&nbsp;&nbsp;Option B</option>
-                                <option value="a">&nbsp;&nbsp;Option A</option>
-                                <option value="a">&nbsp;&nbsp;Option A</option>
-                                <option value="a">&nbsp;&nbsp;Option A</option>
-                                <option value="a">&nbsp;&nbsp;Option A</option>
-                                <option :value="null">Please select an option</option>
-                                <option value="a">&nbsp;&nbsp;Option A</option>
-                                <option value="a">&nbsp;&nbsp;Option A</option>
-                                <option value="a">&nbsp;&nbsp;Option A</option>
-                                <option value="a">&nbsp;&nbsp;Option A</option>
-                                <option value="a">&nbsp;&nbsp;Option A</option>
-                            </b-form-select>
+                        <div id="selectorFilters" v-for="item in selector_filters" :key="item.text">
+                            <div class="row filter-item">
+                                <div class="col vertical-center">
+                                    <span>{{item.text}}</span>
+                                </div>
+                            </div>
+                            <div class="row filter-item">
+                                <b-form-select v-model="singleSelectorValue" style="width:90%; margin:0 auto;" @change="onSelectorFiltersChange(item.id)">
+                                    <option :value="undefined">---------</option>
+                                    <option v-for="opt in item.data" :key="opt.text" :value="opt.value">
+                                        <span v-for="times in opt.depth" :key="times">&nbsp;&nbsp;</span>
+                                        <span>{{opt.text}}</span>
+                                    </option>
+                                </b-form-select>
+                            </div>
                         </div>
                         <div id="confirmButton">
                             <a @click="onConfirmFilters()" class="btn btn-primary grooving-button"><span class="grooving-button-text">OK</span></a>
