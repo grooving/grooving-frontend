@@ -11,54 +11,49 @@
                         <hr>
                     </div>
                     <div id="switchers" class="col">
-                        <div v-for="item in filters_data" :key="item.id" class="row filter-item horizontal-center">
+                        <!-- Simple Filters -->
+                        <div v-for="item in simple_filters" :key="item.text" class="row filter-item horizontal-center">
                             <div id="filterTitle" class="col-6 vertical-center pl-0">
                                 <span style="margin-left: 0px; text-align: left;">{{item.text}}</span>
                             </div>
                             <div class="col-6 right-alignment pr-0">
                                 <label class="switch" style="margin:0px;">
-                                    <input :id="item.id" type="checkbox" :checked="item.selected ? true : false" @change="onFiltersChange($event)">
+                                    <input :id="item.id" type="checkbox" :checked="item.value ? true : false" @change="onSimpleFiltersChange($event)">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
                         </div>
                         <hr>
-                        <!-- Sorting -->
-                        <div id="sorting" class="row filter-item">
+                        <!-- TriState Filters -->
+                        <div id="tristateFilters" v-for="item in tristate_filters" :key="item.text" class="row filter-item">
                             <div class="col vertical-center">
-                                <span style="margin-left: 0px">Score</span>
+                                <span style="margin-left: 0px">{{item.text}}</span>
                             </div>
                             <div class="col right-alignment">
-                                <button :class="buttonFilterStatus == 0 ? 'filterButtonDisabled' : 'filterButton'" class="vertical-center" style="height: 25px; width: 55px; float:right; margin-right: 0px;" @click="changeScoreFilter()">
-                                    <div class="vertical-center filterButtonText" style="margin: 0 auto; color:white; padding: 0px;">
-                                        <strong><i style="float:right" class="material-icons">{{scoreFilterImage}}</i></strong>
+                                <button :class="item.value == 0 ? 'tristateDeac' : 'tristate'" class="vertical-center" style="height: 25px; float:right" :id="item.id" @click="onTristateFiltersChange($event)">
+                                    <div class="vertical-center tristateText" style="margin: 0 auto; color:white;" :id="item.id">
+                                        <strong><i style="float:right" class="material-icons" :id="item.id">{{tristateIcon(item.id)}}</i></strong>
                                     </div>
                                 </button> 
                             </div>
                         </div>
                         <hr>
-                        <!-- Zones -->
-                        <div id="zones" class="row filter-item">
-                            <div class="col vertical-center">
-                                <span style="margin-left: 0px">Zones</span>
+                        <!-- Selector Filters -->
+                        <div id="selectorFilters" v-for="item in selector_filters" :key="item.text">
+                            <div class="row filter-item">
+                                <div class="col vertical-center">
+                                    <span>{{item.text}}</span>
+                                </div>
                             </div>
-                        </div>
-                        <div id="dropdown" class="row filter-item">
-                            <b-form-select v-model="selectedZone" style="width:90%; margin:0 auto;">
-                                <option :value="null">Please select an option</option>
-                                <option value="a">&nbsp;&nbsp;Option A</option>
-                                <option value="b">&nbsp;&nbsp;Option B</option>
-                                <option value="a">&nbsp;&nbsp;Option A</option>
-                                <option value="a">&nbsp;&nbsp;Option A</option>
-                                <option value="a">&nbsp;&nbsp;Option A</option>
-                                <option value="a">&nbsp;&nbsp;Option A</option>
-                                <option :value="null">Please select an option</option>
-                                <option value="a">&nbsp;&nbsp;Option A</option>
-                                <option value="a">&nbsp;&nbsp;Option A</option>
-                                <option value="a">&nbsp;&nbsp;Option A</option>
-                                <option value="a">&nbsp;&nbsp;Option A</option>
-                                <option value="a">&nbsp;&nbsp;Option A</option>
-                            </b-form-select>
+                            <div class="row filter-item">
+                                <b-form-select v-model="singleSelectorValue" style="width:90%; margin:0 auto;" @change="onSelectorFiltersChange(item.id)">
+                                    <option :value="undefined">---------</option>
+                                    <option v-for="opt in item.data" :key="opt.text" :value="opt.value">
+                                        <span v-for="times in opt.depth" :key="times">&nbsp;&nbsp;</span>
+                                        <span>{{opt.text}}</span>
+                                    </option>
+                                </b-form-select>
+                            </div>
                         </div>
                         <div id="confirmButton">
                             <a @click="onConfirmFilters()" class="btn btn-primary grooving-button"><span class="grooving-button-text">OK</span></a>
@@ -80,47 +75,45 @@
         return{
             title: "Filter by",
             buttonFilterStatus: 0,
-            selectedZone: undefined,
-        }
-    },
-
-    computed:{
-        scoreFilterImage(){
-            return this.buttonFilterStatus < 2 ? 'keyboard_arrow_up' : 'keyboard_arrow_down';
+            singleSelectorValue: undefined,
         }
     },
 
     methods: {
-        onFiltersChange: function (event){
-            this.$props.filters_data[event.target.id].selected = !this.$props.filters_data[event.target.id].selected;
+
+        tristateIcon(item_id){
+
+            if(this.$props.tristate_filters[item_id] && this.$props.tristate_filters[item_id].value < 2)
+                return 'keyboard_arrow_up';
+            else
+                return 'keyboard_arrow_down';
         },
+
+        onSimpleFiltersChange: function (event){
+            // (De)Select the Filter the user chose
+            this.$props.simple_filters[event.target.id].value = !this.$props.simple_filters[event.target.id].value;
+        },
+
+        onTristateFiltersChange: function(event){
+            // (De)Select the Filter the user chose
+            this.$props.tristate_filters[event.target.id].value = ++this.$props.tristate_filters[event.target.id].value % 3;
+        },
+
+        onSelectorFiltersChange: function(selector_id){
+            // (De)Select the Filter the user chose
+            this.$props.selector_filters[selector_id].value = this.singleSelectorValue;
+        },
+
         onConfirmFilters: function (){
-            var status = Array();
-
-            for(var key in this.$props.filters_data){
-                var value = this.$props.filters_data[key];
-
-                if(value.selected){
-                    status.push(value.id);
-                }
-            }
-
-            // New filters, including Sort & Zones
-            var newStatus = Array();
-
-            newStatus.push(this.selectedZone);
-            newStatus.push(this.buttonFilterStatus);
-
-            this.$emit('onFiltersChange', status, newStatus);
+            this.$emit('onFiltersChange');
             this.$emit('filterSelectionClose');
         },
-        changeScoreFilter: function(){
-            this.buttonFilterStatus = ++this.buttonFilterStatus % 3;
-        }
     },
 
     props:{
-        filters_data: Array
+        simple_filters: Array,
+        tristate_filters: Array,
+        selector_filters: Array,
     },
 
   };
@@ -194,6 +187,39 @@
     .grooving-button-text {
         padding: 0px 20px 0px 20px;
         color: white;
+    }
+
+    .tristate {
+        font-size: 24px;
+        font-weight:bold;
+        
+        border: none;
+        border-radius: 30px;
+
+        background-image: linear-gradient(to right, #00fb82, #187fe6);
+    }
+
+    .tristate:hover{
+        background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
+    }
+
+    .tristateDeac {
+        font-size: 24px;
+        font-weight:bold;
+        
+        border: none;
+        border-radius: 30px;
+
+        background-image: linear-gradient(to right, #a2a2a2, #474747);
+    }
+
+    .tristateDeac:hover{
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;
+        background-image: linear-gradient(to right, #515151, #232323) !important;
+    }
+
+    .tristateText {
+        padding: 0px 10px 0px 10px;
     }
 
     header{

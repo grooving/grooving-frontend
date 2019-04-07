@@ -19,5 +19,6 @@ export default{
     paymentCode:'/paymentCode/',
     artistPayPackage: '/artist/paymentPackages/',
     performance: '/performance/',
-    fare: '/fare/'
+    fare: '/fare/',
+    zones: '/zones/',
 }
