@@ -158,6 +158,23 @@ export default {
         display: none;
     }
 
+    .continueButton {
+        font-size: 22px;
+        border: none;
+        border-radius: 30px;
+        width: 65%;
+        background-image: linear-gradient(to right, #00fb82, #187fe6);
+    }
+
+    .continueButton:hover{
+        background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
+    }
+
+    .continueButtonDiv {
+        margin-top: 30px;
+        margin-bottom: 10%;
+    }
+
     @media (max-width:767px)  {
         .calendarButton {
             padding-top: 5%;

@@ -28,7 +28,11 @@ export default {
   methods:{
     getArtists: function(){
       // Make the API call
-      GAxios.get(endpoints.artists).then(response => {
+      GAxios.get(endpoints.artists, {
+        params: {
+          'order' : 'desc'
+        }
+      }).then(response => {
 
         var artists = response.data.results;
 
