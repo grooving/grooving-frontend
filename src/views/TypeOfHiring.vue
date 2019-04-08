@@ -4,9 +4,9 @@
     
     <div class="everything">
         <div class="artistCard"><ArtistCard 
-            :artistName="this.artistData.artisticName" :artistImage="this.artistData.main_photo" 
+            :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId"/></div>
-        <div class="hiringType"><HiringType @hiring="type"
+        <div class="hiringType"><HiringType @hiring="selectTypeOfHiring"
             :farePrice="this.farePackage.priceHour"  /></div>
     </div>
 </div>
@@ -21,43 +21,70 @@ import GSecurity from '@/security/GSecurity.js';
 import {mapActions} from 'vuex';
 
 export default {
+    
     name: 'TypeOfHiring',
+
     components: {
         HiringType, ArtistCard
     },
+
     data() {
         return {
             gsecurity: GSecurity,
-            nextStep: undefined,
+            artistId: -1,
+            nextStep: '/dateSelection/',
             artistData: Array(),
             farePackage: {
-                id: undefined, 
+                packageId: undefined, 
                 priceHour: undefined,
             },
         }
     },
+
     methods: {
-        ...mapActions(['setHiring']),
+        ...mapActions(['clearState']), 
         ...mapActions(['setArtist']),
-        ...mapActions(['setFarePackage']),
-        type(type, artistId) {
-            this.setHiring(type);
-            if(type == 'FARE') {
-                this.setFarePackage(this.farePackage).then(() => this.$router.push(this.nextStep));
+        ...mapActions(['setOffer']),   
+        ...mapActions(['setFarePackage']),        
+
+        selectTypeOfHiring(hiringType) {
+
+            // Set Offer Hiring Type
+            this.setOffer(hiringType);
+
+            if(hiringType == 'FARE') {
+                this.setFarePackage(this.farePackage).then(() => {
+                    // If VueX has correctly set the package
+                    this.$router.push(this.nextStep);
+                }).catch( e => {
+                    console.log('Could not set Hiring Type');
+                    console.log(e);
+                });
             }
         }
     },
+
     created() {
         // Retreive store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
 
-        if(!this.$gsecurity.hasRole('CUSTOMER')) {
+        this.artistId = this.$route.params['artistId'];
 
-            console.log('Error')
+        if(!this.$gsecurity.hasRole('CUSTOMER')) {
+            console.log("Error: You are not a customer so you can't hire an artist");
             location.replace("/#/*")
         }
+
+        if(!this.artistId){
+            console.log("Error: ArtistId not provided");
+            location.replace("/")
+        }
+
+        // Clear saved data before beginning
+        this.clearState();
     },
+
     beforeMount() {
 
         var authorizedGAxios = GAxios;
@@ -65,7 +92,7 @@ export default {
         authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
 
         // Artist Information - Left Card
-        authorizedGAxios.get(endpoints.portfolio + this.$route.params['artistId'] + "/")
+        authorizedGAxios.get(endpoints.portfolio + this.artistId + "/")
         .then(response => {
 
           var portfolio = response.data;
@@ -74,44 +101,51 @@ export default {
           var portfolioGenres = '';
 
           for(var i = 0; i < genres.length; i++){
+            
             var genre = genres[i].name;
             portfolioGenres += genre;
-            if(i == 3) {
+            if(i < 3 && genres.length > 1)
+                portfolioGenres += ', ';
+            else
                 break;
-            }
-          }
 
+          }
+          
+          // Artist Information
           this.artistData = {
               artistId: portfolio.artist.id, 
-              main_photo: portfolio.main_photo, 
+              photo: portfolio.main_photo, 
               artisticName: portfolio.artisticName, 
               genres: portfolioGenres
           };
 
           this.setArtist(this.artistData);
-          this.nextStep = '/dateSelection/' + this.artistData.artistId;
+          this.nextStep += this.artistData.artistId;
 
         }).catch(ex => {
+            console.log('Could not load Artist Info Data');
             console.log(ex);
         });
 
-    // Hiring Types - Right Card
-    authorizedGAxios.get(endpoints.artistPayPackage + this.$route.params['artistId'] + "/")
-      .then(response => {
+        // Hiring Types - Right Card
+        authorizedGAxios.get(endpoints.artistPayPackage + this.artistId + "/")
+        .then(response => {
 
-          var paymentPackages = response.data;
+            // Available PaymentPackages
+            var paymentPackages = response.data;
 
-          for(var i = 0; i < paymentPackages.length; i++) {
-              
-              var payPack = paymentPackages[i];
-              
-              // Fare Packages
-              if(payPack.fare_id != null) {
-                this.farePackage.id = payPack.id;
-                this.farePackage.priceHour = payPack.fare.priceHour;
-              }
-          }
+            for(var i = 0; i < paymentPackages.length; i++) {
+                
+                var payPack = paymentPackages[i];
+                
+                // Fare Package
+                if(payPack.fare_id != null) {
+                    this.farePackage.packageId = payPack.id;
+                    this.farePackage.priceHour = payPack.fare.priceHour;
+                }
+            }
         }).catch(ex => {
+            console.log('Could not load payment packages')
             console.log(ex);
         });
     },

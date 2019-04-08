@@ -91,7 +91,7 @@ export default {
         },
         artistGenres: {
             type: Array,
-            default: ['Pop', 'Flamenco']
+            default: () => ['Pop', 'Flamenco']
         },
         continueURI: {
             type: String,

@@ -4,7 +4,7 @@
 
     <div class="everything">
         <div class="artistCard"><ArtistCard 
-            :artistName="this.artistData.artisticName" :artistImage="this.artistData.main_photo" 
+            :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.totalPrice"/>
         </div>
         <div class="addDiv">
@@ -20,55 +20,82 @@ import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
 import GSecurity from '@/security/GSecurity.js';
 import {mapActions} from 'vuex';
 import { mapGetters } from 'vuex';
+import PaymentProcess from '@/store/modules/payment.js';
 
 export default {
+
     name: 'AddressInput',
-    computed: mapGetters(['offerArtist', 'offer', 'offerDate']),
+
     components: {
         AddressData, ArtistCard
     },
+
     data() {
         return {
+            gsecurity: GSecurity,
+            artistId: undefined,
+            hiringType: undefined,
             artistData: {
                 artistId: undefined,
                 artisticName: undefined,
-                main_photo: undefined, 
+                photo: undefined, 
                 genres: undefined,
             },
-            gsecurity: GSecurity,
             totalPrice: undefined,
-            nextStep: undefined,
+            nextStep: '/eventInput/',
             startHour: undefined,
         }
     },
+
     methods: {
-        ...mapActions(['setAddress']),
+        ...mapActions(['setEventAddress']),
         addressSelected(address) {
-            this.setAddress(address).then(() => this.$router.push(this.nextStep));
+            this.setEventAddress(this.address).then(() => {
+                // If VueX has correcty saved the address
+                this.$router.push(this.nextStep)
+            }).catch( e => {
+                console.log('Error: Could not set address in VueX');
+                console.log(e);
+            });
         },
     },
+
     created() {
         // Retreive store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
-    },
-    mounted() {
-        this.artistData.artistId = this.$store.getters.offerArtist.artistId;
-        this.artistData.artisticName = this.$store.getters.offerArtist.artisticName;
-        this.artistData.main_photo = this.$store.getters.offerArtist.main_photo;
-        this.artistData.genres = this.$store.getters.offerArtist.genres;
 
-        this.totalPrice = this.$store.getters.offer.totalPrice;
-        this.startHour = this.$store.getters.offerDate.hour;
+        this.artistId = this.$route.params['artistId'];
 
-        this.nextStep = '/eventInput/' + this.artistData.artistId;
-
-        if(!this.$gsecurity.hasRole('CUSTOMER') || this.artistData.artistId != this.$route.params['artistId'] 
-            || !this.totalPrice) {
-                
-            console.log('Error')
+        if(!this.$gsecurity.hasRole('CUSTOMER')) {
+            console.log("Error: You are not a customer so you can't hire an artist");
             location.replace("/#/*")
         }
+
+        if(!this.artistId){
+            console.log("Error: ArtistId not provided");
+            location.replace("/")
+        }
+
+        if(!PaymentProcess.checkStepRequirements(PaymentProcess.state, 'FARE', 3)){
+            console.log('Error: Direct access to the view was detected')
+            location.replace("/#/hiringType/1/")
+        }
+    },
+
+    mounted() {
+        // Artist Data
+        this.artistData.artistId = this.$store.getters.offerArtist.artistId;
+        this.artistData.artisticName = this.$store.getters.offerArtist.artisticName;
+        this.artistData.photo = this.$store.getters.offerArtist.photo;
+        this.artistData.genres = this.$store.getters.offerArtist.genres;
+
+        this.hiringType = this.$store.getters.offer.hiringType;
+
+        if(this.hiringType && this.hiringType == 'FARE')
+            this.priceHour = this.$store.getters.offerFarePack.priceHour;
+
+        this.nextStep += this.artistData.artistId;
     },
 }
 </script>

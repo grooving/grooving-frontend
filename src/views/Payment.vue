@@ -7,7 +7,7 @@
         <p>Error en el mes</p>-->
     </div>
     <div class="everything">
-        <div class="artistCard"><ArtistCard :artistName="this.artistData.artisticName" :artistImage="this.artistData.main_photo" 
+        <div class="artistCard"><ArtistCard :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.totalPrice"/>
         </div>
         <div class="paymentDiv">
@@ -24,18 +24,23 @@ import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
 import { mapGetters } from 'vuex';
+import PaymentProcess from '@/store/modules/payment.js';
 
 export default {
+
     name: 'payment',
-    computed: mapGetters(['offerAddress', 'offerDate', 'offer', 'offerArtist', 'offerFarePack']),
+
     components: {
         CreditCardPayment, ArtistCard
     },
-    data () {
+
+    data() {
         return {
             gsecurity: GSecurity,
+            artistId: undefined,
+            hiringType: undefined,
             creditCard: {
-                numbe: undefined, 
+                number: undefined, 
                 name: undefined, 
                 month: undefined, 
                 year: undefined, 
@@ -57,7 +62,7 @@ export default {
             artistData: {
                 artistId: undefined,
                 artisticName: undefined,
-                main_photo: undefined, 
+                photo: undefined, 
                 genres: undefined,
             },
             totalPrice: undefined,
@@ -65,12 +70,14 @@ export default {
             farePackageId: undefined,
         }
     },
+
     props: {
-            errors: {
-                type: Boolean,
-                default: false
-            }
-        },
+        errors: {
+            type: Boolean,
+            default: false
+        }
+    },
+
     methods: {
         gpay(creditCard) {
 
@@ -156,7 +163,7 @@ export default {
 
         this.artistData.artistId = this.$store.getters.offerArtist.artistId;
         this.artistData.artisticName = this.$store.getters.offerArtist.artisticName;
-        this.artistData.main_photo = this.$store.getters.offerArtist.main_photo;
+        this.artistData.photo = this.$store.getters.offerArtist.photo;
         this.artistData.genres = this.$store.getters.offerArtist.genres;
 
         this.totalPrice = this.$store.getters.offer.totalPrice;

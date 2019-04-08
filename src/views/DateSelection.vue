@@ -4,7 +4,7 @@
     
     <div class="everything">
         <div class="artistCard"><ArtistCard 
-            :artistName="this.artistData.artisticName" :artistImage="this.artistData.main_photo" 
+            :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :price="this.priceHour"/>
         </div>
         <div class="calendarButton">
@@ -23,43 +23,67 @@ import GSecurity from '@/security/GSecurity.js';
 import endpoints from '@/utils/endpoints.js';
 import {mapActions} from 'vuex';
 import { mapGetters } from 'vuex';
+import PaymentProcess from '@/store/modules/payment.js';
 
 export default {
-  name: 'DateSelection',
-  computed: mapGetters(['offerArtist', 'offerFarePack']),
-  components: {
-    Calendar, ArtistCard
-  },
 
-  data: function() {
+    name: 'DateSelection',
+    computed: mapGetters(['offerArtist', 'offerFarePack']),
+    components: {
+        Calendar, ArtistCard
+    },
+
+    data: function() {
       return {
+          gsecurity: GSecurity,
+          artistId: undefined,
+          hiringType: undefined,
           artistData: {
               artistId: undefined,
               artisticName: undefined,
-              main_photo: undefined,
+              photo: undefined,
               genres: undefined,
           },
           priceHour: undefined,
-          nextStep: undefined,
-          gsecurity: GSecurity,
+          nextStep: '/timeSelection/',
           datos: Array(),
           fecha: '',
-      }
-  },
+        }
+    },
+
     created() {
         // Retreive store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+
+        this.artistId = this.$route.params['artistId'];
+
+        if(!this.$gsecurity.hasRole('CUSTOMER')) {
+            console.log("Error: You are not a customer so you can't hire an artist");
+            location.replace("/#/*")
+        }
+
+        if(!this.artistId){
+            console.log("Error: ArtistId not provided");
+            location.replace("/")
+        }
+
+        if(!PaymentProcess.checkStepRequirements(PaymentProcess.state, 'FARE', 1)){
+            console.log('Error: Direct access to the view was detected')
+            location.replace("/#/hiringType/1/")
+        }
+
     },
-  beforeMount: function() {
+
+    beforeMount: function() {
+        
       var authorizedGAxios = GAxios;
       var GAxiosToken = this.gsecurity.getToken();
       authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
 
-      authorizedGAxios.get('/artist' + endpoints.calendar + this.$route.params['artistId'] + '/')
+      authorizedGAxios.get('/artist' + endpoints.calendar + this.artistId + '/')
         .then(response => {
             var calendar = response.data;
-            console.log(calendar[0].days)
 
             this.datos.push({
                 availableDates: calendar[0].days,
@@ -68,32 +92,38 @@ export default {
         }).catch(ex => {
             console.log(ex);
         });
-  },
-  mounted() {
+    },
+
+    mounted() {
 
         this.artistData.artistId = this.$store.getters.offerArtist.artistId;
         this.artistData.artisticName = this.$store.getters.offerArtist.artisticName;
-        this.artistData.main_photo = this.$store.getters.offerArtist.main_photo;
+        this.artistData.photo = this.$store.getters.offerArtist.photo;
         this.artistData.genres = this.$store.getters.offerArtist.genres;
 
-        this.priceHour = this.$store.getters.offerFarePack.priceHour;
+        this.hiringType = this.$store.getters.offer.hiringType;
 
-        this.nextStep = '/timeSelection/' + this.artistData.artistId;
+        if(this.hiringType && this.hiringType == 'FARE')
+            this.priceHour = this.$store.getters.offerFarePack.priceHour;
 
-         // Retreive store credentials
-        this.gsecurity = GSecurity;
-        this.gsecurity.obtainSavedCredentials();
-        if(!this.$gsecurity.hasRole('CUSTOMER') || this.artistData.artistId != this.$route.params['artistId'] 
-            || !this.priceHour) {
+        this.nextStep += this.artistId;
+    },
 
-            console.log('Error')
-            location.replace("/#/*")
-        }
-  },
     methods: {
-        ...mapActions(['setDate']),
+        ...mapActions(['setDateDate']),
+
         dateSelected() {
-            this.setDate(this.fecha).then(() => this.$router.push(this.nextStep));
+            if(this.fecha){
+                this.setDateDate(this.fecha).then(() => {
+                    // If VueX has correcty saved the date
+                    this.$router.push(this.nextStep)
+                }).catch( e => {
+                    console.log('Error: Could not set date in VueX');
+                    console.log(e);
+                });
+            }else{
+                alert('You must select a date...');
+            }
         },
 
         calendarSelected(){
