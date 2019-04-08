@@ -1,14 +1,14 @@
 <template>
     <div class="content">
-    <form>
+    <form v-on:submit.prevent="eventDataSelected()">
         <div class="form-row">
             <div class="form-group col-12">
                 <textarea v-model="description" type="text" class="form-control" style="resize: none;" 
-                    placeholder="Add here relevant information about your event." rows="7"></textarea>
+                    placeholder="Add here relevant information about your event." rows="7" required></textarea>
             </div>  
         </div>
-        <router-link v-bind:to="nextStep" class="continueButtonDiv"><div @click="eventDataSelected()"
-            class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div></router-link>
+        <button class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span>
+        </button>
     </form>
     </div>
 </template>
@@ -74,6 +74,7 @@ export default {
         border: none;
         border-radius: 30px;
         width: fit-content;
+        margin-top: 2%;
         font-weight: bold;
     
         background-image: linear-gradient(to right, #00fb82, #187fe6);

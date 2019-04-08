@@ -8,7 +8,7 @@
     </div>
     <div class="everything"> 
         <div class="artistCard"><ArtistCard 
-            :artistName="this.artistData.artisticName" :artistImage="this.artistData.main_photo" 
+            :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.totalPrice"/>
         </div>
         <div class="paymentSelect">
@@ -23,54 +23,76 @@ import PaymentOptions from '@/components/makeOffer/PaymentOptions.vue'
 import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
 import GSecurity from '@/security/GSecurity.js';
 import { mapGetters } from 'vuex';
+import PaymentProcess from '@/store/modules/payment.js';
 
 export default {
     name: 'PaymentSelector',
-    computed: mapGetters(['offerArtist', 'offer']),
+
     components: {
         PaymentOptions, ArtistCard
     },
+
     data() {
         return {
+            gsecurity: GSecurity,
+            artistId: undefined,
+            hiringType: undefined,
             artistData: {
                 artistId: undefined,
                 artisticName: undefined,
-                main_photo: undefined,
+                photo: undefined,
                 genres: undefined,
             },
-            gsecurity: GSecurity,
             totalPrice: undefined,
             address: undefined,
-            nextStep: undefined,
+            nextStep: '/payment/',
         }
     },
+
     methods: {
-        paymentSelected(){
+        paymentSelected(){ 
             this.$emit('paymentSelected');
+
+            // If VueX has correcty saved the time
+            this.$router.push(this.nextStep);
         }
     },
+
     created() {
         // Retreive store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+
+        this.artistId = this.$route.params['artistId'];
+
+        if(!this.$gsecurity.hasRole('CUSTOMER')) {
+            console.log("Error: You are not a customer so you can't hire an artist");
+            location.replace("/#/*")
+        }
+
+        if(!this.artistId){
+            console.log("Error: ArtistId not provided");
+            location.replace("/")
+        }
+
+        if(!PaymentProcess.checkStepRequirements(PaymentProcess.state, 'FARE', 5)){
+            console.log('Error: Direct access to the view was detected')
+            location.replace("/#/hiringType/" + this.artistId + "/")
+        }
     },
+
     mounted() {
         this.artistData.artistId = this.$store.getters.offerArtist.artistId;
         this.artistData.artisticName = this.$store.getters.offerArtist.artisticName;
-        this.artistData.main_photo = this.$store.getters.offerArtist.main_photo;
+        this.artistData.photo = this.$store.getters.offerArtist.photo;
         this.artistData.genres = this.$store.getters.offerArtist.genres;
 
-        this.totalPrice = this.$store.getters.offer.totalPrice;
-        this.address = this.$store.getters.offerAddress.location;
+        this.hiringType = this.$store.getters.offer.hiringType;
 
-        this.nextStep = '/payment/' + this.artistData.artistId;
+        if(this.hiringType && this.hiringType == 'FARE')
+            this.totalPrice = this.$store.getters.offer.totalPrice;
 
-        if(!this.$gsecurity.hasRole('CUSTOMER') || this.artistData.artistId != this.$route.params['artistId'] 
-            || !this.address) {
-                
-            console.log('Error')
-            location.replace("/#/*")
-        }
+        this.nextStep += this.artistId;
     },
 
 }

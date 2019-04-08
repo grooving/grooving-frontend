@@ -4,7 +4,7 @@
     
     <div class="everything">
         <div class="artistCard"><ArtistCard 
-            :artistName="this.artistData.artisticName" :artistImage="this.artistData.main_photo" 
+            :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.totalPrice"/>
         </div>
         <div class="sentOffer" style="min-width: 320px "><PaymentNotif/></div>
@@ -31,7 +31,7 @@ export default {
             artistData: {
                 artistId: undefined,
                 artisticName: undefined,
-                main_photo: undefined, 
+                photo: undefined, 
                 genres: undefined,
             },
             gsecurity: GSecurity,
@@ -50,7 +50,7 @@ export default {
     mounted() {
         this.artistData.artistId = this.$store.getters.offerArtist.artistId;
         this.artistData.artisticName = this.$store.getters.offerArtist.artisticName;
-        this.artistData.main_photo = this.$store.getters.offerArtist.main_photo;
+        this.artistData.photo = this.$store.getters.offerArtist.photo;
         this.artistData.genres = this.$store.getters.offerArtist.genres;
 
         this.setFinal();

@@ -4,7 +4,7 @@
 
     <div class="everything">
         <div class="artistCard"><ArtistCard 
-            :artistName="this.artistData.artisticName" :artistImage="this.artistData.main_photo" 
+            :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.totalPrice"/>
         </div>
         <div class="evDiv">
@@ -20,54 +20,81 @@ import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
 import GSecurity from '@/security/GSecurity.js';
 import {mapActions} from 'vuex';
 import { mapGetters } from 'vuex';
+import PaymentProcess from '@/store/modules/payment.js';
 
 export default {
-  name: 'EventInput',
-  computed: mapGetters(['offerArtist', 'offer', 'offerAddress']),
-  components: {
-    EventData, ArtistCard
-  },
-  data() {
-      return {
-          artistData: {
-              artistId: undefined,
-              artisticName: undefined,
-              main_photo: undefined,
-              genres: undefined,
-          },
-          gsecurity: GSecurity,
-          totalPrice: undefined,
-          address: undefined,
-          nextStep: undefined,
-      }
-  },
-  created() {
+
+    name: 'EventInput',
+
+    components: {
+        EventData, ArtistCard
+    },
+
+    data() {
+        return {
+            gsecurity: GSecurity,
+            artistId: undefined,
+            hiringType: undefined,
+            artistData: {
+                artistId: undefined,
+                artisticName: undefined,
+                photo: undefined,
+                genres: undefined,
+            },
+            totalPrice: undefined,
+            address: undefined,
+            nextStep: '/paymentSelector/',
+        }
+    },
+
+    created() {
         // Retreive store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
-    },
-  mounted() {
-        this.artistData.artistId = this.$store.getters.offerArtist.artistId;
-        this.artistData.artisticName = this.$store.getters.offerArtist.artisticName;
-        this.artistData.main_photo = this.$store.getters.offerArtist.main_photo;
-        this.artistData.genres = this.$store.getters.offerArtist.genres;
 
-        this.totalPrice = this.$store.getters.offer.totalPrice;
-        this.address = this.$store.getters.offerAddress.location;
+        this.artistId = this.$route.params['artistId'];
 
-        this.nextStep = '/paymentSelector/' + this.artistData.artistId;
-
-        if(!this.$gsecurity.hasRole('CUSTOMER') || this.artistData.artistId != this.$route.params['artistId'] 
-            || !this.address) {
-                
-            console.log('Error')
+        if(!this.$gsecurity.hasRole('CUSTOMER')) {
+            console.log("Error: You are not a customer so you can't hire an artist");
             location.replace("/#/*")
         }
+
+        if(!this.artistId){
+            console.log("Error: ArtistId not provided");
+            location.replace("/")
+        }
+
+        if(!PaymentProcess.checkStepRequirements(PaymentProcess.state, 'FARE', 4)){
+            console.log('Error: Direct access to the view was detected')
+            location.replace("/#/hiringType/" + this.artistId + "/")
+        }
     },
+
+    mounted() {
+        // Artist Data
+        this.artistData.artistId = this.$store.getters.offerArtist.artistId;
+        this.artistData.artisticName = this.$store.getters.offerArtist.artisticName;
+        this.artistData.photo = this.$store.getters.offerArtist.photo;
+        this.artistData.genres = this.$store.getters.offerArtist.genres;
+
+        this.hiringType = this.$store.getters.offer.hiringType;
+
+        if(this.hiringType && this.hiringType == 'FARE')
+            this.totalPrice = this.$store.getters.offer.totalPrice;
+
+        this.nextStep += this.artistData.artistId;
+    },
+
     methods: {
         ...mapActions(['setEventDescription']),
         eventData(description) {
-            this.setEventDescription(description);
+            this.setEventDescription(description).then(() => {
+                // If VueX has correcty saved the description
+                this.$router.push(this.nextStep)
+            }).catch( e => {
+                console.log('Error: Could not set description in VueX');
+                console.log(e);
+            });
         }
     }
 }

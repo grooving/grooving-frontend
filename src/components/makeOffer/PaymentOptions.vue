@@ -4,8 +4,9 @@
             <p>Select the payment method</p>
             <!-- <div class="continueButtonDiv"><div  class="btn btn-primary continueButton"><span class="continueText">PAYPAL</span></div @click="paymentOptionSelected()"></div> -->
             <br>
-            <router-link v-bind:to="nextStep" class="continueButtonDiv"><div @click="paymentOptionSelected()"
-                class="btn btn-primary continueButton"><span class="continueText">CREDIT CARD</span></div></router-link>
+            <div @click="paymentOptionSelected()"
+                class="btn btn-primary continueButton"><span class="continueText">CREDIT CARD</span>
+            </div>
         </div>
     </div>
 </template>
