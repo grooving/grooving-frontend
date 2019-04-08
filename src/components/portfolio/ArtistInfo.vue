@@ -8,6 +8,9 @@
         </div>
         <h1 style="font-weight: bold;">{{artistName}}</h1>
         <span class="card-text artistGenres">{{ genresToString() }}</span>
+        <div>
+            <router-link v-if="gsecurity.hasRole('CUSTOMER') || !gsecurity.isAuthenticated()" v-bind:to="hireURI" class="btn btn-primary hireButton"><span class="hireText">HIRE</span></router-link>
+        </div>
         <div class="rating">
 
             <span class="ratingOK" v-if="artistRating >= 1">★</span>
@@ -32,8 +35,20 @@
 </template>
 
 <script>
+import GSecurity from "@/security/GSecurity.js";
+
+const hiringBaseURI = '/hiringType/';
+const registerURI = '/newUser/';
+
 export default {
     name: "ArtistInfo",
+
+    data: function() {
+        return {
+            gsecurity: GSecurity,
+        };
+    },
+
     props: {
         artistURI: {
             type: String,
@@ -62,7 +77,21 @@ export default {
         artistDescription: {
             type: String,
             default: "Charli XCX is a british singer known for her hits such as 'Vroom Vroom', 'Girls Night Out' or 'Taxi'."
-        }
+        },
+        artistId: {
+            type: String,
+        },
+    },
+
+    computed: {
+
+        hireURI: function() {
+            if (!this.gsecurity.isAuthenticated()) {
+                return registerURI;
+            } else if (this.gsecurity.hasRole('CUSTOMER')) {
+                return hiringBaseURI + this.$props.artistId;
+            }
+        },
     },
 
     methods: {
@@ -81,7 +110,12 @@ export default {
 
             return res;
         }
-    }
+    },
+
+    created() {
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+    },
 }
 </script>
 
@@ -145,6 +179,26 @@ export default {
      .artistGenres {
             color: #187FE6;
             font-size: 18px;
+    }
+
+    .hireButton {
+        font-size: 24px;
+        font-weight:bold;
+        
+        border: none;
+        border-radius: 30px;
+
+        background-image: linear-gradient(to right, #00fb82, #187fe6);
+        margin-top:10px;
+        margin-bottom:10px;
+    }
+
+    .hireButton:hover{
+        background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
+    }
+
+    .hireText {
+        padding: 0px 10px 0px 10px;
     }
     
 
