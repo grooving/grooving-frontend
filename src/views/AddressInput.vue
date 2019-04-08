@@ -95,7 +95,7 @@ export default {
         this.hiringType = this.$store.getters.offer.hiringType;
 
         if(this.hiringType && this.hiringType == 'FARE')
-            this.priceHour = this.$store.getters.offerFarePack.priceHour;
+            this.totalPrice = this.$store.getters.offer.totalPrice;
 
         this.nextStep += this.artistData.artistId;
     },
