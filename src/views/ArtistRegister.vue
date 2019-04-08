@@ -47,7 +47,7 @@
                         <b-form-input v-model="input.email" type="email" placeholder="E-mail" required></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input type="number" v-model="input.phoneNumber" placeholder="Phone Number"></b-form-input>
+                        <b-form-input type="number" v-model="input.phoneNumber" placeholder="Phone Number" min="0"></b-form-input>
                     </b-form-group>
                     <h6 class="card-subtitle mb-2 text-muted">By creating an account you agree to <a href="/">Grooving's Terms and Conditions</a>.</h6>
                     <b-button class="continueButton" variant="primary" size="sm" type="submit" v-on:click="createArtist">SIGN IN</b-button>
