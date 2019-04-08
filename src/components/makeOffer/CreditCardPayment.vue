@@ -3,7 +3,7 @@
     <form>
         <div class="form-row">
             <div class="form-group col-8">
-                <input maxlength="16" type="text" class="form-control" placeholder="Card number" v-model="number">
+                <input v-model="number" maxlength="16" type="text" class="form-control" placeholder="Card number">
             </div>
             <div class="form-group col-4">
                 <select id="inputState" class="form-control">
@@ -52,9 +52,9 @@ export default {
         }
     },
     props: {
-        creditCardNumber: {
+        number: {
             type: String,
-            default: '4590114832997756'
+            default: '1111222233334444'
         },
         creditCardBrand: {
             type: String,

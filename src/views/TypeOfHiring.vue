@@ -67,10 +67,10 @@ export default {
         .then(response => {
           var portfolio = response.data;
           
-          var genres = portfolio.artisticGenders;
+          var genres = portfolio.artisticGender;
           var portfolioGenres = '';
           for(var i = 0; i < genres.length; i++){
-            var genre = genres[i];
+            var genre = genres[i].name;
             portfolioGenres += genre;
             if(i == 3) {
                 break;
