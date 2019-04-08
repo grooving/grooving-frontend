@@ -1,7 +1,7 @@
 <template>
 <div class="prueba">
     <div class="title"><p>Payment</p></div>
-    <div v-if="errors === true" class="validationErrors">
+    <div v-if="errors == true" class="validationErrors">
         <p>Sorry! Something went wrong. Try again later.</p>
         <!--<p>Error en el numero</p>
         <p>Error en el mes</p>-->
@@ -24,6 +24,7 @@ import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
 import { mapGetters } from 'vuex';
+import { error } from 'util';
 
 export default {
     name: 'payment',
@@ -121,30 +122,33 @@ export default {
                 },
             }
 
-            console.log(body_offer)
-
             authorizedGAxios.post('/eventlocation/', body_eventLocation)
             .then((res) => {
                 console.log("Event Location Created...")
                 console.log(res)
                 
                 // Reference the brand-new eventLocation
-                body_offer['eventLocation_id'] = res.data.id
+                body_offer['eventLocation_id'] = res.data.id;
+                console.log('Body', body_offer)
 
-                return authorizedGAxios.post('/offer/', body_offer);
+                authorizedGAxios.post('/offer/', body_offer)
+                .then((res) => {
+                    console.log("Offer Created...")
+                    console.log(res)
+                    this.$router.push({path: this.nextStep})
+                })
+                .catch(error => {
+                    console.log("Error while processing one of the requests")
+                    
+                }).then(this.errors=true)
+                
             })
-            .then((res) => {
-                console.log("Offer Created...")
-                console.log(res)
-            })
-            .catch((err) => {
+            .catch(error => {
                 console.log("Error while processing one of the requests")
                 console.log(err)
             })
-            .then(()=> {
-                this.$router.push({path: this.nextStep})
-                    
-            });
+
+
         },
     },
     created() {

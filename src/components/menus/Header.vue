@@ -161,8 +161,11 @@ export default {
 
       var log_result = await this.gsecurity.authenticate(this.input.username, this.input.password)
 
-      if (log_result)
+      if (log_result) {
         this.$router.push({ path: "/" });
+      } else {
+        $('#ddown-form-email, #ddown-form-passwd').css('border-color', 'red');
+      }
 
     },
 
@@ -347,6 +350,13 @@ export default {
 
   input:focus {
     border-color: #00fb82;
+    font-weight: semibold;
+    color: black;
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.7) !important;
+  }
+
+  .test {
+    border-color: red;
     font-weight: semibold;
     color: black;
     box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.7) !important;

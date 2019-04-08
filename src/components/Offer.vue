@@ -72,7 +72,7 @@
                             </div>
                             
                     </div>
-                    <div v-if="reason !== '' && reason != null" class="cardTextId">
+                    <div v-if="reason !== '' && reason != null && (offerStatus == 'WITHDRAWN' || offerStatus == 'REJECTED' || offerStatus == 'CANCELLED_ARTIST')" class="cardTextId">
                        <p style="word-break: break-all"><span style="font-weight: bold;">&nbsp;Reason: </span> {{reason}}</p>
                     </div>
                 </div>
@@ -85,11 +85,11 @@
                         <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="enableOfferButtons()" class="btn btn-primary cancelButton" 
                             data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">CANCEL</span></a></div>
                         <div v-if="offerStatus === 'PENDING' && gsecurity.hasRole('ARTIST')" class="right-div right-text2">
-                            <button class="btn btn-primary confirmButton" v-on:click="rejectOffer"><span class="continueText">CONFIRM</span></button></div>
+                            <button class="btnn2 btn-primary confirmButton" v-on:click="rejectOffer"><span class="continueText">CONFIRM</span></button></div>
                         <div v-if="offerStatus === 'PENDING' && gsecurity.hasRole('CUSTOMER')" class="right-div right-text2">
-                            <button class="btn btn-primary confirmButton" v-on:click="withdrawnOffer"><span class="continueText">CONFIRM</span></button></div>
+                            <button class="btnn2 btn-primary confirmButton" v-on:click="withdrawnOffer"><span class="continueText">CONFIRM</span></button></div>
                         <div v-if="offerStatus === 'CONTRACT_MADE'" class="right-div right-text2">
-                            <button class="btn btn-primary confirmButton" v-on:click="cancelOffer"><span class="continueText">CONFIRM</span></button></div>
+                            <button class="btnn2 btn-primary confirmButton" v-on:click="cancelOffer"><span class="continueText">CONFIRM</span></button></div>
                     </div>
                 </div>
                 <div v-if="offerStatus === 'PENDING'" class="row container" v-bind:id="buttonsId()">
@@ -99,7 +99,7 @@
                         <router-link v-bind:to="confirmURI" class="btn btn-primary confirmButton"><span class="continueText">ACCEPT</span></router-link></div>
                 </div>
                 <div v-if="offerStatus === 'CONTRACT_MADE'" class="row container" v-bind:id="buttonsId()">
-                    <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="disableOfferButtons()" class="btn btn-primary rejectButton" 
+                    <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="disableOfferButtons()" class="btnn btn-primary rejectButton" 
                         data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">DECLINE</span></a></div>
                 </div>
             </div>
@@ -340,6 +340,24 @@
         font-family: "Archivo"
     }
 
+    .btnn {
+        text-align: center;
+        vertical-align: middle;
+        user-select: none;
+        padding: .750rem .605rem;
+        line-height: 1.5;
+        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+
+    .btnn2 {
+        text-align: center;
+        vertical-align: middle;
+        user-select: none;
+        padding: .450rem .420rem;
+        line-height: 1.5;
+        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+
     .material-icons:hover {
         background: -webkit-linear-gradient(left, #000000, #000000);
         -webkit-background-clip: text;
@@ -435,7 +453,10 @@
         vertical-align: middle;
     }
 
-    
+    .continueText {
+        word-break: keep-all;
+        padding: 0 !important;
+    }
 
     .row .container{
         margin: 0px !important;
@@ -532,6 +553,7 @@
         .everything {
             margin: 0 auto;
         }
+
     }
 
     @media (min-width:768px)  {
