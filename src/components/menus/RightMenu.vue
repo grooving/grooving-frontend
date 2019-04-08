@@ -57,7 +57,6 @@ export default {
             this.artistId = this.gsecurity.getId();
             console.log(this.artistId);
         },
-<<<<<<< HEAD
         goTo(path) {
             this.url = this.$store.getters.sideMenus.url;
             if(this.url !== path) {
@@ -67,13 +66,6 @@ export default {
                 this.$emit('samePage');
             }
         },
-=======
-
-        showMyPortfolio() {
-            this.$router.push('/showPortfolio/'+this.artistId);
-            window.location.reload();
-        }
->>>>>>> d789afad4a164fb20341c55aefe207205a8f0caa
     },
     props: {
         blur: Boolean,
