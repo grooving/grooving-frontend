@@ -1,20 +1,39 @@
 <template>
     <div class="content">
     <form v-on:submit.prevent="addressDataSelected()">
-        <div class="form-row">
+        <div class="form-row" style="margin-top:15px">
             <div class="form-group col-12">
-                <input v-model="street" type="text" class="form-control" placeholder="Street" required>
+                <input v-model="street" type="text" class="form-control" placeholder="Address" required>
             </div>  
         </div>
         <div class="form-row">
-            <div class="form-group col-12">
-                <input v-model="zipcode" type="number" class="form-control" placeholder="Zip code" required>
+            <div class="form-group col-7">
+                <input v-model="location" type="text" class="form-control" placeholder="Town" required>
+            </div>  
+            <div class="form-group col-5">
+                <input v-model="zipcode" type="number" class="form-control" placeholder="Zipcode" required>
             </div>  
         </div>
-        <div class="form-row">
+        <!-- <div class="form-row">
             <div class="form-group col-12">
                 <input v-model="location" type="text" class="form-control" placeholder="Location" required>
             </div>  
+        </div> -->
+        <div id="selectorFilters " v-for="item in selector_filters" :key="item.text">
+            <div class="row filter-item">
+                <div class="col vertical-center" style="margin-bottom: 5px;">
+                    <span>Province</span>
+                </div>
+            </div>
+            <div class="row filter-item " style="margin-bottom: 15px">
+                <b-form-select v-model="singleSelectorValue" style="width:90%; margin:0 auto;">
+                    <option :value="undefined">---------</option>
+                    <option v-for="opt in item.data" :key="opt.text" :value="opt.id">
+                        <span v-for="times in opt.depth" :key="times">&nbsp;&nbsp;</span>
+                        <span>{{opt.text}}</span>
+                    </option>
+                </b-form-select>
+            </div>
         </div>
         <button class="btn btn-primary continueButton" >
                 <span class="continueText">CONTINUE</span></button>
@@ -31,12 +50,14 @@ export default {
             type: String,
             default: '',
         },
+        selector_filters: Array,
     },
     data() {
         return {
             location: undefined,
             zipcode: undefined,
             street: undefined,
+            singleSelectorValue: undefined,
         }
     },
     mounted() {
@@ -44,7 +65,7 @@ export default {
     },
     methods: {
         addressDataSelected(){
-            this.$emit('addressSelected', [this.location, this.zipcode, this.street]);
+            this.$emit('addressSelected', [this.location, this.zipcode, this.street, this.singleSelectorValue]);
         },
     }
 }

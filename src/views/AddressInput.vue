@@ -8,7 +8,7 @@
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.totalPrice"/>
         </div>
         <div class="addDiv">
-          <div class="addressData"><AddressData :nextStep="this.nextStep" @addressSelected="addressSelected" /></div>
+          <div class="addressData"><AddressData :nextStep="this.nextStep" :selector_filters="this.selector_filters" @addressSelected="addressSelected" /></div>
         </div>
     </div>
     </div>
@@ -18,6 +18,8 @@
 import AddressData from '@/components/makeOffer/AddressData.vue'
 import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
 import GSecurity from '@/security/GSecurity.js';
+import GAxios from '@/utils/GAxios.js';
+import endpoints from '@/utils/endpoints.js';
 import {mapActions} from 'vuex';
 import { mapGetters } from 'vuex';
 import PaymentProcess from '@/store/modules/payment.js';
@@ -46,6 +48,13 @@ export default {
             totalPrice: undefined,
             nextStep: '/eventInput/',
             startHour: undefined,
+            selector_filters:[
+                {id: 0, text: "Zones", filterName: "zone", value: 0, data: [
+                {id: 0, text: "España", value: "0", depth: 0},
+                {id: 0, text: "Andalucia", value: "1", depth: 1},
+                {id: 0, text: "Sevilla", value: "2", depth: 2}
+                ]},
+            ], 
         }
     },
 
@@ -84,7 +93,34 @@ export default {
             location.replace("/#/hiringType/" + this.artistId + "/")
         }
     },
+    beforeMount() {
+        // Obtain zones tree...
+        GAxios.get(endpoints.zones, {
+        params: {
+            'tree': true
+        }
+        }).then(response => {
 
+        var root = response.data;
+        var tree = Array();
+
+        tree.push({id:root['id'], text: root['name'], value: root['name'], depth: 0})
+
+        for(var i=0; i < root['children'].length; i++){
+            // For each Comunidad Autónoma
+            var ca = root['children'][i];
+            tree.push({id:ca['id'], text: ca['name'], value: ca['name'], depth: 1})
+
+            for(var j=0; j < ca['children'].length; j++){
+            // For each provincia
+            var provincia = ca['children'][j];
+            tree.push({id:provincia['id'], text: provincia['name'], value: provincia['name'], depth: 2})
+            }
+        }
+        this.selector_filters[0].data = tree;
+        
+        })
+    },
     mounted() {
         // Artist Data
         this.artistData.artistId = this.$store.getters.offerArtist.artistId;

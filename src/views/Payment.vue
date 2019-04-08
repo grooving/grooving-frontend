@@ -59,6 +59,7 @@ export default {
                 zipcode: undefined, 
                 street: undefined, 
                 description: undefined,
+                zoneId: undefined,
             },
             artistData: {
                 artistId: undefined,
@@ -95,6 +96,7 @@ export default {
             this.offer.zipcode = this.$store.getters.offerEvent.zipcode,
             this.offer.street = this.$store.getters.offerEvent.street,
             this.offer.description = this.$store.getters.offerEvent.description,
+            this.offer.zoneId = this.$store.getters.offerEvent.zone,
 
             console.log(this.offer)
 
@@ -114,7 +116,7 @@ export default {
                 "equipment": null,
                 "description": this.offer.description,
                 "address": this.offer.street + ', ' + this.offer.zipcode,
-                "zone_id": 4
+                "zone_id": this.offer.zoneId
             }
 
             let body_offer = {
