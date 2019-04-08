@@ -11,8 +11,8 @@
                     <router-link class="nav-link" to="/personalInfo" data-toggle="collapse" data-target="#sidebar">My Account</router-link>
                     <b-dropdown-divider class="divider"/>
                 </li>
-                <li class="nav-item section" v-if="gsecurity.hasRole('ARTIST')">
-                    <router-link class="nav-link" v-bind:to="'/showPortfolio/'+this.artistId + '/'" data-toggle="collapse" data-target="#sidebar">My Portfolio</router-link>
+                <li class="nav-item section" v-if="gsecurity.hasRole('ARTIST')" v-on:click="showMyPortfolio">
+                    <router-link class="nav-link" v-bind:to="''" data-toggle="collapse" data-target="#sidebar">My Portfolio</router-link>
                     <b-dropdown-divider class="divider"/>
                 </li>
                 <li class="nav-item section" v-if="gsecurity.hasRole('ARTIST')">
@@ -57,6 +57,11 @@ export default {
             console.log(this.userFirstName);
             this.artistId = this.gsecurity.getId();
             console.log(this.artistId);
+        },
+
+        showMyPortfolio() {
+            this.$router.push('/showPortfolio/'+this.artistId);
+            window.location.reload();
         }
     },
 
