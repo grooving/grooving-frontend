@@ -16,7 +16,7 @@
                     <b-dropdown-divider class="divider"/>
                 </li>
                 <li class="nav-item section" v-if="gsecurity.hasRole('ARTIST')">
-                    <router-link class="nav-link" to="hiringSettings" data-toggle="collapse" data-target="#sidebar">Hiring Settings</router-link>
+                    <router-link class="nav-link" to="/hiringSettings" data-toggle="collapse" data-target="#sidebar">Hiring Settings</router-link>
                     <b-dropdown-divider class="divider"/>
                 </li>                
                 <li class="nav-item section">
