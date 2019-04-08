@@ -77,7 +77,10 @@ export default {
         artistDescription: {
             type: String,
             default: "Charli XCX is a british singer known for her hits such as 'Vroom Vroom', 'Girls Night Out' or 'Taxi'."
-        }
+        },
+        artistId: {
+            type: String,
+        },
     },
 
     computed: {

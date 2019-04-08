@@ -1,7 +1,7 @@
 <template>
   <div>
     <ArtistInfo :artistBanner="d_portfolioBanner" :artistName="d_portfolioName" :artistGenres="portfolioGenres" 
-      :artistImage="d_portfolioIcon" :artistDescription="d_portfolioBiography" :artistRating="rating"/>
+      :artistImage="d_portfolioIcon" :artistDescription="d_portfolioBiography" :artistRating="rating" :artistId="artistId"/>
     <ImageCarousel class="imageCarousel" :photosInfo="d_portfolioImages" :key="updateImagesKey"/>
     <VideoCarousel class="videoCarousel" :videosInfo="d_portfolioVideos" :key="updateVideosKey"/>
     <div id="datesContainer" class="datesContainer">	
