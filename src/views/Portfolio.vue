@@ -4,7 +4,7 @@
       :artistImage="d_portfolioIcon" :artistDescription="d_portfolioBiography" :artistRating="rating"/>
     <ImageCarousel class="imageCarousel" :photosInfo="d_portfolioImages" :key="updateImagesKey"/>
     <VideoCarousel class="videoCarousel" :videosInfo="d_portfolioVideos" :key="updateVideosKey"/>
-    <div v-if="this.datos.length != 0" id="datesContainer" class="datesContainer">	
+    <div id="datesContainer" class="datesContainer">	
     	<div class="contentCalendar">
     		<h3 class="availableDatesTitle" >Available dates</h3>
     		<Calendar class="availableDates" :availableDates="this.datos[0].availableDates"/>
@@ -31,6 +31,7 @@ import GSecurity from '@/security/GSecurity.js';
 import Calendar from '@/components/Calendar.vue';
 
 import {mapActions} from 'vuex';
+import { type } from 'os';
 
 var portfolioDays = [];
 
@@ -150,6 +151,7 @@ export default {
           
 
           this.d_portfolioDays = portfolio.calendar_set[0]['days'];
+          
 
           
           
@@ -166,10 +168,14 @@ export default {
       authorizedGAxios.get('/artist' + endpoints.calendar + this.$route.params['artistId'] + '/')
         .then(response => {
             var calendar = response.data;
-
-            this.datos.push({
-                availableDates: calendar[0].days,
-            })
+            if(calendar.length==0){
+              this.datos.push({availableDates: []});
+            }
+            else{
+              this.datos.push({
+                  availableDates: calendar[0].days,
+              })
+            }
 
         }).catch(ex => {
             console.log(ex);
