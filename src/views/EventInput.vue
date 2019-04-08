@@ -66,7 +66,7 @@ export default {
 
         if(!PaymentProcess.checkStepRequirements(PaymentProcess.state, 'FARE', 4)){
             console.log('Error: Direct access to the view was detected')
-            location.replace("/#/hiringType/1/")
+            location.replace("/#/hiringType/" + this.artistId + "/")
         }
     },
 
@@ -88,7 +88,7 @@ export default {
     methods: {
         ...mapActions(['setEventDescription']),
         eventData(description) {
-            this.setEventDescription(this.description).then(() => {
+            this.setEventDescription(description).then(() => {
                 // If VueX has correcty saved the description
                 this.$router.push(this.nextStep)
             }).catch( e => {

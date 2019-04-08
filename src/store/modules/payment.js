@@ -70,7 +70,7 @@ const actions = {
     },
 
     setEventAddress (state, address) {
-        state.commit('setEventAddress', address)
+        state.commit('setEventAddress', address);
     },
 
     setEventDescription (state, description) {
@@ -137,10 +137,10 @@ const mutations = {
     setEventAddress(state, address) {
 
         if(address){
-            state.event.location = address.location;
-            state.event.zipcode = address.zipcode;
-            state.event.street = address.street;
-            state.event.zone = address.zone;
+            state.event.location = address[0];
+            state.event.zipcode = address[1];
+            state.event.street = address[2];
+            state.event.zone = address[3];
         }
 
     },
@@ -221,11 +221,12 @@ function checkStepRequirements(state, hiring, step){
 
             // EventLocation Description
             res = res && state.event.description;
+        }else if(step >= 6){
+
+            // None
         }
 
     }
-
-    console.log('here', res)
 
     return res;
 

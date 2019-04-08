@@ -48,7 +48,7 @@ export default {
                 cvv: undefined, 
             },
             date: {
-                now: undefined, 
+                fecha: undefined, 
                 startHour: undefined, 
                 duration: undefined,
             },
@@ -67,7 +67,7 @@ export default {
                 genres: undefined,
             },
             totalPrice: undefined,
-            nextStep: undefined,
+            nextStep: '/sentOffer/',
             farePackageId: undefined,
         }
     },
@@ -89,16 +89,18 @@ export default {
             this.creditCard.year = creditCard[3],
             this.creditCard.cvv = creditCard[4],
 
-            this.offer.artistId = this.$store.getters.offer.artistId,
-            this.offer.hiringType = this.$store.getters.offer.hiring,
-            this.offer.location = this.$store.getters.offerAddress.location,
-            this.offer.zipcode = this.$store.getters.offerAddress.zipcode,
-            this.offer.street = this.$store.getters.offerAddress.street,
-            this.offer.description = this.$store.getters.offerAddress.description,
+            this.offer.artistId = this.$store.getters.offerArtist.artistId,
+            this.offer.hiringType = this.$store.getters.offer.hiringType,
+            this.offer.location = this.$store.getters.offerEvent.location,
+            this.offer.zipcode = this.$store.getters.offerEvent.zipcode,
+            this.offer.street = this.$store.getters.offerEvent.street,
+            this.offer.description = this.$store.getters.offerEvent.description,
+
+            console.log(this.offer)
 
             this.date = Array();
             this.date.startHour = this.$store.getters.offerDate.hour,
-            this.date.now = this.$store.getters.offerDate.date,
+            this.date.fecha = this.$store.getters.offerDate.date,
             this.date.duration = this.$store.getters.offerDate.duration;
 
             this.farePackageId = this.$store.getters.offerFarePack.packageId;
@@ -117,7 +119,7 @@ export default {
 
             let body_offer = {
                 'description': this.offer.description,
-                'date': this.date.now + 'T' + this.date.startHour + ':00',
+                'date': this.date.fecha + 'T' + this.date.startHour + ':00',
                 'hours': this.date.duration,
                 'paymentPackage_id': this.farePackageId,
                 'eventLocation_id' : 1,
@@ -146,8 +148,9 @@ export default {
                 })
                 .catch(error => {
                     console.log("Error while processing one of the requests")
+                    this.errors = true;
                     
-                }).then(this.errors=true)
+                })
                 
             })
             .catch(error => {
@@ -158,39 +161,45 @@ export default {
 
         },
     },
+
     created() {
         // Retreive store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+
+        this.artistId = this.$route.params['artistId'];
+
+        if(!this.$gsecurity.hasRole('CUSTOMER')) {
+            console.log("Error: You are not a customer so you can't hire an artist");
+            location.replace("/#/*")
+        }
+
+        if(!this.artistId){
+            console.log("Error: ArtistId not provided");
+            location.replace("/")
+        }
+
+        if(!PaymentProcess.checkStepRequirements(PaymentProcess.state, 'FARE', 6)){
+            console.log('Error: Direct access to the view was detected')
+            location.replace("/#/hiringType/" + this.artistId + "/")
+        }
     },
+
     mounted() {
 
+        // Artist Data
         this.artistData.artistId = this.$store.getters.offerArtist.artistId;
         this.artistData.artisticName = this.$store.getters.offerArtist.artisticName;
         this.artistData.photo = this.$store.getters.offerArtist.photo;
         this.artistData.genres = this.$store.getters.offerArtist.genres;
 
-        this.totalPrice = this.$store.getters.offer.totalPrice;
-        this.offer.location = this.$store.getters.offerAddress.location;
+        this.hiringType = this.$store.getters.offer.hiringType;
 
-        this.nextStep = '/sentOffer/' + this.artistData.artistId;
+        if(this.hiringType && this.hiringType == 'FARE')
+            this.priceHour = this.$store.getters.offerFarePack.priceHour;
 
-        if(!this.$gsecurity.hasRole('CUSTOMER') || this.artistData.artistId != this.$route.params['artistId'] 
-            || !this.offer.location) {
-                
-            console.log('Error')
-            location.replace("/#/*")
-        }        
-    },
-    created() {
-        // Retreive store credentials
-        this.gsecurity = GSecurity;
-        this.gsecurity.obtainSavedCredentials();
+        this.nextStep += this.artistData.artistId;
 
-        if(!this.$gsecurity.isAuthenticated()) {
-            console.log('Error')
-            location.replace("/#/*")
-        }
     },
 
 }

@@ -26,6 +26,8 @@ export default {
 
     name: 'AddressInput',
 
+    computed: mapGetters(['offerArtist']),
+
     components: {
         AddressData, ArtistCard
     },
@@ -50,7 +52,7 @@ export default {
     methods: {
         ...mapActions(['setEventAddress']),
         addressSelected(address) {
-            this.setEventAddress(this.address).then(() => {
+            this.setEventAddress(address).then(() => {
                 // If VueX has correcty saved the address
                 this.$router.push(this.nextStep)
             }).catch( e => {
@@ -79,7 +81,7 @@ export default {
 
         if(!PaymentProcess.checkStepRequirements(PaymentProcess.state, 'FARE', 3)){
             console.log('Error: Direct access to the view was detected')
-            location.replace("/#/hiringType/1/")
+            location.replace("/#/hiringType/" + this.artistId + "/")
         }
     },
 

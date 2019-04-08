@@ -77,7 +77,7 @@ export default {
 
         if(!PaymentProcess.checkStepRequirements(PaymentProcess.state, 'FARE', 5)){
             console.log('Error: Direct access to the view was detected')
-            location.replace("/#/hiringType/1/")
+            location.replace("/#/hiringType/" + this.artistId + "/")
         }
     },
 
