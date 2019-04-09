@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div>
-                <div><CustomPrice @priceSelected="priceValue"/></div>
+                <div><CustomPrice @confirmPrice="confirmPrice" @priceSelected="priceValue" :duration="date.duration" :minPrice="minimumPrice"  /></div>
             </div>
         </div>
     </div>
@@ -25,6 +25,9 @@
 
 <script>
     import CustomPrice from '@/components/CustomPrice.vue'
+    import GSecurity from '@/security/GSecurity.js'
+    import {mapActions} from 'vuex';
+
 
     export default {
         name: 'PriceSelector',
@@ -35,6 +38,22 @@
 
         data: function() {
             return {
+                gsecurity: GSecurity,
+                artistId: undefined,
+                hiringType: undefined,
+                artistData: {
+                    artistId: undefined,
+                    artisticName: undefined,
+                    photo: undefined,
+                    genres: undefined,
+                },
+                minimumPrice: undefined,
+                date: {
+                    date: undefined,
+                    hour: undefined,
+                    duration: undefined,
+                },
+                nextStep: undefined, 
                 price: '',
             };
         },
@@ -57,6 +76,22 @@
 
             priceValue (value) {
                 this.price = value;
+            },
+
+            ...mapActions(['setOfferPrice']),
+
+            confirmPrice(){
+                if(this.price){
+                    this.setOfferPrice(this.price).then(() => {
+                        // If VueX has correcty saved the price
+                        this.$router.push(this.nextStep)
+                    }).catch( e => {
+                        console.log('Error: Could not set price in VueX');
+                        console.log(e);
+                    });
+                }else{
+                    alert('You must select a price...');
+                }
             }
         },
 
@@ -77,6 +112,54 @@
                 type: Array,
                 default: ['Pop', 'Flamenco']
             },
+        },
+
+        created() {
+            // Retreive store credentials
+            this.gsecurity = GSecurity;
+            this.gsecurity.obtainSavedCredentials();
+
+            this.artistId = this.$route.params['artistId'];
+            // Retrieve the type of hiring in order to ensure access permission
+            this.hiringType = this.$store.getters.offer.hiringType;
+
+            if(!this.gsecurity.hasRole('CUSTOMER')) {
+                console.log("Error: You are not a customer so you can't hire an artist");
+                location.replace("/#/*")
+            }
+
+            if(!this.artistId){
+                console.log("Error: ArtistId not provided");
+                location.replace("/")
+            }
+
+            var stepNumber;
+            if(this.hiringType == 'CUSTOM'){
+                stepNumber = 2;
+                this.nextStep = '/addressInput/';
+            }
+
+            if(!this.hiringType || !PaymentProcess.checkStepRequirements(PaymentProcess.state, this.hiringType, stepNumber)){
+                console.log('Error: Direct access to the view was detected')
+                location.replace("/#/hiringType/" + this.artistId + "/")
+            }
+        },
+
+        mounted() {
+
+            this.artistData.artistId = this.$store.getters.offerArtist.artistId;
+            this.artistData.artisticName = this.$store.getters.offerArtist.artisticName;
+            this.artistData.photo = this.$store.getters.offerArtist.photo;
+            this.artistData.genres = this.$store.getters.offerArtist.genres;
+            
+            this.date = this.$store.getters.offerDate;
+            
+            if(this.hiringType && this.hiringType == 'CUSTOM')
+                this.minimumPrice = this.$store.getters.offerCustomPack.minimumPrice;
+            console.log("minpri", this.minimumPrice)
+
+            this.nextStep += this.artistId;
+
         },
     }
 </script>

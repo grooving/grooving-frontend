@@ -7,18 +7,17 @@
          <h2 class="title">Menu</h2>
             <ul class="navbar-nav mr-auto p-2 col align-self-center justify-content-center">
                 <li class="nav-item section">
-                    <router-link class="nav-link" to="/artist_search" data-toggle="collapse" data-target="#sidebarleft" >Top Artists</router-link> 
-                    <b-dropdown-divider class="divider"/>
+                    <div class="nav-link goTo" @click="goTo('/artist_search')" data-toggle="collapse" data-target="#sidebarleft" >Top Artists</div> 
+                    <b-dropdown-divider v-if="gsecurity.isAuthenticated()" class="divider"/>
                 </li>
                 <li v-if="gsecurity.isAuthenticated()" class="nav-item section">
-                    <router-link class="nav-link" to="offers" data-toggle="collapse" 
-                    data-target="#sidebarleft" >My Offers</router-link>
+                    <div class="nav-link goTo" @click="goTo('/offers')" data-toggle="collapse" 
+                    data-target="#sidebarleft" >My Offers</div>
                     <b-dropdown-divider v-if="gsecurity.hasRole('ARTIST')" class="divider"/>
                 </li>
                 
                 <li v-if="gsecurity.hasRole('ARTIST')" class="nav-item section">
-                    <router-link class="nav-link" to="receivePayment" data-toggle="collapse" data-target="#sidebarleft">QR Scan</router-link>
-                    <!-- <b-dropdown-divider class="divider"/> -->
+                    <div class="nav-link goTo" @click="goTo('/receivePayment')" data-toggle="collapse" data-target="#sidebarleft">QR Scan</div>
                 </li>
                 
                 <!-- <li class="nav-item section">
@@ -35,6 +34,8 @@
  
 <script>
 import GSecurity from '@/security/GSecurity.js';
+import {mapActions} from 'vuex';
+
 
 export default {
   name: 'LeftMenu',
@@ -46,8 +47,21 @@ export default {
     data: function(){
         return{
             gsecurity: GSecurity,
+            url: undefined,
         }
-    }
+    },
+    methods: {
+        ...mapActions(['clearStore', 'setURL']),
+        goTo(path) {
+            this.url = this.$store.getters.sideMenus.url;
+            if(this.url !== path) {
+                this.setURL(path);
+                this.clearStore().then(() => this.$router.push(path));  
+            } else {
+                this.$emit('samePage');
+            }
+        },
+    },
 }
 
 $(window).bind('scroll', function () {
@@ -70,6 +84,16 @@ $(window).bind('scroll', function () {
 .title {
     font-weight: bold;
     margin-left: 5px;
+}
+
+.goTo {
+    cursor: pointer;
+    background-color: transparent;
+    color: #007bff;
+}
+
+.goTo:hover {
+    color: #0056b3;
 }
 
 .navContent {

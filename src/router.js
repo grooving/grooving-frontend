@@ -35,6 +35,8 @@ import CreatePerformance from './views/CreatePerformance.vue'
 import EditPerformance from './views/EditPerformance.vue'
 import EditFare from './views/EditFare.vue'
 import CreateFare from './views/CreateFare.vue'
+import StartingDate from './views/StartingDate.vue'
+import PerformanceSelector from './views/PerformanceSelector.vue'
 
 Vue.use(Router)
 
@@ -125,7 +127,7 @@ export default new Router({
       component: RegisterConfirmation,
     },
     {
-      path: '/priceSelector',
+      path: '/priceSelector/:artistId',
       name: 'priceSelector',
       component: PriceSelector,
     },
@@ -218,9 +220,20 @@ export default new Router({
       component: Payment,
     },
     {
+      path: '/performanceSelector/:artistId',
+      name: 'performanceSelector',
+      component: PerformanceSelector,
+    },
+    {
       path: '/sentOffer/:artistId',
       name: 'sentOffer',
       component: SentOffer,
     },
+    {
+      path: '/startingDate',
+      name: 'startingDate',
+      component: StartingDate,
+    },
+    
   ]
 })

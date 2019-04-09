@@ -69,7 +69,7 @@ export default {
             },
             totalPrice: undefined,
             nextStep: '/sentOffer/',
-            farePackageId: undefined,
+            packageId: undefined,
         }
     },
 
@@ -105,7 +105,10 @@ export default {
             this.date.fecha = this.$store.getters.offerDate.date,
             this.date.duration = this.$store.getters.offerDate.duration;
 
-            this.farePackageId = this.$store.getters.offerFarePack.packageId;
+            if(this.hiringType == "FARE")
+                this.packageId = this.$store.getters.offerFarePack.packageId;
+            else if(this.hiringType == "CUSTOM")
+                this.packageId = this.$store.getters.offerCustomPack.packageId;
 
             var authorizedGAxios = GAxios;
             var GAxiosToken = this.gsecurity.getToken();
@@ -123,7 +126,6 @@ export default {
                 'description': this.offer.description,
                 'date': this.date.fecha + 'T' + this.date.startHour + ':00',
                 'hours': this.date.duration,
-                'paymentPackage_id': this.farePackageId,
                 'eventLocation_id' : 1,
                 'transaction': {
                     'holder': this.creditCard.name,
@@ -132,6 +134,17 @@ export default {
                     'cvv': this.creditCard.cvv,
                 },
             }
+
+            if(this.hiringType == "FARE"){
+                this.packageId = this.$store.getters.offerFarePack.packageId;
+            }
+            else if(this.hiringType == "CUSTOM"){
+                this.packageId = this.$store.getters.offerCustomPack.packageId;
+                body_offer['price'] = this.$store.getters.offer.totalPrice;
+
+            }
+            
+            body_offer['paymentPackage_id'] = this.packageId;
 
             authorizedGAxios.post('/eventlocation/', body_eventLocation)
             .then((res) => {
@@ -170,6 +183,8 @@ export default {
         this.gsecurity.obtainSavedCredentials();
 
         this.artistId = this.$route.params['artistId'];
+        // Retrieve the type of hiring in order to ensure access permission
+        this.hiringType = this.$store.getters.offer.hiringType;
 
         if(!this.$gsecurity.hasRole('CUSTOMER')) {
             console.log("Error: You are not a customer so you can't hire an artist");
@@ -181,7 +196,14 @@ export default {
             location.replace("/")
         }
 
-        if(!PaymentProcess.checkStepRequirements(PaymentProcess.state, 'FARE', 6)){
+        var stepNumber;
+        if(this.hiringType == 'FARE')
+            stepNumber = 6;
+        else if(this.hiringType == 'CUSTOM'){
+            stepNumber = 7;
+        }
+
+        if(!this.hiringType || !PaymentProcess.checkStepRequirements(PaymentProcess.state, this.hiringType, stepNumber)){
             console.log('Error: Direct access to the view was detected')
             location.replace("/#/hiringType/" + this.artistId + "/")
         }

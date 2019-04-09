@@ -162,7 +162,6 @@ export default {
 
     authorizedGAxios.get(URI)
     .then(response => {
-      console.log(response.data);
       var offers = response.data.results;
 
       var name;

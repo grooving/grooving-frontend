@@ -46,9 +46,12 @@
       </h5>
     </div>
     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-      <div class="bodies">{{customDescription}}
-           <!-- <div class="continueButtonDiv"><router-link v-bind:to="'#'" 
-            class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></router-link></div> -->
+      <div class="bodies">{{customDescription}} {{customMinPrice}}€/h
+           <div class="continueButtonDiv">
+               <div @click="selectType('CUSTOM')" class="btn btn-primary continueButton">
+                   <span class="continueText">CONTINUE</span>
+                </div>
+            </div>
       </div>
     </div>
   </div>
@@ -79,7 +82,11 @@ export default {
         },
         customDescription: {
             type: String,
-            default: "Coming soon."
+            default: "In this type of contract you decide the amount of money to pay, up to a minumum. Min Price: "
+        },
+        customMinPrice: {
+            type: String,
+            default: "",
         },
         artistImage: {
             type: String,
