@@ -96,6 +96,8 @@ export default {
             this.preparedOffer.zipcode = this.$store.getters.offerEvent.zipcode,
             this.preparedOffer.street = this.$store.getters.offerEvent.street,
             this.preparedOffer.description = this.$store.getters.offerEvent.description,
+            this.preparedOffer.zoneId = this.$store.getters.offerEvent.zone,
+
             console.log("Oferta preparada: ", this.preparedOffer);
 
             // Preparamos una fecha con los campos de VueX, que usaremos para redactar el 
@@ -117,7 +119,7 @@ export default {
                 "equipment": null,
                 "description": this.preparedOffer.description,
                 "address": this.preparedOffer.street + ', ' + this.preparedOffer.zipcode,
-                "zone_id": this.preparedOffer.zoneId
+                "zone_id": this.preparedOffer.zoneId,
             }
 
             let body_offer = {
@@ -164,13 +166,13 @@ export default {
                 .catch(error => {
                     console.log("Error while creating the Offer")
                     this.errors = true;
-                })
+                }).then( () => {NProgress.done()});
                 
             })
             .catch(error => {
                 console.log("Error while creating the EventLocation")
                 this.errors = true;
-            }).then( () => {NProgress.done()});
+            })
         },
     },
 
