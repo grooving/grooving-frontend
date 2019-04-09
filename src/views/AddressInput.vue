@@ -5,7 +5,7 @@
     <div class="everything">
         <div class="artistCard"><ArtistCard 
             :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
-            :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.totalPrice"/>
+            :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="cardPrice"/>
         </div>
         <div class="addDiv">
           <div class="addressData"><AddressData :nextStep="this.nextStep" @addressSelected="addressSelected" /></div>
@@ -117,8 +117,10 @@ export default {
 
 
         // Obtenemos el precio de la tarjeta izq   
-        if(this.hiringType && this.hiringType == 'FARE')
+        if(this.hiringType == 'FARE')
             this.cardPrice = this.$store.getters.offerFarePack.priceHour;
+        else(this.hiringType == 'CUSTOM')
+            this.cardPrice = this.$store.getters.offer.totalPrice;
 
         // Actualizamos el siguiente paso
         if(this.hiringType == 'FARE'){

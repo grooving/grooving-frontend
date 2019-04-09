@@ -122,8 +122,11 @@ export default {
 
 
         // Obtenemos el precio de la tarjeta izq   
-        if(this.hiringType && this.hiringType == 'FARE')
+        if(this.hiringType == 'FARE'){
             this.cardPrice = this.$store.getters.offerFarePack.priceHour;
+        }else if(this.hiringType == 'CUSTOM'){
+            this.cardPrice = this.$store.getters.offerCustomPack.minimumPrice;
+        }
 
         // Actualizamos el siguiente paso
         if(this.hiringType == 'FARE'){

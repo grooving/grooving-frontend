@@ -4,19 +4,11 @@
             <p>Choose the price</p>
         </div>
         <div class="everything">
-            <div class="tarjeta">
-                <router-link v-bind:to="artistURI"><img v-bind:src="artistImage" class="card-img-top artistImage" alt="Artist's Image"></router-link>
-                <div class="card-body cuerpoTarjeta">
-                    <div class="leftContent">
-                        <h5 class="card-title artistName">{{ artistName }}</h5>
-                        <span class="card-text artistGenres">{{ artistData.genres }}</span>
-                    </div>
-                    <div class="rightContent">
-                        <p class="price">{{ price }}€</p>
-                    </div>
-                </div>
+            <div class="artistCard">
+                <ArtistCard :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
+                :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :price="price"/>
             </div>
-            <div>
+            <div class="customPriceSelector">
                 <div><CustomPrice @confirmPrice="confirmPrice" @priceSelected="priceValue" :duration="date.duration" :minPrice="cardPrice"  /></div>
             </div>
         </div>
@@ -25,6 +17,7 @@
 
 <script>
     import CustomPrice from '@/components/CustomPrice.vue'
+    import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
     import GSecurity from '@/security/GSecurity.js'
     import {mapActions} from 'vuex';
     import PaymentProcess from '@/store/modules/payment.js';
@@ -36,7 +29,7 @@
         name: 'PriceSelector',
         
         components: {
-            CustomPrice
+            CustomPrice, ArtistCard
         },
 
         data: function() {
@@ -158,7 +151,7 @@
 
             // Obtenemos el precio de la tarjeta izq   
             if(this.hiringType && this.hiringType == 'CUSTOM')
-                this.cardPrice = this.$store.getters.offerCustomPack.cardPrice;
+                this.cardPrice = this.$store.getters.offerCustomPack.minimumPrice;
 
             // Actualizamos el siguiente paso
             if(this.hiringType == 'CUSTOM'){
