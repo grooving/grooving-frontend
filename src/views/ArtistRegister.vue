@@ -47,7 +47,7 @@
                         <b-form-input v-model="input.email" type="email" placeholder="E-mail" required></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input type="number" v-model="input.phoneNumber" placeholder="Phone Number" min="0"></b-form-input>
+                        <b-form-input type="number" v-model="input.phoneNumber" placeholder="Phone Number" min="600000000"></b-form-input>
                     </b-form-group>
                     <div class="form-check">
                         <b-form-checkbox id="checkbox-1" v-model="status" name="checkbox-1" value="accepted" unchecked-value="not_accepted" required>
