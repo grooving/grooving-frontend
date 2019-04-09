@@ -12,6 +12,9 @@
                   :place="oferta.place" :userIcon="oferta.userIcon" :userName="oferta.userName"  :offerStatus="oferta.offerStatus" :imageURI="oferta.imageURI" :customerSurnames="oferta.customerSurnames" :artistId="oferta.artistId" :reason="oferta.reason"/>
               </div>
             </div>
+            <div v-if="pendingOffers.length == 0" class="error">
+              <h1 class="oops">Nothing to show ☹</h1>
+            </div>
             </span>
             <span v-if="selectedTab == 1">
             <div class="row">
@@ -20,6 +23,9 @@
                   :rating="oferta.rating" :place="oferta.place" :userIcon="oferta.userIcon" :userName="oferta.userName"  :offerStatus="oferta.offerStatus" :imageURI="oferta.imageURI" :customerSurnames="oferta.customerSurnames" :artistId="oferta.artistId" :reason="oferta.reason"/>
               </div>
             </div>
+            <div v-if="acceptedOffers.length == 0" class="error">
+              <h1 class="oops">Nothing to show ☹</h1>
+            </div>
             </span>
             <span v-if="selectedTab == 2">
             <div class="row">
@@ -27,6 +33,9 @@
                 <Offer :offerID="oferta.offerID" :confirmURI="oferta.confirmURI" :date="oferta.date" :price="oferta.price" 
                   :place="oferta.place" :userIcon="oferta.userIcon" :userName="oferta.userName"  :offerStatus="oferta.offerStatus" :imageURI="oferta.imageURI" :customerSurnames="oferta.customerSurnames" :artistId="oferta.artistId" :reason="oferta.reason"/>
               </div>
+            </div>
+            <div v-if="rejectedOffers.length == 0" class="error">
+              <h1 class="oops">Nothing to show ☹</h1>
             </div>
             </span>
             
@@ -216,18 +225,27 @@ export default {
 
 <style scoped>
 
-    .results{
-      margin: 0 auto; 
-      padding: 0px;
-    }    
+  .error{
+    padding-top: 50px;
+  }
 
-    .tarjeta{
-      padding-bottom: 20px;
-    }
+  hr {
+    margin: 0px;
+  }
 
-    hr {
-      margin: 0px;
-    }
+  .oops{
+    font-size: 80px !important;
+    font-weight: bold;
+    color: rgba(0,0,0,.4);
+  }
+
+  .results{
+    margin: 0 auto; 
+    padding: 0px;
+  }    
+
+  .tarjeta{
+    padding-bottom: 20px;
+  }
 
 </style>
-
