@@ -36,7 +36,7 @@ export default {
 
         groovingURI: {
             type: String,
-            default: '#'
+            default: '/'
         }
     }
 }
