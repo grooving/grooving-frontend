@@ -1,28 +1,26 @@
 <template>
   <div class="RightMenu">
-   
      <div class="collapse navbar-collapse width px-2 bg-light" id="sidebar">
          <p>
         <div class="navContent">
-
          <h2>Hello, <span>{{ userFirstName }}</span></h2>
             <ul class="navbar-nav mr-auto p-2 col align-self-center justify-content-center">
-                <li class="nav-item section">
-                    <router-link class="nav-link" to="/personalInfo" data-toggle="collapse" data-target="#sidebar">My Account</router-link>
-                    <b-dropdown-divider class="divider"/>
-                </li>
-                <li class="nav-item section" v-if="gsecurity.hasRole('ARTIST')" v-on:click="showMyPortfolio">
-                    <router-link class="nav-link" v-bind:to="''" data-toggle="collapse" data-target="#sidebar">My Portfolio</router-link>
+                <li class="nav-item section" >
+                    <div class="nav-link goTo" @click="goTo('/personalInfo')" data-toggle="collapse" data-target="#sidebar">My Account</div>
                     <b-dropdown-divider class="divider"/>
                 </li>
                 <li class="nav-item section" v-if="gsecurity.hasRole('ARTIST')">
-                    <router-link class="nav-link" to="/hiringSettings" data-toggle="collapse" data-target="#sidebar">Hiring Settings</router-link>
+                    <div class="nav-link goTo" @click="goTo('/showPortfolio/'+ artistId + '/')"  data-toggle="collapse" data-target="#sidebar">My Portfolio</div>
+                    <b-dropdown-divider class="divider"/>
+                </li>
+                <li class="nav-item section" v-if="gsecurity.hasRole('ARTIST')">
+                    <div class="nav-link goTo" @click="goTo('/hiringSettings')" to="hiringSettings" data-toggle="collapse" data-target="#sidebar">Hiring Settings</div>
                     <b-dropdown-divider class="divider"/>
                 </li>                
-                <li class="nav-item section">
+                <!-- <li class="nav-item section">
                     <a class="nav-link" href="#" data-toggle="collapse" data-target="#sidebar">Messages</a>
                      <b-dropdown-divider class="divider"/>
-                </li>
+                </li> -->
                 <li class="nav-item section">
                     <a class="nav-link" href="" v-on:click="logout()">Log Out</a>
                 </li>
@@ -34,19 +32,20 @@
 
 <script>
 import GSecurity from '@/security/GSecurity.js';
+import {mapActions} from 'vuex';
 
 export default {
     name: 'RightMenu',
-
     data: function(){
         return{
             gsecurity: GSecurity,
             userFirstName: '',
-            artistId: ''
+            artistId: '',
+            url: undefined,
         }
     },
-    
     methods: {
+        ...mapActions(['clearStore', 'setURL']),
         logout() {
             this.gsecurity.deauthenticate();
             this.$router.push({ path: "/" });
@@ -58,23 +57,23 @@ export default {
             this.artistId = this.gsecurity.getId();
             console.log(this.artistId);
         },
-
-        showMyPortfolio() {
-            this.$router.push('/showPortfolio/'+this.artistId);
-            window.location.reload();
-        }
+        goTo(path) {
+            this.url = this.$store.getters.sideMenus.url;
+            if(this.url !== path) {
+                this.setURL(path);
+                this.clearStore().then(() => this.$router.push(path));  
+            } else {
+                this.$emit('samePage');
+            }
+        },
     },
-
     props: {
         blur: Boolean,
     },
-
     created() {
         // Retreive stored credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
-        //console.log("Holita");
-        //console.log(this.gsecurity);
 
         // Update data that depends on GSecurity
         this.refreshGSecurityData();
@@ -89,16 +88,13 @@ export default {
         this.refreshGSecurityData();
     },
 }
-
 $(window).bind('scroll', function () {
     if ($(window).scrollTop() > 75) {
         $('#sidebar').offset({top:window.pageYOffset});        
     } else {
-        
         $('#sidebar').offset({top:75});
     }
 });
-
 
 </script>
 
@@ -107,6 +103,15 @@ $(window).bind('scroll', function () {
 
 * {
     font-family: "Archivo"
+}
+.goTo {
+    cursor: pointer;
+    background-color: transparent;
+    color: #007bff;
+}
+
+.goTo:hover {
+    color: #0056b3;
 }
 
 .title {
