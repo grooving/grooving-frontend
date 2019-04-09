@@ -110,7 +110,7 @@ export default {
         {
           text: "Top Artists",
           link: "/topArtists",
-          selected: true,
+          selected: false,
           requiedRoles: []
         },
         {
@@ -305,6 +305,10 @@ export default {
 
   .navbar {
     box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  .navbar-light .navbar-nav .active>.nav-link, .navbar-light .navbar-nav .nav-link.active {
+    /*color: rgba(0,0,0,.5);*/
   }
   
 </style>
