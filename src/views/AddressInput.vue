@@ -68,6 +68,8 @@ export default {
         this.gsecurity.obtainSavedCredentials();
 
         this.artistId = this.$route.params['artistId'];
+        // Retrieve the type of hiring in order to ensure access permission
+        this.hiringType = this.$store.getters.offer.hiringType;
 
         if(!this.$gsecurity.hasRole('CUSTOMER')) {
             console.log("Error: You are not a customer so you can't hire an artist");
@@ -79,7 +81,14 @@ export default {
             location.replace("/")
         }
 
-        if(!PaymentProcess.checkStepRequirements(PaymentProcess.state, 'FARE', 3)){
+        var stepNumber;
+        if(this.hiringType == 'FARE')
+            stepNumber = 3;
+        else if(this.hiringType == 'CUSTOM'){
+            stepNumber = 4;
+        }
+
+        if(!this.hiringType || !PaymentProcess.checkStepRequirements(PaymentProcess.state, this.hiringType, stepNumber)){
             console.log('Error: Direct access to the view was detected')
             location.replace("/#/hiringType/" + this.artistId + "/")
         }

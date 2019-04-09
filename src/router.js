@@ -127,7 +127,7 @@ export default new Router({
       component: RegisterConfirmation,
     },
     {
-      path: '/priceSelector',
+      path: '/priceSelector/:artistId',
       name: 'priceSelector',
       component: PriceSelector,
     },

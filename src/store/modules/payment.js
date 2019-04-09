@@ -35,6 +35,11 @@ const state = {
     farePackage: {
         packageId: undefined, 
         priceHour: undefined,
+    },
+
+    customPackage: {
+        packageId: undefined,
+        minimumPrice: undefined,
     }
 
 };
@@ -45,6 +50,7 @@ const getters = {
     offerDate: state => state.date,
     offerEvent: state => state.event,
     offerFarePack: state => state.farePackage,
+    offerCustomPack: state => state.customPackage,
 };
 
 const actions = {
@@ -55,6 +61,10 @@ const actions = {
 
     setOffer (state, hiringType, totalPrice = undefined){
         state.commit('setOffer', hiringType, totalPrice)
+    },
+
+    setOfferPrice (state, totalPrice){
+        state.commit('setOfferPrice', totalPrice)
     },
 
     setDateDate (state, date) {
@@ -79,6 +89,10 @@ const actions = {
 
     setFarePackage (state, farePackage) {
         state.commit('setFarePackage', farePackage)
+    },
+
+    setCustomPackage (state, customPackage) {
+        state.commit('setCustomPackage', customPackage)
     },
 
     //Other methods
@@ -108,6 +122,10 @@ const mutations = {
         state.offer.hiringType = hiringType;
         state.offer.totalPrice = totalPrice;
 
+    },
+
+    setOfferPrice (state, totalPrice){
+        state.offer.totalPrice = totalPrice;
     },
 
     setDateDate(state, date) {
@@ -158,6 +176,15 @@ const mutations = {
         
     },
 
+    setCustomPackage(state, customPackage) {
+
+        if(customPackage){
+            state.customPackage.packageId = customPackage.packageId;
+            state.customPackage.minimumPrice = customPackage.minimumPrice;
+        }
+        
+    },
+
     clearState(state) {
 
         //Artist
@@ -185,7 +212,8 @@ const mutations = {
         // Payment Packages
         state.farePackage.packageId = undefined;
         state.farePackage.priceHour = undefined;
-
+        state.customPackage.packageId = undefined;
+        state.customPackage.minimumPrice = undefined;
     },
 };
 
@@ -226,6 +254,43 @@ function checkStepRequirements(state, hiring, step){
             // None
         }
 
+    }else if (hiring == 'CUSTOM'){
+        if (step >= 1){
+
+            // ArtistData
+            res = state.artist.artistId != undefined && state.artist.artisticName != undefined;
+
+            // Offer hiringType
+            res = res && state.offer.hiringType != undefined && state.offer.hiringType == 'CUSTOM';
+
+            // Custom Package
+            res = res && state.customPackage.packageId != undefined && state.customPackage.minimumPrice != undefined;
+
+        }else if (step >= 2){
+
+            // Date
+            res = res && state.date.date != undefined && state.date.date != '';
+        } else if (step >= 3){
+
+            // Time
+            res = res && state.date.hour;
+        } else if (step >= 4){
+
+            // Price
+            res = res && state.offer.totalPrice != undefined;
+        } else if (step >= 5){
+
+            //Address
+            res = res && state.event.location != undefined && state.event.street != undefined && state.event.zipcode != null;
+
+        }else if(step >= 6){
+
+            // EventLocation Description
+            res = res && state.event.description;
+        }else if(step >= 7){
+
+            // None
+        }
     }
 
     return res;
