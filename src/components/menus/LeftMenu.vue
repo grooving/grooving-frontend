@@ -13,17 +13,17 @@
                 <li v-if="gsecurity.isAuthenticated()" class="nav-item section">
                     <router-link class="nav-link" to="offers" data-toggle="collapse" 
                     data-target="#sidebarleft" >My Offers</router-link>
-                    <b-dropdown-divider class="divider"/>
+                    <b-dropdown-divider v-if="gsecurity.hasRole('ARTIST')" class="divider"/>
                 </li>
                 
                 <li v-if="gsecurity.hasRole('ARTIST')" class="nav-item section">
                     <router-link class="nav-link" to="receivePayment" data-toggle="collapse" data-target="#sidebarleft">QR Scan</router-link>
-                    <b-dropdown-divider class="divider"/>
+                    <!-- <b-dropdown-divider class="divider"/> -->
                 </li>
                 
-                <li class="nav-item section">
+                <!-- <li class="nav-item section">
                     <a class="nav-link" href="#" data-toggle="collapse" data-target="#sidebarleft">FAQ</a>
-                </li>
+                </li> -->
             </ul>
         </div>
         </div>

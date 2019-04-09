@@ -125,7 +125,7 @@ export default {
           selected: false,
           requiedRoles: ["ARTIST"]
         },
-        { text: "FAQs", link: "/#", selected: false, requiedRoles: [] }
+        /*{ text: "FAQs", link: "/#", selected: false, requiedRoles: [] }*/
       ],
       showSearchMenu: false,
       leftMenu: false,
