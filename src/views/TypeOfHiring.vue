@@ -7,7 +7,7 @@
             :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId"/></div>
         <div class="hiringType"><HiringType @hiring="selectTypeOfHiring"
-            :farePrice="this.farePackage.priceHour"  /></div>
+            :farePrice="this.farePackage.priceHour" :customMinPrice="this.customPackage.minimumPrice" /></div>
     </div>
 </div>
 </template>
@@ -34,10 +34,18 @@ export default {
             artistId: -1,
             nextStep: '/dateSelection/',
             artistData: Array(),
+
+            // Type: Fare
             farePackage: {
                 packageId: undefined, 
                 priceHour: undefined,
             },
+
+            // Type: Custom
+            customPackage: {
+                packageId: undefined,
+                minimumPrice: undefined,
+            }
         }
     },
 
@@ -45,12 +53,13 @@ export default {
         ...mapActions(['clearState']), 
         ...mapActions(['setArtist']),
         ...mapActions(['setOffer']),   
-        ...mapActions(['setFarePackage']),        
+        ...mapActions(['setFarePackage']),    
+        ...mapActions(['setCustomPackage']),        
 
         selectTypeOfHiring(hiringType) {
 
             // Set Offer Hiring Type
-            this.setOffer(hiringType);
+            this.setOffer(hiringType).then( () => {
 
             if(hiringType == 'FARE') {
                 this.setFarePackage(this.farePackage).then(() => {
@@ -60,7 +69,19 @@ export default {
                     console.log('Could not set Hiring Type');
                     console.log(e);
                 });
+            }else if(hiringType == 'CUSTOM'){
+                console.log('wig..')
+                this.setCustomPackage(this.customPackage).then(() => {
+                    // If VueX has correctly set the package
+                    this.$router.push(this.nextStep);
+                }).catch( e => {
+                    console.log('Could not set Hiring type');
+                    console.log(e);
+                })
             }
+
+            });
+
         }
     },
 
@@ -138,12 +159,17 @@ export default {
                 
                 var payPack = paymentPackages[i];
                 
-                // Fare Package
                 if(payPack.fare_id != null) {
+                    // Fare Package
                     this.farePackage.packageId = payPack.id;
                     this.farePackage.priceHour = payPack.fare.priceHour;
+                }else if(payPack.custom_id != null) {
+                    // Custom Package
+                    this.customPackage.packageId = payPack.id;
+                    this.customPackage.minimumPrice = payPack.custom.minimumPrice;
                 }
             }
+
         }).catch(ex => {
             console.log('Could not load payment packages')
             console.log(ex);
