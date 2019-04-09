@@ -270,7 +270,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 
   a:-webkit-any-link {
     text-decoration: none;
