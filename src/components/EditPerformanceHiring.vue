@@ -62,6 +62,7 @@ export default {
     methods: {
         updatePerformance() {
             //alert(this.duration);
+            NProgress.start();
             GAxios.post(endpoints.performance + this.performanceId + '/', {
                 "info": this.description,
                 "hours":this.duration,
@@ -72,6 +73,7 @@ export default {
             }).catch(ex => {
                 console.log(ex);
             }) 
+            NProgress.done();
         },
     },
 

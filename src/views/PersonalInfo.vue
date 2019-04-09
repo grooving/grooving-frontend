@@ -49,7 +49,7 @@ export default {
 
             var role = this.gsecurity.getRole();
 
-            
+            NProgress.start();
             if(role=='CUSTOMER'){
                 //alert(GAxiosToken)
                 authorizedGAxios.get(endpoints.customerPersonalInformation)
@@ -85,6 +85,7 @@ export default {
                 });
             
             }
+            NProgress.done();
         }
     }
 }

@@ -107,6 +107,7 @@ export default {
     },
 
     beforeMount() {
+        NProgress.start();
 
         var authorizedGAxios = GAxios;
         var GAxiosToken = this.gsecurity.getToken();
@@ -141,11 +142,13 @@ export default {
           };
 
           this.setArtist(this.artistData);
+            NProgress.done();
           this.nextStep += this.artistData.artistId;
 
         }).catch(ex => {
             console.log('Could not load Artist Info Data');
             console.log(ex);
+            NProgress.done();
         });
 
         // Hiring Types - Right Card
@@ -169,10 +172,12 @@ export default {
                     this.customPackage.minimumPrice = payPack.custom.minimumPrice;
                 }
             }
+            NProgress.done();
 
         }).catch(ex => {
             console.log('Could not load payment packages')
             console.log(ex);
+            NProgress.done();
         });
     },
 }

@@ -206,6 +206,7 @@
                 return false;
             },
             rateDone(n) {
+                NProgress.start();
                 this.ratingD = n;
 
                 var authorizedGAxios = GAxios;
@@ -221,9 +222,11 @@
                     }).catch(ex => {
                         console.log(ex);
                     })
-                } 
+                }
+                NProgress.done();
             },
             rejectOffer() {
+                NProgress.start();
                 var authorizedGAxios = GAxios;
                 var GAxiosToken = this.gsecurity.getToken();
                 authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
@@ -234,22 +237,27 @@
                         "reason": this.reason,
                     }).then(response => {
                         console.log(response);
+                        NProgress.done();
                         window.location.reload();
                     }).catch(ex => {
                         console.log(ex);
+                        NProgress.done();
                     })
                 } else {
                     authorizedGAxios.put(endpoints.offer + this.offerID + '/', {
                         "status": "REJECTED",
                     }).then(response => {
                         console.log(response);
+                        NProgress.done();
                         window.location.reload();
                     }).catch(ex => {
                         console.log(ex);
+                        NProgress.done();
                     })
                 }
             },
             cancelOffer() {
+                NProgress.start();
                 var authorizedGAxios = GAxios;
                 var GAxiosToken = this.gsecurity.getToken();
                 authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
@@ -265,22 +273,27 @@
                         "reason": this.reason,
                     }).then(response => {
                         console.log(response);
+                        NProgress.done();
                         window.location.reload();
                     }).catch(ex => {
+                        NProgress.done();
                         console.log(ex);
                     })
                 } else {
                     authorizedGAxios.put(endpoints.offer + this.offerID + '/', {
                         "status": status,
                     }).then(response => {
+                        NProgress.done();
                         console.log(response);
                         window.location.reload();
                     }).catch(ex => {
+                        NProgress.done();
                         console.log(ex);
                     })
                 }
             },
             withdrawnOffer() {
+                NProgress.start();
                 var authorizedGAxios = GAxios;
                 var GAxiosToken = this.gsecurity.getToken();
                 authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
@@ -291,8 +304,10 @@
                         "reason": this.reason,
                     }).then(response => {
                         console.log(response);
+                        NProgress.done();
                         window.location.reload();
                     }).catch(ex => {
+                        NProgress.done();
                         console.log(ex);
                     })
                 } else {
@@ -300,8 +315,10 @@
                         "status": "WITHDRAWN",
                     }).then(response => {
                         console.log(response);
+                        NProgress.done();
                         window.location.reload();
                     }).catch(ex => {
+                        NProgress.done();
                         console.log(ex);
                     })
                 }

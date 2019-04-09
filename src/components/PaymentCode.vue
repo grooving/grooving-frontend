@@ -40,6 +40,7 @@ export default {
     },
     methods: {
     	receivePayment(){
+            NProgress.start();
     		var code = document.getElementById("inputCode").value;
 
 			var authorizedGAxios = GAxios;
@@ -61,6 +62,7 @@ export default {
                     this.$router.push('/paymentConfirmation');
 	      		}).catch(ex => {
                     this.$emit('errorPayment', true);
+                    NProgress.start();                    
 	      			console.log(ex);
 	      		})
 

@@ -86,12 +86,12 @@ export default {
 
         if(!this.$gsecurity.isAuthenticated()) {
             console.log('Error')
-            location.replace("/#/*")
+            this.$router.push({name: "error"});
         }
 
         if(!this.$gsecurity.hasRole('CUSTOMER')) {
             console.log("Error: You are not a customer so you can't hire an artist");
-            location.replace("/#/*")
+            this.$router.push({name: "error"});
         }
 
         /*if(!this.artistId){
@@ -106,6 +106,7 @@ export default {
         var authorizedGAxios = GAxios;
         authorizedGAxios.defaults.headers.common['Authorization'] = 'Token '+ GAxiosToken;
         
+        NProgress.start();        
         authorizedGAxios.get(endpoints.paymentPackages + this.artistData.artistId + '/')
             .then(response => {
                 console.log(response.data);
@@ -129,7 +130,8 @@ export default {
                 
             }).catch(ex => {
                 console.log(ex);
-            }) 
+            })
+    NProgress.done();
     },
 
 }

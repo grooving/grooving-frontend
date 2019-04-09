@@ -103,6 +103,7 @@ export default {
         }
     },
     beforeMount() {
+        NProgress.start();
         // Obtain zones tree...
         GAxios.get(endpoints.zones, {
         params: {
@@ -129,6 +130,7 @@ export default {
         this.selector_filters[0].data = tree;
         
         })
+        NProgress.done();  
     },
     mounted() {
         // Artist Data

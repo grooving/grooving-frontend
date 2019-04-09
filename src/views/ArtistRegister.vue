@@ -114,6 +114,7 @@
                 $('.custom-file-label').html(fileName);
             },*/
             createArtist() {
+                NProgress.start();
                 GAxios.post(endpoints.registerArtist, {
                     "first_name": this.input.firstName,
                     "last_name": this.input.lastName,
@@ -125,12 +126,14 @@
                     "phone": this.input.phoneNumber,
                 }).then(response => {
                     console.log(response);
+                    NProgress.done();
                     this.$router.push({name: "registerConfirmation"});
                 }).catch(ex => {
                     console.log(ex.response.data);
                     this.errors = ex.response.data[0];
                     document.getElementById("errorsDiv").style.display = "block";
                     this.status = 'not_accepted';
+                    NProgress.done();
                 }) 
 
             },

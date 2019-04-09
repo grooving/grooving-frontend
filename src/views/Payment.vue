@@ -82,7 +82,7 @@ export default {
 
     methods: {
         gpay(creditCard) {
-
+            NProgress.start();
             this.creditCard = Array();
             this.creditCard.number = creditCard[0],
             this.creditCard.name = creditCard[1],
@@ -170,10 +170,8 @@ export default {
             })
             .catch(error => {
                 console.log("Error while processing one of the requests")
-                console.log(err)
+                console.log(error)
             })
-
-
         },
     },
 

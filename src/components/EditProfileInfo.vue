@@ -78,6 +78,7 @@ export default {
 
     methods: {
         saveInfo() {
+            NProgress.start();
             var uri = '';
             if (this.gsecurity.hasRole('ARTIST')) {
                 uri = endpoints.artist;
@@ -102,12 +103,13 @@ export default {
                     this.errors = ex.response.data[0];
                     document.getElementById("errorsDiv").style.display = "block";
                 }
-            }) 
+            })
+            NProgress.done();
         },
     },
 
     beforeMount: function(){
-
+        NProgress.start();
         if (!this.gsecurity.isAuthenticated()) {
             this.$router.push({name: "error"});
 
@@ -137,6 +139,7 @@ export default {
                     this.username = personalInformation['username'];                    
                 });            
         }
+        NProgress.done();
     },
 
     created() {
