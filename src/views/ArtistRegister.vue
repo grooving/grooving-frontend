@@ -186,6 +186,7 @@
         font-weight: semibold;
         text-align: left;
     }
+    
     .form-check {
         padding-left: 0.7rem;
     }
