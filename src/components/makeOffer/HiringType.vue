@@ -246,9 +246,11 @@ h2 {
     width: fit-content;
     margin-top: 2%;
     background-image: linear-gradient(to right, #00fb82, #187fe6);
+    font-weight: bold;
 }
 
 .continueButton:hover{
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.7) !important;
     background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
 }
 

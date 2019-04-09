@@ -69,6 +69,7 @@ export default {
                 zipcode: undefined, 
                 street: undefined, 
                 description: undefined,
+                zoneId: undefined,
             },
 
         }
@@ -77,6 +78,8 @@ export default {
      methods: {
          
         gpay(creditCard) {
+            
+            NProgress.start();
 
             // Obtenemos los datos de Tarjeta introducidos
             this.creditCard.number = creditCard[0];
@@ -114,7 +117,7 @@ export default {
                 "equipment": null,
                 "description": this.preparedOffer.description,
                 "address": this.preparedOffer.street + ', ' + this.preparedOffer.zipcode,
-                "zone_id": 4
+                "zone_id": this.preparedOffer.zoneId
             }
 
             let body_offer = {
@@ -167,9 +170,7 @@ export default {
             .catch(error => {
                 console.log("Error while creating the EventLocation")
                 this.errors = true;
-            })
-
-
+            }).then( () => {NProgress.done()});
         },
     },
 

@@ -7,15 +7,15 @@
           data-target="#sidebarleft" >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <router-link class="ml-2 vertical-center" to="/">
+          <div class="ml-2 vertical-center goTo" @click="goTo('/')">
             <img src="@/assets/logos/logo_name.png" width="100px">
-          </router-link>
+          </div>
         </div>
       </div>
       <div id="navBarDesktopLinks" class="d-none d-md-block mr-auto">
         <ul class="navbar-nav row-alignment right-float">
-          <li v-for="item in userVisibleLinks" :key="item.text" class="nav-item mx-2" v-bind:class="{active: item.selected}">
-            <router-link class="nav-link font" :to="item.link">{{item.text}}</router-link>
+          <li v-for="item in userVisibleLinks" :key="item.text" class="nav-item mx-2 goTo" v-bind:class="{active: item.selected}">
+            <div class="nav-link font" @click="goTo(item.link)">{{item.text}}</div>
           </li>
         </ul>
       </div>
@@ -111,7 +111,7 @@ export default {
         {
           text: "Top Artists",
           link: "/topArtists",
-          selected: true,
+          selected: false,
           requiedRoles: []
         },
         {
@@ -126,7 +126,7 @@ export default {
           selected: false,
           requiedRoles: ["ARTIST"]
         },
-        { text: "FAQs", link: "/#", selected: false, requiedRoles: [] }
+        /*{ text: "FAQs", link: "/#", selected: false, requiedRoles: [] }*/
       ],
       showSearchMenu: false,
       leftMenu: false,
@@ -155,11 +155,20 @@ export default {
   },
 
   methods: {
-    ...mapActions(['setLeftMenu']),
-    ...mapActions(['setRightMenu']),
+    ...mapActions(['clearStore', 'setURL', 'setRightMenu', 'setLeftMenu']),
     changeQueryMobile: function() {
       this.searchQuery = arguments[0];
       this.search();
+    },
+    goTo(path) {
+        this.$emit('refreshRightMenu');
+        this.url = this.$store.getters.sideMenus.url;
+        if(this.url !== path) {
+            this.setURL(path);
+            this.clearStore().then(() => this.$router.push(path));  
+        } else {
+          this.$emit('samePage')
+        }
     },
 
     login: async function() {
@@ -209,33 +218,6 @@ export default {
           this.$emit('toBlur', false);
         }
       },
-
-
-    sideMenus(a) {
-      if(a == 1) {
-        if(this.rightMenu && !this.leftMenu) {
-          $('#collaps').click();
-          this.rightMenu = false;
-        } 
-        this.leftMenu = !this.leftMenu;
-      } 
-      if (a == 2) {
-          if(!this.rightMenu && this.leftMenu) {
-            $('#collapsL').click();
-            this.leftMenu = false;
-          }
-          this.rightMenu = !this.rightMenu;
-      }
-      this.loginDisabled = !this.loginDisabled;
-
-      if (this.leftMenu || this.rightMenu) {
-        $(document.body).css("overflow", "hidden");
-        this.$emit('toBlur', true);
-      } else {
-        $(document.body).css("overflow", "");
-        this.$emit('toBlur', false);
-      }
-    },
 
     toggleSearchPanel: function() {
       this.showSearchMenu = !this.showSearchMenu;
@@ -328,6 +310,16 @@ export default {
   .dropdown-menu.show {
     padding-bottom: 0px;
   } 
+
+  .goTo {
+      cursor: pointer;
+      background-color: transparent;
+      color: #007bff;
+  }
+
+  .goTo:hover {
+      color: #0056b3;
+  }
 
   .material-icons:hover {
     background: -webkit-linear-gradient(left, #00fb82, #187fe6);

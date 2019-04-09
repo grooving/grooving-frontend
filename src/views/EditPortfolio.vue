@@ -90,7 +90,7 @@ export default {
 
     // Loads portfolio data
     retreivePortfolio: function(){
-    
+      NProgress.start();      
       GAxios.get(endpoints.portfolio + this.artistId + "/")
       .then(response => {
           var portfolio = response.data;
@@ -155,13 +155,12 @@ export default {
 
                 this.updateCalendatKey += 1;
           });
-
-      
+      NProgress.done();               
       
     },
 
     savePortfolio: function(){
-      
+      NProgress.start(); 
       var authorizedGAxios = GAxios;
       var GAxiosToken = this.gsecurity.getToken();
       authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
@@ -186,27 +185,33 @@ export default {
         "days": this.d_portfolioDays,
         "portfolio":this.$route.params['artistId']
       };
+      NProgress.done();
 
+      NProgress.start();  
       authorizedGAxios.put(endpoints.portfolio + this.artistId + '/', body)
       .then(response => {
         console.log(response.data);
+        NProgress.done();
         this.$router.push("/showPortfolio/"+this.artistId)
       }).catch(ex => {
           console.log(ex);
           this.errors = true;
+          NProgress.done();
       });
 
+      NProgress.start();
       authorizedGAxios.put(endpoints.calendar + this.artistId + '/', body_calendar)
       .then(response => {
         console.log(response.data);
+        NProgress.done();
         this.$router.push("/showPortfolio/"+this.artistId)
       }).catch(ex => {
           console.log(ex);
           this.errors = true;
+          NProgress.done();
       });
 
       this.setFinal();
-
     },
   },
 

@@ -38,7 +38,7 @@ export default {
             this.$router.push({name: "error"});
 
         } else {
-
+            NProgress.start();            
             this.gsecurity = GSecurity
             var GAxiosToken = this.gsecurity.getToken();
 
@@ -84,6 +84,7 @@ export default {
                 });
             
             }
+            NProgress.done();
         }
     }
 }

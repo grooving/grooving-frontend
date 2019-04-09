@@ -79,6 +79,7 @@
         },
         methods: {
             accept() {
+                NProgress.start();
                 var authorizedGAxios = GAxios;
                 var GAxiosToken = this.gsecurity.getToken();
                 authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
@@ -91,10 +92,11 @@
                         console.log(response);
                 }).catch(ex => {
                     console.log(ex);
+                    NProgress.done();
                 }).then(()=> {
                     this.$router.push({path: '/offers/'})
-                });
-                
+
+                });                
                 },
             },
     }   

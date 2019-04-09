@@ -78,6 +78,7 @@ export default {
 
     methods: {
         saveInfo() {
+            NProgress.start();
             var uri = '';
             if (this.gsecurity.hasRole('ARTIST')) {
                 uri = endpoints.artist;
@@ -92,19 +93,23 @@ export default {
                 "photo": this.gsecurity.getPhoto(),
             }).then(response => {
                 console.log(response);
+                this.gsecurity.setFirstName(this.name);
+                window.localStorage.setItem("firstName", this.name);
                 this.$router.push({name: "personalInfo"});
+                window.location.reload();
             }).catch(ex => {
                 console.log(ex);
                 if (ex.reponse != null) {
                     this.errors = ex.response.data[0];
                     document.getElementById("errorsDiv").style.display = "block";
                 }
-            }) 
+            })
+            NProgress.done();
         },
     },
 
     beforeMount: function(){
-
+        NProgress.start();
         if (!this.gsecurity.isAuthenticated()) {
             this.$router.push({name: "error"});
 
@@ -134,12 +139,12 @@ export default {
                     this.username = personalInformation['username'];                    
                 });            
         }
+        NProgress.done();
     },
 
     created() {
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
-        this.refreshGSecurityData();
     },
 }
 </script>

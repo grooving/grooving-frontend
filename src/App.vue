@@ -2,10 +2,10 @@
   <div id="app">
     <div class="content">
     <div class="Header">
-      <Header @toBlur='blurred'/>
+      <Header @toBlur='blurred' @refreshRightMenu='refreshRightMenu'/>
     </div>
     <div class="RightMenu">
-      <RightMenu @samePage='samePage'/>
+      <RightMenu @samePage='samePage' :key="refreshRM"/>
     </div>
     <div class="LeftMenu">
       <LeftMenu @samePage='samePage'/>
@@ -35,6 +35,7 @@ export default {
       gsecurity: GSecurity,
       rightMenu: undefined,
       leftMenu: undefined,
+      refreshRM: 1,
     }
   },
   methods: {
@@ -57,6 +58,14 @@ export default {
 
         this.clearStore();
     },
+    refreshRightMenu() {
+      console.log('furula')
+      $((document.getElementById('mainContent'))).css("filter", "blur(0px)");
+      $((document.getElementById('mainContent'))).css("pointer-events", "auto");
+      $(document.body).css("overflow", "");
+      this.clearStore();
+      this.refreshRM++;
+    },
   },
   beforeCreate() {
     // Retreive store credentials
@@ -66,9 +75,6 @@ export default {
 
   },
   beforeUpdate() {
-    // this.thisURL = window.location.href;
-    // console.log('url', this.thisURL)
-
     this.rightMenu = this.$store.getters.sideMenus.rightMenu;
     this.leftMenu = this.$store.getters.sideMenus.leftMenu;
 

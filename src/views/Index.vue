@@ -32,6 +32,7 @@ export default {
 
   methods:{
     getArtists: function(){
+      NProgress.start();
       // Make the API call
       GAxios.get(endpoints.artists).then(response => {
 
@@ -55,6 +56,7 @@ export default {
       }).catch(ex => {
           console.log(ex);
       });
+      NProgress.done();
     }
   },
 

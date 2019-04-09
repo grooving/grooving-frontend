@@ -164,8 +164,8 @@ export default {
     .rating{
         margin-bottom: 5px;
     }
-    .description p{
-        word-break: break-all;
+
+    .description p {
         margin-left: 3%;
         margin-right: 3%;
     }
@@ -232,8 +232,7 @@ export default {
             height: 100px;
         }
 
-        .description p{
-            word-break: break-all;
+        .description p {
             margin-left: 20%;
             margin-right: 20%;
         }

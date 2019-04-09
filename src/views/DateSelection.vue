@@ -118,6 +118,8 @@ export default {
 
     beforeMount: function() {
 
+        NProgress.start();
+
         // ###### VUEX RESTORE ###### 
 
         this.artistData = this.$store.getters.offerArtist;
@@ -138,7 +140,7 @@ export default {
 
             }).catch(ex => {
                 console.log(ex);
-            });
+            }).then( () => {NProgress.done()});
 
         
         // Obtenemos el precio de la tarjeta izq

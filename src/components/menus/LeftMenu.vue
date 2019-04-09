@@ -8,12 +8,12 @@
             <ul class="navbar-nav mr-auto p-2 col align-self-center justify-content-center">
                 <li class="nav-item section">
                     <div class="nav-link goTo" @click="goTo('/artist_search')" data-toggle="collapse" data-target="#sidebarleft" >Top Artists</div> 
-                    <b-dropdown-divider class="divider"/>
+                    <b-dropdown-divider v-if="gsecurity.isAuthenticated()" class="divider"/>
                 </li>
                 <li v-if="gsecurity.isAuthenticated()" class="nav-item section">
                     <div class="nav-link goTo" @click="goTo('/offers')" data-toggle="collapse" 
                     data-target="#sidebarleft" >My Offers</div>
-                    <b-dropdown-divider class="divider"/>
+                    <b-dropdown-divider v-if="gsecurity.hasRole('ARTIST')" class="divider"/>
                 </li>
                 
                 <li v-if="gsecurity.hasRole('ARTIST')" class="nav-item section">

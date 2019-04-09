@@ -59,6 +59,7 @@ export default {
 
     methods: {
         createPerformance() {
+            NProgress.start();
             GAxios.post(endpoints.performance, {
                 "info": this.description,
                 "hours": this.duration,
@@ -68,7 +69,8 @@ export default {
                 this.$router.push({name: "hiringSettings"});
             }).catch(ex => {
                 console.log(ex);
-            }) 
+            })
+            NProgress.done();
         },
     },
 

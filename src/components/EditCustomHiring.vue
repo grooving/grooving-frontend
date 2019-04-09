@@ -42,6 +42,7 @@ export default {
 
     methods: {
         updateCustom() {
+            NProgress.start();
             GAxios.post(endpoints.custom + this.customId + '/', {
                 "minimumPrice": this.minimumPrice,
             }).then(response => {
@@ -50,6 +51,7 @@ export default {
             }).catch(ex => {
                 console.log(ex);
             }) 
+            NProgress.done();
         },
     },
 
