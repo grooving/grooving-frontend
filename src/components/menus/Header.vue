@@ -111,7 +111,7 @@ export default {
         {
           text: "Top Artists",
           link: "/topArtists",
-          selected: true,
+          selected: false,
           requiedRoles: []
         },
         {

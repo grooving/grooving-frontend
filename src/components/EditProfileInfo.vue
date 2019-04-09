@@ -92,7 +92,10 @@ export default {
                 "photo": this.gsecurity.getPhoto(),
             }).then(response => {
                 console.log(response);
+                this.gsecurity.setFirstName(this.name);
+                window.localStorage.setItem("firstName", this.name);
                 this.$router.push({name: "personalInfo"});
+                window.location.reload();
             }).catch(ex => {
                 console.log(ex);
                 if (ex.reponse != null) {
@@ -139,7 +142,6 @@ export default {
     created() {
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
-        this.refreshGSecurityData();
     },
 }
 </script>
