@@ -5,7 +5,7 @@
     <div class="everything">
         <div class="artistCard"><ArtistCard 
             :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
-            :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :price="this.priceHour"/>
+            :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :price="this.cardPrice"/>
         </div>
         <div class="calendarButton">
           <div class="calendar" style="width: 320px;"><Calendar @datePickerDate="calendarSelected" :availableDates="this.datos[0].availableDates"/></div>
@@ -18,99 +18,42 @@
 <script>
 import Calendar from '@/components/Calendar.vue';
 import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
+
 import GAxios from '@/utils/GAxios.js';
 import GSecurity from '@/security/GSecurity.js';
 import endpoints from '@/utils/endpoints.js';
 import {mapActions} from 'vuex';
-import { mapGetters } from 'vuex';
+import {mapGetters} from 'vuex';
 import PaymentProcess from '@/store/modules/payment.js';
+import PaymentVue from './Payment.vue';
 
 export default {
 
     name: 'DateSelection',
-    computed: mapGetters(['offerArtist', 'offerFarePack']),
+    
     components: {
         Calendar, ArtistCard
     },
 
     data: function() {
       return {
+
+          //Hiring Process...
           gsecurity: GSecurity,
-          artistId: undefined,
+          artistId: -1,
+          nextStep: undefined,
           hiringType: undefined,
+          cardPrice: undefined,
           artistData: {
               artistId: undefined,
               artisticName: undefined,
               photo: undefined,
               genres: undefined,
           },
-          priceHour: undefined,
-          nextStep: '/timeSelection/',
+
           datos: Array(),
           fecha: '',
         }
-    },
-
-    created() {
-        // Retreive store credentials
-        this.gsecurity = GSecurity;
-        this.gsecurity.obtainSavedCredentials();
-
-        this.artistId = this.$route.params['artistId'];
-        // Retrieve the type of hiring in order to ensure access permission
-        this.hiringType = this.$store.getters.offer.hiringType;
-
-        if(!this.$gsecurity.hasRole('CUSTOMER')) {
-            console.log("Error: You are not a customer so you can't hire an artist");
-            location.replace("/#/*")
-        }
-
-        if(!this.artistId){
-            console.log("Error: ArtistId not provided");
-            location.replace("/")
-        }
-
-        var stepNumber;
-        if(this.hiringType == 'FARE' || this.hiringType == 'CUSTOM')
-            stepNumber = 1;
-
-        if(!this.hiringType || !PaymentProcess.checkStepRequirements(PaymentProcess.state, this.hiringType, stepNumber)){
-            console.log('Error: Direct access to the view was detected')
-            location.replace("/#/hiringType/" + this.artistId + "/")
-        }
-
-    },
-
-    beforeMount: function() {
-        
-      var authorizedGAxios = GAxios;
-      var GAxiosToken = this.gsecurity.getToken();
-      authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
-
-      authorizedGAxios.get('/artist' + endpoints.calendar + this.artistId + '/')
-        .then(response => {
-            var calendar = response.data;
-
-            this.datos.push({
-                availableDates: calendar[0].days,
-            })
-
-        }).catch(ex => {
-            console.log(ex);
-        });
-    },
-
-    mounted() {
-
-        this.artistData.artistId = this.$store.getters.offerArtist.artistId;
-        this.artistData.artisticName = this.$store.getters.offerArtist.artisticName;
-        this.artistData.photo = this.$store.getters.offerArtist.photo;
-        this.artistData.genres = this.$store.getters.offerArtist.genres;
-
-        if(this.hiringType && this.hiringType == 'FARE')
-            this.priceHour = this.$store.getters.offerFarePack.priceHour;
-
-        this.nextStep += this.artistId;
     },
 
     methods: {
@@ -118,12 +61,17 @@ export default {
 
         dateSelected() {
             if(this.fecha){
+
                 this.setDateDate(this.fecha).then(() => {
+
                     // If VueX has correcty saved the date
                     this.$router.push(this.nextStep)
+
                 }).catch( e => {
+
                     console.log('Error: Could not set date in VueX');
                     console.log(e);
+                    
                 });
             }else{
                 alert('You must select a date...');
@@ -133,7 +81,76 @@ export default {
         calendarSelected(){
             this.fecha = arguments[0];
         }
-    }
+    },
+
+    created() {
+
+        // Retrieve store credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        // The artist to whom the offer is created
+        this.artistId = this.$route.params['artistId'];
+        // Retrieve the type of hiring
+        this.hiringType = this.$store.getters.offer.hiringType;
+
+        // ###### SECURITY ACCESS CHECKS ###### 
+
+        if(!this.gsecurity.hasRole('CUSTOMER')) {
+            console.log("Error: You are not a customer so you can't hire an artist");
+            location.replace("/#/*")
+        }
+
+        if(!this.artistId){
+            console.log("Error: ArtistId not provided");
+            location.replace("/")
+        }
+
+        // Check the user does not access the view directly
+        if(!PaymentProcess.checkViewRequirements(PaymentProcess.state, this.hiringType, "DateSelection")){
+            console.log('Error: Direct access to the view was detected')
+            location.replace("/#/hiringType/" + this.artistId + "/")
+        }
+
+        // ###### END OF SECURITY ACCESS CHECKS ###### 
+
+    },
+
+    beforeMount: function() {
+
+        // ###### VUEX RESTORE ###### 
+
+        this.artistData = this.$store.getters.offerArtist;
+
+        // ###### END OF VUEX RESTORE ###### 
+        
+        var authorizedGAxios = GAxios;
+        var GAxiosToken = this.gsecurity.getToken();
+        authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
+
+        authorizedGAxios.get(endpoints.artistCalendar + this.artistId + '/')
+            .then(response => {
+                var calendar = response.data;
+
+                this.datos.push({
+                    availableDates: calendar[0].days,
+                })
+
+            }).catch(ex => {
+                console.log(ex);
+            });
+
+        
+        // Obtenemos el precio de la tarjeta izq
+        if(this.hiringType && this.hiringType == 'FARE')
+            this.cardPrice = this.$store.getters.offerFarePack.cardPrice;
+
+        // Actualizamos el siguiente paso
+        if(this.hiringType == 'FARE' || this.hiringType == 'CUSTOM')
+            this.nextStep = '/timeSelection/';
+
+        this.nextStep += this.artistData.artistId;
+    },
 }
 </script>
 

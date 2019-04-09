@@ -223,73 +223,109 @@ function checkStepRequirements(state, hiring, step){
 
     if (hiring == 'FARE'){
 
-        if (step >= 1){
+        if (step >= 0){
+            
+            // TYPEOFHIRING
 
             // ArtistData
             res = state.artist.artistId != undefined && state.artist.artisticName != undefined;
-
             // Offer hiringType
             res = res && state.offer.hiringType != undefined && state.offer.hiringType == 'FARE';
-
             // Fare Package
             res = res && state.farePackage.packageId != undefined && state.farePackage.priceHour != undefined;
-        } else if (step >= 2){
 
-            // Date
+        }
+        
+        if(step >= 1){
+
+            // DATESELECTION
             res = res && state.date.date != undefined && state.date.date != '';
-        } else if (step >= 3){
+            
+        }
+        
+        if(step >= 2){
 
-            // Time
+            // TIMESELECTION
             res = res && state.date.hour;
-        } else if (step >= 4){
 
-            //Address
+        }
+        
+        if(step >= 3){
+
+            // ADDRESSINPUT
             res = res && state.event.location != undefined && state.event.street != undefined && state.event.zipcode != null;
-        }else if(step >= 5){
 
-            // EventLocation Description
+        }
+        
+        if(step >= 4){
+
+            // EVENT_DESCRIPTION
             res = res && state.event.description;
-        }else if(step >= 6){
 
-            // None
+        }
+        
+        if(step >= 5){
+
+            // PAYMENTSELECTION: Por ahora solo soportamos creditcard, 
+            // redirección automática
+
         }
 
     }else if (hiring == 'CUSTOM'){
-        if (step >= 1){
+
+        if (step >= 0){
+
+            // TYPEOFHIRING
 
             // ArtistData
             res = state.artist.artistId != undefined && state.artist.artisticName != undefined;
-
             // Offer hiringType
-            res = res && state.offer.hiringType != undefined && state.offer.hiringType == 'CUSTOM';
+            res = res && state.offer.hiringType != undefined && state.offer.hiringType == 'FARE';
+            // Fare Package
+            res = res && state.farePackage.packageId != undefined && state.farePackage.priceHour != undefined;
 
-            // Custom Package
-            res = res && state.customPackage.packageId != undefined && state.customPackage.minimumPrice != undefined;
+        }
+        
+        if(step >= 1){
 
-        }else if (step >= 2){
-
-            // Date
+            // DATESELECTION
             res = res && state.date.date != undefined && state.date.date != '';
-        } else if (step >= 3){
 
-            // Time
+        } 
+        
+        if(step >= 2){
+
+            // TIMESELECTION
             res = res && state.date.hour;
-        } else if (step >= 4){
 
-            // Price
+        } 
+        
+        if(step >= 3){
+
+            // CUSTOM_PRICE
             res = res && state.offer.totalPrice != undefined;
-        } else if (step >= 5){
 
-            //Address
+        } 
+        
+        if(step >= 4){
+
+            // ADDRESSINPUT
             res = res && state.event.location != undefined && state.event.street != undefined && state.event.zipcode != null;
 
-        }else if(step >= 6){
+        }
+        
+        if(step >= 5){
 
-            // EventLocation Description
+            // EVENT_DESCRIPTION
             res = res && state.event.description;
-        }else if(step >= 7){
 
-            // None
+        }
+        
+        if(step >= 6){
+
+            // PAYMENTSELECTION: Por ahora solo soportamos creditcard, 
+            // redirección automática
+
         }
     }
 
@@ -297,10 +333,37 @@ function checkStepRequirements(state, hiring, step){
 
 }
 
+function checkViewRequirements(state, hiring, view){
+    
+    var res = false;
+
+    if(state && hiring && view){
+
+        var viewsAndSteps = []
+
+        if(hiring == 'FARE'){
+
+            viewsAndSteps = ["DateSelection", "TimeSelection", "AddressInput", "EventInput", "PaymentSelector", "Payment"];
+
+        } else if(hiring == 'CUSTOM'){
+
+            viewsAndSteps = ["DateSelection", "TimeSelection" , "PriceSelector", "AddressInput", "EventInput", "PaymentSelector", "Payment"];
+
+        }
+
+        if(viewsAndSteps.includes(view)){
+            res = checkStepRequirements(state, hiring, viewsAndSteps.indexOf(view));
+        }
+
+    }
+
+    return res;
+}
+
 export default {
     state,
     getters,
     actions,
     mutations,
-    checkStepRequirements
+    checkViewRequirements,
 }

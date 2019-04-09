@@ -34,40 +34,48 @@ export default {
 
     data() {
         return {
+            //Hiring Process...
             gsecurity: GSecurity,
-            artistId: undefined,
+            artistId: -1,
+            nextStep: undefined,
             hiringType: undefined,
+            cardPrice: undefined,
             artistData: {
                 artistId: undefined,
                 artisticName: undefined,
                 photo: undefined,
                 genres: undefined,
             },
-            totalPrice: undefined,
-            address: undefined,
-            nextStep: '/payment/',
+
         }
     },
 
     methods: {
+        
         paymentSelected(){ 
+
             this.$emit('paymentSelected');
 
             // If VueX has correcty saved the time
             this.$router.push(this.nextStep);
         }
+
     },
 
     created() {
-        // Retreive store credentials
+
+        // Retrieve store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
 
+        // The artist to whom the offer is created
         this.artistId = this.$route.params['artistId'];
-        // Retrieve the type of hiring in order to ensure access permission
+        // Retrieve the type of hiring
         this.hiringType = this.$store.getters.offer.hiringType;
 
-        if(!this.$gsecurity.hasRole('CUSTOMER')) {
+        // ###### SECURITY ACCESS CHECKS ###### 
+
+        if(!this.gsecurity.hasRole('CUSTOMER')) {
             console.log("Error: You are not a customer so you can't hire an artist");
             location.replace("/#/*")
         }
@@ -77,31 +85,35 @@ export default {
             location.replace("/")
         }
 
-        var stepNumber;
-        if(this.hiringType == 'FARE')
-            stepNumber = 5;
-        else if(this.hiringType == 'CUSTOM'){
-            stepNumber = 6;
-        }
-
-        if(!this.hiringType || !PaymentProcess.checkStepRequirements(PaymentProcess.state, this.hiringType, stepNumber)){
+        // Check the user does not access the view directly
+        if(!PaymentProcess.checkViewRequirements(PaymentProcess.state, this.hiringType, "PaymentSelector")){
             console.log('Error: Direct access to the view was detected')
             location.replace("/#/hiringType/" + this.artistId + "/")
         }
+
+        // ###### END OF SECURITY ACCESS CHECKS ###### 
+
     },
 
-    mounted() {
-        this.artistData.artistId = this.$store.getters.offerArtist.artistId;
-        this.artistData.artisticName = this.$store.getters.offerArtist.artisticName;
-        this.artistData.photo = this.$store.getters.offerArtist.photo;
-        this.artistData.genres = this.$store.getters.offerArtist.genres;
+    beforeMount() {
 
-        this.hiringType = this.$store.getters.offer.hiringType;
+        // ###### VUEX RESTORE ###### 
 
-        if(this.hiringType && this.hiringType == 'FARE')
-            this.totalPrice = this.$store.getters.offer.totalPrice;
+        this.artistData = this.$store.getters.offerArtist;
+        this.date = this.$store.getters.offerDate;
 
+        // ###### END OF VUEX RESTORE ###### 
+        
+
+        // Obtenemos el precio de la tarjeta izq   
+        if(this.hiringType && this.hiringType == 'CUSTOM')
+            this.cardPrice = this.$store.getters.offerCustomPack.cardPrice;
+
+        // Actualizamos el siguiente paso
+        this.nextStep = '/payment/';
+    
         this.nextStep += this.artistId;
+
     },
 
 }

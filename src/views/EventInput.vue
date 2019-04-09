@@ -32,31 +32,38 @@ export default {
 
     data() {
         return {
+
+            //Hiring Process...
             gsecurity: GSecurity,
-            artistId: undefined,
+            artistId: -1,
+            nextStep: undefined,
             hiringType: undefined,
+            cardPrice: undefined,
             artistData: {
                 artistId: undefined,
                 artisticName: undefined,
                 photo: undefined,
                 genres: undefined,
             },
-            totalPrice: undefined,
+
             address: undefined,
-            nextStep: '/paymentSelector/',
         }
     },
 
     created() {
-        // Retreive store credentials
+
+        // Retrieve store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
 
+        // The artist to whom the offer is created
         this.artistId = this.$route.params['artistId'];
-        // Retrieve the type of hiring in order to ensure access permission
+        // Retrieve the type of hiring
         this.hiringType = this.$store.getters.offer.hiringType;
 
-        if(!this.$gsecurity.hasRole('CUSTOMER')) {
+        // ###### SECURITY ACCESS CHECKS ###### 
+
+        if(!this.gsecurity.hasRole('CUSTOMER')) {
             console.log("Error: You are not a customer so you can't hire an artist");
             location.replace("/#/*")
         }
@@ -66,44 +73,55 @@ export default {
             location.replace("/")
         }
 
-        var stepNumber;
-        if(this.hiringType == 'FARE')
-            stepNumber = 4;
-        else if(this.hiringType == 'CUSTOM'){
-            stepNumber = 5;
-        }
-
-        if(!this.hiringType || !PaymentProcess.checkStepRequirements(PaymentProcess.state, this.hiringType, stepNumber)){
+        // Check the user does not access the view directly
+        if(!PaymentProcess.checkViewRequirements(PaymentProcess.state, this.hiringType, "EventInput")){
             console.log('Error: Direct access to the view was detected')
             location.replace("/#/hiringType/" + this.artistId + "/")
         }
+
+        // ###### END OF SECURITY ACCESS CHECKS ###### 
+
     },
 
-    mounted() {
-        // Artist Data
-        this.artistData.artistId = this.$store.getters.offerArtist.artistId;
-        this.artistData.artisticName = this.$store.getters.offerArtist.artisticName;
-        this.artistData.photo = this.$store.getters.offerArtist.photo;
-        this.artistData.genres = this.$store.getters.offerArtist.genres;
+    beforeMount() {
 
-        this.hiringType = this.$store.getters.offer.hiringType;
+         // ###### VUEX RESTORE ###### 
 
-        if(this.hiringType && this.hiringType == 'FARE')
-            this.totalPrice = this.$store.getters.offer.totalPrice;
+        this.artistData = this.$store.getters.offerArtist;
+        this.date = this.$store.getters.offerDate;
 
-        this.nextStep += this.artistData.artistId;
+        // ###### END OF VUEX RESTORE ###### 
+        
+
+        // Obtenemos el precio de la tarjeta izq   
+        if(this.hiringType && this.hiringType == 'CUSTOM')
+            this.cardPrice = this.$store.getters.offerCustomPack.cardPrice;
+
+        // Actualizamos el siguiente paso
+        this.nextStep = '/paymentSelector/';
+        
+        this.nextStep += this.artistId;
+
     },
 
     methods: {
+
         ...mapActions(['setEventDescription']),
+
         eventData(description) {
+
             this.setEventDescription(description).then(() => {
+                
                 // If VueX has correcty saved the description
                 this.$router.push(this.nextStep)
+
             }).catch( e => {
+
                 console.log('Error: Could not set description in VueX');
                 console.log(e);
+                
             });
+
         }
     }
 }

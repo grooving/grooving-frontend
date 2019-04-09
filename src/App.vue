@@ -81,6 +81,10 @@ export default {
 
 <style>
 
+* {
+    font-family: "Archivo"
+}
+
 html{ height:100%; }
 body{ min-height:100%; padding:0; margin:0; position:relative; }
 

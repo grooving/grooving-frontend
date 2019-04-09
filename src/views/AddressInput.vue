@@ -19,7 +19,7 @@ import AddressData from '@/components/makeOffer/AddressData.vue'
 import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
 import GSecurity from '@/security/GSecurity.js';
 import {mapActions} from 'vuex';
-import { mapGetters } from 'vuex';
+import {mapGetters} from 'vuex';
 import PaymentProcess from '@/store/modules/payment.js';
 
 export default {
@@ -34,44 +34,60 @@ export default {
 
     data() {
         return {
+
+            //Hiring Process...
             gsecurity: GSecurity,
-            artistId: undefined,
+            artistId: -1,
+            nextStep: undefined,
             hiringType: undefined,
+            cardPrice: undefined,
             artistData: {
                 artistId: undefined,
                 artisticName: undefined,
-                photo: undefined, 
+                photo: undefined,
                 genres: undefined,
             },
-            totalPrice: undefined,
-            nextStep: '/eventInput/',
+
             startHour: undefined,
         }
     },
 
     methods: {
+
         ...mapActions(['setEventAddress']),
+
         addressSelected(address) {
+            
             this.setEventAddress(address).then(() => {
+
                 // If VueX has correcty saved the address
                 this.$router.push(this.nextStep)
+
             }).catch( e => {
+
                 console.log('Error: Could not set address in VueX');
                 console.log(e);
+
             });
+
         },
+
     },
 
     created() {
-        // Retreive store credentials
+
+        // Retrieve store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
 
+        // The artist to whom the offer is created
         this.artistId = this.$route.params['artistId'];
-        // Retrieve the type of hiring in order to ensure access permission
+        // Retrieve the type of hiring
         this.hiringType = this.$store.getters.offer.hiringType;
 
-        if(!this.$gsecurity.hasRole('CUSTOMER')) {
+        // ###### SECURITY ACCESS CHECKS ###### 
+
+        if(!this.gsecurity.hasRole('CUSTOMER')) {
             console.log("Error: You are not a customer so you can't hire an artist");
             location.replace("/#/*")
         }
@@ -81,32 +97,39 @@ export default {
             location.replace("/")
         }
 
-        var stepNumber;
-        if(this.hiringType == 'FARE')
-            stepNumber = 3;
-        else if(this.hiringType == 'CUSTOM'){
-            stepNumber = 4;
-        }
-
-        if(!this.hiringType || !PaymentProcess.checkStepRequirements(PaymentProcess.state, this.hiringType, stepNumber)){
+        // Check the user does not access the view directly
+        if(!PaymentProcess.checkViewRequirements(PaymentProcess.state, this.hiringType, "AddressInput")){
             console.log('Error: Direct access to the view was detected')
             location.replace("/#/hiringType/" + this.artistId + "/")
         }
+
+        // ###### END OF SECURITY ACCESS CHECKS ###### 
+
     },
 
-    mounted() {
-        // Artist Data
-        this.artistData.artistId = this.$store.getters.offerArtist.artistId;
-        this.artistData.artisticName = this.$store.getters.offerArtist.artisticName;
-        this.artistData.photo = this.$store.getters.offerArtist.photo;
-        this.artistData.genres = this.$store.getters.offerArtist.genres;
+    beforeMount() {
 
-        this.hiringType = this.$store.getters.offer.hiringType;
+        // ###### VUEX RESTORE ###### 
 
+        this.artistData = this.$store.getters.offerArtist;
+
+        // ###### END OF VUEX RESTORE ###### 
+
+
+        // Obtenemos el precio de la tarjeta izq   
         if(this.hiringType && this.hiringType == 'FARE')
-            this.totalPrice = this.$store.getters.offer.totalPrice;
+            this.cardPrice = this.$store.getters.offerFarePack.priceHour;
 
-        this.nextStep += this.artistData.artistId;
+        // Actualizamos el siguiente paso
+        if(this.hiringType == 'FARE'){
+            this.nextStep = '/addressInput/';
+        }else if(this.hiringType == 'CUSTOM'){
+            this.nextStep = '/priceSelector/';
+        }
+
+        this.nextStep = "/eventInput/";
+        this.nextStep += this.artistId;
+
     },
 }
 </script>

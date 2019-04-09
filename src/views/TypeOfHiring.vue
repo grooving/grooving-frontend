@@ -30,9 +30,10 @@ export default {
 
     data() {
         return {
+
+            // Hiring Process Data...
             gsecurity: GSecurity,
             artistId: -1,
-            nextStep: '/dateSelection/',
             artistData: Array(),
 
             // Type: Fare
@@ -61,24 +62,38 @@ export default {
             // Set Offer Hiring Type
             this.setOffer(hiringType).then( () => {
 
-            if(hiringType == 'FARE') {
-                this.setFarePackage(this.farePackage).then(() => {
-                    // If VueX has correctly set the package
-                    this.$router.push(this.nextStep);
-                }).catch( e => {
-                    console.log('Could not set Hiring Type');
-                    console.log(e);
-                });
-            }else if(hiringType == 'CUSTOM'){
-                console.log('wig..')
-                this.setCustomPackage(this.customPackage).then(() => {
-                    // If VueX has correctly set the package
-                    this.$router.push(this.nextStep);
-                }).catch( e => {
-                    console.log('Could not set Hiring type');
-                    console.log(e);
-                })
-            }
+                // Actualizamos el siguiente paso (lo hacemos aquí porque
+                // hiringType todavía no está asignado en VueX)
+                var nextView = undefined;
+                if(hiringType == 'FARE' || hiringType == 'CUSTOM')
+                    nextView = '/dateSelection/';
+
+                nextView += this.artistData.artistId;
+
+
+                if(hiringType == 'FARE') {
+
+                    // Creamos el farePackage asociado con los datos...
+                    this.setFarePackage(this.farePackage).then(() => {
+                        // If VueX has correctly set the package
+                        this.$router.push(nextView);
+                    }).catch( e => {
+                        console.log('Could not set PaymentPackage: Fare');
+                        console.log(e);
+                    });
+
+                }else if(hiringType == 'CUSTOM'){
+
+                    // Creamos el customPackage asociado con los datos...
+                    this.setCustomPackage(this.customPackage).then(() => {
+                        // If VueX has correctly set the package
+                        this.$router.push(nextView);
+                    }).catch( e => {
+                        console.log('Could not set PaymentPackage: Custom');
+                        console.log(e);
+                    })
+
+                }
 
             });
 
@@ -86,15 +101,19 @@ export default {
     },
 
     created() {
-        // Retreive store credentials
+
+        // Retrieve store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
 
+        // The artist to whom the offer is created
         this.artistId = this.$route.params['artistId'];
 
-        if(!this.$gsecurity.hasRole('CUSTOMER')) {
+        // ###### SECURITY ACCESS CHECKS ###### 
+
+        if(!this.gsecurity.hasRole('CUSTOMER')) {
             console.log("Error: You are not a customer so you can't hire an artist");
-            location.replace("/#/*")
+            location.replace("/#/*");
         }
 
         if(!this.artistId){
@@ -104,6 +123,9 @@ export default {
 
         // Clear saved data before beginning
         this.clearState();
+
+        // ###### END OF SECURITY ACCESS CHECKS ###### 
+
     },
 
     beforeMount() {
@@ -112,27 +134,25 @@ export default {
         var GAxiosToken = this.gsecurity.getToken();
         authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
 
-        // Artist Information - Left Card
+        // ** Artist Information - Left Card **
         authorizedGAxios.get(endpoints.portfolio + this.artistId + "/")
         .then(response => {
 
           var portfolio = response.data;
-          
+        
+          // Géneros de un portfolio
           var genres = portfolio.artisticGender;
           var portfolioGenres = '';
 
           for(var i = 0; i < genres.length; i++){
-            
             var genre = genres[i].name;
             portfolioGenres += genre;
-            if(i < 3 && genres.length > 1)
-                portfolioGenres += ', ';
-            else
-                break;
-
+            portfolioGenres += ', ';
           }
+
+          portfolioGenres = portfolioGenres.slice(0, portfolioGenres.length - 2);
           
-          // Artist Information
+          // Artist Information (ID, Photo, ArtisticName, Genres)
           this.artistData = {
               artistId: portfolio.artist.id, 
               photo: portfolio.main_photo, 
@@ -141,18 +161,17 @@ export default {
           };
 
           this.setArtist(this.artistData);
-          this.nextStep += this.artistData.artistId;
 
         }).catch(ex => {
-            console.log('Could not load Artist Info Data');
+            console.log('Could not load Artist Info Data API');
             console.log(ex);
         });
 
-        // Hiring Types - Right Card
+        // ** Hiring Types - Right Card **
         authorizedGAxios.get(endpoints.artistPayPackage + this.artistId + "/")
         .then(response => {
 
-            // Available PaymentPackages
+            // Available PaymentPackages retieved through the API
             var paymentPackages = response.data;
 
             for(var i = 0; i < paymentPackages.length; i++) {
@@ -160,32 +179,30 @@ export default {
                 var payPack = paymentPackages[i];
                 
                 if(payPack.fare_id != null) {
+
                     // Fare Package
                     this.farePackage.packageId = payPack.id;
                     this.farePackage.priceHour = payPack.fare.priceHour;
+
                 }else if(payPack.custom_id != null) {
+
                     // Custom Package
                     this.customPackage.packageId = payPack.id;
                     this.customPackage.minimumPrice = payPack.custom.minimumPrice;
+
                 }
             }
 
         }).catch(ex => {
-            console.log('Could not load payment packages')
+            console.log('Could not load Payment Packages API')
             console.log(ex);
         });
     },
 }
 </script>
 
-<style>
-
-</style>
-
 <style scoped>
-    * {
-        font-family: "Archivo"
-    }
+
     .title {
         display: none;
     }

@@ -9,7 +9,7 @@
                 <div class="card-body cuerpoTarjeta">
                     <div class="leftContent">
                         <h5 class="card-title artistName">{{ artistName }}</h5>
-                        <span class="card-text artistGenres">{{ genresToString() }}</span>
+                        <span class="card-text artistGenres">{{ artistData.genres }}</span>
                     </div>
                     <div class="rightContent">
                         <p class="price">{{ price }}€</p>
@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div>
-                <div><CustomPrice @confirmPrice="confirmPrice" @priceSelected="priceValue" :duration="date.duration" :minPrice="minimumPrice"  /></div>
+                <div><CustomPrice @confirmPrice="confirmPrice" @priceSelected="priceValue" :duration="date.duration" :minPrice="cardPrice"  /></div>
             </div>
         </div>
     </div>
@@ -27,9 +27,12 @@
     import CustomPrice from '@/components/CustomPrice.vue'
     import GSecurity from '@/security/GSecurity.js'
     import {mapActions} from 'vuex';
+    import PaymentProcess from '@/store/modules/payment.js';
+
 
 
     export default {
+
         name: 'PriceSelector',
         
         components: {
@@ -38,41 +41,30 @@
 
         data: function() {
             return {
+
+                //Hiring Process...
                 gsecurity: GSecurity,
-                artistId: undefined,
+                artistId: -1,
+                nextStep: undefined,
                 hiringType: undefined,
+                cardPrice: undefined,
                 artistData: {
                     artistId: undefined,
                     artisticName: undefined,
                     photo: undefined,
                     genres: undefined,
                 },
-                minimumPrice: undefined,
+
                 date: {
                     date: undefined,
                     hour: undefined,
                     duration: undefined,
                 },
-                nextStep: undefined, 
                 price: '',
             };
         },
 
         methods: {
-            genresToString() {
-
-                var res = "";
-                var i = 0;
-
-                for (i = 0; i < this.artistGenres.length; i++) { 
-                    if (i != this.artistGenres.length - 1) {
-                        res += this.artistGenres[i] + ", ";
-                    } else {
-                        res += this.artistGenres[i];
-                    }
-                }
-            return res;
-            },
 
             priceValue (value) {
                 this.price = value;
@@ -81,16 +73,23 @@
             ...mapActions(['setOfferPrice']),
 
             confirmPrice(){
+
                 if(this.price){
+
                     this.setOfferPrice(this.price).then(() => {
+
                         // If VueX has correcty saved the price
                         this.$router.push(this.nextStep)
+
                     }).catch( e => {
                         console.log('Error: Could not set price in VueX');
                         console.log(e);
                     });
+
                 }else{
+
                     alert('You must select a price...');
+
                 }
             }
         },
@@ -115,13 +114,17 @@
         },
 
         created() {
-            // Retreive store credentials
+
+            // Retrieve store credentials
             this.gsecurity = GSecurity;
             this.gsecurity.obtainSavedCredentials();
 
+            // The artist to whom the offer is created
             this.artistId = this.$route.params['artistId'];
-            // Retrieve the type of hiring in order to ensure access permission
+            // Retrieve the type of hiring
             this.hiringType = this.$store.getters.offer.hiringType;
+
+            // ###### SECURITY ACCESS CHECKS ###### 
 
             if(!this.gsecurity.hasRole('CUSTOMER')) {
                 console.log("Error: You are not a customer so you can't hire an artist");
@@ -133,31 +136,35 @@
                 location.replace("/")
             }
 
-            var stepNumber;
-            if(this.hiringType == 'CUSTOM'){
-                stepNumber = 2;
-                this.nextStep = '/addressInput/';
-            }
-
-            if(!this.hiringType || !PaymentProcess.checkStepRequirements(PaymentProcess.state, this.hiringType, stepNumber)){
+            // Check the user does not access the view directly
+            if(!PaymentProcess.checkViewRequirements(PaymentProcess.state, this.hiringType, "PriceSelector")){
                 console.log('Error: Direct access to the view was detected')
                 location.replace("/#/hiringType/" + this.artistId + "/")
             }
+
+            // ###### END OF SECURITY ACCESS CHECKS ###### 
+
         },
 
-        mounted() {
+        beforeMount() {
 
-            this.artistData.artistId = this.$store.getters.offerArtist.artistId;
-            this.artistData.artisticName = this.$store.getters.offerArtist.artisticName;
-            this.artistData.photo = this.$store.getters.offerArtist.photo;
-            this.artistData.genres = this.$store.getters.offerArtist.genres;
-            
+            // ###### VUEX RESTORE ###### 
+
+            this.artistData = this.$store.getters.offerArtist;
             this.date = this.$store.getters.offerDate;
-            
-            if(this.hiringType && this.hiringType == 'CUSTOM')
-                this.minimumPrice = this.$store.getters.offerCustomPack.minimumPrice;
-            console.log("minpri", this.minimumPrice)
 
+            // ###### END OF VUEX RESTORE ###### 
+            
+
+            // Obtenemos el precio de la tarjeta izq   
+            if(this.hiringType && this.hiringType == 'CUSTOM')
+                this.cardPrice = this.$store.getters.offerCustomPack.cardPrice;
+
+            // Actualizamos el siguiente paso
+            if(this.hiringType == 'CUSTOM'){
+                this.nextStep = '/addressInput/';
+            }
+            
             this.nextStep += this.artistId;
 
         },
