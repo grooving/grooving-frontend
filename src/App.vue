@@ -2,15 +2,15 @@
   <div id="app">
     <div class="content">
     <div class="Header">
-      <Header @toBlur='blurred'/>
+      <Header @toBlur='blurred' @refreshRightMenu='refreshRightMenu'/>
     </div>
     <div class="RightMenu">
-      <RightMenu />
+      <RightMenu @samePage='samePage' :key="refreshRM"/>
     </div>
     <div class="LeftMenu">
-      <LeftMenu />
+      <LeftMenu @samePage='samePage'/>
     </div>
-    <router-view/>
+    <router-view id="mainContent"/>
     </div>
     <footer><Footer/></footer>
   </div>
@@ -22,6 +22,7 @@ import RightMenu from "./components/menus/RightMenu.vue"
 import LeftMenu from "./components/menus/LeftMenu.vue"
 import Footer from "./components/menus/Footer.vue"
 import GSecurity from "./security/GSecurity.js"
+import {mapActions} from 'vuex';
 
 export default {
 
@@ -32,28 +33,56 @@ export default {
   data: function(){
     return{
       gsecurity: GSecurity,
+      rightMenu: undefined,
+      leftMenu: undefined,
+      refreshRM: 1,
     }
   },
   methods: {
+    ...mapActions(['clearStore']),
     blurred(a){
       if(a) {
-        $((document.getElementById('test'))).css("filter", "blur(12px)");
-        $((document.getElementById('test'))).css("pointer-events", "none");
-
+        $((document.getElementById('mainContent'))).css("filter", "blur(12px)");
+        $((document.getElementById('mainContent'))).css("pointer-events", "none");
+        $(document.body).css("overflow", "hidden");
       } else {
-        $((document.getElementById('test'))).css("filter", "blur(0px)");
-        $((document.getElementById('test'))).css("pointer-events", "auto");
+        $((document.getElementById('mainContent'))).css("filter", "blur(0px)");
+        $((document.getElementById('mainContent'))).css("pointer-events", "auto");
+        $(document.body).css("overflow", "");
       }
-    }
-  },
+    },
+    samePage(){
+        $((document.getElementById('mainContent'))).css("filter", "blur(0px)");
+        $((document.getElementById('mainContent'))).css("pointer-events", "auto");
+        $(document.body).css("overflow", "");
 
+        this.clearStore();
+    },
+    refreshRightMenu() {
+      console.log('furula')
+      $((document.getElementById('mainContent'))).css("filter", "blur(0px)");
+      $((document.getElementById('mainContent'))).css("pointer-events", "auto");
+      $(document.body).css("overflow", "");
+      this.clearStore();
+      this.refreshRM++;
+    },
+  },
   beforeCreate() {
     // Retreive store credentials
     this.gsecurity = GSecurity;
     this.gsecurity.obtainSavedCredentials();
+
+
+  },
+  beforeUpdate() {
+    this.rightMenu = this.$store.getters.sideMenus.rightMenu;
+    this.leftMenu = this.$store.getters.sideMenus.leftMenu;
+
+    if (!this.leftMenu && !this.rightMenu) {
+        $(document.body).css("overflow", "");
+    }
   },
 }
-
 </script>
 
 <style>

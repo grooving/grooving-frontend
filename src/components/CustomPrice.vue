@@ -4,13 +4,13 @@
             <label for="" class="subtitle" style="font-weight:bold;">Performance duration: &nbsp;</label>
             <label for="" class="subtitle">{{duration}} hours</label>
             <div class="input-group">
-                <input v-model="priceHour" type="number" class="form-control" min="0.01" step="0.01" value="8" v-on:change="priceSelected();totalPrice();" v-on:click="priceSelected();totalPrice();">
+                <input v-model="priceHour" type="number" class="form-control" :min="minPrice" step="0.01" v-on:change="priceSelected();totalPrice();" v-on:click="priceSelected();totalPrice();">
                 <div class="input-group-append">
                     <span class="input-group-text">€/h</span>
                 </div>
             </div>
             <div class="continueButtonDiv">
-                <div class="btn btn-primary continueButton">
+                <div @click="confirmPrice()" class="btn btn-primary continueButton">
                     <span class="continueText">CONTINUE</span>
                 </div>
             </div>
@@ -41,6 +41,10 @@ export default {
             var res = Math.round(this.priceHour * this.duration * 100) / 100;
             this.emitPrice = res;
             return res;
+        },
+
+        confirmPrice: function(){
+            this.$emit('confirmPrice');
         }
     },
 
@@ -49,9 +53,14 @@ export default {
             type: Number,
             default: 3.5,
         },
+        minPrice: {
+            type: Number,
+            default: 0.01,
+        }
     },
 
     mounted: function() {
+        this.priceHour = this.$props.minPrice;
         this.totalPrice();
         this.priceSelected();
     },

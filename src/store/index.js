@@ -3,6 +3,7 @@ import Vue from 'vue';
 import Payment from './modules/payment'
 import PaymentConfirmation from './modules/paymentConfirmation'
 import EditPortfolio from './modules/editPortfolio'
+import Header from './modules/header'
 
 
 // Load Vuex
@@ -13,6 +14,6 @@ Vue.use(Vuex);
 
 export default new Vuex.Store ({
     modules: {
-        Payment, PaymentConfirmation, EditPortfolio
+        Payment, PaymentConfirmation, EditPortfolio, Header
     }
 })

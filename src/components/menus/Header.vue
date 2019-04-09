@@ -3,19 +3,19 @@
     <nav id="mainNavBar" class="navbar navbar-light bg-light">
       <div id="navBarLeft" class="vertical-center" >
         <div id="navBarLogo" class="navbar-brand vertical-center">
-          <button class="d-inline d-md-none navbar-toggler no-border pt-0 collapsL" @click="sideMenus(1)" id="collapsL" role="button" data-toggle="collapse"
+          <button class="d-inline d-md-none navbar-toggler no-border pt-0 collapsL" @click="sideMenusB(1)" id="collapsL" role="button" data-toggle="collapse"
           data-target="#sidebarleft" >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <router-link class="ml-2 vertical-center" to="/">
+          <div class="ml-2 vertical-center goTo" @click="goTo('/')">
             <img src="@/assets/logos/logo_name.png" width="100px">
-          </router-link>
+          </div>
         </div>
       </div>
       <div id="navBarDesktopLinks" class="d-none d-md-block mr-auto">
         <ul class="navbar-nav row-alignment right-float">
-          <li v-for="item in userVisibleLinks" :key="item.text" class="nav-item mx-2" v-bind:class="{active: item.selected}">
-            <router-link class="nav-link font" :to="item.link">{{item.text}}</router-link>
+          <li v-for="item in userVisibleLinks" :key="item.text" class="nav-item mx-2 goTo" v-bind:class="{active: item.selected}">
+            <div class="nav-link font" @click="goTo(item.link)">{{item.text}}</div>
           </li>
         </ul>
       </div>
@@ -39,7 +39,7 @@
           </li>
           <div id="navBarUserComponent" >
             <li v-if="gsecurity.isAuthenticated()" class="nav-item mx-2 right-float vertical-center ">
-              <button role="button" class="collaps" id="collaps" @click="sideMenus(2)" data-toggle="collapse" data-target="#sidebar" >
+              <button role="button" class="collaps" id="collaps" @click="sideMenusB(2)" data-toggle="collapse" data-target="#sidebar" >
                 <a class="nav-link vertical-center" href="#">
                   <img v-if="userPhoto == null || userPhoto == '' || userPhoto == 'null'" src="@/assets/defaultPhoto.png"
                   class="profileImage" alt="Profile Image">
@@ -88,6 +88,7 @@
 <script>
 import Search from "./Search.vue";
 import GSecurity from "@/security/GSecurity.js";
+import {mapActions} from 'vuex';
 
 const ARTIST_SEARCH_URI = "#/artist_search?artisticName=";
 
@@ -137,7 +138,9 @@ export default {
       },
       gsecurity: GSecurity,
       loginDisabled: false,
-      userPhoto: ""
+      userPhoto: "",
+      sameURL: true,
+      thisURL: undefined,
     };
   },
 
@@ -152,9 +155,20 @@ export default {
   },
 
   methods: {
+    ...mapActions(['clearStore', 'setURL', 'setRightMenu', 'setLeftMenu']),
     changeQueryMobile: function() {
       this.searchQuery = arguments[0];
       this.search();
+    },
+    goTo(path) {
+        this.$emit('refreshRightMenu');
+        this.url = this.$store.getters.sideMenus.url;
+        if(this.url !== path) {
+            this.setURL(path);
+            this.clearStore().then(() => this.$router.push(path));  
+        } else {
+          this.$emit('samePage')
+        }
     },
 
     login: async function() {
@@ -166,9 +180,7 @@ export default {
       } else {
         $('#ddown-form-email, #ddown-form-passwd').css('border-color', 'red');
       }
-
     },
-
     refreshGSecurityData: function() {
       this.userPhoto = this.gsecurity.getPhoto();
     },
@@ -178,31 +190,34 @@ export default {
       window.location.reload();
     },
 
-    sideMenus(a) {
-      if(a == 1) {
-        if(this.rightMenu && !this.leftMenu) {
-          $('#collaps').click();
-          this.rightMenu = false;
-        } 
-        this.leftMenu = !this.leftMenu;
-      } 
-      if (a == 2) {
-          if(!this.rightMenu && this.leftMenu) {
-            $('#collapsL').click();
-            this.leftMenu = false;
-          }
-          this.rightMenu = !this.rightMenu;
-      }
-      this.loginDisabled = !this.loginDisabled;
 
-      if (this.leftMenu || this.rightMenu) {
-        $(document.body).css("overflow", "hidden");
-        this.$emit('toBlur', true);
-      } else {
-        $(document.body).css("overflow", "");
-        this.$emit('toBlur', false);
-      }
-    },
+    sideMenusB(a) {
+        this.rightMenu = this.$store.getters.sideMenus.rightMenu;
+        this.leftMenu = this.$store.getters.sideMenus.leftMenu;
+        if(a == 1) {
+          if(this.rightMenu && !this.leftMenu) {
+            $('#collaps').click();
+            this.setRightMenu(false);
+          } 
+          this.setLeftMenu(!this.leftMenu);
+        } 
+        if (a == 2) {
+            if(!this.rightMenu && this.leftMenu) {
+              $('#collapsL').click();
+              this.setLeftMenu(false);
+            }
+            this.setRightMenu(!this.rightMenu);
+        }
+        this.loginDisabled = !this.loginDisabled;
+
+        this.rightMenu = this.$store.getters.sideMenus.rightMenu;
+        this.leftMenu = this.$store.getters.sideMenus.leftMenu;
+        if (this.leftMenu || this.rightMenu) {
+          this.$emit('toBlur', true);
+        } else {  
+          this.$emit('toBlur', false);
+        }
+      },
 
     toggleSearchPanel: function() {
       this.showSearchMenu = !this.showSearchMenu;
@@ -295,6 +310,16 @@ export default {
   .dropdown-menu.show {
     padding-bottom: 0px;
   } 
+
+  .goTo {
+      cursor: pointer;
+      background-color: transparent;
+      color: #007bff;
+  }
+
+  .goTo:hover {
+      color: #0056b3;
+  }
 
   .material-icons:hover {
     background: -webkit-linear-gradient(left, #00fb82, #187fe6);
