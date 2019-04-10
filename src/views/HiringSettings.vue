@@ -1,11 +1,14 @@
 <template>
 <div class="prueba">
     <div class="everything">
-        <div class="paymentSelect">
-            <div v-for="p in farePackages" :key="p.package_id">
+        <div v-if="farePackages.length != 0" class="paymentSelect">
+            <div v-for="p in customPackages" :key="p.package_id">
                 <div class="paymentOptions"><FareHiring :fixedPrice="p.fare.priceHour" :packageId="p.package_id" :fareId="p.fare_id"/></div>
             </div>
             <hr>
+        </div>
+        <div v-else class="paymentSelect">
+            <div class="paymentOptions"><FareHiring :empty="true"/></div>
         </div>
         <div v-if="customPackages.length != 0" class="paymentSelect">
             <div v-for="p in customPackages" :key="p.package_id">

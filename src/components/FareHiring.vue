@@ -63,7 +63,7 @@ export default {
     }
 
     .continueButtonDiv {
-        margin-top: 30px;
+        margin-top: 50px;
         margin-bottom: 5%;
         display: flex;
         justify-content: center;

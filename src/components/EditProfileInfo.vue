@@ -10,7 +10,7 @@
                     </router-link>
                     <h6 class="card-subtitle mb-2 text-muted">Basic info of your Grooving account, like your name and email.</h6>
                     <div id="errorsDiv" class="validationErrors vertical-center">
-                        <p style="margin: 0px;">{{errors}}omssss</p>
+                        <p style="margin: 0px;">{{errors}}</p>
                     </div>
                     <div style="width:100%;margin-top:25px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">FIRST NAME</p>
