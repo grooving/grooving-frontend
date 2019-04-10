@@ -47,7 +47,7 @@
                         <b-form-input type="number" v-model="input.phoneNumber" placeholder="Phone Number" min="600000000"></b-form-input>
                     </b-form-group>
                     <div class="form-check">
-                        <b-form-checkbox id="checkbox-1" v-model="status" name="checkbox-1" value="accepted" unchecked-value="not_accepted" required>
+                        <b-form-checkbox id="checkbox-1" v-model="status" value="accepted" unchecked-value="not_accepted" required>
                             <p>By creating an account you agree to <a href="/">Grooving's Terms and Conditions</a>.</p>
                         </b-form-checkbox>
                     </div>

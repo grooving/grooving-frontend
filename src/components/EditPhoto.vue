@@ -20,12 +20,12 @@
             <div >
                 <div >
                     <div v-if='editBanner' class="inputForm ">
-                        <input @keypress.prevent="toogleBannerInput()" class="form-control" type="text"  
+                        <input @keypress.enter="toogleBannerInput()" class="form-control" type="text"  
                             placeholder="Add the URL of your new banner" v-model="$parent.d_portfolioBanner">
                     </div>
 
                     <div class="inputForm" v-if="editPhoto">
-                        <input @keypress.prevent="tooglePhotoInput()" type="text" v-model="$parent.d_portfolioMainPhoto" class="form-control" 
+                        <input @keypress.enter="tooglePhotoInput()" type="text" v-model="$parent.d_portfolioMainPhoto" class="form-control" 
                             placeholder="Add the URL of your new profile image" />
                     </div>
                 </div>
