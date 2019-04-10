@@ -81,8 +81,9 @@ export default {
     extractURLS: function(collection, key){
       var res = Array();
       
-      for(var i = 0; i < collection.length; i++)
-        res.push(collection[i][key])
+      if(collection)
+        for(var i = 0; i < collection.length; i++)
+          res.push(collection[i][key])
 
       return res;
     },
