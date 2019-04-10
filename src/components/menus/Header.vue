@@ -270,7 +270,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 
   a:-webkit-any-link {
     text-decoration: none;
@@ -319,13 +319,6 @@ export default {
 
   .goTo:hover {
       color: #0056b3;
-  }
-
-  .material-icons:hover {
-    background: -webkit-linear-gradient(left, #00fb82, #187fe6);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
   }
 
   .navbar {
@@ -409,6 +402,13 @@ export default {
     text-align: center;
     font-weight: bold;
     font-size: 30px;
+  }
+
+  .material-icons:hover {
+    background: -webkit-linear-gradient(left, #00fb82, #187fe6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   #mainNavBar {
