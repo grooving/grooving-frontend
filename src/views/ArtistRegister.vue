@@ -129,8 +129,8 @@
                     NProgress.done();
                     this.$router.push({name: "registerConfirmation"});
                 }).catch(ex => {
-                    console.log(ex.response.data);
-                    this.errors = ex.response.data[0];
+                    console.log(ex.response.data.error);
+                    this.errors = ex.response.data.error;
                     document.getElementById("errorsDiv").style.display = "block";
                     this.status = 'not_accepted';
                     NProgress.done();
