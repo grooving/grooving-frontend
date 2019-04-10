@@ -17,7 +17,7 @@
                 </li>
                 
                 <li v-if="gsecurity.hasRole('ARTIST')" class="nav-item section">
-                    <div class="nav-link goTo" @click="goTo('/receivePayment')" data-toggle="collapse" data-target="#sidebarleft">QR Scan</div>
+                    <div class="nav-link goTo" @click="goTo('/receivePayment')" data-toggle="collapse" data-target="#sidebarleft">Check-in</div>
                 </li>
                 
                 <!-- <li class="nav-item section">

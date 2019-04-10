@@ -121,7 +121,7 @@ export default {
           requiedRoles: ["CUSTOMER", "ARTIST"]
         },
         {
-          text: "QR Scan",
+          text: "Check-in",
           link: "/receivePayment",
           selected: false,
           requiedRoles: ["ARTIST"]
