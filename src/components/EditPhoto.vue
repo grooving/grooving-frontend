@@ -5,7 +5,7 @@
         <div class="bannerIcon">
             <img class="card-img-top banner" :src="artistBanner"/>
             <div class="card-img-overlay" style="top: -20px;">
-                <img class="profile_photo overBanner" src="@/assets/img/bin1.png" @click="showBannerInput()"/>
+                <img class="profile_photo overBanner" src="@/assets/img/edit.png" @click="showBannerInput()"/>
              </div>
         </div>
         </div>
@@ -13,7 +13,7 @@
         <div class="artistIcon">
             <img class="card-img-top icon" :src="artistImage"/>
              <div class="card-img-overlay" style="top: -20px;">
-                <img class="profile_photo"  src="@/assets/img/bin1.png" @click="showPhotoInput()"/>
+                <img class="profile_photo"  src="@/assets/img/edit.png" @click="showPhotoInput()"/>
              </div>
         </div></div>
         <div >
