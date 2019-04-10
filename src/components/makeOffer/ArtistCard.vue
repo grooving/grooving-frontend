@@ -3,7 +3,7 @@
     
     <div class="everything">
         <div class="tarjeta">
-            <router-link v-bind:to="artistURI"><img v-bind:src="artistImage" class="card-img-top artistImage" alt="Artist's Image"></router-link>
+            <router-link v-bind:to="linkToPortfolio"><img v-bind:src="artistImage" class="card-img-top artistImage" alt="Artist's Image"></router-link>
             <div class="card-body cuerpoTarjeta">
                 <div class="leftContent">
                     <h5 class="card-title artistName">{{ artistName }}</h5>
@@ -28,9 +28,11 @@ import {mapActions} from 'vuex';
 
 export default {
   name: 'TimeSelection',
+
   components: {
     DoubleSlider
   },
+
   data () {
       return {
           time: {
@@ -40,6 +42,15 @@ export default {
         nextStep: undefined, 
       }
   },
+
+  computed: {
+
+      linkToPortfolio: function(){
+          return this.$props.artistURI  + this.$props.artistId;
+      }
+
+  },
+
   props: {
         artistId: {
             type: String,
@@ -72,9 +83,6 @@ export default {
     },
     methods: {
 
-    },
-    beforeMount() {
-        this.artistURI += this.artistId + '/';
     }
 }
 </script>
