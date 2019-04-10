@@ -1,7 +1,11 @@
 <template>
 <div class="hiringProcessContainer">
+
+    <div id="errorsDiv" class="validationErrors vertical-center">
+        <p style="margin: 0px;">{{errors}}</p>
+    </div>
     <div class="title"><p>Choose a date</p></div>
-    
+
     <div class="everything">
         <div class="artistCard"><ArtistCard 
             :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
@@ -53,6 +57,7 @@ export default {
 
           datos: Array(),
           fecha: '',
+          errors: "",
         }
     },
 
@@ -71,10 +76,14 @@ export default {
 
                     console.log('Error: Could not set date in VueX');
                     console.log(e);
+
+                    this.errors = 'Error: Could not set date in VueX';
+                    document.getElementById("errorsDiv").style.display = "block";
                     
                 });
             }else{
-                alert('You must select a date...');
+                this.errors = 'You must select a date.';
+                document.getElementById("errorsDiv").style.display = "block";
             }
         },
 
@@ -204,6 +213,16 @@ export default {
 
     .calendarButton  {
         min-width: 320px;
+    }
+
+    .validationErrors{
+        background-color:#f50057;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
+        color:white;
+        display: none;
+        font-weight: bold;
+        padding: 10px;
+        padding-top: 12px;
     }
 
     @media (max-width:767px)  {

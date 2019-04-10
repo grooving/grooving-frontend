@@ -273,7 +273,7 @@ h2 {
  @media (min-width:768px)  {
     .heads {
         background-color:white; text-align: left; border-bottom: none; 
-        padding-top: 2%; padding-bottom: 0.5%; margin-left: 15px;
+        padding-top: 2%; padding-bottom: 0.5%;
     }
 
     .Hbutton{
@@ -281,7 +281,7 @@ h2 {
     }
 
     .bodies{
-        margin-left: 20px; padding-top: 1%; padding-bottom: 3%;
+        padding-top: 1%; padding-bottom: 3%;
         margin-bottom: 1%;
         
     }
