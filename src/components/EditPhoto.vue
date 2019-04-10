@@ -4,7 +4,7 @@
         <div class="card">
         <div class="bannerIcon">
             <img class="card-img-top banner" :src="artistBanner"/>
-            <div class="card-img-overlay" style="top: -20px;">
+            <div class="card-img-overlay">
                 <img class="profile_photo overBanner" src="@/assets/img/edit.png" @click="showBannerInput()"/>
              </div>
         </div>
