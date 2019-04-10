@@ -1,9 +1,9 @@
 <template>
 <div class="prueba">
-    <div class="title"><p>Payment</p></div>
     <div v-if="errors == true" class="validationErrors">
         <p>Sorry! Something went wrong. Try again later.</p>
     </div>
+    <div class="title"><p>Payment</p></div>
     <div class="everything">
         <div class="artistCard"><ArtistCard :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.totalPrice"/>
@@ -279,28 +279,21 @@ export default {
             margin-left: 18%;
             text-align: left;
             font-size: 50px;
-            margin-top: 5%;
+            margin-top: 25px;
             margin-bottom: 0%;
             margin-left: 1px;
             font-weight: bold;
         }
+
         .validationErrors{
-            padding-top: 10px;
-            padding-bottom: 0.25px;
-            color: #c62828;
-            font-weight: semibold;
-            border-color: green;
-            width: 50%;
-            margin: 0 auto;
-            height: auto;
-            border-radius: 5px;
-            align-items: center;
-            text-align: center;
-            box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .5);
+            background-color:#f50057;
+            box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);
+            
+            color:white;
+            font-weight: bold;
+            height: 100%;
+            padding-top: 12px;
         }
-
-        
-
         
     }
 
