@@ -4,7 +4,9 @@
             <img class="card-img-top banner" :src="artistBanner"/>       
         </div>
         <div class="artistIcon">
-            <img class="card-img-top icon" :src="artistImage"/>
+            <img v-if="!artistImage" src="@/assets/defaultPhoto.png"
+                class="card-img-top icon" alt="Profile Image">
+            <img v-else class="card-img-top icon" :src="artistImage" alt="Profile Image">
         </div>
         <h1 style="font-weight: bold;">{{artistName}}</h1>
         <span class="card-text artistGenres">{{ genresToString() }}</span>
