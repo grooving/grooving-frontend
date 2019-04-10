@@ -34,7 +34,7 @@ export default {
 
         NProgress.start();
 
-        GAxios.get('/terms/')
+        GAxios.get('/terms')
         .then(response => {
 
         this.termsAndCond = response.data;
