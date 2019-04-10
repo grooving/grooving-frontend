@@ -1,49 +1,59 @@
 <template>
-<div class="prueba">
-    <div class="everything">
-        <div v-if="farePackages.length != 0" class="paymentSelect">
-            <div v-for="p in customPackages" :key="p.package_id">
-                <div class="paymentOptions"><FareHiring :fixedPrice="p.fare.priceHour" :packageId="p.package_id" :fareId="p.fare_id"/></div>
-            </div>
-            <hr>
-        </div>
-        <div v-else class="paymentSelect">
-            <div class="paymentOptions"><FareHiring :empty="true"/></div>
-        </div>
-        <div v-if="customPackages.length != 0" class="paymentSelect">
-            <div v-for="p in customPackages" :key="p.package_id">
-                <div class="paymentOptions"><CustomHiring :minimumPrice="p.custom.minimumPrice" :packageId="p.package_id" :customId="p.custom_id"/></div>
-            </div>
-            <hr>
-        </div>
-        <div v-else class="paymentSelect">
-            <div class="paymentOptions"><CustomHiring :empty="true"/></div>
-        </div>
-        <div class="paymentSelect">
-            <div v-for="p in performancePackages" :key="p.package_id">
-                <div class="paymentOptions"><PerformanceHiring :duration="p.performance.hours" :description="p.performance.info" :fixedPrice="p.performance.price" :packageId="p.package_id" :performanceId="p.performance_id"/></div>
-            </div>
-            <div v-if="performancePackages.length == 0" class="content">
-                <form>
-                    <div class="form-row">
-                        <div class="form-group col-12">
-                            <span class="card-title" style="font-weight:bold;font-size:30px;margin-bottom:12px">Performance Hiring </span>
-                            <h6 class="card-subtitle mb-2 text-muted">You can define your own shows indicating its description, duration and price.</h6>
-                            <router-link to="createPerformance">
-                                <div class="continueButtonDiv">
-                                    <b-button class="continueButton" variant="primary" size="sm" type="submit">ADD NEW</b-button>
-                                </div>
-                            </router-link>
-                        </div>  
+<div class="container-fluid my-5">
+    <div class="container">
+        <div class="row">
+            <div id="fareHiringCards" class="col-12 col-md-6 col-lg-4 hiringSection">
+                <div v-if="farePackages.length != 0" class="paymentSelect">
+                    <div v-for="p in farePackages" :key="p.package_id">
+                        <div class="paymentOptions"><FareHiring :fixedPrice="p.fare.priceHour" :packageId="p.package_id" :fareId="p.fare_id"/></div>
                     </div>
-                </form>
+                    <hr>
+                </div>
+                <div v-else class="paymentSelect">
+                    <div class="paymentOptions"><FareHiring :empty="true"/></div>
+                    <hr>
+                </div>
             </div>
-            <div v-else>
-                <router-link to="createPerformance">
-                    <div class="continueButtonDiv">
-                        <b-button class="continueButton" variant="primary" size="sm" type="submit">ADD NEW</b-button>
+            <div id="customHiringCards" class="col-12 col-md-6 col-lg-4 hiringSection">
+                <div v-if="customPackages.length != 0" class="paymentSelect">
+                    <div v-for="p in customPackages" :key="p.package_id">
+                        <div class="paymentOptions"><CustomHiring :minimumPrice="p.custom.minimumPrice" :packageId="p.package_id" :customId="p.custom_id"/></div>
                     </div>
-                </router-link>
+                    <hr>
+                </div>
+                <div v-else class="paymentSelect">
+                    <div class="paymentOptions"><CustomHiring :empty="true"/></div>
+                    <hr>
+                </div>
+            </div>
+            <div id="PerformanceHiringCards" class="col-12 col-md-6 col-lg-4 hiringSection">
+                <div class="paymentSelect">
+                    <div v-for="p in performancePackages" :key="p.package_id">
+                        <div class="paymentOptions"><PerformanceHiring :duration="p.performance.hours" :description="p.performance.info" :fixedPrice="p.performance.price" :packageId="p.package_id" :performanceId="p.performance_id"/></div>
+                    </div>
+                    <div v-if="performancePackages.length == 0" class="content">
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group col-12">
+                                    <span class="card-title" style="font-weight:bold;font-size:30px;margin-bottom:12px">Performance Hiring </span>
+                                    <h6 class="card-subtitle mb-2 text-muted">You can define your own shows indicating its description, duration and price.</h6>
+                                    <router-link to="createPerformance">
+                                        <div class="continueButtonDiv">
+                                            <b-button class="continueButton" variant="primary" size="sm" type="submit">ADD NEW</b-button>
+                                        </div>
+                                    </router-link>
+                                </div>  
+                            </div>
+                        </form>
+                    </div>
+                    <div v-else>
+                        <router-link to="createPerformance">
+                            <div class="continueButtonDiv">
+                                <b-button class="continueButton" variant="primary" size="sm" type="submit">ADD NEW</b-button>
+                            </div>
+                        </router-link>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -181,6 +191,10 @@ export default {
         }
     }
 
+    .hiringSection{
+        padding-right: 0px;
+        padding-left: 0px;
+    }
 
     a.router-link-active {
         color: #187fe6 !important;
@@ -207,6 +221,7 @@ export default {
         border: none;
         border-radius: 30px;
         width: 45%;
+        min-width: 127px;
         background-image: linear-gradient(to right, #00fb82, #187fe6);
     }
 
