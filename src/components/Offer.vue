@@ -73,7 +73,7 @@
                             
                     </div>
                     <div v-if="reason !== '' && reason != null && (offerStatus == 'WITHDRAWN' || offerStatus == 'REJECTED' || offerStatus == 'CANCELLED_ARTIST')" class="cardTextId">
-                       <p style="word-break: break-all"><span style="font-weight: bold;">&nbsp;Reason: </span> {{reason}}</p>
+                       <p><span style="font-weight: bold;">&nbsp;Reason: </span> {{reason}}</p>
                     </div>
                 </div>
                 <div class="collapse" v-bind:id="noHashtag()">
