@@ -21,10 +21,10 @@
               </div>
                 <div class="row vertical-center">
                     <div v-if="toggleAddURL==false" class="form-group" style="width: 100%"> 
-                        <input id="deleteDate" @keypress.enter="addRejectedDate()" type="text" v-model="deleteDate" class="form-control" placeholder="Insert a new rejected date: YYYY-MM-DD" />
+                        <input id="deleteDate" @keypress.enter="addRejectedDate()" type="text" v-model="deleteDate" class="form-control" placeholder="New rejected date: YYYY-MM-DD" />
                     </div>
                     <div v-if="toggleDeleteURL==false" class="form-group" style="width: 100%"> 
-                        <input id="addDate" @keypress.enter="addNewDate()" type="text" v-model="addDate" class="form-control" placeholder="Insert a new available date: YYYY-MM-DD" />
+                        <input id="addDate" @keypress.enter="addNewDate()" type="text" v-model="addDate" class="form-control" placeholder="New available date: YYYY-MM-DD" />
                     </div>
                 </div>
           </div>
