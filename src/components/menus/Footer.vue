@@ -2,9 +2,10 @@
     <div>
         <footer class="bg-light">
             <div class="info">
+                
                 <router-link v-bind:to="aboutUsURI" class="link">About Us</router-link> | 
                 <!-- <router-link v-bind:to="FAQsURI" class="link">FAQs</router-link> | -->
-                <router-link v-bind:to="termsURI" class="link">Terms of Use</router-link> | 
+                <div class="link" @click="goTo(termsURI)">Terms of Use</div> | 
                 <span>Contact Us:</span> grupogrooving@gmail.com 
             </div>
 
@@ -16,8 +17,16 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex';
+
 export default {
     name: "Footer",
+    data() {
+        return {
+            url: undefined,
+            refresher: undefined,
+        }
+    },
     props: {
         aboutUsURI: {
             type: String,
@@ -31,14 +40,27 @@ export default {
 
         termsURI: {
             type: String,
-            default: 'termsOfUse'
+            default: '/terms'
         },
 
         groovingURI: {
             type: String,
             default: '/'
         }
-    }
+    },
+    methods: {
+        ...mapActions(['clearStore', 'setURL']),
+        goTo(path) {
+            this.$emit('refreshRightMenu');
+            this.url = this.$store.getters.sideMenus.url;
+            if(this.url !== path) {
+                this.setURL(path);
+                this.clearStore().then(() => this.$router.push(path));  
+            } else {
+                this.$emit('samePage');
+            }
+        },
+    },
 }
 </script>
 
@@ -47,6 +69,15 @@ export default {
         font-family: "Archivo"
     }
 
+    .goTo {
+        cursor: pointer;
+        background-color: transparent;
+        color: #007bff;
+    }
+
+    .goTo:hover {
+        color: #0056b3;
+    }
 
     footer {
         padding: 15px; 
@@ -60,6 +91,7 @@ export default {
 
     .link {
         color: #606060;
+        cursor: pointer;
     }
 
     span {         

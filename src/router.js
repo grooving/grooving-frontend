@@ -37,6 +37,7 @@ import EditFare from './views/EditFare.vue'
 import CreateFare from './views/CreateFare.vue'
 import StartingDate from './views/StartingDate.vue'
 import PerformanceSelector from './views/PerformanceSelector.vue'
+import TermsView from './views/TermsView.vue'
 
 Vue.use(Router)
 
@@ -233,6 +234,11 @@ export default new Router({
       path: '/startingDate',
       name: 'startingDate',
       component: StartingDate,
+    },
+    {
+      path: '/terms',
+      name: 'terms',
+      component: TermsView,
     },
     
   ]
