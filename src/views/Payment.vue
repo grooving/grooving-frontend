@@ -9,7 +9,7 @@
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.totalPrice"/>
         </div>
         <div class="paymentDiv">
-          <div class="creditCardPayment" style="min-width:400px;"><CreditCardPayment @finishPayment="gpay" /></div>
+          <div class="creditCardPayment" style="min-width:400px;"><CreditCardPaymentBrain @finishPayment="gpay" /></div>
         </div>
     </div>
 </div>
@@ -17,6 +17,7 @@
 
 <script>
 import CreditCardPayment from '@/components/makeOffer/CreditCardPayment.vue'
+import CreditCardPaymentBrain from '@/components/makeOffer/CreditCardPaymentBrain.vue'
 import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
@@ -25,12 +26,13 @@ import {mapGetters} from 'vuex';
 import PaymentProcess from '@/store/modules/payment.js';
 import { error } from 'util';
 
+
 export default {
 
     name: 'payment',
 
     components: {
-        CreditCardPayment, ArtistCard
+        CreditCardPayment, ArtistCard, CreditCardPaymentBrain
     },
 
     data() {
@@ -76,14 +78,14 @@ export default {
 
      methods: {
          
-        gpay(creditCard) {
+        gpay(nonce) {
 
             // Obtenemos los datos de Tarjeta introducidos
-            this.creditCard.number = creditCard[0];
-            this.creditCard.name = creditCard[1];
-            this.creditCard.month = creditCard[2];
-            this.creditCard.year = creditCard[3];
-            this.creditCard.cvv = creditCard[4];
+            // this.creditCard.number = creditCard[0];
+            // this.creditCard.name = creditCard[1];
+            // this.creditCard.month = creditCard[2];
+            // this.creditCard.year = creditCard[3];
+            // this.creditCard.cvv = creditCard[4];
 
             // Preparamos una oferta con los campos de VueX, que usaremos para redactar el 
             // cuerpo de la petición

@@ -24,5 +24,6 @@ export default{
     zones: '/zones/',
     rating: '/customer/rating/',
     genres: '/artisticGenders/',
+    braintree: 'braintree_token/'
     
 }
