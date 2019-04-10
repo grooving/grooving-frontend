@@ -1,5 +1,5 @@
 <template>
-    <div class="hell">
+    <div class="hiringProcessContainer">
         <div class="title"><p>Address information</p></div>
 
     <div class="everything">
@@ -200,6 +200,11 @@ export default {
             margin-right: 35%;
             margin-top:0%;
         }
+        
+        .hiringProcessContainer{
+            margin-bottom: 5%;
+        }
+
         .title {
             display: inline-block;
             margin-right: 12%;
@@ -207,6 +212,8 @@ export default {
             text-align: left;
             font-size: 50px;
             margin-top: 5%;
+            margin-bottom: 0%;
+
             font-weight: bold;
         }
         

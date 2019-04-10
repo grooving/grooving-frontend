@@ -85,7 +85,7 @@ export default {
         },
         customDescription: {
             type: String,
-            default: "In this type of contract you decide the amount of money to pay, up to a minumum."
+            default: "In this type of contract you decide the amount of money to pay."
         },
         customMinPrice: {
             type: String,
@@ -240,8 +240,9 @@ h2 {
 }
 
 .price2 {
-   margin-bottom:0px;
-   font-size: 20px;
+   margin-bottom:2px;
+   margin-top:2px;
+   font-size: 18px;
 }
 
 .continueButton {

@@ -42,8 +42,8 @@ export default {
   },
   props: {
         artistId: {
-            type: Number,
-            default: 1
+            type: String,
+            default: "1"
         },
         artistURI: {
             type: String,
@@ -112,6 +112,7 @@ export default {
     .leftContent {
         text-align: left;
         overflow: auto;
+        max-width: 50%;
     }
 
     .artistName {
@@ -128,15 +129,17 @@ export default {
     }
 
     .rightContent {
-        padding-left: 20px;
+        padding-left: 0px;
         margin-left: auto;
         margin-right: 0px;
+        max-width: 50%;
     }
 
     .price {
         font-size: 35px;
         margin-bottom: 0px;
         color: #187FE6;
+        word-break: break-all;
     }
 
     .artistImage {

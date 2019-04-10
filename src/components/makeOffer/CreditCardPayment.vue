@@ -126,9 +126,7 @@ export default {
         border: none;
         border-radius: 30px;
         width: fit-content;
-        margin-top: 2%;
         font-weight: bold;
-        margin-top: 10%;
     
         background-image: linear-gradient(to right, #00fb82, #187fe6);
     }
@@ -145,15 +143,18 @@ export default {
             padding-top: 5%;
             margin-right: 3%;
             margin-left: 3%;
-    }
+            margin-top: 2%;
+            margin-bottom: 2%;
+        }
     }
 
     @media (min-width:768px)  {
 
         .continueButton{
-            
             margin-right: 25%;
             margin-left: 25%;
+            margin-top: 5px;
+            margin-bottom: 5px;
         }
         
         form{
