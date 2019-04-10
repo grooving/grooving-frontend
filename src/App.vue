@@ -10,7 +10,7 @@
     <div class="LeftMenu">
       <LeftMenu @samePage='samePage'/>
     </div>
-    <router-view id="mainContent"/>
+    <router-view :key="$route.fullPath" id="mainContent"/>
     </div>
     <footer><Footer/></footer>
   </div>
