@@ -3,7 +3,7 @@
     <form>
         <div class="form-row">
             <div class="form-group col-8">
-                <input v-model="number" maxlength="16" type="text" class="form-control" placeholder="Card number">
+                <input v-model="number" maxlength="16" type="text" class="form-control" placeholder="Card number" required>
             </div>
             <div class="form-group col-4">
                 <select id="inputState" class="form-control">
@@ -16,20 +16,20 @@
         </div>
         <div class="form-row">
             <div class="form-group col-12">
-                <input v-model="name" type="text" class="form-control" placeholder="Name">
+                <input v-model="name" type="text" class="form-control" placeholder="Name" required>
             </div>
             
         </div>
 
         <div class="form-row">
             <div class="form-group col entrada">
-                <input v-model="month" min="1" max="12" type="number" class="form-control" placeholder="Month">
+                <input v-model="month" min="1" max="12" maxlength="2" type="number" class="form-control" placeholder="Month" required>
             </div>
             <div class="form-group col entrada">
-                <input v-model="year" min="19" maxlength="2" type="number" class="form-control" placeholder="Year">
+                <input v-model="year" min="19" maxlength="2" type="number" class="form-control" placeholder="Year" required>
             </div>
             <div class="form-group col entrada">
-                <input v-model="cvv" maxlength="3" type="text" class="form-control" placeholder="CVV">
+                <input v-model="cvv" maxlength="3" type="number" class="form-control" placeholder="CVV" required> 
             </div>
         </div>
         <div class="btn btn-primary continueButton" @click="finishPayment"><span class="continueText">SUBMIT</span></div>
