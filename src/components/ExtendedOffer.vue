@@ -124,11 +124,12 @@
                         console.log(response);
                 }).catch(ex => {
                     console.log(ex);
-                    NProgress.done();
                 }).then(()=> {
                     this.$router.push({path: '/offers/'})
 
-                });                
+                }).then( () => {
+                    NProgress.done();
+                })              
                 },
             },
     }   

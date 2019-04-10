@@ -61,15 +61,13 @@ export default {
                     this.$emit('offerDetails', arrayOffer);
                     this.$router.push('/paymentConfirmation');
 	      		}).catch(ex => {
-                    this.$emit('errorPayment', true);
-                    NProgress.start();                    
+                    this.$emit('errorPayment', true);                
 	      			console.log(ex);
-	      		})
-
+	      		}).then(() => {
+                    NProgress.done()
+                });
     	}
     }
-   
-
 }
 </script>
 

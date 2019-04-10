@@ -106,17 +106,18 @@ export default {
                     this.errors = ex.response.data[0];
                     document.getElementById("errorsDiv").style.display = "block";
                 }
+            }).then( () => {
+                NProgress.done();
             })
-            NProgress.done();
         },
     },
 
     beforeMount: function(){
-        NProgress.start();
         if (!this.gsecurity.isAuthenticated()) {
             this.$router.push({name: "error"});
 
         } else {
+            NProgress.start();
             var GAxiosToken = this.gsecurity.getToken();
             var authorizedGAxios = GAxios;
             authorizedGAxios.defaults.headers.common['Authorization'] = 'Token '+ GAxiosToken;
@@ -140,9 +141,10 @@ export default {
                     this.email = personalInformation['email'];
                     this.phoneNumber = response.data.phone;
                     this.username = personalInformation['username'];                    
-                });            
+                }).then( () => {
+                    NProgress.done();
+                })          
         }
-        NProgress.done();
     },
 
     created() {

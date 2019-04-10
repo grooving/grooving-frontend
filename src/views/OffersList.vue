@@ -219,12 +219,10 @@ export default {
       }
     }).catch(ex => {
         console.log(ex);
+    }).then(() => {
+      NProgress.done()
     });
-    NProgress.done();
   },
-  mounted: function() {
-        NProgress.done();
-  }
 }
 </script>
 

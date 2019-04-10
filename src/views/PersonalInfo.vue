@@ -49,9 +49,9 @@ export default {
 
             var role = this.gsecurity.getRole();
 
-            NProgress.start();
             if(role=='CUSTOMER'){
                 //alert(GAxiosToken)
+                NProgress.start();
                 authorizedGAxios.get(endpoints.customerPersonalInformation)
                     .then(response => {
                         var personalInformation = response.data.user;
@@ -63,14 +63,14 @@ export default {
                         this.userEmail=personalInformation['email'];
                         this.userPhoneNumber = response.data.phone;
                         this.username = personalInformation['username'];
+                }).then(() => {
+                    NProgress.done()
                 });
-            
             }
-
-            
 
             if(role=='ARTIST'){
                 //alert(GAxiosToken)
+                NProgress.start();
                 authorizedGAxios.get(endpoints.artistPersonalInformation)
                     .then(response => {
                         var personalInformation = response.data.user;
@@ -82,10 +82,10 @@ export default {
                         this.userEmail=personalInformation['email'];
                         this.userPhoneNumber = response.data.phone;
                         this.username = personalInformation['username'];
-                });
-            
+                }).then(() => {
+                    NProgress.done()
+                });  
             }
-            NProgress.done();
         }
     }
 }

@@ -76,8 +76,9 @@ export default {
                 console.log(ex.response.data.error);
                 this.errors = ex.response.data.error;
                 document.getElementById("errorsDiv").style.display = "block";
+            }).then( () => {
+                NProgress.done();
             })
-            NProgress.done();
         },
     },
 

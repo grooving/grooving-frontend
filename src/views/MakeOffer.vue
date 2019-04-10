@@ -87,13 +87,12 @@ export default {
             })
             .then(response => {
                var offerId = response.data.id;
-                NProgress.done();
                this.nextStep();
             }).catch(ex => {
                 console.log(ex);
-                NProgress.done();
+            }).then(() => {
+                NProgress.done()
             });
-
         }
     },
 
