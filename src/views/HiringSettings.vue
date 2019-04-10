@@ -133,7 +133,8 @@ export default {
     hr{
         background-color: white;
         height: 5px;
-        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .5) !important;
+        margin: 0 auto;
+        border-width: 2px;
     }
 
     .addPerformancePackage{
@@ -207,12 +208,14 @@ export default {
     }
 
     .continueButton:hover{
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.7) !important;
         background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
     }
 
     .continueButtonDiv {
         margin-top: 30px;
         margin-bottom: 5%;
+        display: flex;
         justify-content: center;
     }
 

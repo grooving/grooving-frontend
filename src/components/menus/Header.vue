@@ -434,7 +434,6 @@ export default {
     height: 45px;
     object-fit: cover;
     border-radius: 25px;
-    margin-bottom: 5px;
   }
 
   .profileImage:hover {
