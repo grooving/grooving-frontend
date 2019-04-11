@@ -149,7 +149,7 @@ export default {
           var GAxiosToken = this.gsecurity.getToken();
           authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
 
-          authorizedGAxios.get('/calendar/'+this.gsecurity.getId() +'/')
+          authorizedGAxios.get('/artist' + endpoints.calendar + this.gsecurity.getId() + '/')
             .then(response => {
                 var calendar = response.data;
                 this.d_portfolioDays=calendar.days;
