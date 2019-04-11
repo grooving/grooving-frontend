@@ -230,7 +230,7 @@ export default new Router({
       component: SentOffer,
     },
     {
-      path: '/startingDate',
+      path: '/startingDate/:artistId',
       name: 'startingDate',
       component: StartingDate,
     },

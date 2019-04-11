@@ -107,6 +107,11 @@ export default {
                 this.packageId = this.$store.getters.offerFarePack.packageId;
             else if(this.hiringType == "CUSTOM")
                 this.packageId = this.$store.getters.offerCustomPack.packageId;
+            else if(this.hiringType == "PERFORMANCE"){
+                alert("HAAAA");
+                this.packageId = this.$store.getters.offerPerformancePack.packageId;
+                alert(this.$store.getters.offerDate.hour);
+            }
 
             // Preparamos el cuerpo genérico de las peticiones
             let body_eventLocation = {
@@ -140,6 +145,12 @@ export default {
             if(this.hiringType == "CUSTOM"){
                 this.packageId = this.$store.getters.offerCustomPack.packageId;
                 body_offer['price'] = this.$store.getters.offer.totalPrice;
+            }
+
+            if(this.hiringType == 'PERFORMANCE'){
+                this.packageId = this.$store.getters.offerPerformancePack.packageId;
+                body_offer['price'] = this.$store.getters.offer.priceHourPrice;
+                body_offer['startingDate']
             }
 
             authorizedGAxios.post(endpoints.eventlocation, body_eventLocation)
@@ -225,6 +236,8 @@ export default {
         // Obtenemos el precio de la tarjeta izq   
         if(this.hiringType && this.hiringType == 'CUSTOM')
             this.cardPrice = this.$store.getters.offerCustomPack.cardPrice;
+        else if(this.hiringType == 'PERFORMANCE')
+            this.totalPrice = this.$store.getters.offerPerformancePack.priceHour;
 
         // Actualizamos el siguiente paso
         this.nextStep = '/sentOffer/';

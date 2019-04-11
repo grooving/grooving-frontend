@@ -46,6 +46,14 @@ export default {
             customPackage: {
                 packageId: undefined,
                 minimumPrice: undefined,
+            },
+
+            // Type: Performance
+            performancePackage: {
+                packageId: undefined,
+                priceHour: undefined,
+                duration: undefined,
+                startingDate: undefined
             }
         }
     },
@@ -55,7 +63,8 @@ export default {
         ...mapActions(['setArtist']),
         ...mapActions(['setOffer']),   
         ...mapActions(['setFarePackage']),    
-        ...mapActions(['setCustomPackage']),        
+        ...mapActions(['setCustomPackage']),    
+        ...mapActions(['setPerformancePackage']),    
 
         selectTypeOfHiring(hiringType) {
 
@@ -67,7 +76,9 @@ export default {
                 var nextView = undefined;
                 if(hiringType == 'FARE' || hiringType == 'CUSTOM')
                     nextView = '/dateSelection/';
-
+                else if(hiringType == 'PERFORMANCE')
+                    nextView = '/performanceSelector/';
+                
                 nextView += this.artistData.artistId;
 
 
@@ -90,6 +101,17 @@ export default {
                         this.$router.push(nextView);
                     }).catch( e => {
                         console.log('Could not set PaymentPackage: Custom');
+                        console.log(e);
+                    })
+
+                }else if(hiringType == 'PERFORMANCE'){
+
+                    // Creamos el customPackage asociado con los datos...
+                    this.setPerformancePackage(this.performancePackage).then(() => {
+                        // If VueX has correctly set the package
+                        this.$router.push(nextView);
+                    }).catch( e => {
+                        console.log('Could not set PaymentPackage: Performance');
                         console.log(e);
                     })
 

@@ -40,6 +40,12 @@ const state = {
     customPackage: {
         packageId: undefined,
         minimumPrice: undefined,
+    },
+
+    performancePackage: {
+        packageId: undefined,
+        duration: undefined,
+        priceHour: undefined,
     }
 
 };
@@ -51,6 +57,7 @@ const getters = {
     offerEvent: state => state.event,
     offerFarePack: state => state.farePackage,
     offerCustomPack: state => state.customPackage,
+    offerPerformancePack: state => state.performancePackage,
 };
 
 const actions = {
@@ -93,6 +100,10 @@ const actions = {
 
     setCustomPackage (state, customPackage) {
         state.commit('setCustomPackage', customPackage)
+    },
+
+    setPerformancePackage(state, performancePackage){
+        state.commit('setPerformancePackage', performancePackage)
     },
 
     //Other methods
@@ -185,6 +196,16 @@ const mutations = {
         
     },
 
+    setPerformancePackage(state, performancePackage) {
+
+        if(performancePackage){
+            state.performancePackage.packageId = performancePackage.packageId;
+            state.performancePackage.duration = performancePackage.duration;
+            state.performancePackage.priceHour = performancePackage.priceHour;
+        }
+        
+    },
+
     clearState(state) {
 
         //Artist
@@ -214,6 +235,10 @@ const mutations = {
         state.farePackage.priceHour = undefined;
         state.customPackage.packageId = undefined;
         state.customPackage.minimumPrice = undefined;
+        state.performancePackage.packageId = undefined;
+        state.performancePackage.duration = undefined;
+        state.performancePackage.priceHour = undefined;
+        
     },
 };
 
@@ -329,6 +354,10 @@ function checkStepRequirements(state, hiring, step){
         }
     }
 
+    else if(hiring == 'PERFORMANCE'){
+        res = true;
+    }
+
     return res;
 
 }
@@ -348,6 +377,10 @@ function checkViewRequirements(state, hiring, view){
         } else if(hiring == 'CUSTOM'){
 
             viewsAndSteps = ["DateSelection", "TimeSelection" , "PriceSelector", "AddressInput", "EventInput", "PaymentSelector", "Payment"];
+
+        } else if(hiring == 'PERFORMANCE'){
+
+            viewsAndSteps = ["PerformanceSelector", "DateSelection","TimeSelection" , "PriceSelector", "AddressInput", "EventInput", "PaymentSelector", "Payment"];
 
         }
 
