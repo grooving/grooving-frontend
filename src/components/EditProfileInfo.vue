@@ -102,10 +102,10 @@ export default {
                 window.location.reload();
             }).catch(ex => {
                 console.log(ex);
-                if (ex.reponse != null) {
-                    this.errors = ex.response.data[0];
-                    document.getElementById("errorsDiv").style.display = "block";
-                }
+                console.log(ex.response.data.error);
+                this.errors = ex.response.data.error;
+                document.getElementById("errorsDiv").style.display = "block";
+                window.scrollTo(0,0);
             }).then( () => {
                 NProgress.done();
             })
