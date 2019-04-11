@@ -3,13 +3,12 @@
         <footer class="bg-light">
             <div class="info">
                 
-                <router-link v-bind:to="aboutUsURI" class="link">About Us</router-link> | 
-                <!-- <router-link v-bind:to="FAQsURI" class="link">FAQs</router-link> | -->
-                <div class="link" @click="goTo(termsURI)">Terms of Use</div> | 
-                <span>Contact Us:</span> grupogrooving@gmail.com 
+                <span class="link" @click="goTo(aboutUsURI)">About Us | </span>
+                <span class="link" @click="goTo(termsURI)">Terms of Use | </span>
+                <span class="link">Contact Us: grupogrooving@gmail.com </span>
             </div>
 
-            <div>Copyright © 2019:
+            <div style="float:clear;">Copyright © 2019:
                 <a v-bind:href="groovingURI">Grooving</a>
             </div>
         </footer>
@@ -30,7 +29,7 @@ export default {
     props: {
         aboutUsURI: {
             type: String,
-            default: 'aboutUs'
+            default: '/about'
         },
 
         /*FAQsURI: {
@@ -94,9 +93,7 @@ export default {
         cursor: pointer;
     }
 
-    span {         
-        font-weight: bold;
-    }
+    
 
     @media (max-width: 768px) {
         footer {

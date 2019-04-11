@@ -38,6 +38,7 @@ import CreateFare from './views/CreateFare.vue'
 import StartingDate from './views/StartingDate.vue'
 import PerformanceSelector from './views/PerformanceSelector.vue'
 import TermsView from './views/TermsView.vue'
+import AboutView from './views/AboutView.vue'
 
 Vue.use(Router)
 
@@ -239,6 +240,11 @@ export default new Router({
       path: '/terms',
       name: 'terms',
       component: TermsView,
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: AboutView,
     },
     
   ]

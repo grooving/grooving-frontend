@@ -25,7 +25,7 @@
                     <b-dropdown-divider class="divider"/>
                 </li>
                 <li class="nav-item section">
-                    <div class="nav-link goTo" @click="goTo('/aboutUs')" data-toggle="collapse" data-target="#sidebarleft" >About Us</div> 
+                    <div class="nav-link goTo" @click="goTo('/about')" data-toggle="collapse" data-target="#sidebarleft" >About Us</div> 
                 </li>
                 
                 <!-- <li class="nav-item section">
