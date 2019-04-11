@@ -166,7 +166,7 @@ export default {
         }).catch(ex => {
             console.log('Could not load Artist Info Data API');
             console.log(ex);
-        }).then( () => {NProgress.done()});
+        });
 
         // ** Hiring Types - Right Card **
         authorizedGAxios.get(endpoints.artistPayPackage + this.artistId + "/")
@@ -193,12 +193,11 @@ export default {
 
                 }
             }
-            NProgress.done();
-
         }).catch(ex => {
             console.log('Could not load Payment Packages API')
             console.log(ex);
-            NProgress.done();
+        }).then(() => {
+            NProgress.done()
         });
     },
 }

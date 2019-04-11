@@ -14,7 +14,7 @@
                     <div style="width:100%;margin-top:25px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">DESCRIPTION</p>
                         <div class="input-group">
-                            <input v-model="description" type="text" class="form-control" maxlength="50" required>
+                            <input v-model="description" type="text" class="form-control" maxlength="250" required>
                         </div>
                     </div>
                     <div style="width:100%;margin-top:25px;">
@@ -76,8 +76,9 @@ export default {
                 console.log(ex.response.data.error);
                 this.errors = ex.response.data.error;
                 document.getElementById("errorsDiv").style.display = "block";
+            }).then( () => {
+                NProgress.done();
             })
-            NProgress.done();
         },
     },
 

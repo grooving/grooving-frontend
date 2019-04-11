@@ -15,7 +15,7 @@
         </div>
         <div id="urlForm" class="row py-2" v-if="showAddURL">
           <div class="col-12 vertical-center">
-            <input @keypress.enter="add()" type="text" v-model="addImageURL" class="form-control" placeholder="Insert your URL Here..." />
+            <input @keypress.enter="add($event)" type="text" v-model="addImageURL" class="form-control" placeholder="Insert your URL Here..." />
           </div>
         </div>
       </div>
@@ -89,7 +89,7 @@ export default {
         return ytThumbnail_01 + ytVideoId + ytThumbnail_02;
     },
 
-    add: function(){
+    add: function(event){
       
       if(this.addImageURL && (this.addImageURL.startsWith(ytURI1) || this.addImageURL.startsWith(ytURI2))){
 
@@ -105,6 +105,8 @@ export default {
           this.toggleImageURLInput();
         }
 
+      }else{
+        event.preventDefault();
       }
     },
 

@@ -126,16 +126,15 @@
                     "phone": this.input.phoneNumber,
                 }).then(response => {
                     console.log(response);
-                    NProgress.done();
                     this.$router.push({name: "registerConfirmation"});
                 }).catch(ex => {
                     console.log(ex.response.data.error);
                     this.errors = ex.response.data.error;
                     document.getElementById("errorsDiv").style.display = "block";
                     this.status = 'not_accepted';
-                    NProgress.done();
-                }) 
-
+                }).then(() => {
+                    NProgress.done()
+                });
             },
         },
 

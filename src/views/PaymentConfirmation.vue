@@ -85,9 +85,6 @@
             this.setPaymentConfirmation(undefined);
             
         },
-        mounted: function() {
-            NProgress.done();
-        }
     }   
 
 </script>

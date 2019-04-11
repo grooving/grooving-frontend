@@ -37,8 +37,7 @@ export default {
         if (!this.gsecurity.isAuthenticated()) {
             this.$router.push({name: "error"});
 
-        } else {
-            NProgress.start();            
+        } else {        
             this.gsecurity = GSecurity
             var GAxiosToken = this.gsecurity.getToken();
 
@@ -50,6 +49,7 @@ export default {
 
             
             if(role=='CUSTOMER'){
+                NProgress.start();
                 //alert(GAxiosToken)
                 authorizedGAxios.get(endpoints.customerPersonalInformation)
                     .then(response => {
@@ -62,13 +62,15 @@ export default {
                         this.userEmail=personalInformation['email'];
                         this.userPhoneNumber = response.data.phone;
                         this.username = personalInformation['username'];                    
+                }).then(() => {
+                    NProgress.done()
                 });
-            
             }
 
             
 
             if(role=='ARTIST'){
+                NProgress.start();
                 //alert(GAxiosToken)
                 authorizedGAxios.get(endpoints.artistPersonalInformation)
                     .then(response => {
@@ -81,10 +83,10 @@ export default {
                         this.userEmail=personalInformation['email'];
                         this.userPhoneNumber = response.data.phone;
                         this.username = personalInformation['username'];                    
+                }).then(() => {
+                    NProgress.done()
                 });
-            
             }
-            NProgress.done();
         }
     }
 }

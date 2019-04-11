@@ -166,13 +166,15 @@ export default {
                 .catch(error => {
                     console.log("Error while creating the Offer")
                     this.errors = true;
-                }).then( () => {NProgress.done()});
+                })
                 
             })
             .catch(error => {
                 console.log("Error while creating the EventLocation")
                 this.errors = true;
-            })
+            }).then(() => {
+                NProgress.done()
+            });
         },
     },
 

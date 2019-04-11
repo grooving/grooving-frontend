@@ -187,7 +187,7 @@ export default {
 
     search: function() {
       window.location = ARTIST_SEARCH_URI + this.searchQuery;
-      window.location.reload();
+      //window.location.reload();
     },
 
 
