@@ -85,7 +85,6 @@ export default {
                 })
                 .then(hostedFieldInstance => {
                     this.hostedFieldInstance = hostedFieldInstance;
-                    console.log(this.hostedFieldInstance)
                 })
                 .catch(err => {
                     console.log(err)
