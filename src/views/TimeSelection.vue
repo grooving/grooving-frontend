@@ -1,5 +1,5 @@
 <template>
-<div class="prueba">
+<div class="hiringProcessContainer">
     <div class="title"><p style="text-align: left !important;">Choose a time range</p></div>
     
     <div class="everything">
@@ -122,8 +122,11 @@ export default {
 
 
         // Obtenemos el precio de la tarjeta izq   
-        if(this.hiringType && this.hiringType == 'FARE')
+        if(this.hiringType == 'FARE'){
             this.cardPrice = this.$store.getters.offerFarePack.priceHour;
+        }else if(this.hiringType == 'CUSTOM'){
+            this.cardPrice = this.$store.getters.offerCustomPack.minimumPrice;
+        }
 
         // Actualizamos el siguiente paso
         if(this.hiringType == 'FARE'){
@@ -155,11 +158,12 @@ export default {
     }
 
     .continueButton:hover{
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.7) !important;
         background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
     }
 
     .sliderButton  {
-        margin-top: 15%;
+        margin-top: 0;
         width: 90%;
         margin-left: auto;
         margin-right: auto;
@@ -199,6 +203,10 @@ export default {
             border-radius: 10px;
             box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, .3);
         }
+
+        .hiringProcessContainer{
+            margin-bottom: 5%;
+        }
       
         .continueButtonDiv {
             margin-top: 30px;
@@ -218,12 +226,13 @@ export default {
 
         .title {
             display: inline-block;
-            margin-left: 18%;
+            margin-right: 12%;
+            margin-left: 10%;
             text-align: left;
             font-size: 50px;
             margin-top: 5%;
             margin-bottom: 0%;
-            margin-left: 1px;
+
             font-weight: bold;
         }
 

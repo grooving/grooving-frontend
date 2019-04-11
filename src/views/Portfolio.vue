@@ -107,6 +107,8 @@ export default {
     this.artistId = this.$route.params['artistId'];
 
     var authorizedGAxios = GAxios;
+
+    NProgress.start();
     authorizedGAxios.get(endpoints.portfolio+this.$route.params['artistId']+"/")
       .then(response => {
           var portfolio = response.data;
@@ -179,10 +181,10 @@ export default {
 
         }).catch(ex => {
             console.log(ex);
+        }).then(() => {
+          NProgress.done()
         });
-
   }
-
 }
 </script>
 

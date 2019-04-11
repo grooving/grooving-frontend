@@ -1,9 +1,9 @@
 <template>
-<div class="prueba">
-    <div class="title"><p>Payment</p></div>
+<div class="hiringProcessContainer">
     <div v-if="errors == true" class="validationErrors">
         <p>Sorry! Something went wrong. Try again later.</p>
     </div>
+    <div class="title"><p>Payment</p></div>
     <div class="everything">
         <div class="artistCard"><ArtistCard :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.totalPrice"/>
@@ -71,6 +71,7 @@ export default {
                 zipcode: undefined, 
                 street: undefined, 
                 description: undefined,
+                zoneId: undefined,
             },
 
         }
@@ -88,6 +89,8 @@ export default {
             this.preparedOffer.zipcode = this.$store.getters.offerEvent.zipcode,
             this.preparedOffer.street = this.$store.getters.offerEvent.street,
             this.preparedOffer.description = this.$store.getters.offerEvent.description,
+            this.preparedOffer.zoneId = this.$store.getters.offerEvent.zone,
+
             console.log("Oferta preparada: ", this.preparedOffer);
 
             // Preparamos una fecha con los campos de VueX, que usaremos para redactar el 
@@ -109,7 +112,7 @@ export default {
                 "equipment": null,
                 "description": this.preparedOffer.description,
                 "address": this.preparedOffer.street + ', ' + this.preparedOffer.zipcode,
-                "zone_id": 4
+                "zone_id": this.preparedOffer.zoneId,
             }
 
             let body_offer = {
@@ -174,9 +177,9 @@ export default {
             .catch(error => {
                 console.log("Error while creating the EventLocation")
                 this.errors = true;
-            })
-
-            
+            }).then(() => {
+                NProgress.done()
+            });
         },
 
         
@@ -280,33 +283,32 @@ export default {
             margin-right: 35%;
             margin-top:0%;
         }
+
+        .hiringProcessContainer{
+            margin-bottom: 5%;
+        }
+
         .title {
             display: inline-block;
-            margin-left: 18%;
+            margin-right: 12%;
+            margin-left: 10%;
             text-align: left;
             font-size: 50px;
             margin-top: 5%;
             margin-bottom: 0%;
-            margin-left: 1px;
+
             font-weight: bold;
         }
+
         .validationErrors{
-            padding-top: 10px;
-            padding-bottom: 0.25px;
-            color: #c62828;
-            font-weight: semibold;
-            border-color: green;
-            width: 50%;
-            margin: 0 auto;
-            height: auto;
-            border-radius: 5px;
-            align-items: center;
-            text-align: center;
-            box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .5);
+            background-color:#f50057;
+            box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);
+            
+            color:white;
+            font-weight: bold;
+            height: 100%;
+            padding-top: 12px;
         }
-
-        
-
         
     }
 

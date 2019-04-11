@@ -2,15 +2,15 @@
   <div id="app">
     <div class="content">
     <div class="Header">
-      <Header @toBlur='blurred'/>
+      <Header @toBlur='blurred' @refreshRightMenu='refreshRightMenu'/>
     </div>
     <div class="RightMenu">
-      <RightMenu @samePage='samePage'/>
+      <RightMenu @samePage='samePage' :key="refreshRM"/>
     </div>
     <div class="LeftMenu">
       <LeftMenu @samePage='samePage'/>
     </div>
-    <router-view id="mainContent"/>
+    <router-view :key="$route.fullPath" id="mainContent"/>
     </div>
     <footer><Footer/></footer>
   </div>
@@ -35,6 +35,7 @@ export default {
       gsecurity: GSecurity,
       rightMenu: undefined,
       leftMenu: undefined,
+      refreshRM: 1,
     }
   },
   methods: {
@@ -45,17 +46,25 @@ export default {
         $((document.getElementById('mainContent'))).css("pointer-events", "none");
         $(document.body).css("overflow", "hidden");
       } else {
-        $((document.getElementById('mainContent'))).css("filter", "blur(0px)");
+        $((document.getElementById('mainContent'))).css("filter", "none");
         $((document.getElementById('mainContent'))).css("pointer-events", "auto");
         $(document.body).css("overflow", "");
       }
     },
     samePage(){
-        $((document.getElementById('mainContent'))).css("filter", "blur(0px)");
+        $((document.getElementById('mainContent'))).css("filter", "none");
         $((document.getElementById('mainContent'))).css("pointer-events", "auto");
         $(document.body).css("overflow", "");
 
         this.clearStore();
+    },
+    refreshRightMenu() {
+      console.log('furula')
+      $((document.getElementById('mainContent'))).css("filter", "none");
+      $((document.getElementById('mainContent'))).css("pointer-events", "auto");
+      $(document.body).css("overflow", "");
+      this.clearStore();
+      this.refreshRM++;
     },
   },
   beforeCreate() {
@@ -66,9 +75,6 @@ export default {
 
   },
   beforeUpdate() {
-    // this.thisURL = window.location.href;
-    // console.log('url', this.thisURL)
-
     this.rightMenu = this.$store.getters.sideMenus.rightMenu;
     this.leftMenu = this.$store.getters.sideMenus.leftMenu;
 

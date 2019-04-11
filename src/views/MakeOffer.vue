@@ -70,7 +70,7 @@ export default {
         },
 
         createOffers: function(){
-
+            NProgress.start();
             var authorizedGAxios = GAxios;
             var GAxiosToken = this.gsecurity.getToken();
             authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
@@ -90,8 +90,9 @@ export default {
                this.nextStep();
             }).catch(ex => {
                 console.log(ex);
+            }).then(() => {
+                NProgress.done()
             });
-
         }
     },
 

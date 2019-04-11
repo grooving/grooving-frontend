@@ -14,7 +14,8 @@
     </div>
 
     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-      <div class="bodies">{{fareDescription}} {{farePrice}}€/h <br>
+    <b-dropdown-divider/>
+      <div class="bodies">{{fareDescription}} <p class="price2"><strong>Price: </strong> {{farePrice}}€/h</p>
            <div class="continueButtonDiv"><div @click="selectType('FARE')"
             class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div></div>
       </div>  
@@ -30,6 +31,7 @@
       </h5>
     </div>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+    <b-dropdown-divider/>
       <div class="bodies">{{performanceDescription}} 
            <!-- <div class="continueButtonDiv"><router-link v-bind:to="'#'" 
             class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></router-link></div> -->
@@ -46,7 +48,8 @@
       </h5>
     </div>
     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-      <div class="bodies">{{customDescription}} {{customMinPrice}}€/h
+    <b-dropdown-divider/>
+      <div class="bodies">{{customDescription}} <p class="price2"><strong>Minimum Price: </strong> {{customMinPrice}}€/h</p>
            <div class="continueButtonDiv">
                <div @click="selectType('CUSTOM')" class="btn btn-primary continueButton">
                    <span class="continueText">CONTINUE</span>
@@ -74,7 +77,7 @@ export default {
         },
         fareDescription: {
             type: String,
-            default: "In this type of contract you set the duration of the event. Price: ",
+            default: "In this type of contract you set the duration of the event.",
         },
         farePrice: {
             type: String,
@@ -82,7 +85,7 @@ export default {
         },
         customDescription: {
             type: String,
-            default: "In this type of contract you decide the amount of money to pay, up to a minumum. Min Price: "
+            default: "In this type of contract you decide the amount of money to pay."
         },
         customMinPrice: {
             type: String,
@@ -147,7 +150,7 @@ export default {
     }
 .heads {
     background-color:white; text-align: left; border-bottom: none; 
-    padding-top: 3%; padding-bottom: 0.5%; margin-left: 15px;
+    padding-top: 3%; padding-bottom: 0.5%;
     
 }
 
@@ -155,11 +158,9 @@ export default {
     color: black; text-decoration: none; color: none; border: 0; background: transparent; outline:none;
 }
 
-.bodies{
-    text-align: left;  padding-top: 1%; padding-bottom: 3%;
-    margin-bottom: 1%; margin-left: 20px;
-    
-}
+.bodies{  
+    padding-top: 1%; padding-bottom: 3%;
+    margin-bottom: 1%;}
 
 .tarjeta {
     display: inline-block;
@@ -175,7 +176,8 @@ export default {
     box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, .2);
     margin-bottom: 3%;
     border-radius: 10px;
-    padding-right: 2%;
+    padding-right: 5%;
+    padding-left: 5%;
 }
 
 #test {
@@ -237,6 +239,12 @@ h2 {
     color: #187FE6;
 }
 
+.price2 {
+   margin-bottom:2px;
+   margin-top:2px;
+   font-size: 18px;
+}
+
 .continueButton {
     font-size: 18px;
     padding-left: 4%;
@@ -246,9 +254,11 @@ h2 {
     width: fit-content;
     margin-top: 2%;
     background-image: linear-gradient(to right, #00fb82, #187fe6);
+    font-weight: bold;
 }
 
 .continueButton:hover{
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.7) !important;
     background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
 }
 
@@ -263,7 +273,7 @@ h2 {
  @media (min-width:768px)  {
     .heads {
         background-color:white; text-align: left; border-bottom: none; 
-        padding-top: 2%; padding-bottom: 0.5%; margin-left: 15px;
+        padding-top: 2%; padding-bottom: 0.5%;
     }
 
     .Hbutton{
@@ -271,7 +281,7 @@ h2 {
     }
 
     .bodies{
-        text-align: left; margin-left: 20px; padding-top: 1%; padding-bottom: 3%;
+        padding-top: 1%; padding-bottom: 3%;
         margin-bottom: 1%;
         
     }
@@ -289,7 +299,8 @@ h2 {
         box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, .2);
         margin-bottom: 3%;
         border-radius: 10px;
-        padding-right: 2%;
+        padding-left: 5%;
+        padding-right: 5%;
         margin-right: 10%;
     }
 

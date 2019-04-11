@@ -280,9 +280,9 @@ function checkStepRequirements(state, hiring, step){
             // ArtistData
             res = state.artist.artistId != undefined && state.artist.artisticName != undefined;
             // Offer hiringType
-            res = res && state.offer.hiringType != undefined && state.offer.hiringType == 'FARE';
+            res = res && state.offer.hiringType != undefined && state.offer.hiringType == 'CUSTOM';
             // Fare Package
-            res = res && state.farePackage.packageId != undefined && state.farePackage.priceHour != undefined;
+            res = res && state.customPackage.packageId != undefined && state.customPackage.minimumPrice != undefined;
 
         }
         

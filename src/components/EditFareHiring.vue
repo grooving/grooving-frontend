@@ -42,6 +42,7 @@ export default {
 
     methods: {
         updateFare() {
+            NProgress.start();
             GAxios.post(endpoints.fare + this.fareId + '/', {
                 "priceHour": this.fixedPrice,
             }).then(response => {
@@ -49,7 +50,9 @@ export default {
                 this.$router.push({name: "hiringSettings"});
             }).catch(ex => {
                 console.log(ex);
-            }) 
+            }).then( () => {
+                NProgress.done();
+            })
         },
     },
 

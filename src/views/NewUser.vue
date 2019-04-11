@@ -9,8 +9,8 @@
                     </b-form-group>
                     <b-form-group>
                         <b-form-input v-on:keydown.enter="login()" v-model="input.password" type="password" size="lg" placeholder="Password" id="ddown-form-passwd"></b-form-input>
+                        <p v-if="error" class="err">Wrong username or password!</p>
                     </b-form-group>
-                    <span v-if="error" class="err">Wrong username or password!</span>
                     <b-button class="continueButton singin" variant="primary" size="sm" v-on:click="login()">SIGN IN</b-button>
                 </b-form>
             </div>
@@ -113,6 +113,9 @@
 
     .err {
         color:red;
+        margin-top: 15px;
+        text-align: center;
+        margin-bottom: 0px;
     }
 
     .infoText {

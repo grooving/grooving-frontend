@@ -4,7 +4,13 @@
             <div class="form-row">
                 <div class="form-group col-12">
                     <span style="font-weight:bold;font-size:30px;">Custom Hiring </span>
+                    <router-link to="hiringSettings" style="height: 28px; width: 28px">
+                        <i class="material-icons iconOffer">clear</i>
+                    </router-link>
                     <h6 class="card-subtitle mb-2 text-muted">The customer can decide the amount of money he will pay, so you may set a minimun price. </h6>
+                    <div id="errorsDiv" class="validationErrors vertical-center">
+                        <p style="margin: 0px;">{{errors}}</p>
+                    </div>
                     <div style="width:100%;margin-top:25px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">MINIMUM PRICE</p>
                         <div class="input-group">
@@ -34,11 +40,13 @@ export default {
     data: function() {
         return {
             minimumPrice: 10,
+            errors: "",
         }
     },
 
     methods: {
         createCustom() {
+            NProgress.start();
             GAxios.post(endpoints.custom, {
                 "minimumPrice": this.minimumPrice,
             }).then(response => {
@@ -46,7 +54,12 @@ export default {
                 this.$router.push({name: "hiringSettings"});
             }).catch(ex => {
                 console.log(ex);
-            }) 
+                console.log(ex.response.data.error);
+                this.errors = ex.response.data.error;
+                document.getElementById("errorsDiv").style.display = "block";
+            }).then( () => {
+                NProgress.done();
+            })
         },
     },
 
@@ -110,6 +123,18 @@ export default {
     select:hover{
         border-color: #187fe6;
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .5) !important;
+    }
+
+    .validationErrors{
+        background-color:#f50057;
+        border-radius: 5px;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
+        color:white;
+        display: none;
+        font-weight: bold;
+        margin-bottom: 14px;
+        padding: 10px;
+        padding-top: 12px;
     }
 
     @media (max-width:767px)  {

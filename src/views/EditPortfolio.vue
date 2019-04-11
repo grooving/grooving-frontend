@@ -81,8 +81,9 @@ export default {
     extractURLS: function(collection, key){
       var res = Array();
       
-      for(var i = 0; i < collection.length; i++)
-        res.push(collection[i][key])
+      if(collection)
+        for(var i = 0; i < collection.length; i++)
+          res.push(collection[i][key])
 
       return res;
     },
@@ -90,7 +91,7 @@ export default {
 
     // Loads portfolio data
     retreivePortfolio: function(){
-    
+      NProgress.start();      
       GAxios.get(endpoints.portfolio + this.artistId + "/")
       .then(response => {
           var portfolio = response.data;
@@ -154,14 +155,13 @@ export default {
                 this.d_portfolioDays=calendar.days;
 
                 this.updateCalendatKey += 1;
+          }).then(() => {
+            NProgress.done()
           });
-
-      
-      
     },
 
     savePortfolio: function(){
-      
+      NProgress.start(); 
       var authorizedGAxios = GAxios;
       var GAxiosToken = this.gsecurity.getToken();
       authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
@@ -186,27 +186,31 @@ export default {
         "days": this.d_portfolioDays,
         "portfolio":this.$route.params['artistId']
       };
-
+ 
       authorizedGAxios.put(endpoints.portfolio + this.artistId + '/', body)
       .then(response => {
         console.log(response.data);
         this.$router.push("/showPortfolio/"+this.artistId)
-      }).catch(ex => {
-          console.log(ex);
-          this.errors = true;
-      });
 
-      authorizedGAxios.put(endpoints.calendar + this.artistId + '/', body_calendar)
-      .then(response => {
-        console.log(response.data);
-        this.$router.push("/showPortfolio/"+this.artistId)
+        //Actualizamos el calendario
+        authorizedGAxios.put(endpoints.calendar + this.artistId + '/', body_calendar)
+        .then(response => {
+          console.log(response.data);
+          this.$router.push("/showPortfolio/"+this.artistId)
+        }).catch(ex => {
+            console.log(ex);
+            this.errors = true;
+        })
+
       }).catch(ex => {
           console.log(ex);
           this.errors = true;
+      }).then( () => {
+          NProgress.done()
       });
 
       this.setFinal();
-
+      
     },
   },
 

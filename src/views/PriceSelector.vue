@@ -1,22 +1,14 @@
 <template>
-    <div class="hell">
+    <div class="hiringProcessContainer">
         <div class="title">
             <p>Choose the price</p>
         </div>
         <div class="everything">
-            <div class="tarjeta">
-                <router-link v-bind:to="artistURI"><img v-bind:src="artistImage" class="card-img-top artistImage" alt="Artist's Image"></router-link>
-                <div class="card-body cuerpoTarjeta">
-                    <div class="leftContent">
-                        <h5 class="card-title artistName">{{ artistName }}</h5>
-                        <span class="card-text artistGenres">{{ artistData.genres }}</span>
-                    </div>
-                    <div class="rightContent">
-                        <p class="price">{{ price }}€</p>
-                    </div>
-                </div>
+            <div class="artistCard">
+                <ArtistCard :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
+                :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :price="price"/>
             </div>
-            <div>
+            <div class="customPriceSelector">
                 <div><CustomPrice @confirmPrice="confirmPrice" @priceSelected="priceValue" :duration="date.duration" :minPrice="cardPrice"  /></div>
             </div>
         </div>
@@ -25,6 +17,7 @@
 
 <script>
     import CustomPrice from '@/components/CustomPrice.vue'
+    import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
     import GSecurity from '@/security/GSecurity.js'
     import {mapActions} from 'vuex';
     import PaymentProcess from '@/store/modules/payment.js';
@@ -36,7 +29,7 @@
         name: 'PriceSelector',
         
         components: {
-            CustomPrice
+            CustomPrice, ArtistCard
         },
 
         data: function() {
@@ -158,7 +151,7 @@
 
             // Obtenemos el precio de la tarjeta izq   
             if(this.hiringType && this.hiringType == 'CUSTOM')
-                this.cardPrice = this.$store.getters.offerCustomPack.cardPrice;
+                this.cardPrice = this.$store.getters.offerCustomPack.minimumPrice;
 
             // Actualizamos el siguiente paso
             if(this.hiringType == 'CUSTOM'){
@@ -229,20 +222,34 @@
         display: none;
     }
 
+    @media (max-width:767px) {
+
+        .customPriceSelector{
+            margin-top: 25px;
+            margin-bottom: 55px;
+        }
+        
+    }
+
     @media (min-width:768px)  {
         .artistImage{
             border-radius: 10px 10px 0px 0px;
         }
       
         .everything {
-            align-items: center;
             display: flex;
+            align-items: center;
             justify-content: center;
-            margin-left: 10%;
-            margin-right: 10%;
             margin-top: 5%;
-            padding: 15px;
             text-align: center;
+            padding: 15px;
+            margin-left: 35%;
+            margin-right: 35%;
+            margin-top:0%;
+        }
+
+        .hiringProcessContainer{
+            margin-bottom: 5%;
         }
 
         .tarjeta {
@@ -255,13 +262,14 @@
 
         .title {
             display: inline-block;
-            font-size: 50px;
-            font-weight: bold;
-            margin-bottom: 0%;
-            margin-left: 10%;
             margin-right: 12%;
-            margin-top: 5%;
+            margin-left: 10%;
             text-align: left;
-        } 
+            font-size: 50px;
+            margin-top: 5%;
+            margin-bottom: 0%;
+
+            font-weight: bold;
+        }
     }
 </style>

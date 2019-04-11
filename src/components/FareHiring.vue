@@ -55,6 +55,7 @@ export default {
         border: none;
         border-radius: 30px;
         width: 45%;
+        min-width: 127px;
         background-image: linear-gradient(to right, #00fb82, #187fe6);
     }
 
@@ -63,7 +64,7 @@ export default {
     }
 
     .continueButtonDiv {
-        margin-top: 30px;
+        margin-top: 50px;
         margin-bottom: 5%;
         display: flex;
         justify-content: center;

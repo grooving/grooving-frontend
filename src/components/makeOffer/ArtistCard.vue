@@ -3,7 +3,7 @@
     
     <div class="everything">
         <div class="tarjeta">
-            <router-link v-bind:to="artistURI"><img v-bind:src="artistImage" class="card-img-top artistImage" alt="Artist's Image"></router-link>
+            <router-link v-bind:to="linkToPortfolio"><img v-bind:src="artistImage" class="card-img-top artistImage" alt="Artist's Image"></router-link>
             <div class="card-body cuerpoTarjeta">
                 <div class="leftContent">
                     <h5 class="card-title artistName">{{ artistName }}</h5>
@@ -28,9 +28,11 @@ import {mapActions} from 'vuex';
 
 export default {
   name: 'TimeSelection',
+
   components: {
     DoubleSlider
   },
+
   data () {
       return {
           time: {
@@ -40,10 +42,19 @@ export default {
         nextStep: undefined, 
       }
   },
+
+  computed: {
+
+      linkToPortfolio: function(){
+          return this.$props.artistURI  + this.$props.artistId;
+      }
+
+  },
+
   props: {
         artistId: {
-            type: Number,
-            default: 1
+            type: String,
+            default: "1"
         },
         artistURI: {
             type: String,
@@ -72,9 +83,6 @@ export default {
     },
     methods: {
 
-    },
-    beforeMount() {
-        this.artistURI += this.artistId + '/';
     }
 }
 </script>
@@ -112,6 +120,7 @@ export default {
     .leftContent {
         text-align: left;
         overflow: auto;
+        max-width: 50%;
     }
 
     .artistName {
@@ -128,15 +137,17 @@ export default {
     }
 
     .rightContent {
-        padding-left: 20px;
+        padding-left: 0px;
         margin-left: auto;
         margin-right: 0px;
+        max-width: 50%;
     }
 
     .price {
         font-size: 35px;
         margin-bottom: 0px;
         color: #187FE6;
+        word-break: break-all;
     }
 
     .artistImage {

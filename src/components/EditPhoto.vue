@@ -4,8 +4,8 @@
         <div class="card">
         <div class="bannerIcon">
             <img class="card-img-top banner" :src="artistBanner"/>
-            <div class="card-img-overlay" style="top: -20px;">
-                <img class="profile_photo overBanner" src="@/assets/img/bin1.png" @click="showBannerInput()"/>
+            <div class="card-img-overlay">
+                <img class="profile_photo overBanner" src="@/assets/img/edit.png" @click="showBannerInput()"/>
              </div>
         </div>
         </div>
@@ -13,19 +13,19 @@
         <div class="artistIcon">
             <img class="card-img-top icon" :src="artistImage"/>
              <div class="card-img-overlay" style="top: -20px;">
-                <img class="profile_photo"  src="@/assets/img/bin1.png" @click="showPhotoInput()"/>
+                <img class="profile_photo"  src="@/assets/img/edit.png" @click="showPhotoInput()"/>
              </div>
         </div></div>
         <div >
             <div >
                 <div >
                     <div v-if='editBanner' class="inputForm ">
-                        <input @keypress.prevent="toogleBannerInput()" class="form-control" type="text"  
+                        <input @keypress.enter="toogleBannerInput($event)" class="form-control" type="text"  
                             placeholder="Add the URL of your new banner" v-model="$parent.d_portfolioBanner">
                     </div>
 
                     <div class="inputForm" v-if="editPhoto">
-                        <input @keypress.prevent="tooglePhotoInput()" type="text" v-model="$parent.d_portfolioMainPhoto" class="form-control" 
+                        <input @keypress.enter="tooglePhotoInput($event)" type="text" v-model="$parent.d_portfolioMainPhoto" class="form-control" 
                             placeholder="Add the URL of your new profile image" />
                     </div>
                 </div>
@@ -74,11 +74,13 @@ export default {
         showBannerInput(){
             this.editBanner = true;
         }, 
-        toogleBannerInput() {
+        toogleBannerInput(event) {
             this.editBanner = false;
+            event.preventDefault();
         },
-        tooglePhotoInput() {
+        tooglePhotoInput(event) {
             this.editPhoto = false;
+            event.preventDefault();
         }
     },
 
