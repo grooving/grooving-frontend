@@ -1,13 +1,13 @@
 <template>
     <div class="content">
-    <form>
+    <form v-on:submit="receivePayment()">
         <div class="form-row">
             <div class="form-group col-12">
                 <p class="title">Type the code:</p>
-                <input id="inputCode" type="text" class="form-control" placeholder="XXXX-XXXX-XXXX-XXXX">
+                <input id="inputCode" type="text" class="form-control" required>
             </div>  
         </div>
-        <div class="continueButtonDiv"><button v-bind:to="continueURI" v-on:click="receivePayment()"
+        <div class="continueButtonDiv"><button v-bind:to="continueURI"
             class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></button></div>
 
     </form>

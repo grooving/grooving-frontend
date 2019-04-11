@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bootstrap-vue": "^2.0.0-rc.15",
+    "braintree-web": "^3.44.2",
     "express": "^4.16.4",
     "heroku-ssl-redirect": "0.0.4",
     "nprogress": "^0.2.0",

@@ -186,12 +186,15 @@ export default {
         "days": this.d_portfolioDays,
         "portfolio":this.$route.params['artistId']
       };
- 
+
       authorizedGAxios.put(endpoints.portfolio + this.artistId + '/', body)
       .then(response => {
         console.log(response.data);
-        this.$router.push("/showPortfolio/"+this.artistId)
-
+        this.gsecurity.setPhoto(this.d_portfolioMainPhoto);
+        window.localStorage.setItem("photo", this.d_portfolioMainPhoto);
+        this.$router.push("/showPortfolio/"+this.artistId);
+        window.location.reload();
+        
         //Actualizamos el calendario
         authorizedGAxios.put(endpoints.calendar + this.artistId + '/', body_calendar)
         .then(response => {

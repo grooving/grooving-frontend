@@ -39,6 +39,7 @@
 </template>
 
 <script>
+
 export default {
     name: "CreditCardPayment",
     data (){
@@ -87,6 +88,9 @@ export default {
         finishPayment() {
             this.$emit('finishPayment', [this.number, this.name, this.month, this.year, this.cvv ])
         }
+    }, 
+    mounted() {
+        
     }
 }
 </script>
