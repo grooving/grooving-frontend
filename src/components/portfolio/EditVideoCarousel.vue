@@ -15,7 +15,12 @@
         </div>
         <div id="urlForm" class="row py-2" v-if="showAddURL">
           <div class="col-12 vertical-center">
-            <input @keypress.enter="add($event)" type="text" v-model="addImageURL" class="form-control" placeholder="Insert your URL Here..." />
+            <div class="form-group" style="width: inherit;">
+              <input @keypress.enter="add($event)" type="text" v-model="addImageURL" class="form-control" aria-describedby="imageCarouselInput" placeholder="Insert your URL Here..." />
+              <small :class="{'imageCarouselInput' : showImageCarouselInputErrors}" class="form-text text-muted">
+                Must be a valid youtube link.
+              </small>
+            </div>
           </div>
         </div>
       </div>
@@ -57,6 +62,7 @@ export default {
       showAddURL: false,
       addImageURL: "",
       actualizador: 0,
+      showImageCarouselInputErrors: false,
 
       // Array containing URLs of thumbnails
       d_photosInfo: Array(),
@@ -96,6 +102,7 @@ export default {
         var thumbnail = this.getThumbnail(this.addImageURL);
 
         if(thumbnail){
+          this.showImageCarouselInputErrors = false;
           this.d_photosInfo.push({id: this.d_photosInfo.length, imageURL: thumbnail});
           this.d_videosInfo.push({id: this.d_videosInfo.length, videoURL: this.addImageURL});
           this.$parent.d_portfolioVideos = this.d_videosInfo;
@@ -107,6 +114,7 @@ export default {
 
       }else{
         event.preventDefault();
+        this.showImageCarouselInputErrors = true;
       }
     },
 
@@ -153,6 +161,10 @@ export default {
     width:inherit; 
     background:none; 
     border:none;
+  }
+
+  .imageCarouselInput{
+    color: #f50057 !important;
   }
 
   .horizontal-center{

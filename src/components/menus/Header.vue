@@ -165,7 +165,7 @@ export default {
         this.url = this.$store.getters.sideMenus.url;
         if(this.url !== path) {
             this.setURL(path);
-            this.clearStore().then(() => this.$router.push(path));  
+            this.clearStore().then(() => this.$router.replace(path));  
         } else {
           this.$emit('samePage')
         }

@@ -103,7 +103,7 @@ export default {
             }).catch(ex => {
                 console.log(ex);
                 if (ex.reponse != null) {
-                    this.errors = ex.response.data[0];
+                    this.errors = ex.response.data.error;
                     document.getElementById("errorsDiv").style.display = "block";
                 }
             }).then( () => {
