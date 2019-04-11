@@ -191,23 +191,26 @@ export default {
       .then(response => {
         console.log(response.data);
         this.$router.push("/showPortfolio/"+this.artistId)
-      }).catch(ex => {
-          console.log(ex);
-          this.errors = true;
-      });
 
-      authorizedGAxios.put(endpoints.calendar + this.artistId + '/', body_calendar)
-      .then(response => {
-        console.log(response.data);
-        this.$router.push("/showPortfolio/"+this.artistId)
+        //Actualizamos el calendario
+        authorizedGAxios.put(endpoints.calendar + this.artistId + '/', body_calendar)
+        .then(response => {
+          console.log(response.data);
+          this.$router.push("/showPortfolio/"+this.artistId)
+        }).catch(ex => {
+            console.log(ex);
+            this.errors = true;
+        })
+
       }).catch(ex => {
           console.log(ex);
           this.errors = true;
-      }).then(() => {
-        NProgress.done()
+      }).then( () => {
+          NProgress.done()
       });
 
       this.setFinal();
+      
     },
   },
 

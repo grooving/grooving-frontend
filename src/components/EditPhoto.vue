@@ -20,12 +20,12 @@
             <div >
                 <div >
                     <div v-if='editBanner' class="inputForm ">
-                        <input @keypress.enter="toogleBannerInput()" class="form-control" type="text"  
+                        <input @keypress.enter="toogleBannerInput($event)" class="form-control" type="text"  
                             placeholder="Add the URL of your new banner" v-model="$parent.d_portfolioBanner">
                     </div>
 
                     <div class="inputForm" v-if="editPhoto">
-                        <input @keypress.enter="tooglePhotoInput()" type="text" v-model="$parent.d_portfolioMainPhoto" class="form-control" 
+                        <input @keypress.enter="tooglePhotoInput($event)" type="text" v-model="$parent.d_portfolioMainPhoto" class="form-control" 
                             placeholder="Add the URL of your new profile image" />
                     </div>
                 </div>
@@ -74,11 +74,13 @@ export default {
         showBannerInput(){
             this.editBanner = true;
         }, 
-        toogleBannerInput() {
+        toogleBannerInput(event) {
             this.editBanner = false;
+            event.preventDefault();
         },
-        tooglePhotoInput() {
+        tooglePhotoInput(event) {
             this.editPhoto = false;
+            event.preventDefault();
         }
     },
 
