@@ -114,27 +114,34 @@
                 $('.custom-file-label').html(fileName);
             },*/
             createArtist() {
-                NProgress.start();
-                GAxios.post(endpoints.registerArtist, {
-                    "first_name": this.input.firstName,
-                    "last_name": this.input.lastName,
-                    "password": this.input.password,
-                    "confirm_password": this.input.confirmPassword,
-                    "username": this.input.username,
-                    "email": this.input.email,
-                    "photo": this.input.photo,
-                    "phone": this.input.phoneNumber,
-                }).then(response => {
-                    console.log(response);
-                    this.$router.push({name: "registerConfirmation"});
-                }).catch(ex => {
-                    console.log(ex.response.data.error);
-                    this.errors = ex.response.data.error;
+                if (this.status == 'not_accepted') {
+                    this.errors = "You must accept our terms and conditions."
                     document.getElementById("errorsDiv").style.display = "block";
-                    this.status = 'not_accepted';
-                }).then(() => {
-                    NProgress.done()
-                });
+                    window.scrollTo(0,0);
+                } else {
+                    NProgress.start();
+                    GAxios.post(endpoints.registerArtist, {
+                        "first_name": this.input.firstName,
+                        "last_name": this.input.lastName,
+                        "password": this.input.password,
+                        "confirm_password": this.input.confirmPassword,
+                        "username": this.input.username,
+                        "email": this.input.email,
+                        "photo": this.input.photo,
+                        "phone": this.input.phoneNumber,
+                    }).then(response => {
+                        console.log(response);
+                        this.$router.push({name: "registerConfirmation"});
+                    }).catch(ex => {
+                        console.log(ex.response.data.error);
+                        this.errors = ex.response.data.error;
+                        document.getElementById("errorsDiv").style.display = "block";
+                        this.status = 'not_accepted';
+                        window.scrollTo(0,0);
+                    }).then(() => {
+                        NProgress.done()
+                    });
+                }
             },
         },
 
