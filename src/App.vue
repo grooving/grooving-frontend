@@ -59,7 +59,6 @@ export default {
         this.clearStore();
     },
     refreshRightMenu() {
-      console.log('furula')
       $((document.getElementById('mainContent'))).css("filter", "none");
       $((document.getElementById('mainContent'))).css("pointer-events", "auto");
       $(document.body).css("overflow", "");

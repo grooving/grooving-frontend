@@ -47,7 +47,7 @@
                         <b-form-input v-model="input.email" type="email" placeholder="E-mail" required></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input type="number" v-model="input.phoneNumber" placeholder="Phone Number" min="600000000"></b-form-input>
+                        <b-form-input type="number" v-model="input.phoneNumber" placeholder="Phone Number" min="600000000" max="999999999"></b-form-input>
                     </b-form-group>
                     <div class="form-check">
                         <b-form-checkbox id="checkbox-1" v-model="status" value="accepted" unchecked-value="not_accepted" required>
@@ -116,6 +116,10 @@
             createArtist() {
                 if (this.status == 'not_accepted') {
                     this.errors = "You must accept our terms and conditions."
+                    document.getElementById("errorsDiv").style.display = "block";
+                    window.scrollTo(0,0);
+                } else if (parseInt(this.input.phoneNumber, 10) < 600000000 || parseInt(this.input.phoneNumber, 10) > 900000000) {
+                    this.errors = "The phone number must be between 600000000 and 900000000."
                     document.getElementById("errorsDiv").style.display = "block";
                     window.scrollTo(0,0);
                 } else {
