@@ -3,7 +3,7 @@
         <div class="title"><p>Create your artist account!</p></div>
         <div class="bothCards">
             <div id="signup" class="tarjeta">
-                <b-form>
+                <b-form v-on:submit="createArtist">
                     <div id="errorsDiv" class="validationErrors vertical-center">
                         <p style="margin: 0px;">{{errors}}</p>
                     </div>
@@ -54,7 +54,7 @@
                             <p>By creating an account you agree to <a href="/">Grooving's Terms and Conditions</a>.</p>
                         </b-form-checkbox>
                     </div>
-                    <b-button class="continueButton" variant="primary" size="sm" type="submit" v-on:click="createArtist">SIGN IN</b-button>
+                    <b-button class="continueButton" variant="primary" size="sm" type="submit">SIGN IN</b-button>
                 </b-form>
             </div>
         </div>
