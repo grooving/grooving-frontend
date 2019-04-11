@@ -219,6 +219,7 @@
                         "comment": "",
                     }).then(response => {
                         console.log(response);
+                        this.$router.go({ path: "/offers" });
                     }).catch(ex => {
                         console.log(ex);
                     }).then(() => {
