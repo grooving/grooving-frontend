@@ -228,6 +228,7 @@ export default {
 
     div#topContainer.row {
         margin-right: 0px;
+        margin-top: 45px;
     }
 
     .addURLButton{

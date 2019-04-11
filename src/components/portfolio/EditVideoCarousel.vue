@@ -167,6 +167,7 @@ export default {
 
   #topContainer{
     padding-bottom: 15px;
+    margin-top: 45px;
   }
 
   .vertical-center{
