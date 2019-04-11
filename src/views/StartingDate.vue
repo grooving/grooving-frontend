@@ -84,8 +84,6 @@ export default {
         ...mapActions(['setDateTime']),
 
         getHourAndMinutes(hour, minutes){
-            alert(hour);
-            alert(minutes);
 
             var startingHour = minutes+':'+hour;
             this.date.hour = startingHour;
@@ -132,6 +130,12 @@ export default {
             location.replace("/")
         }
 
+        // Check the user does not access the view directly
+        if(!PaymentProcess.checkViewRequirements(PaymentProcess.state, this.hiringType, "StartingDate")){
+            console.log('Error: Direct access to the view was detected')
+            location.replace("/#/hiringType/" + this.artistId + "/")
+        }
+
 
     },
 
@@ -147,11 +151,9 @@ export default {
         var GAxiosToken = this.gsecurity.getToken();
         authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
 
-        alert(this.hiringType);
 
         // Obtenemos el precio de la tarjeta izq
         if(this.hiringType == 'PERFORMANCE'){
-            alert("fea");
             this.totalPrice = this.$store.getters.offerPerformancePack.priceHour;
         }
 

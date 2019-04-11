@@ -108,9 +108,7 @@ export default {
             else if(this.hiringType == "CUSTOM")
                 this.packageId = this.$store.getters.offerCustomPack.packageId;
             else if(this.hiringType == "PERFORMANCE"){
-                alert("HAAAA");
                 this.packageId = this.$store.getters.offerPerformancePack.packageId;
-                alert(this.$store.getters.offerDate.hour);
             }
 
             // Preparamos el cuerpo genérico de las peticiones

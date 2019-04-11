@@ -98,9 +98,7 @@ export default {
             this.cardPrice = this.$store.getters.offerCustomPack.cardPrice;
 
         if(this.hiringType && this.hiringType == 'PERFORMANCE'){
-            alert("omqq");
             this.totalPrice = this.$store.getters.offerPerformancePack.priceHour;
-            alert(this.cardPrice);
         }
 
         // Actualizamos el siguiente paso

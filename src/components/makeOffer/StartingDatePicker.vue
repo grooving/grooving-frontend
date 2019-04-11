@@ -41,7 +41,6 @@ export default {
     },
     methods: {
         getDateInputs(hour, minutes) {
-            alert("Feisima");
             this.$emit('startingHour', hour, minutes);
         }
     }

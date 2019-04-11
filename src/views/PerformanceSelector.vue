@@ -75,9 +75,6 @@ export default {
         },
 
         selectTypeOfHiring(perfId, perfPrice, perfDuration){
-            alert(perfId);
-            alert(perfPrice);
-            //alert(this.artistData.genres);
 
             /* Creamos el package de tipo Performance con los datos obtenidos */
 
@@ -123,9 +120,6 @@ export default {
         // Retrieve the type of hiring
         this.hiringType = this.$store.getters.offer.hiringType;
 
-        alert(this.artistId);
-        alert(this.hiringType);
-
         if(!this.$gsecurity.isAuthenticated()) {
             console.log('Error')
             location.replace("/#/*")
@@ -139,6 +133,11 @@ export default {
         if(!this.artistId){
             console.log("Error: ArtistId not provided");
             location.replace("/")
+        }
+
+        if(!PaymentProcess.checkViewRequirements(PaymentProcess.state, this.hiringType, "PerformanceSelector")){
+            console.log('Error: Direct access to the view was detected')
+            location.replace("/#/hiringType/" + this.artistId + "/")
         }
 
 
