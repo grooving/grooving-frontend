@@ -1,5 +1,5 @@
 <template>
-    <div class="hell">
+    <div class="hiringProcessContainer">
         <div class="title"><p>Address information</p></div>
 
     <div class="everything">
@@ -8,7 +8,7 @@
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="cardPrice"/>
         </div>
         <div class="addDiv">
-          <div class="addressData"><AddressData :nextStep="this.nextStep" :selector_filters="this.selector_filters" @addressSelected="addressSelected" /></div>
+          <div class="addressData"><AddressData :nextStep="this.nextStep" :zones="this.zones" @addressSelected="addressSelected" /></div>
         </div>
     </div>
     </div>
@@ -51,6 +51,7 @@ export default {
             },
 
             startHour: undefined,
+            zones: undefined,
             selector_filters:[
                 {id: 0, text: "Zones", filterName: "zone", value: 0, data: [
                 {id: 0, text: "España", value: "0", depth: 0},
@@ -147,30 +148,10 @@ export default {
 
         NProgress.start();
 
-        // Obtain zones tree...
-        GAxios.get(endpoints.zones, {
-        params: {
-            'tree': true
-        }
-        }).then(response => {
+        GAxios.get(endpoints.portfolioZones + this.artistId)
+        .then(response => {
 
-        var root = response.data;
-        var tree = Array();
-
-        tree.push({id:root['id'], text: root['name'], value: root['name'], depth: 0})
-
-        for(var i=0; i < root['children'].length; i++){
-            // For each Comunidad Autónoma
-            var ca = root['children'][i];
-            tree.push({id:ca['id'], text: ca['name'], value: ca['name'], depth: 1})
-
-            for(var j=0; j < ca['children'].length; j++){
-            // For each provincia
-            var provincia = ca['children'][j];
-            tree.push({id:provincia['id'], text: provincia['name'], value: provincia['name'], depth: 2})
-            }
-        }
-        this.selector_filters[0].data = tree;
+            this.zones = response.data;
         
         }).then( () => {NProgress.done()});
 
@@ -200,6 +181,11 @@ export default {
             margin-right: 35%;
             margin-top:0%;
         }
+        
+        .hiringProcessContainer{
+            margin-bottom: 5%;
+        }
+
         .title {
             display: inline-block;
             margin-right: 12%;
@@ -207,6 +193,8 @@ export default {
             text-align: left;
             font-size: 50px;
             margin-top: 5%;
+            margin-bottom: 0%;
+
             font-weight: bold;
         }
         

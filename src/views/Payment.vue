@@ -1,15 +1,15 @@
 <template>
-<div class="prueba">
-    <div class="title"><p>Payment</p></div>
+<div class="hiringProcessContainer">
     <div v-if="errors == true" class="validationErrors">
         <p>Sorry! Something went wrong. Try again later.</p>
     </div>
+    <div class="title"><p>Payment</p></div>
     <div class="everything">
         <div class="artistCard"><ArtistCard :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.totalPrice"/>
         </div>
         <div class="paymentDiv">
-          <div class="creditCardPayment" style="min-width:400px;"><CreditCardPayment @finishPayment="gpay" /></div>
+          <div class="creditCardPayment" style="min-width:400px;"><CreditCardPaymentBrain @finishPayment="gpay" /></div>
         </div>
     </div>
 </div>
@@ -17,6 +17,7 @@
 
 <script>
 import CreditCardPayment from '@/components/makeOffer/CreditCardPayment.vue'
+import CreditCardPaymentBrain from '@/components/makeOffer/CreditCardPaymentBrain.vue'
 import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
@@ -25,12 +26,13 @@ import {mapGetters} from 'vuex';
 import PaymentProcess from '@/store/modules/payment.js';
 import { error } from 'util';
 
+
 export default {
 
     name: 'payment',
 
     components: {
-        CreditCardPayment, ArtistCard
+        CreditCardPayment, ArtistCard, CreditCardPaymentBrain
     },
 
     data() {
@@ -77,16 +79,7 @@ export default {
 
      methods: {
          
-        gpay(creditCard) {
-            
-            NProgress.start();
-
-            // Obtenemos los datos de Tarjeta introducidos
-            this.creditCard.number = creditCard[0];
-            this.creditCard.name = creditCard[1];
-            this.creditCard.month = creditCard[2];
-            this.creditCard.year = creditCard[3];
-            this.creditCard.cvv = creditCard[4];
+        gpay(nonce) {
 
             // Preparamos una oferta con los campos de VueX, que usaremos para redactar el 
             // cuerpo de la petición
@@ -128,12 +121,6 @@ export default {
                 'hours': this.preparedDate.duration,
                 'paymentPackage_id': this.packageId,
                 'eventLocation_id' : 1,
-                'transaction': {
-                    'holder': this.creditCard.name,
-                    'number': this.creditCard.number,
-                    'expirationDate': this.creditCard.month + this.creditCard.year,
-                    'cvv': this.creditCard.cvv,
-                },
             }
             
             // *** Realizamos dos peticiones secuenciales ***
@@ -161,19 +148,41 @@ export default {
                 .then((res) => {
                     console.log("Offer Created...")
                     console.log(res)
-                    this.$router.push({path: this.nextStep})
+
+                    let body_brain = {
+                        'payment_method_nonce': nonce,
+                        'id_offer': res.data.id,
+                    }
+
+                    authorizedGAxios.post(endpoints.braintree, body_brain)
+                    .then((res) => {
+                    
+                        console.log(res)
+                    
+                    })
+                    .then(() => this.$router.push({path: this.nextStep}))
+                    .catch(error => {
+                        console.log("Error while sending payment nonce to the server")
+                        this.errors = true;
+                    })
+
+                    
                 })
                 .catch(error => {
                     console.log("Error while creating the Offer")
                     this.errors = true;
-                }).then( () => {NProgress.done()});
+                })
                 
             })
             .catch(error => {
                 console.log("Error while creating the EventLocation")
                 this.errors = true;
-            })
+            }).then(() => {
+                NProgress.done()
+            });
         },
+
+        
     },
 
     props: {
@@ -274,33 +283,32 @@ export default {
             margin-right: 35%;
             margin-top:0%;
         }
+
+        .hiringProcessContainer{
+            margin-bottom: 5%;
+        }
+
         .title {
             display: inline-block;
-            margin-left: 18%;
+            margin-right: 12%;
+            margin-left: 10%;
             text-align: left;
             font-size: 50px;
             margin-top: 5%;
             margin-bottom: 0%;
-            margin-left: 1px;
+
             font-weight: bold;
         }
+
         .validationErrors{
-            padding-top: 10px;
-            padding-bottom: 0.25px;
-            color: #c62828;
-            font-weight: semibold;
-            border-color: green;
-            width: 50%;
-            margin: 0 auto;
-            height: auto;
-            border-radius: 5px;
-            align-items: center;
-            text-align: center;
-            box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .5);
+            background-color:#f50057;
+            box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);
+            
+            color:white;
+            font-weight: bold;
+            height: 100%;
+            padding-top: 12px;
         }
-
-        
-
         
     }
 

@@ -88,17 +88,19 @@ export default {
     }
 
     .acceptButton{
-        font-size: 1rem;
+        font-size: 21px;
         font-weight:bold;
         border-radius: 30px;
         padding-left: 20px;
         padding-right: 20px;
+        font-weight: bold;
 
         background-image: linear-gradient(to right, #00fb82, #187fe6);
     }
 
     .acceptButton:hover{
         background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;
     }
 
     .arrowIcon{

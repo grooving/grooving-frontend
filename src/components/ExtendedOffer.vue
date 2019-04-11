@@ -5,7 +5,7 @@
             <div class="card-body cuerpoTarjeta">
                 <div class="leftContent">
                     <div class="details">
-                    <p class="card-text"><span style="font-weight: bold;">Date: </span>{{ date }}</p>
+                    <p class="card-text"><span style="font-weight: bold;">Date: </span>{{ prettifiedDate }}</p>
                     <p class="card-text"><span style="font-weight: bold;">Duration: </span>{{ startingHour }} {{ endingHour }}h</p>
                     <p class="card-text"><span style="font-weight: bold;">Price: </span>{{ price }}€</p>
                     <p class="card-text"><span style="font-weight: bold;">Address: </span>{{ address }}</p>
@@ -32,6 +32,7 @@
 
     export default {
         name: 'extendedOffer',
+
         data() {
             return {
                 gsecurity: GSecurity,
@@ -39,6 +40,36 @@
                 id: Number,
             }
         },
+
+        computed: {
+
+            prettifiedDate: function(){
+
+                var res = "";
+
+                if(this.$props.date){
+                    
+                    var splittedDate = this.$props.date.split('T');
+
+                    if(splittedDate.length == 2){
+
+                        var dmy = splittedDate[0];
+                        var timeGTM = splittedDate[1].split('+');
+                        
+                        res = dmy;
+
+                        if(timeGTM[0])
+                            res += " " + timeGTM[0]
+
+                    }
+                }
+
+                return res;
+
+            }
+
+        },
+
         props: {
             offerID: {
                 type: Number,
@@ -77,6 +108,7 @@
                 default: '/acceptedOffer/'
             }
         },
+
         methods: {
             accept() {
                 NProgress.start();
@@ -92,11 +124,12 @@
                         console.log(response);
                 }).catch(ex => {
                     console.log(ex);
-                    NProgress.done();
                 }).then(()=> {
                     this.$router.push({path: '/offers/'})
 
-                });                
+                }).then( () => {
+                    NProgress.done();
+                })              
                 },
             },
     }   

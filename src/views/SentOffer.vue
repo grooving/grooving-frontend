@@ -60,7 +60,6 @@ export default {
             console.log('Error')
             location.replace("/#/*")
         }
-        NProgress.done();
     },
 }
 </script>

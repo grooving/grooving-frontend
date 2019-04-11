@@ -9,6 +9,9 @@
                         <i class="material-icons iconOffer">clear</i>
                     </router-link>
                     <h6 class="card-subtitle mb-2 text-muted">Basic info of your Grooving account, like your name and email.</h6>
+                    <div id="errorsDiv" class="validationErrors vertical-center">
+                        <p style="margin: 0px;">{{errors}}</p>
+                    </div>
                     <div style="width:100%;margin-top:25px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">FIRST NAME</p>
                         <b-form-group>
@@ -103,17 +106,18 @@ export default {
                     this.errors = ex.response.data[0];
                     document.getElementById("errorsDiv").style.display = "block";
                 }
+            }).then( () => {
+                NProgress.done();
             })
-            NProgress.done();
         },
     },
 
     beforeMount: function(){
-        NProgress.start();
         if (!this.gsecurity.isAuthenticated()) {
             this.$router.push({name: "error"});
 
         } else {
+            NProgress.start();
             var GAxiosToken = this.gsecurity.getToken();
             var authorizedGAxios = GAxios;
             authorizedGAxios.defaults.headers.common['Authorization'] = 'Token '+ GAxiosToken;
@@ -137,9 +141,10 @@ export default {
                     this.email = personalInformation['email'];
                     this.phoneNumber = response.data.phone;
                     this.username = personalInformation['username'];                    
-                });            
+                }).then( () => {
+                    NProgress.done();
+                })          
         }
-        NProgress.done();
     },
 
     created() {
@@ -202,6 +207,18 @@ export default {
     select:hover{
         border-color: #187fe6;
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .5) !important;
+    }
+
+    .validationErrors{
+        background-color:#f50057;
+        border-radius: 5px;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
+        color:white;
+        display: none;
+        font-weight: bold;
+        margin-bottom: 14px;
+        padding: 10px;
+        padding-top: 12px;
     }
 
     @media (max-width:767px)  {

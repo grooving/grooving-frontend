@@ -192,7 +192,7 @@ export default {
           name = offers[i].paymentPackage.portfolio.artisticName;
           icon = offers[i].paymentPackage.portfolio.main_photo;
           link = 'showPortfolio';
-          //artistId = offers[i].paymentPackage.portfolio.artist.id;
+          artistId = offers[i].paymentPackage.portfolio.artist.id;
         }
         if(offers[i].status == "PAYMENT_MADE") {
           try {
@@ -219,12 +219,10 @@ export default {
       }
     }).catch(ex => {
         console.log(ex);
+    }).then(() => {
+      NProgress.done()
     });
-    NProgress.done();
   },
-  mounted: function() {
-        NProgress.done();
-  }
 }
 </script>
 

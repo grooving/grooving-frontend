@@ -54,6 +54,7 @@ export default {
         border: none;
         border-radius: 30px;
         width: 45%;
+        min-width: 127px;
         background-image: linear-gradient(to right, #00fb82, #187fe6);
     }
 

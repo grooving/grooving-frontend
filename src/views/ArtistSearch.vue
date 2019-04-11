@@ -138,10 +138,10 @@ export default {
           });
 
         }
-        NProgress.done();
       }).catch(ex => {
-          console.log(ex);
-        NProgress.done();        
+          console.log(ex);      
+      }).then(() => {
+        NProgress.done()
       });
     }
   },
@@ -193,8 +193,9 @@ export default {
       this.selector_filters[0].data = tree;
 
       
-    })
-    NProgress.done();
+    }).then(() => {
+      NProgress.done()
+    });
 
     this.search(queries);
   },

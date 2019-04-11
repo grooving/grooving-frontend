@@ -19,27 +19,23 @@
                 <input v-model="location" type="text" class="form-control" placeholder="Location" required>
             </div>  
         </div> -->
-        <div id="selectorFilters " v-for="item in selector_filters" :key="item.text">
-            <div class="row filter-item">
-                <div class="col vertical-center" style="margin-bottom: 5px;">
-                    <span>Province</span>
-                </div>
-            </div>
+        
             <div class="row filter-item " style="margin-bottom: 15px">
                 <b-form-select v-model="singleSelectorValue" style="width:90%; margin:0 auto;">
-                    <option :value="undefined">---------</option>
-                    <option v-for="opt in item.data" :key="opt.text" :value="opt.id">
-                        <span v-for="times in opt.depth" :key="times">&nbsp;&nbsp;</span>
-                        <span>{{opt.text}}</span>
+                    <option :value="undefined" disabled>* Provinces where the artist performs *</option>
+                    <option v-for="zone in zones" :key="zone.name" :value="zone.id">
+                        
+                        <span>{{zone.name}}</span>
                     </option>
                 </b-form-select>
             </div>
-        </div>
+
         <button class="btn btn-primary continueButton" >
                 <span class="continueText">CONTINUE</span></button>
     </form>
     </div>
 </template>
+
 
 <script>
 
@@ -51,6 +47,7 @@ export default {
             default: '',
         },
         selector_filters: Array,
+        zones: Array,
     },
     data() {
         return {

@@ -2,7 +2,7 @@ const state = {
     genres: {
         allGenres: undefined, 
         currentGenres: undefined,
-        newGenres: undefined,
+        newGenres: Array(),
     }
 };
 
@@ -27,7 +27,11 @@ const actions = {
 
 const mutations = {
     setNewGenres(state, newGenres) {
-        state.genres.newGenres = newGenres;
+        
+        if(newGenres)
+            state.genres.newGenres = newGenres;
+        else
+            state.genres.newGenres = Array();
     },
     setCurrentGenres(state, currentGenres) {
         state.genres.currentGenres = currentGenres;
@@ -38,9 +42,10 @@ const mutations = {
     setFinal(state) {
 
         // Reset store
-        state.genres.newGenres = undefined;
         state.genres.currentGenres = undefined;
         state.genres.allGenres = undefined;
+        state.genres.newGenres = Array();
+
     },
 };
 

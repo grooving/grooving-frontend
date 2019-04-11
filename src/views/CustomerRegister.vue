@@ -3,7 +3,7 @@
         <div class="title"><p>Create your customer account!</p></div>
         <div class="bothCards">
             <div id="signup" class="tarjeta">
-                <b-form>
+                <b-form v-on:submit="createCustomer">
                     <div id="errorsDiv" class="validationErrors vertical-center">
                         <p style="margin: 0px;">{{errors}}</p>
                     </div>
@@ -44,14 +44,14 @@
                         <b-form-input v-model="input.email" type="email" placeholder="E-mail" required></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input type="number" v-model="input.phoneNumber" placeholder="Phone Number" min="600000000"></b-form-input>
+                        <b-form-input type="number" v-model="input.phoneNumber" placeholder="Phone Number" min="600000000" max="999999999"></b-form-input>
                     </b-form-group>
                     <div class="form-check">
-                        <b-form-checkbox id="checkbox-1" v-model="status" name="checkbox-1" value="accepted" unchecked-value="not_accepted" required>
+                        <b-form-checkbox id="checkbox-1" v-model="status" value="accepted" unchecked-value="not_accepted" required>
                             <p>By creating an account you agree to <a href="/">Grooving's Terms and Conditions</a>.</p>
                         </b-form-checkbox>
                     </div>
-                    <b-button class="continueButton" variant="primary" size="sm" type="submit" v-on:click="createCustomer">SIGN IN</b-button>
+                    <b-button class="continueButton" variant="primary" size="sm" type="submit">SIGN IN</b-button>
                 </b-form>
             </div>
         </div>
@@ -110,28 +110,38 @@
                 $('.custom-file-label').html(fileName);
             },*/
             createCustomer() {
-                NProgress.start();
-                GAxios.post(endpoints.registerCustomer, {
-                    "first_name": this.input.firstName,
-                    "last_name": this.input.lastName,
-                    "password": this.input.password,
-                    "confirm_password": this.input.confirmPassword,
-                    "username": this.input.username,
-                    "email": this.input.email,
-                    "photo": this.input.photo,
-                    "phone": this.input.phoneNumber,
-                }).then(response => {
-                    console.log(response);
-                    NProgress.done();
-                    this.$router.push({name: "registerConfirmation"});
-                }).catch(ex => {
-                    console.log(ex.response.data);
-                    this.errors = ex.response.data[0];
+                if (this.status == 'not_accepted') {
+                    this.errors = "You must accept our terms and conditions."
                     document.getElementById("errorsDiv").style.display = "block";
-                    this.status = 'not_accepted';
-                    NProgress.done();
-                }) 
-
+                    window.scrollTo(0,0);
+                } else if (parseInt(this.input.phoneNumber, 10) < 600000000 || parseInt(this.input.phoneNumber, 10) > 900000000) {
+                    this.errors = "The phone number must be between 600000000 and 900000000."
+                    document.getElementById("errorsDiv").style.display = "block";
+                    window.scrollTo(0,0);
+                } else {
+                    NProgress.start();
+                    GAxios.post(endpoints.registerCustomer, {
+                        "first_name": this.input.firstName,
+                        "last_name": this.input.lastName,
+                        "password": this.input.password,
+                        "confirm_password": this.input.confirmPassword,
+                        "username": this.input.username,
+                        "email": this.input.email,
+                        "photo": this.input.photo,
+                        "phone": this.input.phoneNumber,
+                    }).then(response => {
+                        console.log(response);
+                        this.$router.push({name: "registerConfirmation"});
+                    }).catch(ex => {
+                        console.log(ex.response.data.error);
+                        this.errors = ex.response.data.error;
+                        document.getElementById("errorsDiv").style.display = "block";
+                        this.status = 'not_accepted';
+                        window.scrollTo(0,0);
+                    }).then(() => {
+                        NProgress.done()
+                    });
+                }
             },
         },
 

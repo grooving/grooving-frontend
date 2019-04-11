@@ -10,7 +10,7 @@
     <div class="LeftMenu">
       <LeftMenu @samePage='samePage'/>
     </div>
-    <router-view id="mainContent"/>
+    <router-view :key="$route.fullPath" id="mainContent"/>
     </div>
     <footer><Footer @samePage='samePage' @refreshRightMenu='refreshRightMenu'/></footer>
   </div>
@@ -46,21 +46,20 @@ export default {
         $((document.getElementById('mainContent'))).css("pointer-events", "none");
         $(document.body).css("overflow", "hidden");
       } else {
-        $((document.getElementById('mainContent'))).css("filter", "blur(0px)");
+        $((document.getElementById('mainContent'))).css("filter", "none");
         $((document.getElementById('mainContent'))).css("pointer-events", "auto");
         $(document.body).css("overflow", "");
       }
     },
     samePage(){
-        $((document.getElementById('mainContent'))).css("filter", "blur(0px)");
+        $((document.getElementById('mainContent'))).css("filter", "none");
         $((document.getElementById('mainContent'))).css("pointer-events", "auto");
         $(document.body).css("overflow", "");
 
         this.clearStore();
     },
     refreshRightMenu() {
-      console.log('furula')
-      $((document.getElementById('mainContent'))).css("filter", "blur(0px)");
+      $((document.getElementById('mainContent'))).css("filter", "none");
       $((document.getElementById('mainContent'))).css("pointer-events", "auto");
       $(document.body).css("overflow", "");
       this.clearStore();

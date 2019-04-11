@@ -43,6 +43,7 @@ export default {
 
     .continueButton{
         width: 60%;
+        max-width: 300px;
         color: white !important;
         font-weight: bold;
         border-radius: 25px;
@@ -63,9 +64,9 @@ export default {
     @media (max-width:768px)  {
         .content{
             padding-top: 5%;
-            margin-right: 40%;
-            margin-left: 40%;
-            width: 300px;
+            padding-bottom: 5%;
+            margin: 0 auto;
+            width: 100%;
 
         }   
     }

@@ -5,6 +5,9 @@
       <div v-for="artist in artistas" :key="artist.artistURI" class="tarjeta col-12 col-md-6 col-xl-4">
         <ArtistCard :artistImage="artist.artistImage" :artistName="artist.artistName" :artistGenres="artist.artistGenres" :artistId="artist.artistID" />
       </div>
+      <div v-if="artistas.length == 0" class="error">
+        <h1 class="oops">Nothing to show ☹</h1>
+      </div>
     </div>
   </div>
 </template>
@@ -38,11 +41,25 @@ export default {
 
 <style scoped>
 
+  .error{
+    padding-top: 50px;
+  }
+
+  .oops{
+    font-size: 80px !important;
+    font-weight: bold;
+    color: rgba(0,0,0,.4);
+  }
+
   @media (min-width:768px)  {
     .titleView{
       text-align: left;
       font-weight: bold;
 
+    }
+
+    .oops{
+      margin-left: 50px;
     }
   }
 

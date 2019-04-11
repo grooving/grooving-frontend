@@ -93,8 +93,10 @@ export default {
     }
 
     .input-group {
-        margin-bottom:15px;
-        margin-top:30px;
+        max-width: 500px;
+        margin: 0 auto; 
+        padding-top: 25px; 
+        padding-bottom: 25px;
     }
     
     input:hover {

@@ -121,7 +121,7 @@ export default {
           requiedRoles: ["CUSTOMER", "ARTIST"]
         },
         {
-          text: "QR Scan",
+          text: "Check-in",
           link: "/receivePayment",
           selected: false,
           requiedRoles: ["ARTIST"]
@@ -187,7 +187,7 @@ export default {
 
     search: function() {
       window.location = ARTIST_SEARCH_URI + this.searchQuery;
-      window.location.reload();
+      //window.location.reload();
     },
 
 
@@ -321,13 +321,6 @@ export default {
       color: #0056b3;
   }
 
-  .material-icons:hover {
-    background: -webkit-linear-gradient(left, #00fb82, #187fe6);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
   .navbar {
     box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.3) !important;
   }
@@ -411,6 +404,13 @@ export default {
     font-size: 30px;
   }
 
+  .material-icons:hover {
+    background: -webkit-linear-gradient(left, #00fb82, #187fe6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
   #mainNavBar {
     box-sizing: content-box;
     padding-top: 0px;
@@ -434,7 +434,6 @@ export default {
     height: 45px;
     object-fit: cover;
     border-radius: 25px;
-    margin-bottom: 5px;
   }
 
   .profileImage:hover {

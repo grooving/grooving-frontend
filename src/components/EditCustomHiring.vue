@@ -50,8 +50,9 @@ export default {
                 this.$router.push({name: "hiringSettings"});
             }).catch(ex => {
                 console.log(ex);
-            }) 
-            NProgress.done();
+            }).then( () => {
+                NProgress.done();
+            })
         },
     },
 

@@ -1,10 +1,10 @@
 <template>
-<div class="prueba">
+<div class="hiringProcessContainer">
     <div class="title"><p>Choose type of hiring </p></div>
     
     <div class="everything">
-        <div class="artistCard"><ArtistCard 
-            :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
+        <div class="artistCard">
+            <ArtistCard :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId"/></div>
         <div class="hiringType"><HiringType @hiring="selectTypeOfHiring"
             :farePrice="this.farePackage.priceHour" :customMinPrice="this.customPackage.minimumPrice" /></div>
@@ -166,7 +166,7 @@ export default {
         }).catch(ex => {
             console.log('Could not load Artist Info Data API');
             console.log(ex);
-        }).then( () => {NProgress.done()});
+        });
 
         // ** Hiring Types - Right Card **
         authorizedGAxios.get(endpoints.artistPayPackage + this.artistId + "/")
@@ -193,12 +193,11 @@ export default {
 
                 }
             }
-            NProgress.done();
-
         }).catch(ex => {
             console.log('Could not load Payment Packages API')
             console.log(ex);
-            NProgress.done();
+        }).then(() => {
+            NProgress.done()
         });
     },
 }
@@ -212,6 +211,14 @@ export default {
 
     @media (min-width:768px)  {
       
+        .artistCard{
+            margin-top: 20px;
+        }
+
+        .hiringProcessContainer{
+            margin-bottom: 5%;
+        }
+
         .everything {
             display: flex;
             justify-content: center;
@@ -221,12 +228,13 @@ export default {
         }
         .title {
             display: inline-block;
-            margin-left: 18%;
+            margin-right: 12%;
+            margin-left: 10%;
             text-align: left;
             font-size: 50px;
-            margin-top: 3%;
+            margin-top: 5%;
             margin-bottom: 0%;
-            margin-left: 1px;
+
             font-weight: bold;
         }
     }

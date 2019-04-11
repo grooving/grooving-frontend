@@ -81,8 +81,9 @@ export default {
     extractURLS: function(collection, key){
       var res = Array();
       
-      for(var i = 0; i < collection.length; i++)
-        res.push(collection[i][key])
+      if(collection)
+        for(var i = 0; i < collection.length; i++)
+          res.push(collection[i][key])
 
       return res;
     },
@@ -148,15 +149,15 @@ export default {
           var GAxiosToken = this.gsecurity.getToken();
           authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
 
-          authorizedGAxios.get('/calendar/'+this.gsecurity.getId() +'/')
+          authorizedGAxios.get('/artist' + endpoints.calendar + this.gsecurity.getId() + '/')
             .then(response => {
                 var calendar = response.data;
                 this.d_portfolioDays=calendar.days;
 
                 this.updateCalendatKey += 1;
+          }).then(() => {
+            NProgress.done()
           });
-      NProgress.done();               
-      
     },
 
     savePortfolio: function(){
@@ -185,33 +186,34 @@ export default {
         "days": this.d_portfolioDays,
         "portfolio":this.$route.params['artistId']
       };
-      NProgress.done();
 
-      NProgress.start();  
       authorizedGAxios.put(endpoints.portfolio + this.artistId + '/', body)
       .then(response => {
         console.log(response.data);
-        NProgress.done();
-        this.$router.push("/showPortfolio/"+this.artistId)
-      }).catch(ex => {
-          console.log(ex);
-          this.errors = true;
-          NProgress.done();
-      });
+        this.gsecurity.setPhoto(this.d_portfolioMainPhoto);
+        window.localStorage.setItem("photo", this.d_portfolioMainPhoto);
+        this.$router.push("/showPortfolio/"+this.artistId);
+        window.location.reload();
+        
+        //Actualizamos el calendario
+        authorizedGAxios.put(endpoints.calendar + this.artistId + '/', body_calendar)
+        .then(response => {
+          console.log(response.data);
+          this.$router.push("/showPortfolio/"+this.artistId)
+        }).catch(ex => {
+            console.log(ex);
+            this.errors = true;
+        })
 
-      NProgress.start();
-      authorizedGAxios.put(endpoints.calendar + this.artistId + '/', body_calendar)
-      .then(response => {
-        console.log(response.data);
-        NProgress.done();
-        this.$router.push("/showPortfolio/"+this.artistId)
       }).catch(ex => {
           console.log(ex);
           this.errors = true;
-          NProgress.done();
+      }).then( () => {
+          NProgress.done()
       });
 
       this.setFinal();
+      
     },
   },
 

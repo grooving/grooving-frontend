@@ -1,14 +1,18 @@
 <template>
-<div class="prueba">
+<div class="hiringProcessContainer">
+
+    <div id="errorsDiv" class="validationErrors vertical-center">
+        <p style="margin: 0px;">{{errors}}</p>
+    </div>
     <div class="title"><p>Choose a date</p></div>
-    
+
     <div class="everything">
         <div class="artistCard"><ArtistCard 
             :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :price="this.cardPrice"/>
         </div>
         <div class="calendarButton">
-          <div class="calendar" style="width: 320px;"><Calendar @datePickerDate="calendarSelected" :availableDates="this.datos[0].availableDates"/></div>
+          <div class="calendar"><Calendar @datePickerDate="calendarSelected" :availableDates="this.datos[0].availableDates"/></div>
           <div class="continueButtonDiv" @click="dateSelected()" ><div class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div></div>
         </div>
     </div>
@@ -53,6 +57,7 @@ export default {
 
           datos: Array(),
           fecha: '',
+          errors: "",
         }
     },
 
@@ -71,10 +76,14 @@ export default {
 
                     console.log('Error: Could not set date in VueX');
                     console.log(e);
+
+                    this.errors = 'Error: Could not set date in VueX';
+                    document.getElementById("errorsDiv").style.display = "block";
                     
                 });
             }else{
-                alert('You must select a date...');
+                this.errors = 'You must select a date.';
+                document.getElementById("errorsDiv").style.display = "block";
             }
         },
 
@@ -177,8 +186,7 @@ export default {
     
 
     .calendar {
-        margin-top: 5%;
-        
+        margin-top: 5px;
     }
 
     .title {
@@ -194,23 +202,46 @@ export default {
     }
 
     .continueButton:hover{
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.7) !important;
         background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
     }
 
     .continueButtonDiv {
         margin-top: 30px;
-        margin-bottom: 10%;
+        margin-bottom: 15px;
+    }
+
+    .calendarButton  {
+        min-width: 320px;
+    }
+
+    .validationErrors{
+        background-color:#f50057;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
+        color:white;
+        display: none;
+        font-weight: bold;
+        padding: 10px;
+        padding-top: 12px;
     }
 
     @media (max-width:767px)  {
         .calendarButton {
-            padding-top: 5%;
+            padding-top: 6px;
             margin-right: 3%;
             margin-left: 3%;
         }
     }
 
     @media (min-width:768px)  {
+
+        .artistCard{
+            margin-top: 20px;
+        }
+
+        .hiringProcessContainer{
+            margin-bottom: 5%;
+        }
 
         .calendarButton  {
             margin-left: 5%;
@@ -239,14 +270,16 @@ export default {
             margin-right: 30%;
             margin-top:0%;
         }
+        
         .title {
             display: inline-block;
-            margin-left: 18%;
+            margin-right: 12%;
+            margin-left: 10%;
             text-align: left;
             font-size: 50px;
             margin-top: 5%;
             margin-bottom: 0%;
-            margin-left: 1px;
+
             font-weight: bold;
         }
     }
