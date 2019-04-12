@@ -155,7 +155,7 @@ export default {
         NProgress.start();        
         authorizedGAxios.get(endpoints.paymentPackages + this.artistData.artistId + '/')
             .then(response => {
-                console.log(response.data);
+                console.log("PayPacks", response.data);
                 
                 var packages = response.data;
 

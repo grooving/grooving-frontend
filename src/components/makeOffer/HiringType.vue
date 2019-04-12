@@ -21,7 +21,7 @@
       </div>  
     </div>
   </div>
-  <div class="tarjetaB">
+  <div  v-if="performancePackages > 0" class="tarjetaB">
     <div class="heads" id="headingTwo" data-toggle="collapse" 
             data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
       <h5 class="mb-0">
@@ -114,6 +114,11 @@ export default {
           type: String,
           default: '$63.00/h'
         },
+        performancePackages:{
+            type: Number,
+            default: 0,
+        }
+        
     }, methods: {
         genresToString() {
             var res = "";

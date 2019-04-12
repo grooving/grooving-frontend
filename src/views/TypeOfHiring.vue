@@ -6,8 +6,13 @@
         <div class="artistCard">
             <ArtistCard :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId"/></div>
-        <div class="hiringType"><HiringType @hiring="selectTypeOfHiring"
-            :farePrice="this.farePackage.priceHour" :customMinPrice="this.customPackage.minimumPrice" /></div>
+        <div v-if="packagesAvailables" class="hiringType"><HiringType @hiring="selectTypeOfHiring"
+            :farePrice="this.farePackage.priceHour" :customMinPrice="this.customPackage.minimumPrice" :performancePackages="performancePackages" /></div>
+        <div v-else>
+            <div class="notice">
+                <h2 class="oops">Sorry, this artist is unavailable temporarily ☹</h2>
+            </div>
+        </div>
     </div>
 </div>
 </template>
@@ -49,13 +54,20 @@ export default {
             },
 
             // Type: Performance
-            performancePackage: {
-                packageId: undefined,
-                priceHour: undefined,
-                duration: undefined,
-                startingDate: undefined
-            }
+            // Performance package is selected in the next view
+
+            // We need a variable to determine whether the artist 
+            // has performance packages or not.
+            performancePackages: 0,
         }
+    },
+
+    computed: {
+
+        packagesAvailables(){
+            return this.farePackage.packageId || this.customPackage.packageId || this.performancePackages > 0;
+        }
+
     },
 
     methods: {
@@ -64,7 +76,6 @@ export default {
         ...mapActions(['setOffer']),   
         ...mapActions(['setFarePackage']),    
         ...mapActions(['setCustomPackage']),    
-        ...mapActions(['setPerformancePackage']),    
 
         selectTypeOfHiring(hiringType) {
 
@@ -106,15 +117,10 @@ export default {
 
                 }else if(hiringType == 'PERFORMANCE'){
 
-                    // Creamos el customPackage asociado con los datos...
-                    this.setPerformancePackage(this.performancePackage).then(() => {
-                        // If VueX has correctly set the package
-                        this.$router.push(nextView);
-                    }).catch( e => {
-                        console.log('Could not set PaymentPackage: Performance');
-                        console.log(e);
-                    })
-
+                    // In the case of Performance, the user must
+                    // select which Performance Package she or he
+                    // wants to, so we show her a list
+                    this.$router.push(nextView);
                 }
 
             });
@@ -213,7 +219,10 @@ export default {
                     this.customPackage.packageId = payPack.id;
                     this.customPackage.minimumPrice = payPack.custom.minimumPrice;
 
+                }else if(payPack.performance_id != null){
+                    this.performancePackages++;
                 }
+
             }
         }).catch(ex => {
             console.log('Could not load Payment Packages API')
@@ -229,6 +238,16 @@ export default {
 
     .title {
         display: none;
+    }
+
+    .notice {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+        padding: 5px;
+        height: 100%;
+        margin-top: 10%;
     }
 
     @media (min-width:768px)  {
@@ -248,6 +267,22 @@ export default {
             margin-left: 35%;
             margin-right: 35%;
         }
+
+        .notice {
+            align-items: center;
+            border-radius: 10px;
+            box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, .3);
+            display: flex;
+            justify-content: center;
+            margin-left: 10px;
+            margin-right: 10px;
+            margin-top: 0px;
+            min-height: 370px;
+            min-width: 335px;
+            width: 25%;
+            padding: 5px;
+        }
+
         .title {
             display: inline-block;
             margin-right: 12%;
