@@ -11,7 +11,7 @@
 
       <EditImageCarousel :photosInfo="d_portfolioImages" :key="updateImagesKey" />
       <EditVideoCarousel :videosInfo="d_portfolioVideos" :key="updateVideosKey" />
-      <EditAvailableDates :availableDates="d_portfolioDays" :key="updateCalendatKey"/>
+      <EditAvailableDates :availableDates="this.datos[0].availableDates" :key="updateCalendatKey"/>
     </form>
   </div>
 </template>
@@ -152,9 +152,12 @@ export default {
 
           authorizedGAxios.get('/artist' + endpoints.calendar + this.gsecurity.getId() + '/')
             .then(response => {
-                var calendar = response.data;
-                this.d_portfolioDays=calendar.days;
-
+              var calendar = response.data;
+              if(calendar.length==0){
+                this.datos.push({availableDates: []});
+              }else{
+                this.datos.push({availableDates: calendar[0].days,})
+              }
                 this.updateCalendatKey += 1;
           }).then(() => {
             NProgress.done()
@@ -193,8 +196,8 @@ export default {
         console.log(response.data);
         this.gsecurity.setPhoto(this.d_portfolioMainPhoto);
         window.localStorage.setItem("photo", this.d_portfolioMainPhoto);
-        this.$router.push("/showPortfolio/"+this.artistId);
-        window.location.reload();
+        //this.$router.push("/showPortfolio/"+this.artistId);
+        //window.location.reload();
         
         //Actualizamos el calendario
         authorizedGAxios.put(endpoints.calendar + this.artistId + '/', body_calendar)
