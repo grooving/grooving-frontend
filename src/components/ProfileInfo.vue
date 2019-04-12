@@ -34,6 +34,11 @@
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:16px;overflow:auto;">
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">PAYPAL</p>
+                        <p class="card-text" style="float:right;">{{paypal}}</p>
+                    </div>
+                    <hr style="margin-top:0px;margin-bottom:0px;"/>
+                    <div style="width:100%;margin-top:16px;overflow:auto;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">PHONE</p>
                         <p class="card-text" style="float:right;">{{phoneNumber}}</p>
                     </div>
@@ -66,6 +71,9 @@ export default {
         username: {
             type: String,
             default: 'josembell'
+        },
+        paypal: {
+            type: String,
         }
     },
 }
