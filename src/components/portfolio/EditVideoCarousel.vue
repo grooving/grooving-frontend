@@ -16,7 +16,7 @@
         <div id="urlForm" class="row py-2" v-if="showAddURL">
           <div class="col-12 vertical-center">
             <div class="form-group" style="width: inherit;">
-              <input @keypress.enter="add($event)" type="text" v-model="addImageURL" class="form-control" aria-describedby="imageCarouselInput" placeholder="Insert your URL Here..." />
+              <input @keypress.enter="add($event)" type="url" v-model="addImageURL" class="form-control" aria-describedby="imageCarouselInput" placeholder="Insert your URL Here..." />
               <small :class="{'imageCarouselInput' : showImageCarouselInputErrors}" class="form-text text-muted">
                 Must be a valid youtube link.
               </small>
@@ -132,8 +132,6 @@ export default {
     for(var i = 0; i < this.d_videosInfo.length; i++){
       this.d_photosInfo.push({id: i, imageURL: this.getThumbnail(this.d_videosInfo[i]['videoURL'])});
     }
-
-    console.log(this.d_photosInfo)
     
   }
 

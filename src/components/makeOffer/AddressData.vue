@@ -21,7 +21,7 @@
         </div> -->
         
             <div class="row filter-item " style="margin-bottom: 15px">
-                <b-form-select v-model="singleSelectorValue" style="width:90%; margin:0 auto;">
+                <b-form-select v-model="singleSelectorValue" style="width:90%; margin:0 auto;" required>
                     <option :value="undefined" disabled>* Provinces where the artist performs *</option>
                     <option v-for="zone in zones" :key="zone.name" :value="zone.id">
                         

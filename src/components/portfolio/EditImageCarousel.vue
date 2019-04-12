@@ -16,7 +16,7 @@
         <div id="urlForm" class="row py-2" v-if="showAddURL">
           <div class="col-12 vertical-center">
             <div class="form-group" style="width: inherit;">
-              <input @keypress.enter="add($event)" type="text" v-model="addImageURL" class="form-control" aria-describedby="imageCarouselInput" placeholder="Insert your URL Here..." />
+              <input @keypress.enter="add($event)" type="url" v-model="addImageURL" class="form-control" aria-describedby="imageCarouselInput" placeholder="Insert your URL Here..." />
               <small :class="{'imageCarouselInput' : showImageCarouselInputErrors}" class="form-text text-muted">
                 Must be a .png, .gif, .jpg or .jpeg link to an image.
               </small>
