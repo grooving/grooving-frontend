@@ -40,6 +40,12 @@ const state = {
     customPackage: {
         packageId: undefined,
         minimumPrice: undefined,
+    },
+
+    performancePackage: {
+        packageId: undefined,
+        duration: undefined,
+        priceHour: undefined,
     }
 
 };
@@ -51,6 +57,7 @@ const getters = {
     offerEvent: state => state.event,
     offerFarePack: state => state.farePackage,
     offerCustomPack: state => state.customPackage,
+    offerPerformancePack: state => state.performancePackage,
 };
 
 const actions = {
@@ -93,6 +100,10 @@ const actions = {
 
     setCustomPackage (state, customPackage) {
         state.commit('setCustomPackage', customPackage)
+    },
+
+    setPerformancePackage(state, performancePackage){
+        state.commit('setPerformancePackage', performancePackage)
     },
 
     //Other methods
@@ -185,6 +196,16 @@ const mutations = {
         
     },
 
+    setPerformancePackage(state, performancePackage) {
+
+        if(performancePackage){
+            state.performancePackage.packageId = performancePackage.packageId;
+            state.performancePackage.duration = performancePackage.duration;
+            state.performancePackage.priceHour = performancePackage.priceHour;
+        }
+        
+    },
+
     clearState(state) {
 
         //Artist
@@ -214,6 +235,10 @@ const mutations = {
         state.farePackage.priceHour = undefined;
         state.customPackage.packageId = undefined;
         state.customPackage.minimumPrice = undefined;
+        state.performancePackage.packageId = undefined;
+        state.performancePackage.duration = undefined;
+        state.performancePackage.priceHour = undefined;
+        
     },
 };
 
@@ -329,6 +354,62 @@ function checkStepRequirements(state, hiring, step){
         }
     }
 
+    else if (hiring == 'PERFORMANCE'){
+
+    if (step >= 0){
+
+        // TYPEOFHIRING
+
+        // ArtistData
+        res = state.artist.artistId != undefined && state.artist.artisticName != undefined;
+        // Offer hiringType
+        res = res && state.offer.hiringType != undefined && state.offer.hiringType == 'PERFORMANCE';
+       
+    }
+    
+    if(step >= 1){
+        // PERFORMANCE SELECTION
+        res = res && state.performancePackage.packageId != undefined && state.performancePackage.priceHour != undefined;
+
+    } 
+    
+    if(step >= 2){
+
+        // DATE SELECTION
+        res = res && state.date.date != undefined && state.date.date != '';
+
+    } 
+    
+    if(step >= 3){
+
+        // STARTING DATE
+        res = res && state.date.hour;
+
+    } 
+    
+    if(step >= 4){
+
+        // ADDRESSINPUT
+        res = res && state.event.location != undefined && state.event.street != undefined && state.event.zipcode != null;
+
+    }
+    
+    if(step >= 5){
+
+        // EVENT_DESCRIPTION
+        res = res && state.event.description;
+
+    }
+    
+    if(step >= 6){
+
+        // PAYMENTSELECTION: Por ahora solo soportamos creditcard, 
+        // redirección automática
+
+    }
+}
+
+
     return res;
 
 }
@@ -348,6 +429,10 @@ function checkViewRequirements(state, hiring, view){
         } else if(hiring == 'CUSTOM'){
 
             viewsAndSteps = ["DateSelection", "TimeSelection" , "PriceSelector", "AddressInput", "EventInput", "PaymentSelector", "Payment"];
+
+        } else if(hiring == 'PERFORMANCE'){
+
+            viewsAndSteps = ["PerformanceSelector", "DateSelection","StartingDate" , "AddressInput", "EventInput", "PaymentSelector", "Payment"];
 
         }
 

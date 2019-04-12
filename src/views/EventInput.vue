@@ -100,6 +100,10 @@ export default {
             this.cardPrice = this.$store.getters.offer.totalPrice;
         
 
+        if(this.hiringType && this.hiringType == 'PERFORMANCE'){
+            this.totalPrice = this.$store.getters.offerPerformancePack.priceHour;
+        }
+
         // Actualizamos el siguiente paso
         this.nextStep = '/paymentSelector/';
         

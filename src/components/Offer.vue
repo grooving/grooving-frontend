@@ -27,7 +27,7 @@
                     </div>
                     <hr class="mb-2"/>
                     <div v-if="offerStatus !== 'PENDING' && offerStatus !== 'CONTRACT_MADE'" class="cardTextId">
-                        <i class="material-icons iconOffer">bookmark</i><p style="word-break: break-all">{{statusMessage()}}</p>
+                        <i class="material-icons iconOffer">bookmark</i><p>{{statusMessage()}}</p>
                     </div>
                     <div v-if="offerStatus == 'PAYMENT_MADE' && gsecurity.hasRole('CUSTOMER') && ratingD !== null" class="cardTextId">
                         <div class="rating"><br v-if="rating == null && ratingD !== null">
@@ -98,10 +98,11 @@
                     <div v-if="offerStatus === 'PENDING' && gsecurity.hasRole('ARTIST')" class="right-div right-text2">
                         <router-link v-bind:to="confirmURI" class="btn btn-primary confirmButton"><span class="continueText">DETAILS</span></router-link></div>
                 </div>
+                <!--
                 <div v-if="offerStatus === 'CONTRACT_MADE'" class="row container" v-bind:id="buttonsId()">
                     <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="disableOfferButtons()" class="btnn btn-primary rejectButton" 
                         data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">DECLINE</span></a></div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

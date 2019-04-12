@@ -9,7 +9,7 @@
     <div class="everything">
         <div class="artistCard"><ArtistCard 
             :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
-            :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :price="this.cardPrice"/>
+            :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :price="this.cardPrice" :totalPrice="this.totalPrice"/>
         </div>
         <div class="calendarButton">
           <div class="calendar"><Calendar @datePickerDate="calendarSelected" :availableDates="this.datos[0].availableDates"/></div>
@@ -57,6 +57,7 @@ export default {
 
           datos: Array(),
           fecha: '',
+          totalPrice: undefined,
           errors: "",
         }
     },
@@ -159,10 +160,15 @@ export default {
         else if(this.hiringType == 'CUSTOM'){
             this.cardPrice = this.$store.getters.offerCustomPack.minimumPrice;
         }
+        else if(this.hiringType == 'PERFORMANCE'){
+            this.totalPrice = this.$store.getters.offerPerformancePack.priceHour;
+        }
 
         // Actualizamos el siguiente paso
         if(this.hiringType == 'FARE' || this.hiringType == 'CUSTOM')
             this.nextStep = '/timeSelection/';
+        else if(this.hiringType == 'PERFORMANCE')
+            this.nextStep = '/startingDate/';
 
         this.nextStep += this.artistData.artistId;
     },

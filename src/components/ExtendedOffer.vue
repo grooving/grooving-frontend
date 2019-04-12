@@ -11,8 +11,10 @@
                     <p class="card-text"><span style="font-weight: bold;">Address: </span>{{ address }}</p>
                     </div>
                     <div class="description">
-                    <p class="card-text"><span style="font-weight: bold;">Description: </span></p>
-                    <p class="card-text">{{ description }}</p>
+                        <p class="card-text"><span style="font-weight: bold;">Package: </span></p>
+                        <p class="card-text">{{ packageDescription }}</p>
+                        <p class="card-text"><span style="font-weight: bold;">Description: </span></p>
+                        <p class="card-text">{{ description }}</p>
                     </div>
                 </div>
                 
@@ -106,6 +108,10 @@
             confirmURI: {
                 type: String,
                 default: '/acceptedOffer/'
+            },
+            packageDescription: {
+                type: String,
+                default: 'Performance'
             }
         },
 
@@ -138,6 +144,10 @@
 <style scoped>
     * {
         font-family: "Archivo"
+    }
+
+    .details{
+        padding-bottom: 3%;
     }
 
     .tarjeta {
@@ -218,6 +228,7 @@
             margin-right: 3%;
             flex-basis: 50%;
             flex-grow: 0;
+            
         }
 
         .description {
