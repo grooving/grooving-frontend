@@ -57,11 +57,8 @@ export default {
 
           datos: Array(),
           fecha: '',
-<<<<<<< HEAD
           totalPrice: undefined,
-=======
           errors: "",
->>>>>>> D03S2
         }
     },
 
