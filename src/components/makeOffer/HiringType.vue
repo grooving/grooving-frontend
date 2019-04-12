@@ -3,7 +3,7 @@
       <h2 class="titleType">Type of Hiring</h2>
 
      <div class="accordion" id="accordionExample">
-  <div class="tarjetaB">
+  <div v-if="farePrice != null && farePrice != ''" class="tarjetaB">
     <div class="heads" id="headingOne" data-toggle="collapse" 
             data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
       <h5 class="mb-0">
@@ -38,7 +38,7 @@
       </div>
     </div>
   </div>
-  <div class="tarjetaB">
+  <div v-if="customMinPrice != null && customMinPrice != ''" class="tarjetaB">
     <div class="heads" id="headingThree"  data-toggle="collapse" 
             data-target="#collapseThree" aria-expanded="true" aria-controls="collapseOne">
       <h5 class="mb-0">
