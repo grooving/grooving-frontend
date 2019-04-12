@@ -134,7 +134,7 @@ export default {
         if(this.hiringType == 'FARE')
             this.cardPrice = this.$store.getters.offer.totalPrice;
         else if(this.hiringType == 'CUSTOM')
-            this.cardPrice = this.$store.getters.offerCustomPack.cardPrice;
+            this.cardPrice = this.$store.getters.offer.totalPrice;
         else if(this.hiringType == 'PERFORMANCE')
             this.cardPrice = this.$store.getters.offerPerformancePack.priceHour;
 
