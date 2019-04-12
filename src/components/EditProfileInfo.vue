@@ -41,10 +41,17 @@
                         <p class="card-text" style="float:right;">{{email}}</p>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
+                    <div v-if="this.gsecurity.hasRole('ARTIST')" style="width:100%;margin-top:16px;">
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">PAYPAL</p>
+                        <b-form-group>
+                            <b-form-input v-model="paypal" v-bind:value="paypal" style="text-align: right" type="email"></b-form-input>
+                        </b-form-group>
+                    </div>
+                    <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:16px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">PHONE</p>
                         <b-form-group>
-                            <b-form-input v-model="phoneNumber" v-bind:value="phoneNumber" style="text-align: right" type="number"></b-form-input>
+                            <b-form-input v-model="phoneNumber" min="600000000" max="900000000" v-bind:value="phoneNumber" style="text-align: right" type="number"></b-form-input>
                         </b-form-group>
                     </div>
                     <div class="continueButtonDiv">
@@ -73,6 +80,7 @@ export default {
             surnames: '',
             username: '',
             email: '',
+            paypal: '',
             phoneNumber: '',
 
             errors: "",
@@ -89,26 +97,50 @@ export default {
                 uri = endpoints.customer;
             }
 
-            GAxios.put(uri + this.gsecurity.getId() + '/', {
-                "first_name": this.name,
-                "last_name": this.surnames,
-                "phone": this.phoneNumber,
-                "photo": this.gsecurity.getPhoto(),
-            }).then(response => {
-                console.log(response);
-                this.gsecurity.setFirstName(this.name);
-                window.localStorage.setItem("firstName", this.name);
-                this.$router.push({name: "personalInfo"});
-                window.location.reload();
-            }).catch(ex => {
-                console.log(ex);
-                if (ex.reponse != null) {
-                    this.errors = ex.response.data[0];
+            if (this.gsecurity.getRole() == 'ARTIST') {
+                GAxios.put(uri + this.gsecurity.getId() + '/', {
+                    "first_name": this.name,
+                    "last_name": this.surnames,
+                    "phone": this.phoneNumber,
+                    "photo": this.gsecurity.getPhoto(),
+                    "paypalAccount": this.paypal,
+                }).then(response => {
+                    console.log(response);
+                    this.gsecurity.setFirstName(this.name);
+                    window.localStorage.setItem("firstName", this.name);
+                    this.$router.push({name: "personalInfo"});
+                    window.location.reload();
+                }).catch(ex => {
+                    console.log(ex);
+                    console.log(ex.response.data.error);
+                    this.errors = ex.response.data.error;
                     document.getElementById("errorsDiv").style.display = "block";
-                }
-            }).then( () => {
-                NProgress.done();
-            })
+                    window.scrollTo(0,0);
+                }).then( () => {
+                    NProgress.done();
+                })
+            } else if (this.gsecurity.getRole() == 'CUSTOMER') {
+                GAxios.put(uri + this.gsecurity.getId() + '/', {
+                    "first_name": this.name,
+                    "last_name": this.surnames,
+                    "phone": this.phoneNumber,
+                    "photo": this.gsecurity.getPhoto(),
+                }).then(response => {
+                    console.log(response);
+                    this.gsecurity.setFirstName(this.name);
+                    window.localStorage.setItem("firstName", this.name);
+                    this.$router.push({name: "personalInfo"});
+                    window.location.reload();
+                }).catch(ex => {
+                    console.log(ex);
+                    console.log(ex.response.data.error);
+                    this.errors = ex.response.data.error;
+                    document.getElementById("errorsDiv").style.display = "block";
+                    window.scrollTo(0,0);
+                }).then( () => {
+                    NProgress.done();
+                })
+            }
         },
     },
 
@@ -141,6 +173,10 @@ export default {
                     this.email = personalInformation['email'];
                     this.phoneNumber = response.data.phone;
                     this.username = personalInformation['username'];                    
+
+                    if (role == 'ARTIST') {
+                        this.paypal = response.data.paypalAccount;
+                    }
                 }).then( () => {
                     NProgress.done();
                 })          

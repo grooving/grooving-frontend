@@ -39,7 +39,7 @@ export default {
 
     data: function() {
         return {
-            minimumPrice: 10,
+            minimumPrice: {},
             errors: "",
         }
     },

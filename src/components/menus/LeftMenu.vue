@@ -7,8 +7,8 @@
          <h2 class="title">Menu</h2>
             <ul class="navbar-nav mr-auto p-2 col align-self-center justify-content-center">
                 <li class="nav-item section">
-                    <div class="nav-link goTo" @click="goTo('/artist_search')" data-toggle="collapse" data-target="#sidebarleft" >Top Artists</div> 
-                    <b-dropdown-divider class="divider"/>
+                    <div class="nav-link goTo" @click="goTo('/topArtists')" data-toggle="collapse" data-target="#sidebarleft" >Top Artists</div> 
+                    <b-dropdown-divider v-if="gsecurity.isAuthenticated()" class="divider"/>
                 </li>
                 <li v-if="gsecurity.isAuthenticated()" class="nav-item section">
                     <div class="nav-link goTo" @click="goTo('/offers')" data-toggle="collapse" 

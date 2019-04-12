@@ -82,6 +82,12 @@ export default {
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
     },
+
+    beforeMount: function() {
+        if (!this.performanceId) {
+            this.$router.push({name: "hiringSettings"});
+        }
+    },
 }
 </script>
 

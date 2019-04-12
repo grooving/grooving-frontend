@@ -92,6 +92,7 @@ export default {
     // Loads portfolio data
     retreivePortfolio: function(){
       NProgress.start();      
+      
       GAxios.get(endpoints.portfolio + this.artistId + "/")
       .then(response => {
           var portfolio = response.data;
@@ -198,7 +199,6 @@ export default {
         //Actualizamos el calendario
         authorizedGAxios.put(endpoints.calendar + this.artistId + '/', body_calendar)
         .then(response => {
-          console.log(response.data);
           this.$router.push("/showPortfolio/"+this.artistId)
         }).catch(ex => {
             console.log(ex);
