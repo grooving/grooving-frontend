@@ -1,7 +1,7 @@
 <template>
 <div class="prueba">
     <div v-if="errors" class="validationErrors vertical-center">
-        <p>Sorry! Something went wrong. Try again later.</p>
+        <p>{{errors}}</p>
     </div>
     <div class="title"><p>Pick a starting date</p></div>
     <div class="everything">
@@ -9,7 +9,7 @@
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.totalPrice"/>
         </div>
         <div class="paymentDiv">
-          <div class="creditCardPayment" style="min-width:400px;"><StartingDatePicker/></div>
+          <div class="creditCardPayment" style="min-width:400px;"><StartingDatePicker @startingHour="getHourAndMinutes"/></div>
         </div>
     </div>
 </div>
@@ -23,6 +23,7 @@ import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
 import { mapGetters } from 'vuex';
+import {mapActions} from 'vuex';
 import PaymentProcess from '@/store/modules/payment.js';
 import { error } from 'util';
 
@@ -39,6 +40,7 @@ export default {
             gsecurity: GSecurity,
             artistId: undefined,
             hiringType: undefined,
+            cardPrice: undefined,
             creditCard: {
                 number: undefined, 
                 name: undefined, 
@@ -48,7 +50,7 @@ export default {
             },
             date: {
                 fecha: undefined, 
-                startHour: undefined, 
+                hour: undefined, 
                 duration: undefined,
             },
             offer: {
@@ -60,13 +62,13 @@ export default {
                 description: undefined,
             },
             artistData: {
-                artistId: 1,
-                artisticName: "Jose Bellido",
+                artistId: undefined,
+                artisticName: undefined,
                 photo: undefined, 
-                genres: ['Pop', 'Country'],
+                genres: undefined,
             },
             totalPrice: undefined,
-            nextStep: '/sentOffer/',
+            nextStep: undefined,
             farePackageId: undefined,
         }
     },
@@ -78,10 +80,44 @@ export default {
         }
     },
 
+    methods: {
+        ...mapActions(['setDateTime']),
+
+        getHourAndMinutes(hour, minutes){
+            if(minutes <= 23 && minutes >= 0 && hour <= 59 && hour >= 0 && hour % 1 === 0 && minutes % 1 === 0) {
+                var startingHour = minutes+':'+hour;
+                this.date.hour = startingHour;
+
+                this.setDateTime(this.date).then(() => {
+                    
+                    // If VueX has correcty saved the time
+                    this.$router.push(this.nextStep)
+
+                }).catch( e => {
+
+                    console.log('Error: Could not set time in VueX');
+                    console.log(e);
+
+                });
+            }else{
+                this.errors = 'You must specific a starting hour';
+                document.getElementById("errorsDiv").style.display = "block";
+            }
+
+        }
+
+    },
+
     created() {
         // Retreive store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+
+        // The artist to whom the offer is created
+        this.artistId = this.$route.params['artistId'];
+        // Retrieve the type of hiring
+        this.hiringType = this.$store.getters.offer.hiringType;
+
 
         if(!this.$gsecurity.isAuthenticated()) {
             console.log('Error')
@@ -93,13 +129,44 @@ export default {
             location.replace("/#/*")
         }
 
-        /*if(!this.artistId){
+        if(!this.artistId){
             console.log("Error: ArtistId not provided");
             location.replace("/")
-        }*/
+        }
+
+        // Check the user does not access the view directly
+        if(!PaymentProcess.checkViewRequirements(PaymentProcess.state, this.hiringType, "StartingDate")){
+            console.log('Error: Direct access to the view was detected')
+            location.replace("/#/hiringType/" + this.artistId + "/")
+        }
 
 
-    }
+    },
+
+    beforeMount: function() {
+
+        // ###### VUEX RESTORE ###### 
+
+        this.artistData = this.$store.getters.offerArtist;
+
+        // ###### END OF VUEX RESTORE ###### 
+        
+        var authorizedGAxios = GAxios;
+        var GAxiosToken = this.gsecurity.getToken();
+        authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
+
+
+        // Obtenemos el precio de la tarjeta izq
+        if(this.hiringType == 'PERFORMANCE'){
+            this.totalPrice = this.$store.getters.offerPerformancePack.priceHour;
+        }
+
+        // Actualizamos el siguiente paso
+        if(this.hiringType == 'PERFORMANCE')
+            this.nextStep = '/addressInput/';
+
+        this.nextStep += this.artistData.artistId;
+    },
 
 }
 </script>

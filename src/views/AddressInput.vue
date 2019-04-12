@@ -129,11 +129,13 @@ export default {
         // Obtenemos el precio de la tarjeta izq   
         if(this.hiringType == 'FARE')
             this.cardPrice = this.$store.getters.offerFarePack.priceHour;
-        else(this.hiringType == 'CUSTOM')
+        else if(this.hiringType == 'CUSTOM')
             this.cardPrice = this.$store.getters.offer.totalPrice;
+        else if(this.hiringType == 'PERFORMANCE')
+            this.cardPrice = this.$store.getters.offerPerformancePack.priceHour;
 
         // Actualizamos el siguiente paso
-        if(this.hiringType == 'FARE'){
+        if(this.hiringType == 'FARE' || this.hiringType == 'PERFORMANCE'){
             this.nextStep = '/addressInput/';
         }else if(this.hiringType == 'CUSTOM'){
             this.nextStep = '/priceSelector/';

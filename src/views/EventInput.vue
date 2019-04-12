@@ -97,6 +97,10 @@ export default {
         if(this.hiringType && this.hiringType == 'CUSTOM')
             this.cardPrice = this.$store.getters.offerCustomPack.cardPrice;
 
+        if(this.hiringType && this.hiringType == 'PERFORMANCE'){
+            this.totalPrice = this.$store.getters.offerPerformancePack.priceHour;
+        }
+
         // Actualizamos el siguiente paso
         this.nextStep = '/paymentSelector/';
         
