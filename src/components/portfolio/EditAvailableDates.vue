@@ -73,7 +73,10 @@ export default {
     },
 
     props: {
-        availableDates: Array,
+        availableDates: {
+            type: Array,
+            default: () => { return Array()},
+        },
     },
 
     components: {
@@ -112,9 +115,9 @@ export default {
                     var stringDates = Array();
                     stringDates.push(this.deleteDate);
 
-                    for (var i = 0; i < this.availableDates.length; i++) {
-                        res.push(new Date(this.availableDates[i]));
-                        stringDates.push(this.availableDates[i]);
+                    for (var i = 0; i < this.$props.availableDates.length; i++) {
+                        res.push(new Date(this.$props.availableDates[i]));
+                        stringDates.push(this.$props.availableDates[i]);
                     }
 
                     this.stringToDates = res;
@@ -143,21 +146,21 @@ export default {
                 }
                 else{
                     //alert(this.addDate);
-                    //alert(this.availableDates);
-                    var idx = this.availableDates.indexOf(this.addDate);
+                    //alert(this.$props.availableDates);
+                    var idx = this.$props.availableDates.indexOf(this.addDate);
                     //alert(idx);
                     
                     if(idx!=-1){
                         //alert("AAAAA");
-                        this.availableDates.splice(idx, 1);
-                        //alert(this.availableDates);
+                        this.$props.availableDates.splice(idx, 1);
+                        //alert(this.$props.availableDates);
 
                         var stringDates = Array();
                         var res = Array();
 
-                        for (var i = 0; i < this.availableDates.length; i++) {
-                            res.push(new Date(this.availableDates[i]));
-                            stringDates.push(this.availableDates[i]);
+                        for (var i = 0; i < this.$props.availableDates.length; i++) {
+                            res.push(new Date(this.$props.availableDates[i]));
+                            stringDates.push(this.$props.availableDates[i]);
                         }
 
                         //alert("EEEEE");
@@ -171,7 +174,7 @@ export default {
 
                         //alert("IIIIII");
 
-                        //alert(this.availableDates);
+                        //alert(this.$props.availableDates);
                         this.$parent.d_portfolioDays = stringDates;
 
                         //alert("wog!");
@@ -196,11 +199,10 @@ export default {
     },
 
     created: function() {
-        console.log(this.availableDates);
         var res = Array();
 
-        for (var i = 0; i < this.availableDates.length; i++) { 
-            res.push(new Date(this.availableDates[i]));
+        for (var i = 0; i < this.$props.availableDates.length; i++) { 
+            res.push(new Date(this.$props.availableDates[i]));
         }
 
         this.stringToDates = res;

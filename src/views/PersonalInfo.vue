@@ -2,7 +2,7 @@
 <div class="prueba">
     <div class="everything">
         <div class="paymentSelect">
-          <div class="paymentOptions"><ProfileInfo :name="name" :surnames="userSurnames" :email="userEmail" :phoneNumber="userPhoneNumber" :username="username"/></div>
+          <div class="paymentOptions"><ProfileInfo :name="name" :surnames="userSurnames" :email="userEmail" :paypal="paypal" :phoneNumber="userPhoneNumber" :username="username"/></div>
         </div>
     </div>
 </div>
@@ -30,6 +30,7 @@ export default {
             username: '',
             userEmail: '',
             userPhoneNumber: '',
+            paypal: '',
         };
     },
 
@@ -82,6 +83,7 @@ export default {
                         this.userEmail=personalInformation['email'];
                         this.userPhoneNumber = response.data.phone;
                         this.username = personalInformation['username'];
+                        this.paypal = response.data.paypalAccount;
                 }).then(() => {
                     NProgress.done()
                 });  

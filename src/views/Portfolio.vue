@@ -7,7 +7,7 @@
     <div id="datesContainer" class="datesContainer">	
     	<div class="contentCalendar">
     		<h3 class="availableDatesTitle" >Available dates</h3>
-    		<Calendar class="availableDates" :availableDates="this.datos[0].availableDates"/>
+    		<Calendar class="availableDates" :availableDates="d_portfolioDays"/>
     	</div>
     </div>
     <router-link v-if="!hideEditButton" :to="'/editPortfolio/' + artistId" class="floating-btn vertical-center">
@@ -32,8 +32,6 @@ import Calendar from '@/components/Calendar.vue';
 
 import {mapActions} from 'vuex';
 import { type } from 'os';
-
-var portfolioDays = [];
 
 export default {
   name: 'Portfolio',
@@ -87,7 +85,9 @@ export default {
       d_portfolioBiography: '',
       d_portfolioImages: Array(),
       d_portfolioVideos: Array(),
-      d_portfolioDays: Array(),
+      d_portfolioDays: [
+        {availableDates: Array()},
+      ],
       datos: Array(),
       rating: undefined,
     }
@@ -148,15 +148,7 @@ export default {
             videoCounter = videoCounter+1;
           }
 
-          this.updateVideosKey += 1;
-
-          
-
-          this.d_portfolioDays = portfolio.calendar_set[0]['days'];
-          
-
-          
-          
+          this.updateVideosKey += 1;  
                 
     });
 
@@ -167,17 +159,13 @@ export default {
         authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
       }
 
-      authorizedGAxios.get('/artist' + endpoints.calendar + this.$route.params['artistId'] + '/')
+      authorizedGAxios.get(endpoints.artistCalendar + this.$route.params['artistId'] + '/')
         .then(response => {
-            var calendar = response.data;
-            if(calendar.length==0){
-              this.datos.push({availableDates: []});
-            }
-            else{
-              this.datos.push({
-                  availableDates: calendar[0].days,
-              })
-            }
+
+          var calendar = response.data;
+          if(calendar && calendar.length > 0){
+            this.d_portfolioDays[0].availableDates = calendar[0].days;
+          }
 
         }).catch(ex => {
             console.log(ex);

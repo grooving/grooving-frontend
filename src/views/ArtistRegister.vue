@@ -125,7 +125,7 @@
                 } else {
                     NProgress.start();
                     GAxios.post(endpoints.registerArtist, {
-                        "artisticName": this.artisticName,
+                        "artisticName": this.input.artisticName,
                         "first_name": this.input.firstName,
                         "last_name": this.input.lastName,
                         "password": this.input.password,

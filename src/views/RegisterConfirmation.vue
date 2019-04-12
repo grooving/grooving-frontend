@@ -40,6 +40,12 @@ export default {
         font-family: "Archivo"
     }
 
+    .everything{
+        margin-top: 75px;
+        align-items: center;  /*Aligns vertically center */
+        justify-content: center; /*Aligns horizontally center */
+    }
+
     .confirmation {
         padding-bottom: 10%;
         padding-top: 10%;
@@ -71,8 +77,6 @@ export default {
         margin-right: 10px;
         min-height: 370px;
         min-width: 335px;
-        padding: 25px;
-        padding-bottom: 100px;
         width: 25%;
     }
 
@@ -88,10 +92,14 @@ export default {
         margin-bottom: 0%;
         margin-left: 10%;
         margin-right: 12%;
-        margin-top: 5%;
     }
 
     @media (min-width:768px)  {
+
+        .everything{
+            margin-bottom: 5%;
+        }
+
         .tarjeta {
             border-radius: 10px;
             box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, .2);
@@ -134,9 +142,9 @@ export default {
             margin: 0px;
             min-width: 320px;
             min-height: 200px;
-            padding-top: 0px;
             text-align: center;
             width: 100%;
+            margin-bottom: 5%;
         }
 
         .title {
