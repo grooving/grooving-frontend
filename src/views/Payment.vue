@@ -1,7 +1,7 @@
 <template>
 <div class="hiringProcessContainer">
-    <div v-if="errors == true" class="validationErrors">
-        <p>Sorry! Something went wrong. Try again later.</p>
+    <div id="errorsDiv" class="validationErrors vertical-center">
+        <p style="margin: 0px;">{{errors}}</p>
     </div>
     <div class="title"><p>Payment</p></div>
     <div class="everything">
@@ -73,7 +73,7 @@ export default {
                 description: undefined,
                 zoneId: undefined,
             },
-
+            errors: "",
         }
     },
 
@@ -184,34 +184,30 @@ export default {
                     })
                     .then(() => this.$router.push({path: this.nextStep}))
                     .catch(error => {
-                        console.log("Error while sending payment nonce to the server")
-                        this.errors = true;
+                        this.errors = error.message;
+                        document.getElementById("errorsDiv").style.display = "block";
+                        window.scrollTo(0,0);
                     })
 
                     
                 })
                 .catch(error => {
-                    console.log("Error while creating the Offer")
-                    this.errors = true;
+                    this.errors = error.message;
+                    document.getElementById("errorsDiv").style.display = "block";
+                    window.scrollTo(0,0);
                 })
                 
             })
             .catch(error => {
-                console.log("Error while creating the EventLocation")
-                this.errors = true;
+                this.errors = error.message;
+                document.getElementById("errorsDiv").style.display = "block";
+                window.scrollTo(0,0);
             }).then(() => {
                 NProgress.done()
             });
         },
 
         
-    },
-
-    props: {
-        errors: {
-            type: Boolean,
-            default: false
-        }
     },
 
     created() {
@@ -324,13 +320,16 @@ export default {
             font-weight: bold;
         }
 
-        .validationErrors{
+        validationErrors{
             background-color:#f50057;
-            box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);
-            
+            border-radius: 5px;
+            box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
             color:white;
+            display: none;
             font-weight: bold;
             height: 100%;
+            margin-bottom: 14px;
+            padding: 10px;
             padding-top: 12px;
         }
         
