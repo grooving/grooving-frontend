@@ -12,7 +12,7 @@
     </div>
     <router-view :key="$route.fullPath" id="mainContent"/>
     </div>
-    <footer><Footer/></footer>
+    <footer><Footer @samePage='samePage' @refreshRightMenu='refreshRightMenu'/></footer>
   </div>
 </template>
 
