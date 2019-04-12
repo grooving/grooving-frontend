@@ -117,8 +117,12 @@ export default {
 
         // The artist to whom the offer is created
         this.artistId = this.$route.params['artistId'];
+        // The artistId saved in Vuex
+        var vuexArtistId = this.$store.getters.offerArtist ? this.$store.getters.offerArtist.artistId : undefined;
         // Retrieve the type of hiring
         this.hiringType = this.$store.getters.offer.hiringType;
+
+        // ###### SECURITY ACCESS CHECKS ###### 
 
         if(!this.$gsecurity.isAuthenticated()) {
             console.log('Error')
@@ -130,16 +134,18 @@ export default {
             this.$router.push({name: "error"});
         }
 
-        if(!this.artistId){
-            console.log("Error: ArtistId not provided");
+        if(!this.artistId || !vuexArtistId || this.artistId != vuexArtistId){
+            console.log("Error: ArtistId not provided or VueX not matching URL");
             location.replace("/")
         }
 
+        // Check the user does not access the view directly
         if(!PaymentProcess.checkViewRequirements(PaymentProcess.state, this.hiringType, "PerformanceSelector")){
             console.log('Error: Direct access to the view was detected')
             location.replace("/#/hiringType/" + this.artistId + "/")
         }
 
+        // ###### END OF SECURITY ACCESS CHECKS ###### 
 
     },
     beforeMount: function(){

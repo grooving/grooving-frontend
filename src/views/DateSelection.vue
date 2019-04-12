@@ -101,6 +101,8 @@ export default {
 
         // The artist to whom the offer is created
         this.artistId = this.$route.params['artistId'];
+        // The artistId saved in Vuex
+        var vuexArtistId = this.$store.getters.offerArtist ? this.$store.getters.offerArtist.artistId : undefined;
         // Retrieve the type of hiring
         this.hiringType = this.$store.getters.offer.hiringType;
 
@@ -111,8 +113,8 @@ export default {
             location.replace("/#/*")
         }
 
-        if(!this.artistId){
-            console.log("Error: ArtistId not provided");
+        if(!this.artistId || !vuexArtistId || this.artistId != vuexArtistId){
+            console.log("Error: ArtistId not provided or VueX not matching URL");
             location.replace("/")
         }
 
