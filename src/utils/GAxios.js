@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URI = 'https://grooving-frontend-d3-test.herokuapp.com';
+const BASE_URI = 'https://grooving-backend-d3-test.herokuapp.com';
 const CORS_HEADERS = {
     'Access-Control-Allow-Origin': "*",
     'Access-Control-Allow-Credentials': 'true',
