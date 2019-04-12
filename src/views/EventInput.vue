@@ -52,24 +52,31 @@ export default {
 
     created() {
 
-        // Retrieve store credentials
+        // Retreive store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
 
         // The artist to whom the offer is created
         this.artistId = this.$route.params['artistId'];
+        // The artistId saved in Vuex
+        var vuexArtistId = this.$store.getters.offerArtist ? this.$store.getters.offerArtist.artistId : undefined;
         // Retrieve the type of hiring
         this.hiringType = this.$store.getters.offer.hiringType;
 
         // ###### SECURITY ACCESS CHECKS ###### 
 
-        if(!this.gsecurity.hasRole('CUSTOMER')) {
-            console.log("Error: You are not a customer so you can't hire an artist");
-            location.replace("/#/*")
+        if(!this.$gsecurity.isAuthenticated()) {
+            console.log('Error')
+            this.$router.push({name: "error"});
         }
 
-        if(!this.artistId){
-            console.log("Error: ArtistId not provided");
+        if(!this.$gsecurity.hasRole('CUSTOMER')) {
+            console.log("Error: You are not a customer so you can't hire an artist");
+            this.$router.push({name: "error"});
+        }
+
+        if(!this.artistId || !vuexArtistId || this.artistId != vuexArtistId){
+            console.log("Error: ArtistId not provided or VueX not matching URL");
             location.replace("/")
         }
 

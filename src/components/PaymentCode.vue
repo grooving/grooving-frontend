@@ -1,4 +1,8 @@
 <template>
+    <div>
+    <div id="errorsDiv" class="validationErrors vertical-center">
+        <p style="margin: 0px;">{{errors}}</p>
+    </div>
     <div class="content">
     <form v-on:submit="receivePayment()">
         <div class="form-row">
@@ -11,6 +15,7 @@
             class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></button></div>
 
     </form>
+    </div>
     </div>
 </template>
 
@@ -25,7 +30,8 @@ export default {
     data: function(){
     	return{
     		gsecurity: GSecurity,
-    		gaxios: GAxios
+            gaxios: GAxios,
+            errors: '',
     	}
     },
     props: {
@@ -61,8 +67,17 @@ export default {
                     this.$emit('offerDetails', arrayOffer);
                     this.$router.push('/paymentConfirmation');
 	      		}).catch(ex => {
-                    this.$emit('errorPayment', true);                
-	      			console.log(ex);
+                    this.$emit('errorPayment', true);
+                    console.log(ex.response.data);
+                    if (ex.response.data.error != null){
+                        this.errors = ex.response.data.error;
+                        document.getElementById("errorsDiv").style.display = "block";
+                        window.scrollTo(0,0);
+                    } else if (ex.response.data.paypal != null) {
+                        this.errors = ex.response.data.paypal;
+                        document.getElementById("errorsDiv").style.display = "block";
+                        window.scrollTo(0,0);   
+                    }
 	      		}).then(() => {
                     NProgress.done()
                 });
@@ -110,7 +125,20 @@ export default {
         margin-top: 5%;
         margin-bottom: 5%;
         font-weight: bold;
-    }    
+    }  
+
+    .validationErrors{
+        background-color:#f50057;
+        border-radius: 5px;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
+        color:white;
+        display: none;
+        font-weight: bold;
+        height: 100%;
+        margin-bottom: 14px;
+        padding: 10px;
+        padding-top: 12px;
+    }  
 
     @media (max-width:767px)  {
         .content{

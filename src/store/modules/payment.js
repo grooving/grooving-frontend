@@ -432,7 +432,7 @@ function checkViewRequirements(state, hiring, view){
 
         } else if(hiring == 'PERFORMANCE'){
 
-            viewsAndSteps = ["PerformanceSelector", "DateSelection","StartingDate" , "AddressInput", "EventInput", "PaymentSelector", "Payment"];
+            viewsAndSteps = ["PerformanceSelector", "DateSelection", "StartingDate" , "AddressInput", "EventInput", "PaymentSelector", "Payment"];
 
         }
 

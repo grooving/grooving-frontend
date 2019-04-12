@@ -4,17 +4,17 @@
             <div class="align-items-center">
                 <div class="col-auto">
                     <div class="input-group mb-2">
-                        <input v-model="minutes" type="number" min="00" max="23" class="form-control" placeholder="HH" maxlength="2" onchange="if(parseInt(this.value,10)<10)this.value='0'+this.value;">
+                        <input v-model="minutes" type="number" min="00" max="23" class="form-control" placeholder="HH" maxlength="2">
                         <div class="input-group-text">h</div>
                         
                         <span style="padding-left: 10px; padding-right: 10px;">:</span>
-                        <input v-model="hour" type="number" min="00" max="59" class="form-control" placeholder="MM" maxlength="2" onchange="if(parseInt(this.value,10)<10)this.value='0'+this.value;">
+                        <input v-model="hour" type="number" min="00" max="59" class="form-control" placeholder="MM" maxlength="2">
                         <div class="input-group-text">min</div>
                     </div>
                 </div>
             </div>
             <div class="align-items-center">
-                 <div class="btn btn-primary continueButton" @click="getDateInputs(hour, minutes)"><span class="continueText">SUBMIT</span></div>
+                 <div class="btn btn-primary continueButton" @click="getDateInputs(hour, minutes)"><span class="continueText">CONTINUE</span></div>
             </div>
         </form>
     </div>
