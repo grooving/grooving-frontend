@@ -40,7 +40,7 @@
                         <p class="card-text" style="font-weight:bold;display:inline-block;">EMAIL</p>
                         <p class="card-text" style="float:right;">{{email}}</p>
                     </div>
-                    <hr style="margin-top:0px;margin-bottom:0px;"/>
+                    <hr v-if="this.gsecurity.hasRole('ARTIST')" style="margin-top:0px;margin-bottom:0px;"/>
                     <div v-if="this.gsecurity.hasRole('ARTIST')" style="width:100%;margin-top:16px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">PAYPAL</p>
                         <b-form-group>
