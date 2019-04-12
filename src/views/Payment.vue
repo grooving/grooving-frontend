@@ -210,13 +210,6 @@ export default {
         
     },
 
-    props: {
-        errors: {
-            type: Boolean,
-            default: false
-        }
-    },
-
     created() {
 
         // Retrieve store credentials
@@ -327,13 +320,16 @@ export default {
             font-weight: bold;
         }
 
-        .validationErrors{
+        validationErrors{
             background-color:#f50057;
-            box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);
-            
+            border-radius: 5px;
+            box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
             color:white;
+            display: none;
             font-weight: bold;
             height: 100%;
+            margin-bottom: 14px;
+            padding: 10px;
             padding-top: 12px;
         }
         
