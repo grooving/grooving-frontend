@@ -132,15 +132,27 @@ export default {
             authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
 
             // Completamos el cuerpo genérico con los campos restantes para cada tipo
+            if(this.hiringType == "FARE"){
+                this.packageId = this.$store.getters.offerFarePack.packageId;
+                body_offer['price'] = this.$store.getters.offer.totalPrice;
+                body_offer['hours'] = this.$store.getters.offerDate.duration;
+                
+            }
+
             if(this.hiringType == "CUSTOM"){
                 this.packageId = this.$store.getters.offerCustomPack.packageId;
                 body_offer['price'] = this.$store.getters.offer.totalPrice;
+                body_offer['hours'] = this.$store.getters.offerDate.duration;
             }
 
             if(this.hiringType == 'PERFORMANCE'){
                 this.packageId = this.$store.getters.offerPerformancePack.packageId;
-                body_offer['price'] = this.$store.getters.offer.priceHour;
+                body_offer['price'] = this.$store.getters.offerPerformancePack.priceHour;
+                body_offer['hours'] = this.$store.getters.offerPerformancePack.duration;
+                
             }
+
+            
 
             authorizedGAxios.post(endpoints.eventlocation, body_eventLocation)
             .then((res) => {

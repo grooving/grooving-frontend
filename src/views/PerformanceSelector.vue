@@ -79,7 +79,7 @@ export default {
             /* Creamos el package de tipo Performance con los datos obtenidos */
 
             this.performancePackage.packageId = perfId;
-            this.performancePackage.priceHour = Math.trunc(perfDuration * perfPrice);
+            this.performancePackage.priceHour = perfPrice;
             this.performancePackage.duration = perfDuration;
 
             /* Setteamos la oferta */

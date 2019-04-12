@@ -29,7 +29,7 @@
                         <div class="input-group">
                             <input v-model="fixedPrice" type="number" class="form-control" min="0.01" step="0.01" required>
                             <div class="input-group-append">
-                                <span class="input-group-text">€/h</span>
+                                <span class="input-group-text">€</span>
                             </div>
                         </div>
                     </div>

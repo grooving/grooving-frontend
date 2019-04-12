@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="align-items-center">
-                 <div class="btn btn-primary continueButton" @click="getDateInputs(hour, minutes)"><span class="continueText">SUBMIT</span></div>
+                 <div class="btn btn-primary continueButton" @click="getDateInputs(hour, minutes)"><span class="continueText">CONTINUE</span></div>
             </div>
         </form>
     </div>
