@@ -151,7 +151,6 @@ export default {
                 // Reference the brand-new eventLocation
                 body_offer['eventLocation_id'] = res.data.id;
 
-                alert(body_offer['eventLocation_id']);
                 
 
                 // Una vez creado el eventLocation, procedemos a crear la oferta
