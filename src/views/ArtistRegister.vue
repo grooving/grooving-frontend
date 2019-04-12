@@ -136,7 +136,7 @@
                         "phone": this.input.phoneNumber,
                     }).then(response => {
                         console.log(response);
-                        this.$router.push({name: "registerConfirmation"});
+                        this.$router.push({name: "registerConfirmation", params: {created: true}});
                     }).catch(ex => {
                         console.log(ex.response.data.error);
                         this.errors = ex.response.data.error;

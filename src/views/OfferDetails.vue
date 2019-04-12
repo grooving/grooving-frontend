@@ -3,7 +3,7 @@
         <hr />
         <div style="width:100%">
             <ExtendedOffer :offerID="offer[0].offerID" :date="offer[0].date" :endingHour="offer[0].endingHour" :price="offer[0].price"
-             :address="offer[0].address" :description="offer[0].description" :confirmURI="offer[0].confirmURI" />
+             :address="offer[0].address" :description="offer[0].description" :confirmURI="offer[0].confirmURI" :packageDescription="offer[0].packageDescription" />
         </div>
     </div>
 </template>
@@ -52,6 +52,7 @@ export default {
           address: off.eventLocation.address,
           price: off.price,
           confirmURI: acceptURI + off.id,
+          packageDescription: off.paymentPackage.description
         });
       }).catch(ex => {
           console.log(ex);

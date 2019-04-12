@@ -7,7 +7,7 @@
                     <router-link v-if="!empty" v-bind:to="{name: 'editCustom', params: {minimumPrice, packageId, customId}}" style="height: 28px; width: 28px; margin-bottom:12px;">
                         <i class="material-icons iconOffer">create</i>
                     </router-link>
-                    <h6 class="card-subtitle mb-2 text-muted">The customer can decide the amount of money he will pay, so you may set a minimun price. </h6>
+                    <h6 class="card-subtitle mb-2 text-muted">The customer can decide the amount of money he will pay, so you may set a minimum price. </h6>
                     <div v-if="!empty" style="width:100%;margin-top:25px;overflow:auto;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">MINIMUM PRICE</p>
                         <p class="card-text" style="float:right;">{{minimumPrice}} €/h</p>

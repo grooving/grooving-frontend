@@ -34,6 +34,9 @@
         <div class="description">
             <p>{{artistDescription}}</p>
         </div>
+        <div>
+        <span class="card-text artistGenres">{{ zonesToString() }}</span>
+        </div>
     </div>
 </template>
 
@@ -69,6 +72,10 @@ export default {
             type: Array,
             default: function() { return ['Pop', 'PC Music', 'Alternative']}
         },
+        artistZones: {
+            type: Array,
+            default: function() { return ['Sevilla', 'Huelva']}
+        },
         artistBanner: {
             type: String,
             default: 'https://www.billboard.com/files/media/02-Charli-XCX-Elsewhere-Show-billboard-1548.jpg'
@@ -99,7 +106,6 @@ export default {
 
     methods: {
         genresToString() {
-
             var res = "";
             var i = 0;
 
@@ -110,7 +116,19 @@ export default {
                     res += this.artistGenres[i].name;
                 }
             }
+            return res;
+        },
+        zonesToString() {
+            var res = "";
+            var i = 0;
 
+            for (i = 0; i < this.artistZones.length; i++) { 
+                if (i != this.artistZones.length - 1) {
+                    res += this.artistZones[i].name + ", ";
+                } else {
+                    res += this.artistZones[i].name;
+                }
+            }
             return res;
         }
     },

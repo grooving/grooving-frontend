@@ -163,12 +163,8 @@ export default {
     goTo(path) {
         this.$emit('refreshRightMenu');
         this.url = this.$store.getters.sideMenus.url;
-        if(this.url !== path) {
-            this.setURL(path);
-            this.clearStore().then(() => this.$router.replace(path));  
-        } else {
-          this.$emit('samePage')
-        }
+        this.setURL(path);
+        this.clearStore().then(() => this.$router.replace(path)); 
     },
 
     login: async function() {

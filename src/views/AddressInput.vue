@@ -5,7 +5,7 @@
     <div class="everything">
         <div class="artistCard"><ArtistCard 
             :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
-            :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="cardPrice"/>
+            :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.cardPrice"/>
         </div>
         <div class="addDiv">
           <div class="addressData"><AddressData :nextStep="this.nextStep" :zones="this.zones" @addressSelected="addressSelected" /></div>
@@ -77,33 +77,37 @@ export default {
 
                 console.log('Error: Could not set address in VueX');
                 console.log(e);
-
             });
-
         },
-
     },
 
     created() {
 
-        // Retrieve store credentials
+        // Retreive store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
 
         // The artist to whom the offer is created
         this.artistId = this.$route.params['artistId'];
+        // The artistId saved in Vuex
+        var vuexArtistId = this.$store.getters.offerArtist ? this.$store.getters.offerArtist.artistId : undefined;
         // Retrieve the type of hiring
         this.hiringType = this.$store.getters.offer.hiringType;
 
         // ###### SECURITY ACCESS CHECKS ###### 
 
-        if(!this.gsecurity.hasRole('CUSTOMER')) {
-            console.log("Error: You are not a customer so you can't hire an artist");
-            location.replace("/#/*")
+        if(!this.$gsecurity.isAuthenticated()) {
+            console.log('Error')
+            this.$router.push({name: "error"});
         }
 
-        if(!this.artistId){
-            console.log("Error: ArtistId not provided");
+        if(!this.$gsecurity.hasRole('CUSTOMER')) {
+            console.log("Error: You are not a customer so you can't hire an artist");
+            this.$router.push({name: "error"});
+        }
+
+        if(!this.artistId || !vuexArtistId || this.artistId != vuexArtistId){
+            console.log("Error: ArtistId not provided or VueX not matching URL");
             location.replace("/")
         }
 
@@ -128,12 +132,14 @@ export default {
 
         // Obtenemos el precio de la tarjeta izq   
         if(this.hiringType == 'FARE')
-            this.cardPrice = this.$store.getters.offerFarePack.priceHour;
-        else(this.hiringType == 'CUSTOM')
             this.cardPrice = this.$store.getters.offer.totalPrice;
+        else if(this.hiringType == 'CUSTOM')
+            this.cardPrice = this.$store.getters.offerCustomPack.cardPrice;
+        else if(this.hiringType == 'PERFORMANCE')
+            this.cardPrice = this.$store.getters.offerPerformancePack.priceHour;
 
         // Actualizamos el siguiente paso
-        if(this.hiringType == 'FARE'){
+        if(this.hiringType == 'FARE' || this.hiringType == 'PERFORMANCE'){
             this.nextStep = '/addressInput/';
         }else if(this.hiringType == 'CUSTOM'){
             this.nextStep = '/priceSelector/';

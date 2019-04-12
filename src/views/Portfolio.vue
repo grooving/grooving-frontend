@@ -1,13 +1,13 @@
 <template>
   <div>
-    <ArtistInfo :artistBanner="d_portfolioBanner" :artistName="d_portfolioName" :artistGenres="portfolioGenres" 
+    <ArtistInfo :artistBanner="d_portfolioBanner" :artistName="d_portfolioName" :artistGenres="portfolioGenres" :artistZones="portfolioZones"
       :artistImage="d_portfolioIcon" :artistDescription="d_portfolioBiography" :artistRating="rating" :artistId="artistId"/>
     <ImageCarousel class="imageCarousel" :photosInfo="d_portfolioImages" :key="updateImagesKey"/>
     <VideoCarousel class="videoCarousel" :videosInfo="d_portfolioVideos" :key="updateVideosKey"/>
     <div id="datesContainer" class="datesContainer">	
     	<div class="contentCalendar">
     		<h3 class="availableDatesTitle" >Available dates</h3>
-    		<Calendar class="availableDates" :availableDates="d_portfolioDays"/>
+    		<Calendar class="availableDates" :availableDates="this.datos[0].availableDates"/>
     	</div>
     </div>
     <router-link v-if="!hideEditButton" :to="'/editPortfolio/' + artistId" class="floating-btn vertical-center">
@@ -69,7 +69,11 @@ export default {
     portfolioGenres: {
       type: Array,
       default: function() {return[]}
-    }
+    },
+    portfolioZones: {
+      type: Array,
+      default: function() {return[]}
+    },
   },
 
   data: function(){
@@ -85,9 +89,7 @@ export default {
       d_portfolioBiography: '',
       d_portfolioImages: Array(),
       d_portfolioVideos: Array(),
-      d_portfolioDays: [
-        {availableDates: Array()},
-      ],
+      d_portfolioDays: Array(),
       datos: Array(),
       rating: undefined,
     }
@@ -101,7 +103,7 @@ export default {
 
   },
   methods: {
-      ...mapActions(['setCurrentGenres']),
+      ...mapActions(['setCurrentGenres', 'setCurrentZones']),
   },
   mounted: function(){
     this.artistId = this.$route.params['artistId'];
@@ -119,6 +121,7 @@ export default {
           this.d_portfolioBiography = portfolio.biography;
           this.rating = portfolio.artist.rating;
           var genres = portfolio.artisticGender;
+          var zones = portfolio.zone;
           
           for(var i = 0; i < genres.length; i++){
             var genre = genres[i];
@@ -126,6 +129,12 @@ export default {
             this.portfolioGenres.push(genre);
           }
           this.setCurrentGenres(this.portfolioGenres);
+
+          for(var i = 0; i < zones.length; i++){
+            var zone = zones[i];
+            this.portfolioZones.push(zone);
+          }
+          this.setCurrentZones(this.portfolioZones);
          
           var imageCounter = 0;
           var pImages = portfolio.images;
@@ -163,8 +172,10 @@ export default {
         .then(response => {
 
           var calendar = response.data;
-          if(calendar && calendar.length > 0){
-            this.d_portfolioDays[0].availableDates = calendar[0].days;
+          if(calendar.length==0){
+            this.datos.push({availableDates: []});
+          }else{
+            this.datos.push({availableDates: calendar[0].days,})
           }
 
         }).catch(ex => {

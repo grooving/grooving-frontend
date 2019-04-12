@@ -5,11 +5,12 @@
     </div>
     <div class="title"><p>Choose a performance</p></div>
     <div class="everything">
-        <div class="artistCard"><ArtistCard :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
-            :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.totalPrice"/>
+        <div class="artistCard"><ArtistCard 
+            :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
+            :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :price="this.cardPrice"/>
         </div>
         <div class="paymentDiv">
-          <div class="creditCardPayment" style="min-width:400px;"><Performances :performances="packages"/></div>
+          <div class="creditCardPayment" style="min-width:400px;"><Performances @hiring="selectTypeOfHiring" :performances="packages"/></div>
         </div>
     </div>
 </div>
@@ -22,13 +23,14 @@ import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
+import {mapActions} from 'vuex';
 import { mapGetters } from 'vuex';
 import PaymentProcess from '@/store/modules/payment.js';
 import { error } from 'util';
 
 export default {
 
-    name: 'StartingDate',
+    name: 'PerformanceSelector',
 
     components: {
         Performances, ArtistCard
@@ -39,35 +41,18 @@ export default {
             gsecurity: GSecurity,
             artistId: undefined,
             hiringType: undefined,
-            creditCard: {
-                number: undefined, 
-                name: undefined, 
-                month: undefined, 
-                year: undefined, 
-                cvv: undefined, 
+            artistData: {
+                artistId: undefined,
+                artisticName: undefined,
+                photo: undefined,
+                genres: undefined,
             },
-            date: {
-                fecha: undefined, 
-                startHour: undefined, 
+            nextStep: undefined,
+            performancePackage: {
+                packageId: undefined,
+                priceHour: undefined,
                 duration: undefined,
             },
-            offer: {
-                artistId: undefined, 
-                hiringType: undefined, 
-                location: undefined, 
-                zipcode: undefined, 
-                street: undefined, 
-                description: undefined,
-            },
-            artistData: {
-                artistId: 2,
-                artisticName: "Jose Bellido",
-                photo: "https://los40es00.epimg.net/los40/imagenes/2017/03/27/musica/1490614897_408913_1490615115_noticia_normal.jpg", 
-                genres: 'Pop, Country',
-            },
-            totalPrice: undefined,
-            nextStep: '/sentOffer/',
-            farePackageId: undefined,
             packages: Array(),
         }
     },
@@ -79,10 +64,65 @@ export default {
         }
     },
 
+    methods: {
+        ...mapActions(['setPerformancePackage']),
+        ...mapActions(['setOffer']),
+
+        selectPerformance() {
+            if(this.performancePackageId){
+                return true;
+            }
+        },
+
+        selectTypeOfHiring(perfId, perfPrice, perfDuration){
+
+            /* Creamos el package de tipo Performance con los datos obtenidos */
+
+            this.performancePackage.packageId = perfId;
+            this.performancePackage.priceHour = perfPrice;
+            this.performancePackage.duration = perfDuration;
+
+            /* Setteamos la oferta */
+            this.setOffer('PERFORMANCE').then( () => {
+
+                // Actualizamos el siguiente paso
+                this.nextStep = '/dateSelection/'+this.artistData.artistId;
+
+                if(this.hiringType == 'PERFORMANCE'){
+
+                    // Creamos el customPackage asociado con los datos...
+                    this.setPerformancePackage(this.performancePackage).then(() => {
+                        // If VueX has correctly set the package
+                        this.$router.push(this.nextStep);
+                    }).catch( e => {
+                        console.log('Could not set PaymentPackage: Performance');
+                        console.log(e);
+                    })
+
+                }
+
+            });
+
+
+
+        }
+
+    },
+
     created() {
+        
         // Retreive store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+
+        // The artist to whom the offer is created
+        this.artistId = this.$route.params['artistId'];
+        // The artistId saved in Vuex
+        var vuexArtistId = this.$store.getters.offerArtist ? this.$store.getters.offerArtist.artistId : undefined;
+        // Retrieve the type of hiring
+        this.hiringType = this.$store.getters.offer.hiringType;
+
+        // ###### SECURITY ACCESS CHECKS ###### 
 
         if(!this.$gsecurity.isAuthenticated()) {
             console.log('Error')
@@ -94,22 +134,35 @@ export default {
             this.$router.push({name: "error"});
         }
 
-        /*if(!this.artistId){
-            console.log("Error: ArtistId not provided");
+        if(!this.artistId || !vuexArtistId || this.artistId != vuexArtistId){
+            console.log("Error: ArtistId not provided or VueX not matching URL");
             location.replace("/")
-        }*/
+        }
 
+        // Check the user does not access the view directly
+        if(!PaymentProcess.checkViewRequirements(PaymentProcess.state, this.hiringType, "PerformanceSelector")){
+            console.log('Error: Direct access to the view was detected')
+            location.replace("/#/hiringType/" + this.artistId + "/")
+        }
+
+        // ###### END OF SECURITY ACCESS CHECKS ###### 
 
     },
     beforeMount: function(){
+
+        this.artistData = this.$store.getters.offerArtist;
+
         var GAxiosToken = this.gsecurity.getToken();
         var authorizedGAxios = GAxios;
         authorizedGAxios.defaults.headers.common['Authorization'] = 'Token '+ GAxiosToken;
+
+        /* Aquí devolvemos los packages de tipo performance */
         
         NProgress.start();        
         authorizedGAxios.get(endpoints.paymentPackages + this.artistData.artistId + '/')
             .then(response => {
-                console.log(response.data);
+                console.log("PayPacks", response.data);
+                
                 var packages = response.data;
 
                 for (var i = 0; i < packages.length; i++) {
@@ -129,6 +182,39 @@ export default {
                 }
                 
             }).catch(ex => {
+                console.log(ex);
+            }) 
+
+        // ** Artist Information - Left Card **
+        authorizedGAxios.get(endpoints.portfolio + this.artistId + "/")
+            .then(response => {
+
+            var portfolio = response.data;
+            
+            // Géneros de un portfolio
+            var genres = portfolio.artisticGender;
+            var portfolioGenres = '';
+
+            for(var i = 0; i < genres.length; i++){
+                var genre = genres[i].name;
+                portfolioGenres += genre;
+                portfolioGenres += ', ';
+            }
+
+            portfolioGenres = portfolioGenres.slice(0, portfolioGenres.length - 2);
+            
+            // Artist Information (ID, Photo, ArtisticName, Genres)
+            this.artistData = {
+                artistId: portfolio.artist.id, 
+                photo: portfolio.main_photo, 
+                artisticName: portfolio.artisticName, 
+                genres: portfolioGenres
+            };
+
+            this.setArtist(this.artistData);
+
+            }).catch(ex => {
+                console.log('Could not load Artist Info Data API');
                 console.log(ex);
             }).then(() => {
                 NProgress.done()

@@ -2,8 +2,8 @@
   <div>
     <form v-on:submit.prevent="savePortfolio()">
       <EditSubmenu :artistId="artistId" />
-      <div v-if="errors" class="validationErrors vertical-center">
-        <p>Sorry! Something went wrong. Try again later.</p>
+      <div id="errorsDiv" class="validationErrors vertical-center">
+        <p style="margin: 0px;">{{errors}}</p>
       </div>
       <EditPhoto :artistImage="this.d_portfolioMainPhoto" :artistBanner="this.d_portfolioBanner"/>
       <EditArtistInfo/>
@@ -11,7 +11,7 @@
 
       <EditImageCarousel :photosInfo="d_portfolioImages" :key="updateImagesKey" />
       <EditVideoCarousel :videosInfo="d_portfolioVideos" :key="updateVideosKey" />
-      <EditAvailableDates :availableDates="d_portfolioDays" :key="updateCalendatKey"/>
+      <EditAvailableDates :availableDates="this.datos[0].availableDates" :key="updateCalendatKey"/>
     </form>
   </div>
 </template>
@@ -34,7 +34,7 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'EditPortfolio',
-  computed: mapGetters(['genres']),
+  computed: mapGetters(['genres','zones']),
   components: {
     EditSubmenu,
     EditImageCarousel,
@@ -60,6 +60,7 @@ export default {
       d_portfolioArtisticName:'',
       d_portfolioBiography: '',
       d_portfolioGenres: Array(),
+      d_portfolioZones: Array(),
 
       // Carousel
       d_portfolioImages: [], 
@@ -72,10 +73,15 @@ export default {
       //New genres
       namesOfNewGenres: [],
 
+      //New zones
+      namesOfNewZones: [],
+
+      errors: "",
+
     }
   },
   methods: {
-    ...mapActions(['setCurrentGenres', 'setAllGenres', 'setFinal']),
+    ...mapActions(['setCurrentGenres', 'setAllGenres', 'setCurrentZones', 'setAllZones','setFinal']),
     // Given a carousel-dictionary, returns an array consisting of the 
     // URLs used on the carousel
     extractURLS: function(collection, key){
@@ -111,6 +117,13 @@ export default {
             this.d_portfolioGenres.push(genre);
           }
 
+          // Zones
+          var zones = portfolio.zones;
+          
+          for(var i = 0; i < zones.length; i++){
+            var zone = zones[i];
+            this.d_portfolioZones.push(zone);
+          }
           
           // Images
           var pImages = portfolio.images;
@@ -133,8 +146,33 @@ export default {
           this.updateVideosKey += 1;
   
       }).catch( () => {
-        this.errors = true;
+        this.errors = ex.response.data.error;
+        document.getElementById("errorsDiv").style.display = "block";
+        window.scrollTo(0,0);
       });
+
+      GAxios.get(endpoints.zones, {
+      params: {
+        'tree': true
+      }
+      }).then(response => {
+
+        var root = response.data;
+        var tree = Array();
+        
+        for(var i=0; i < root['children'].length; i++){
+          // For each Comunidad Autónoma
+          var ca = root['children'][i];
+
+          for(var j=0; j < ca['children'].length; j++){
+            // For each provincia
+            var provincia = ca['children'][j];
+            tree.push({id:provincia['id'], name: provincia['name']})
+          }
+        }
+
+        this.setAllZones(tree)
+      })
 
       GAxios.get(endpoints.genres)
       .then(response => {
@@ -143,7 +181,9 @@ export default {
           this.setAllGenres(genres)
 
       }).catch( () => {
-        this.errors = true;
+        this.errors = ex.response.data.error;
+        document.getElementById("errorsDiv").style.display = "block";
+        window.scrollTo(0,0);
       });
 
       var authorizedGAxios = GAxios;
@@ -152,9 +192,12 @@ export default {
 
           authorizedGAxios.get('/artist' + endpoints.calendar + this.gsecurity.getId() + '/')
             .then(response => {
-                var calendar = response.data;
-                this.d_portfolioDays=calendar.days;
-
+              var calendar = response.data;
+              if(calendar.length==0){
+                this.datos.push({availableDates: []});
+              }else{
+                this.datos.push({availableDates: calendar[0].days,})
+              }
                 this.updateCalendatKey += 1;
           }).then(() => {
             NProgress.done()
@@ -173,6 +216,13 @@ export default {
             this.namesOfNewGenres.push(genre);
       }
 
+      var newZones = this.$store.getters.zones.newZones;
+      console.log(newZones)
+      for(var i = 0; i < newZones.length; i++){
+            var zone = newZones[i].name;
+            this.namesOfNewZones.push(zone);
+      }
+
       let body = {
         "id": this.artistId,
         "artisticName": this.d_portfolioArtisticName,
@@ -182,19 +232,22 @@ export default {
         "videos": this.extractURLS(this.d_portfolioVideos, 'videoURL'),
         "main_photo": this.d_portfolioMainPhoto,
         "artisticGenders": this.namesOfNewGenres,
+        "zone" : this.namesOfNewZones,
       };
       let body_calendar = {
         "days": this.d_portfolioDays,
         "portfolio":this.$route.params['artistId']
       };
 
+      console.log('body',body)
+
       authorizedGAxios.put(endpoints.portfolio + this.artistId + '/', body)
       .then(response => {
         console.log(response.data);
         this.gsecurity.setPhoto(this.d_portfolioMainPhoto);
         window.localStorage.setItem("photo", this.d_portfolioMainPhoto);
-        this.$router.push("/showPortfolio/"+this.artistId);
-        window.location.reload();
+        //this.$router.push("/showPortfolio/"+this.artistId);
+        //window.location.reload();
         
         //Actualizamos el calendario
         authorizedGAxios.put(endpoints.calendar + this.artistId + '/', body_calendar)
@@ -202,12 +255,16 @@ export default {
           this.$router.push("/showPortfolio/"+this.artistId)
         }).catch(ex => {
             console.log(ex);
-            this.errors = true;
+            this.errors = ex.response.data.error;
+            document.getElementById("errorsDiv").style.display = "block";
+            window.scrollTo(0,0);
         })
 
       }).catch(ex => {
           console.log(ex);
-          this.errors = true;
+          this.errors = ex.response.data.error;
+          document.getElementById("errorsDiv").style.display = "block";
+          window.scrollTo(0,0);
       }).then( () => {
           NProgress.done()
       });
@@ -333,11 +390,12 @@ export default {
 
     .validationErrors{
         background-color:#f50057;
-        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);
-        
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
         color:white;
-        font-weight: bold;
         height: 100%;
+        display: none;
+        font-weight: bold;
+        padding: 10px;
         padding-top: 12px;
     }
 

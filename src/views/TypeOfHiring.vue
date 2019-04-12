@@ -6,8 +6,13 @@
         <div class="artistCard">
             <ArtistCard :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId"/></div>
-        <div class="hiringType"><HiringType @hiring="selectTypeOfHiring"
-            :farePrice="this.farePackage.priceHour" :customMinPrice="this.customPackage.minimumPrice" /></div>
+        <div v-if="packagesAvailables" class="hiringType"><HiringType @hiring="selectTypeOfHiring"
+            :farePrice="this.farePackage.priceHour" :customMinPrice="this.customPackage.minimumPrice" :performancePackages="performancePackages" /></div>
+        <div v-else>
+            <div class="notice">
+                <h2 class="oops">Sorry, this artist is unavailable temporarily ☹</h2>
+            </div>
+        </div>
     </div>
 </div>
 </template>
@@ -46,8 +51,23 @@ export default {
             customPackage: {
                 packageId: undefined,
                 minimumPrice: undefined,
-            }
+            },
+
+            // Type: Performance
+            // Performance package is selected in the next view
+
+            // We need a variable to determine whether the artist 
+            // has performance packages or not.
+            performancePackages: 0,
         }
+    },
+
+    computed: {
+
+        packagesAvailables(){
+            return this.farePackage.packageId || this.customPackage.packageId || this.performancePackages > 0;
+        }
+
     },
 
     methods: {
@@ -55,7 +75,7 @@ export default {
         ...mapActions(['setArtist']),
         ...mapActions(['setOffer']),   
         ...mapActions(['setFarePackage']),    
-        ...mapActions(['setCustomPackage']),        
+        ...mapActions(['setCustomPackage']),    
 
         selectTypeOfHiring(hiringType) {
 
@@ -67,7 +87,9 @@ export default {
                 var nextView = undefined;
                 if(hiringType == 'FARE' || hiringType == 'CUSTOM')
                     nextView = '/dateSelection/';
-
+                else if(hiringType == 'PERFORMANCE')
+                    nextView = '/performanceSelector/';
+                
                 nextView += this.artistData.artistId;
 
 
@@ -93,6 +115,12 @@ export default {
                         console.log(e);
                     })
 
+                }else if(hiringType == 'PERFORMANCE'){
+
+                    // In the case of Performance, the user must
+                    // select which Performance Package she or he
+                    // wants to, so we show her a list
+                    this.$router.push(nextView);
                 }
 
             });
@@ -191,7 +219,10 @@ export default {
                     this.customPackage.packageId = payPack.id;
                     this.customPackage.minimumPrice = payPack.custom.minimumPrice;
 
+                }else if(payPack.performance_id != null){
+                    this.performancePackages++;
                 }
+
             }
         }).catch(ex => {
             console.log('Could not load Payment Packages API')
@@ -207,6 +238,21 @@ export default {
 
     .title {
         display: none;
+    }
+
+    .notice {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+        padding: 5px;
+        height: 100%;
+        margin-top: 10%;
+    }
+
+    .oops{
+        font-weight: bold;
+        color: rgba(0,0,0,.4);
     }
 
     @media (min-width:768px)  {
@@ -226,6 +272,22 @@ export default {
             margin-left: 35%;
             margin-right: 35%;
         }
+
+        .notice {
+            align-items: center;
+            border-radius: 10px;
+            box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, .3);
+            display: flex;
+            justify-content: center;
+            margin-left: 10px;
+            margin-right: 10px;
+            margin-top: 0px;
+            min-height: 370px;
+            min-width: 335px;
+            width: 25%;
+            padding: 5px;
+        }
+
         .title {
             display: inline-block;
             margin-right: 12%;

@@ -127,6 +127,7 @@ export default new Router({
       path: '/registerConfirmation',
       name: 'registerConfirmation',
       component: RegisterConfirmation,
+      props: true,
     },
     {
       path: '/priceSelector/:artistId',
@@ -232,7 +233,7 @@ export default new Router({
       component: SentOffer,
     },
     {
-      path: '/startingDate',
+      path: '/startingDate/:artistId',
       name: 'startingDate',
       component: StartingDate,
     },

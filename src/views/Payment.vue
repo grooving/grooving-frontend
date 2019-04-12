@@ -1,12 +1,12 @@
 <template>
 <div class="hiringProcessContainer">
-    <div v-if="errors == true" class="validationErrors">
-        <p>Sorry! Something went wrong. Try again later.</p>
+    <div id="errorsDiv" class="validationErrors vertical-center">
+        <p style="margin: 0px;">{{errors}}</p>
     </div>
     <div class="title"><p>Payment</p></div>
     <div class="everything">
         <div class="artistCard"><ArtistCard :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
-            :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.totalPrice"/>
+            :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.cardPrice"/>
         </div>
         <div class="paymentDiv">
           <div class="creditCardPayment" style="min-width:400px;"><CreditCardPaymentBrain @finishPayment="gpay" /></div>
@@ -49,8 +49,6 @@ export default {
                 photo: undefined,
                 genres: undefined,
             },
-
-
             packageId: undefined,
             creditCard: {
                 number: undefined, 
@@ -73,7 +71,7 @@ export default {
                 description: undefined,
                 zoneId: undefined,
             },
-
+            errors: "",
         }
     },
 
@@ -105,6 +103,9 @@ export default {
                 this.packageId = this.$store.getters.offerFarePack.packageId;
             else if(this.hiringType == "CUSTOM")
                 this.packageId = this.$store.getters.offerCustomPack.packageId;
+            else if(this.hiringType == "PERFORMANCE"){
+                this.packageId = this.$store.getters.offerPerformancePack.packageId;
+            }
 
             // Preparamos el cuerpo genérico de las peticiones
             let body_eventLocation = {
@@ -129,19 +130,38 @@ export default {
             authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
 
             // Completamos el cuerpo genérico con los campos restantes para cada tipo
+            if(this.hiringType == "FARE"){
+                this.packageId = this.$store.getters.offerFarePack.packageId;
+                body_offer['price'] = this.$store.getters.offer.totalPrice;
+                body_offer['hours'] = this.$store.getters.offerDate.duration;
+                
+            }
+
             if(this.hiringType == "CUSTOM"){
                 this.packageId = this.$store.getters.offerCustomPack.packageId;
                 body_offer['price'] = this.$store.getters.offer.totalPrice;
+                body_offer['hours'] = this.$store.getters.offerDate.duration;
             }
+
+            if(this.hiringType == 'PERFORMANCE'){
+                this.packageId = this.$store.getters.offerPerformancePack.packageId;
+                body_offer['price'] = this.$store.getters.offerPerformancePack.priceHour;
+                body_offer['hours'] = this.$store.getters.offerPerformancePack.duration;
+                
+            }
+
+            
 
             authorizedGAxios.post(endpoints.eventlocation, body_eventLocation)
             .then((res) => {
-
+                
                 console.log("Event Location Created...")
                 console.log(res)
                 
                 // Reference the brand-new eventLocation
                 body_offer['eventLocation_id'] = res.data.id;
+
+                
 
                 // Una vez creado el eventLocation, procedemos a crear la oferta
                 authorizedGAxios.post(endpoints.offer, body_offer)
@@ -162,34 +182,30 @@ export default {
                     })
                     .then(() => this.$router.push({path: this.nextStep}))
                     .catch(error => {
-                        console.log("Error while sending payment nonce to the server")
-                        this.errors = true;
+                        this.errors = error.message;
+                        document.getElementById("errorsDiv").style.display = "block";
+                        window.scrollTo(0,0);
                     })
 
                     
                 })
                 .catch(error => {
-                    console.log("Error while creating the Offer")
-                    this.errors = true;
+                    this.errors = error.message;
+                    document.getElementById("errorsDiv").style.display = "block";
+                    window.scrollTo(0,0);
                 })
                 
             })
             .catch(error => {
-                console.log("Error while creating the EventLocation")
-                this.errors = true;
+                this.errors = error.message;
+                document.getElementById("errorsDiv").style.display = "block";
+                window.scrollTo(0,0);
             }).then(() => {
                 NProgress.done()
             });
         },
 
         
-    },
-
-    props: {
-        errors: {
-            type: Boolean,
-            default: false
-        }
     },
 
     created() {
@@ -235,8 +251,12 @@ export default {
         
 
         // Obtenemos el precio de la tarjeta izq   
+        if(this.hiringType == 'FARE')
+            this.cardPrice = this.$store.getters.offer.totalPrice;
         if(this.hiringType && this.hiringType == 'CUSTOM')
             this.cardPrice = this.$store.getters.offerCustomPack.cardPrice;
+        else if(this.hiringType == 'PERFORMANCE')
+            this.cardPrice = this.$store.getters.offerPerformancePack.priceHour;
 
         // Actualizamos el siguiente paso
         this.nextStep = '/sentOffer/';
@@ -300,13 +320,16 @@ export default {
             font-weight: bold;
         }
 
-        .validationErrors{
+        validationErrors{
             background-color:#f50057;
-            box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);
-            
+            border-radius: 5px;
+            box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
             color:white;
+            display: none;
             font-weight: bold;
             height: 100%;
+            margin-bottom: 14px;
+            padding: 10px;
             padding-top: 12px;
         }
         

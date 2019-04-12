@@ -12,10 +12,10 @@
                     </div>
                     <div  v-bind:id="'collapse'+p.package_id" class="collapse" v-bind:aria-labelledby="'heading'+p.package_id" data-parent="#accordionExample">
                         <div class="bodies">
-                            <div class="bodyParameters"><span style="font-weight:bold">Duration:</span> {{p.performance.hours}} h | <span style="font-weight:bold">Price:</span> {{p.performance.price}} €/h <br>
+                            <div class="bodyParameters"><span style="font-weight:bold">Duration:</span> {{p.performance.hours}} h | <span style="font-weight:bold">Price:</span> {{p.performance.price}} € <br>
                             </div>
                             <div class="continueButtonDiv">
-                                <div @click="selectType('FARE')" class="btn btn-primary continueButton">
+                                <div @click="selectPerformance(p.package_id, p.performance.price, p.performance.hours)" class="btn btn-primary continueButton">
                                     <span class="continueText">CONTINUE</span>
                                 </div>
                             </div>
@@ -43,6 +43,10 @@ export default {
     components: {
     },
     methods: {
+        selectPerformance(perfId, perfPrice, perfDuration) {
+            var a = this.$route.params['artistId']
+            this.$emit('hiring' ,perfId, perfPrice, perfDuration, a);
+        }
     }
 }
 </script>

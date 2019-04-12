@@ -9,7 +9,7 @@
     <div class="everything"> 
         <div class="artistCard"><ArtistCard 
             :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
-            :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.totalPrice"/>
+            :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.cardPrice"/>
         </div>
         <div class="paymentSelect">
           <div class="paymentOptions" style="min-width: 250px;"><PaymentOptions @paymentOptionSelected="paymentSelected()"/></div>
@@ -64,24 +64,31 @@ export default {
 
     created() {
 
-        // Retrieve store credentials
+        // Retreive store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
 
         // The artist to whom the offer is created
         this.artistId = this.$route.params['artistId'];
+        // The artistId saved in Vuex
+        var vuexArtistId = this.$store.getters.offerArtist ? this.$store.getters.offerArtist.artistId : undefined;
         // Retrieve the type of hiring
         this.hiringType = this.$store.getters.offer.hiringType;
 
         // ###### SECURITY ACCESS CHECKS ###### 
 
-        if(!this.gsecurity.hasRole('CUSTOMER')) {
-            console.log("Error: You are not a customer so you can't hire an artist");
-            location.replace("/#/*")
+        if(!this.$gsecurity.isAuthenticated()) {
+            console.log('Error')
+            this.$router.push({name: "error"});
         }
 
-        if(!this.artistId){
-            console.log("Error: ArtistId not provided");
+        if(!this.$gsecurity.hasRole('CUSTOMER')) {
+            console.log("Error: You are not a customer so you can't hire an artist");
+            this.$router.push({name: "error"});
+        }
+
+        if(!this.artistId || !vuexArtistId || this.artistId != vuexArtistId){
+            console.log("Error: ArtistId not provided or VueX not matching URL");
             location.replace("/")
         }
 
@@ -106,9 +113,13 @@ export default {
         
 
         // Obtenemos el precio de la tarjeta izq   
+        if(this.hiringType == 'FARE')
+            this.cardPrice = this.$store.getters.offer.totalPrice;
         if(this.hiringType && this.hiringType == 'CUSTOM')
             this.cardPrice = this.$store.getters.offerCustomPack.cardPrice;
-
+        else if(this.hiringType == 'PERFORMANCE')
+            this.cardPrice = this.$store.getters.offerPerformancePack.priceHour;
+            
         // Actualizamos el siguiente paso
         this.nextStep = '/payment/';
     

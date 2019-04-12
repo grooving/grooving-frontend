@@ -1,11 +1,10 @@
 <template>
+    <div>
+    <div id="errorsDiv" class="validationErrors vertical-center">
+        <p style="margin: 0px;">{{errors}}</p>
+    </div>
     <div class="content">
         <form class="hola">
-            <div class="form-row">
-                <div class="form-group col-12">
-                    <span>Credit card info</span>
-                </div>
-            </div>
             <div class="form-row">
                 <div class="form-group col-12">
                     <div id="number" class="form-control test"></div>
@@ -22,10 +21,11 @@
                     <div id="cvv" class="form-control test"></div>
                 </div>
             </div>
-            <div class="btn btn-primary continueButton" @click="payWithCreditCard"><span class="continueText">SUBMIT</span></div>
+            <div class="btn btn-primary continueButton" @click="payWithCreditCard"><span class="continueText">SEND OFFER</span></div>
 
         </form>
-   </div>
+    </div>
+    </div>
 </template>
 <script>
 import braintree from 'braintree-web';
@@ -41,10 +41,12 @@ export default {
             gsecurity: GSecurity,
             name: undefined,
             auth_key: undefined,
+            errors: "",
         }
     },
     methods: {
         obtainInstance() {
+            NProgress.start();
             braintree.client.create({
             
             authorization: this.auth_key
@@ -62,7 +64,7 @@ export default {
                     fields: {
                         number: {
                             selector: '#number',
-                            placeholder: 'Enter Credit Card',
+                            placeholder: 'Enter a 16 digits Credit Card',
                             maxCardLength: 16,
                         },
                         cvv: {
@@ -88,19 +90,27 @@ export default {
                 })
                 .catch(err => {
                     console.log(err)
+                }).then(() => {
+                    NProgress.done();
                 });
             
         },
         payWithCreditCard() {
             if(this.hostedFieldInstance)
             {
+                NProgress.start();
                 this.hostedFieldInstance.tokenize().then(payload => {
                     this.$emit('finishPayment', payload.nonce)
                     console.log(payload.nonce)
                 })
                 .catch(err => {
                     console.error(err);
-                })
+                    this.errors = err.message;
+                    document.getElementById("errorsDiv").style.display = "block";
+                    window.scrollTo(0,0);
+                }).then(() => {
+                    NProgress.done();
+                });
             }
         }
     }, 
@@ -165,7 +175,18 @@ export default {
         background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
     }
 
-    
+    .validationErrors{
+        background-color:#f50057;
+        border-radius: 5px;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
+        color:white;
+        display: none;
+        font-weight: bold;
+        height: 100%;
+        margin-bottom: 14px;
+        padding: 10px;
+        padding-top: 12px;
+    }
 
     @media (max-width:767px)  {
         .content{

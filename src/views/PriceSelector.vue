@@ -6,7 +6,7 @@
         <div class="everything">
             <div class="artistCard">
                 <ArtistCard :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
-                :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :price="price"/>
+                :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" />
             </div>
             <div class="customPriceSelector">
                 <div><CustomPrice @confirmPrice="confirmPrice" @priceSelected="priceValue" :duration="date.duration" :minPrice="cardPrice"  /></div>
@@ -108,34 +108,41 @@
 
         created() {
 
-            // Retrieve store credentials
-            this.gsecurity = GSecurity;
-            this.gsecurity.obtainSavedCredentials();
+                    // Retreive store credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
 
-            // The artist to whom the offer is created
-            this.artistId = this.$route.params['artistId'];
-            // Retrieve the type of hiring
-            this.hiringType = this.$store.getters.offer.hiringType;
+        // The artist to whom the offer is created
+        this.artistId = this.$route.params['artistId'];
+        // The artistId saved in Vuex
+        var vuexArtistId = this.$store.getters.offerArtist ? this.$store.getters.offerArtist.artistId : undefined;
+        // Retrieve the type of hiring
+        this.hiringType = this.$store.getters.offer.hiringType;
 
-            // ###### SECURITY ACCESS CHECKS ###### 
+        // ###### SECURITY ACCESS CHECKS ###### 
 
-            if(!this.gsecurity.hasRole('CUSTOMER')) {
-                console.log("Error: You are not a customer so you can't hire an artist");
-                location.replace("/#/*")
-            }
+        if(!this.$gsecurity.isAuthenticated()) {
+            console.log('Error')
+            this.$router.push({name: "error"});
+        }
 
-            if(!this.artistId){
-                console.log("Error: ArtistId not provided");
-                location.replace("/")
-            }
+        if(!this.$gsecurity.hasRole('CUSTOMER')) {
+            console.log("Error: You are not a customer so you can't hire an artist");
+            this.$router.push({name: "error"});
+        }
 
-            // Check the user does not access the view directly
-            if(!PaymentProcess.checkViewRequirements(PaymentProcess.state, this.hiringType, "PriceSelector")){
-                console.log('Error: Direct access to the view was detected')
-                location.replace("/#/hiringType/" + this.artistId + "/")
-            }
+        if(!this.artistId || !vuexArtistId || this.artistId != vuexArtistId){
+            console.log("Error: ArtistId not provided or VueX not matching URL");
+            location.replace("/")
+        }
 
-            // ###### END OF SECURITY ACCESS CHECKS ###### 
+        // Check the user does not access the view directly
+        if(!PaymentProcess.checkViewRequirements(PaymentProcess.state, this.hiringType, "PriceSelector")){
+            console.log('Error: Direct access to the view was detected')
+            location.replace("/#/hiringType/" + this.artistId + "/")
+        }
+
+        // ###### END OF SECURITY ACCESS CHECKS ###### 
 
         },
 
