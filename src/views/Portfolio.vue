@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ArtistInfo :artistBanner="d_portfolioBanner" :artistName="d_portfolioName" :artistGenres="portfolioGenres" 
+    <ArtistInfo :artistBanner="d_portfolioBanner" :artistName="d_portfolioName" :artistGenres="portfolioGenres" :artistZones="portfolioZones"
       :artistImage="d_portfolioIcon" :artistDescription="d_portfolioBiography" :artistRating="rating" :artistId="artistId"/>
     <ImageCarousel class="imageCarousel" :photosInfo="d_portfolioImages" :key="updateImagesKey"/>
     <VideoCarousel class="videoCarousel" :videosInfo="d_portfolioVideos" :key="updateVideosKey"/>
@@ -69,7 +69,11 @@ export default {
     portfolioGenres: {
       type: Array,
       default: function() {return[]}
-    }
+    },
+    portfolioZones: {
+      type: Array,
+      default: function() {return[]}
+    },
   },
 
   data: function(){
@@ -99,7 +103,7 @@ export default {
 
   },
   methods: {
-      ...mapActions(['setCurrentGenres']),
+      ...mapActions(['setCurrentGenres', 'setCurrentZones']),
   },
   mounted: function(){
     this.artistId = this.$route.params['artistId'];
@@ -117,6 +121,7 @@ export default {
           this.d_portfolioBiography = portfolio.biography;
           this.rating = portfolio.artist.rating;
           var genres = portfolio.artisticGender;
+          var zones = portfolio.zone;
           
           for(var i = 0; i < genres.length; i++){
             var genre = genres[i];
@@ -124,6 +129,12 @@ export default {
             this.portfolioGenres.push(genre);
           }
           this.setCurrentGenres(this.portfolioGenres);
+
+          for(var i = 0; i < zones.length; i++){
+            var zone = zones[i];
+            this.portfolioZones.push(zone);
+          }
+          this.setCurrentZones(this.portfolioZones);
          
           var imageCounter = 0;
           var pImages = portfolio.images;

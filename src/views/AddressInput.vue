@@ -77,11 +77,8 @@ export default {
 
                 console.log('Error: Could not set address in VueX');
                 console.log(e);
-
             });
-
         },
-
     },
 
     created() {

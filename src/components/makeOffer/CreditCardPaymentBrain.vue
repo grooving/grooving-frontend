@@ -7,11 +7,6 @@
         <form class="hola">
             <div class="form-row">
                 <div class="form-group col-12">
-                    <span>Credit card info</span>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-12">
                     <div id="number" class="form-control test"></div>
                 </div>
             </div>
@@ -69,7 +64,7 @@ export default {
                     fields: {
                         number: {
                             selector: '#number',
-                            placeholder: 'Enter Credit Card',
+                            placeholder: 'Enter a 16 digits Credit Card',
                             maxCardLength: 16,
                         },
                         cvv: {

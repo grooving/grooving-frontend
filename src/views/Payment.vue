@@ -6,7 +6,7 @@
     <div class="title"><p>Payment</p></div>
     <div class="everything">
         <div class="artistCard"><ArtistCard :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
-            :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.totalPrice"/>
+            :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.cardPrice"/>
         </div>
         <div class="paymentDiv">
           <div class="creditCardPayment" style="min-width:400px;"><CreditCardPaymentBrain @finishPayment="gpay" /></div>
@@ -49,8 +49,6 @@ export default {
                 photo: undefined,
                 genres: undefined,
             },
-
-
             packageId: undefined,
             creditCard: {
                 number: undefined, 
@@ -133,7 +131,7 @@ export default {
                 this.packageId = this.$store.getters.offerCustomPack.packageId;
                 body_offer['price'] = this.$store.getters.offer.totalPrice;
             }
-
+            console.log(body_eventLocation)
             authorizedGAxios.post(endpoints.eventlocation, body_eventLocation)
             .then((res) => {
 
@@ -235,8 +233,10 @@ export default {
         
 
         // Obtenemos el precio de la tarjeta izq   
-        if(this.hiringType && this.hiringType == 'CUSTOM')
-            this.cardPrice = this.$store.getters.offerCustomPack.cardPrice;
+        if(this.hiringType == 'FARE')
+            this.cardPrice = this.$store.getters.offerFarePack.priceHour;
+        else(this.hiringType == 'CUSTOM')
+            this.cardPrice = this.$store.getters.offer.totalPrice;
 
         // Actualizamos el siguiente paso
         this.nextStep = '/sentOffer/';

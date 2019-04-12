@@ -147,9 +147,9 @@ const mutations = {
         var duration = state.date.duration;
 
         if(duration && pricePerHour){
-            state.offer.totalPrice = Math.trunc(duration * pricePerHour);
+            var n = duration * pricePerHour;
+            state.offer.totalPrice = n.toFixed(2);
         }
-
     },
 
     setEventAddress(state, address) {

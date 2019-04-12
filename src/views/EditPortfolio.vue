@@ -34,7 +34,7 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'EditPortfolio',
-  computed: mapGetters(['genres']),
+  computed: mapGetters(['genres','zones']),
   components: {
     EditSubmenu,
     EditImageCarousel,
@@ -60,6 +60,7 @@ export default {
       d_portfolioArtisticName:'',
       d_portfolioBiography: '',
       d_portfolioGenres: Array(),
+      d_portfolioZones: Array(),
 
       // Carousel
       d_portfolioImages: [], 
@@ -72,13 +73,15 @@ export default {
       //New genres
       namesOfNewGenres: [],
 
+      //New zones
+      namesOfNewZones: [],
 
       errors: "",
 
     }
   },
   methods: {
-    ...mapActions(['setCurrentGenres', 'setAllGenres', 'setFinal']),
+    ...mapActions(['setCurrentGenres', 'setAllGenres', 'setCurrentZones', 'setAllZones','setFinal']),
     // Given a carousel-dictionary, returns an array consisting of the 
     // URLs used on the carousel
     extractURLS: function(collection, key){
@@ -114,6 +117,13 @@ export default {
             this.d_portfolioGenres.push(genre);
           }
 
+          // Zones
+          var zones = portfolio.zones;
+          
+          for(var i = 0; i < zones.length; i++){
+            var zone = zones[i];
+            this.d_portfolioZones.push(zone);
+          }
           
           // Images
           var pImages = portfolio.images;
@@ -140,6 +150,29 @@ export default {
         document.getElementById("errorsDiv").style.display = "block";
         window.scrollTo(0,0);
       });
+
+      GAxios.get(endpoints.zones, {
+      params: {
+        'tree': true
+      }
+      }).then(response => {
+
+        var root = response.data;
+        var tree = Array();
+        
+        for(var i=0; i < root['children'].length; i++){
+          // For each Comunidad Autónoma
+          var ca = root['children'][i];
+
+          for(var j=0; j < ca['children'].length; j++){
+            // For each provincia
+            var provincia = ca['children'][j];
+            tree.push({id:provincia['id'], name: provincia['name']})
+          }
+        }
+
+        this.setAllZones(tree)
+      })
 
       GAxios.get(endpoints.genres)
       .then(response => {
@@ -183,6 +216,13 @@ export default {
             this.namesOfNewGenres.push(genre);
       }
 
+      var newZones = this.$store.getters.zones.newZones;
+      console.log(newZones)
+      for(var i = 0; i < newZones.length; i++){
+            var zone = newZones[i].name;
+            this.namesOfNewZones.push(zone);
+      }
+
       let body = {
         "id": this.artistId,
         "artisticName": this.d_portfolioArtisticName,
@@ -192,11 +232,14 @@ export default {
         "videos": this.extractURLS(this.d_portfolioVideos, 'videoURL'),
         "main_photo": this.d_portfolioMainPhoto,
         "artisticGenders": this.namesOfNewGenres,
+        "zone" : this.namesOfNewZones,
       };
       let body_calendar = {
         "days": this.d_portfolioDays,
         "portfolio":this.$route.params['artistId']
       };
+
+      console.log('body',body)
 
       authorizedGAxios.put(endpoints.portfolio + this.artistId + '/', body)
       .then(response => {

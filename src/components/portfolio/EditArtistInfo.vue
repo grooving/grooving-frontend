@@ -6,6 +6,7 @@
         </div>
         <div class="inputForm">
             <EditGenre/>
+            <EditZone/>
         </div>
         <div class="inputForm">
             <textarea v-model="$parent.d_portfolioBiography" class="form-control inputDescription" id="" rows="3" placeholder="Description"></textarea>
@@ -15,11 +16,12 @@
 
 <script>
 import EditGenre from '@/components/portfolio/EditGenre.vue'
+import EditZone from '@/components/portfolio/EditZone.vue'
 
 export default {
     name: "EditArtistInfo",
     components: {
-        EditGenre,
+        EditGenre, EditZone
     },
     props: {
         artistURI: {
