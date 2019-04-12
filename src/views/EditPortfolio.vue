@@ -2,8 +2,8 @@
   <div>
     <form v-on:submit.prevent="savePortfolio()">
       <EditSubmenu :artistId="artistId" />
-      <div v-if="errors" class="validationErrors vertical-center">
-        <p>Sorry! Something went wrong. Try again later.</p>
+      <div id="errorsDiv" class="validationErrors vertical-center">
+        <p style="margin: 0px;">{{errors}}</p>
       </div>
       <EditPhoto :artistImage="this.d_portfolioMainPhoto" :artistBanner="this.d_portfolioBanner"/>
       <EditArtistInfo/>
@@ -72,6 +72,9 @@ export default {
       //New genres
       namesOfNewGenres: [],
 
+
+      errors: "",
+
     }
   },
   methods: {
@@ -133,7 +136,9 @@ export default {
           this.updateVideosKey += 1;
   
       }).catch( () => {
-        this.errors = true;
+        this.errors = ex.response.data.error;
+        document.getElementById("errorsDiv").style.display = "block";
+        window.scrollTo(0,0);
       });
 
       GAxios.get(endpoints.genres)
@@ -143,7 +148,9 @@ export default {
           this.setAllGenres(genres)
 
       }).catch( () => {
-        this.errors = true;
+        this.errors = ex.response.data.error;
+        document.getElementById("errorsDiv").style.display = "block";
+        window.scrollTo(0,0);
       });
 
       var authorizedGAxios = GAxios;
@@ -205,12 +212,16 @@ export default {
           this.$router.push("/showPortfolio/"+this.artistId)
         }).catch(ex => {
             console.log(ex);
-            this.errors = true;
+            this.errors = ex.response.data.error;
+            document.getElementById("errorsDiv").style.display = "block";
+            window.scrollTo(0,0);
         })
 
       }).catch(ex => {
           console.log(ex);
-          this.errors = true;
+          this.errors = ex.response.data.error;
+          document.getElementById("errorsDiv").style.display = "block";
+          window.scrollTo(0,0);
       }).then( () => {
           NProgress.done()
       });
@@ -336,11 +347,12 @@ export default {
 
     .validationErrors{
         background-color:#f50057;
-        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);
-        
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
         color:white;
-        font-weight: bold;
         height: 100%;
+        display: none;
+        font-weight: bold;
+        padding: 10px;
         padding-top: 12px;
     }
 

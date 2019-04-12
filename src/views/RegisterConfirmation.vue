@@ -30,6 +30,13 @@ export default {
         noticeText: {
             type: String,
             default: "You will receive a confirmation email shortly.",
+        },
+        created: false,
+    },
+
+    beforeMount: function() {
+        if (!this.created) {
+            this.$router.push({name: "error"});
         }
     },
 }
