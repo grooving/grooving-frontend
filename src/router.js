@@ -125,6 +125,7 @@ export default new Router({
       path: '/registerConfirmation',
       name: 'registerConfirmation',
       component: RegisterConfirmation,
+      props: true,
     },
     {
       path: '/priceSelector/:artistId',
