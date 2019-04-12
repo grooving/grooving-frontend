@@ -250,6 +250,11 @@ export default {
         margin-top: 10%;
     }
 
+    .oops{
+        font-weight: bold;
+        color: rgba(0,0,0,.4);
+    }
+
     @media (min-width:768px)  {
       
         .artistCard{
