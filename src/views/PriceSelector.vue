@@ -6,7 +6,7 @@
         <div class="everything">
             <div class="artistCard">
                 <ArtistCard :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
-                :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" />
+                :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :price="price"/>
             </div>
             <div class="customPriceSelector">
                 <div><CustomPrice @confirmPrice="confirmPrice" @priceSelected="priceValue" :duration="date.duration" :minPrice="cardPrice"  /></div>

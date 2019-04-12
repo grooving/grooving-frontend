@@ -151,6 +151,7 @@ export default {
             }
 
             
+            NProgress.start();        
 
             authorizedGAxios.post(endpoints.eventlocation, body_eventLocation)
             .then((res) => {
@@ -162,7 +163,7 @@ export default {
                 body_offer['eventLocation_id'] = res.data.id;
 
                 
-
+                NProgress.start();        
                 // Una vez creado el eventLocation, procedemos a crear la oferta
                 authorizedGAxios.post(endpoints.offer, body_offer)
                 .then((res) => {
@@ -174,35 +175,50 @@ export default {
                         'id_offer': res.data.id,
                     }
 
+                    NProgress.start();        
+
                     authorizedGAxios.post(endpoints.braintree, body_brain)
                     .then((res) => {
                     
                         console.log(res)
                     
                     })
-                    .then(() => this.$router.push({path: this.nextStep}))
+                    .then(() => {
+                        NProgress.done()
+                        this.$router.push({path: this.nextStep})
+                    })
                     .catch(error => {
-                        this.errors = error.message;
+                        if (error.response.data.error == null){
+                            this.errors = error.message;
+                        } else {
+                            this.errors = error.response.data.error;
+                        }  
                         document.getElementById("errorsDiv").style.display = "block";
-                        window.scrollTo(0,0);
+                        window.scrollTo(0,0);         
                     })
 
                     
                 })
                 .catch(error => {
-                    this.errors = error.message;
+                    if (error.response.data.error == null){
+                        this.errors = error.message;
+                    } else {
+                        this.errors = error.response.data.error;
+                    }  
                     document.getElementById("errorsDiv").style.display = "block";
                     window.scrollTo(0,0);
-                })
+                }).then( () => {NProgress.done()});
                 
             })
             .catch(error => {
-                this.errors = error.message;
+                if (error.response.data.error == null){
+                    this.errors = error.message;
+                } else {
+                    this.errors = error.response.data.error;
+                }  
                 document.getElementById("errorsDiv").style.display = "block";
                 window.scrollTo(0,0);
-            }).then(() => {
-                NProgress.done()
-            });
+            }).then( () => {NProgress.done()});
         },
 
         
@@ -254,7 +270,7 @@ export default {
         if(this.hiringType == 'FARE')
             this.cardPrice = this.$store.getters.offer.totalPrice;
         if(this.hiringType && this.hiringType == 'CUSTOM')
-            this.cardPrice = this.$store.getters.offerCustomPack.cardPrice;
+            this.cardPrice = this.$store.getters.offer.totalPrice;
         else if(this.hiringType == 'PERFORMANCE')
             this.cardPrice = this.$store.getters.offerPerformancePack.priceHour;
 
@@ -277,17 +293,17 @@ export default {
         display: none;
     }
 
-    @media (max-width:767px)  {
-        .validationErrors{
-            background-color:#f50057;
-            box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);
-            
-            color:white;
-            font-weight: bold;
-            height: 100%;
-            padding-top: 5%;
-        }
-        
+    .validationErrors{
+        background-color:#f50057;
+        border-radius: 5px;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
+        color:white;
+        display: none;
+        font-weight: bold;
+        height: 100%;
+        margin-bottom: 14px;
+        padding: 10px;
+        padding-top: 12px;
     }
 
     @media (min-width:768px)  {
@@ -318,21 +334,7 @@ export default {
             margin-bottom: 0%;
 
             font-weight: bold;
-        }
-
-        validationErrors{
-            background-color:#f50057;
-            border-radius: 5px;
-            box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
-            color:white;
-            display: none;
-            font-weight: bold;
-            height: 100%;
-            margin-bottom: 14px;
-            padding: 10px;
-            padding-top: 12px;
-        }
-        
+        }        
     }
 
 </style>
