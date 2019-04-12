@@ -54,9 +54,9 @@ export default {
                 let options = {
                     client: clientInstance,
                     styles: {
-                        input: {
+                        'input': {
                             'font-size': '15px',
-                            'font-family': 'Comic-Sans'
+                            'font-family': 'Courier'
                         }
                     },
                     fields: {
