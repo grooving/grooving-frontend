@@ -21,7 +21,7 @@
                     <hr/>
                     <div style="width:100%;margin-top:25px;overflow:auto;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">FIXED PRICE</p>
-                        <p class="card-text" style="float:right;">{{fixedPrice}} €/h</p>
+                        <p class="card-text" style="float:right;">{{fixedPrice}} €</p>
                     </div>
                 </div>  
             </div>
