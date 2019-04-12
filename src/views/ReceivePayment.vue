@@ -1,8 +1,5 @@
 <template>
 <div class="prueba">
-    <div v-if="errors === true" class="validationErrors">
-        <p>Sorry! Something went wrong. Try again later.</p>
-    </div>
     <div class="title"><p>Receive your payments</p></div>
     <div class="everything">
         <div class="paymentSelect">
@@ -23,10 +20,6 @@ export default {
         PaymentCode
     },
     props: {
-        errors: {
-            type: Boolean,
-            default: false,
-        },
     },
 
     data: function() {

@@ -1,7 +1,7 @@
 <template>
 <div class="hiringProcessContainer">
-    <div v-if="errors == true" class="validationErrors">
-        <p>Sorry! Something went wrong. Try again later.</p>
+    <div id="errorsDiv" class="validationErrors vertical-center">
+        <p style="margin: 0px;">{{errors}}</p>
     </div>
     <div class="title"><p>Payment</p></div>
     <div class="everything">
@@ -73,7 +73,7 @@ export default {
                 description: undefined,
                 zoneId: undefined,
             },
-
+            errors: "",
         }
     },
 
@@ -184,21 +184,24 @@ export default {
                     })
                     .then(() => this.$router.push({path: this.nextStep}))
                     .catch(error => {
-                        console.log("Error while sending payment nonce to the server")
-                        this.errors = true;
+                        this.errors = error.message;
+                        document.getElementById("errorsDiv").style.display = "block";
+                        window.scrollTo(0,0);
                     })
 
                     
                 })
                 .catch(error => {
-                    console.log("Error while creating the Offer")
-                    this.errors = true;
+                    this.errors = error.message;
+                    document.getElementById("errorsDiv").style.display = "block";
+                    window.scrollTo(0,0);
                 })
                 
             })
             .catch(error => {
-                console.log("Error while creating the EventLocation")
-                this.errors = true;
+                this.errors = error.message;
+                document.getElementById("errorsDiv").style.display = "block";
+                window.scrollTo(0,0);
             }).then(() => {
                 NProgress.done()
             });

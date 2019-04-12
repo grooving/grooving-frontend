@@ -29,7 +29,7 @@ export default {
         },
         noticeText: {
             type: String,
-            default: "You will receive a confirmation email shortly.",
+            default: "You will receive a welcome email shortly.",
         },
         created: false,
     },
