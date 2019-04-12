@@ -188,22 +188,34 @@ export default {
                         this.$router.push({path: this.nextStep})
                     })
                     .catch(error => {
-                        this.errors = error.message;
+                        if (error.response.data.error == null){
+                            this.errors = error.message;
+                        } else {
+                            this.errors = error.response.data.error;
+                        }  
                         document.getElementById("errorsDiv").style.display = "block";
-                        window.scrollTo(0,0);
+                        window.scrollTo(0,0);         
                     })
 
                     
                 })
                 .catch(error => {
-                    this.errors = error.message;
+                    if (error.response.data.error == null){
+                        this.errors = error.message;
+                    } else {
+                        this.errors = error.response.data.error;
+                    }  
                     document.getElementById("errorsDiv").style.display = "block";
                     window.scrollTo(0,0);
                 }).then( () => {NProgress.done()});
                 
             })
             .catch(error => {
-                this.errors = error.message;
+                if (error.response.data.error == null){
+                    this.errors = error.message;
+                } else {
+                    this.errors = error.response.data.error;
+                }  
                 document.getElementById("errorsDiv").style.display = "block";
                 window.scrollTo(0,0);
             }).then( () => {NProgress.done()});
@@ -281,17 +293,17 @@ export default {
         display: none;
     }
 
-    @media (max-width:767px)  {
-        .validationErrors{
-            background-color:#f50057;
-            box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);
-            
-            color:white;
-            font-weight: bold;
-            height: 100%;
-            padding-top: 5%;
-        }
-        
+    .validationErrors{
+        background-color:#f50057;
+        border-radius: 5px;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
+        color:white;
+        display: none;
+        font-weight: bold;
+        height: 100%;
+        margin-bottom: 14px;
+        padding: 10px;
+        padding-top: 12px;
     }
 
     @media (min-width:768px)  {
@@ -322,21 +334,7 @@ export default {
             margin-bottom: 0%;
 
             font-weight: bold;
-        }
-
-        validationErrors{
-            background-color:#f50057;
-            border-radius: 5px;
-            box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
-            color:white;
-            display: none;
-            font-weight: bold;
-            height: 100%;
-            margin-bottom: 14px;
-            padding: 10px;
-            padding-top: 12px;
-        }
-        
+        }        
     }
 
 </style>
