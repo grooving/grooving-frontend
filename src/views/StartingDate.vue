@@ -1,7 +1,7 @@
 <template>
 <div class="prueba">
     <div v-if="errors" class="validationErrors vertical-center">
-        <p>Sorry! Something went wrong. Try again later.</p>
+        <p>{{errors}}</p>
     </div>
     <div class="title"><p>Pick a starting date</p></div>
     <div class="everything">
@@ -84,21 +84,25 @@ export default {
         ...mapActions(['setDateTime']),
 
         getHourAndMinutes(hour, minutes){
+            if(minutes <= 23 && minutes >= 0 && hour <= 59 && hour >= 0 && hour % 1 === 0 && minutes % 1 === 0) {
+                var startingHour = minutes+':'+hour;
+                this.date.hour = startingHour;
 
-            var startingHour = minutes+':'+hour;
-            this.date.hour = startingHour;
+                this.setDateTime(this.date).then(() => {
+                    
+                    // If VueX has correcty saved the time
+                    this.$router.push(this.nextStep)
 
-            this.setDateTime(this.date).then(() => {
-                
-                // If VueX has correcty saved the time
-                this.$router.push(this.nextStep)
+                }).catch( e => {
 
-            }).catch( e => {
+                    console.log('Error: Could not set time in VueX');
+                    console.log(e);
 
-                console.log('Error: Could not set time in VueX');
-                console.log(e);
-
-            });
+                });
+            }else{
+                this.errors = 'You must specific a starting hour';
+                document.getElementById("errorsDiv").style.display = "block";
+            }
 
         }
 

@@ -139,18 +139,20 @@ export default {
 
             if(this.hiringType == 'PERFORMANCE'){
                 this.packageId = this.$store.getters.offerPerformancePack.packageId;
-                body_offer['price'] = this.$store.getters.offer.priceHourPrice;
-                body_offer['startingDate']
+                body_offer['price'] = this.$store.getters.offer.priceHour;
             }
 
             authorizedGAxios.post(endpoints.eventlocation, body_eventLocation)
             .then((res) => {
-
+                
                 console.log("Event Location Created...")
                 console.log(res)
                 
                 // Reference the brand-new eventLocation
                 body_offer['eventLocation_id'] = res.data.id;
+
+                alert(body_offer['eventLocation_id']);
+                
 
                 // Una vez creado el eventLocation, procedemos a crear la oferta
                 authorizedGAxios.post(endpoints.offer, body_offer)
