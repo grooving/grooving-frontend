@@ -1,4 +1,8 @@
 <template>
+<div>
+    <div id="errorsDiv" class="validationErrors vertical-center">
+        <p style="margin: 0px;">{{errors}}</p>
+    </div>
     <div class="everything">
         <div class="card tarjeta">
             <ul class="list-group list-group-flush"><li style="font-weight: bold" class="list-group-item">Offer #{{ offerID }}</li></ul>
@@ -25,6 +29,7 @@
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script>
@@ -40,6 +45,7 @@
                 gsecurity: GSecurity,
                 gaxios: GAxios,
                 id: Number,
+                errors: '',
             }
         },
 
@@ -125,14 +131,14 @@
                 authorizedGAxios.put(endpoints.offer + this.$route.params['offerId'] + '/', 
                 {
                     "status": "CONTRACT_MADE",
-                })
-                    .then(response => {
-                        console.log(response);
-                }).catch(ex => {
-                    console.log(ex);
-                }).then(()=> {
+                }).then(response => {
+                    console.log(response);
                     this.$router.push({path: '/offers/'})
-
+                }).catch(ex => {
+                    console.log(ex);  
+                    this.errors = ex.response.data.error;
+                    document.getElementById("errorsDiv").style.display = "block";
+                    window.scrollTo(0,0);
                 }).then( () => {
                     NProgress.done();
                 })              
@@ -241,6 +247,19 @@
         .leftContent {
             display: inline-flex;
             align-items: center;
+        }
+
+        .validationErrors{
+            background-color:#f50057;
+            border-radius: 5px;
+            box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
+            color:white;
+            display: none;
+            font-weight: bold;
+            height: 100%;
+            margin-bottom: 14px;
+            padding: 10px;
+            padding-top: 12px;
         }
     }
 

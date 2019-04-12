@@ -320,7 +320,7 @@ export default {
             font-weight: bold;
         }
 
-        validationErrors{
+        .validationErrors{
             background-color:#f50057;
             border-radius: 5px;
             box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
