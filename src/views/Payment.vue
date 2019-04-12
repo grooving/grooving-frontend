@@ -151,6 +151,7 @@ export default {
             }
 
             
+            NProgress.start();        
 
             authorizedGAxios.post(endpoints.eventlocation, body_eventLocation)
             .then((res) => {
@@ -162,7 +163,7 @@ export default {
                 body_offer['eventLocation_id'] = res.data.id;
 
                 
-
+                NProgress.start();        
                 // Una vez creado el eventLocation, procedemos a crear la oferta
                 authorizedGAxios.post(endpoints.offer, body_offer)
                 .then((res) => {
@@ -174,13 +175,18 @@ export default {
                         'id_offer': res.data.id,
                     }
 
+                    NProgress.start();        
+
                     authorizedGAxios.post(endpoints.braintree, body_brain)
                     .then((res) => {
                     
                         console.log(res)
                     
                     })
-                    .then(() => this.$router.push({path: this.nextStep}))
+                    .then(() => {
+                        NProgress.done()
+                        this.$router.push({path: this.nextStep})
+                    })
                     .catch(error => {
                         this.errors = error.message;
                         document.getElementById("errorsDiv").style.display = "block";
@@ -193,16 +199,14 @@ export default {
                     this.errors = error.message;
                     document.getElementById("errorsDiv").style.display = "block";
                     window.scrollTo(0,0);
-                })
+                }).then( () => {NProgress.done()});
                 
             })
             .catch(error => {
                 this.errors = error.message;
                 document.getElementById("errorsDiv").style.display = "block";
                 window.scrollTo(0,0);
-            }).then(() => {
-                NProgress.done()
-            });
+            }).then( () => {NProgress.done()});
         },
 
         
