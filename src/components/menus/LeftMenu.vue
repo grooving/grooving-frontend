@@ -7,17 +7,25 @@
          <h2 class="title">Menu</h2>
             <ul class="navbar-nav mr-auto p-2 col align-self-center justify-content-center">
                 <li class="nav-item section">
-                    <div class="nav-link goTo" @click="goTo('/artist_search')" data-toggle="collapse" data-target="#sidebarleft" >Top Artists</div> 
-                    <b-dropdown-divider class="divider"/>
+                    <div class="nav-link goTo" @click="goTo('/topArtists')" data-toggle="collapse" data-target="#sidebarleft" >Top Artists</div> 
+                    <b-dropdown-divider v-if="gsecurity.isAuthenticated()" class="divider"/>
                 </li>
                 <li v-if="gsecurity.isAuthenticated()" class="nav-item section">
                     <div class="nav-link goTo" @click="goTo('/offers')" data-toggle="collapse" 
                     data-target="#sidebarleft" >My Offers</div>
-                    <b-dropdown-divider class="divider"/>
+                    <b-dropdown-divider v-if="gsecurity.isAuthenticated()" class="divider"/>
                 </li>
                 
                 <li v-if="gsecurity.hasRole('ARTIST')" class="nav-item section">
-                    <div class="nav-link goTo" @click="goTo('/receivePayment')" data-toggle="collapse" data-target="#sidebarleft">QR Scan</div>
+                    <div class="nav-link goTo" @click="goTo('/receivePayment')" data-toggle="collapse" data-target="#sidebarleft">Check-In</div>
+                    <b-dropdown-divider v-if="gsecurity.hasRole('ARTIST')" class="divider"/>
+                </li>
+                <li class="nav-item section">
+                    <div class="nav-link goTo" @click="goTo('/terms')" data-toggle="collapse" data-target="#sidebarleft" >Terms and Conditions</div> 
+                    <b-dropdown-divider class="divider"/>
+                </li>
+                <li class="nav-item section">
+                    <div class="nav-link goTo" @click="goTo('/about')" data-toggle="collapse" data-target="#sidebarleft" >About Us</div> 
                 </li>
                 
                 <!-- <li class="nav-item section">

@@ -27,7 +27,7 @@
                     </div>
                     <hr class="mb-2"/>
                     <div v-if="offerStatus !== 'PENDING' && offerStatus !== 'CONTRACT_MADE'" class="cardTextId">
-                        <i class="material-icons iconOffer">bookmark</i><p style="word-break: break-all">{{statusMessage()}}</p>
+                        <i class="material-icons iconOffer">bookmark</i><p>{{statusMessage()}}</p>
                     </div>
                     <div v-if="offerStatus == 'PAYMENT_MADE' && gsecurity.hasRole('CUSTOMER') && ratingD !== null" class="cardTextId">
                         <div class="rating"><br v-if="rating == null && ratingD !== null">
@@ -73,7 +73,7 @@
                             
                     </div>
                     <div v-if="reason !== '' && reason != null && (offerStatus == 'WITHDRAWN' || offerStatus == 'REJECTED' || offerStatus == 'CANCELLED_ARTIST')" class="cardTextId">
-                       <p style="word-break: break-all"><span style="font-weight: bold;">&nbsp;Reason: </span> {{reason}}</p>
+                       <p><span style="font-weight: bold;">&nbsp;Reason: </span> {{reason}}</p>
                     </div>
                 </div>
                 <div class="collapse" v-bind:id="noHashtag()">
@@ -96,12 +96,13 @@
                     <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="disableOfferButtons()" class="btn btn-primary rejectButton" 
                         data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">REJECT</span></a></div>
                     <div v-if="offerStatus === 'PENDING' && gsecurity.hasRole('ARTIST')" class="right-div right-text2">
-                        <router-link v-bind:to="confirmURI" class="btn btn-primary confirmButton"><span class="continueText">ACCEPT</span></router-link></div>
+                        <router-link v-bind:to="confirmURI" class="btn btn-primary confirmButton"><span class="continueText">DETAILS</span></router-link></div>
                 </div>
+                <!--
                 <div v-if="offerStatus === 'CONTRACT_MADE'" class="row container" v-bind:id="buttonsId()">
                     <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="disableOfferButtons()" class="btnn btn-primary rejectButton" 
                         data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">DECLINE</span></a></div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -213,15 +214,19 @@
                 authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
 
                 if (this.ratingD != null) {
+                    NProgress.start();
                     authorizedGAxios.post(endpoints.rating + this.offerID + '/', {
                         "score": this.ratingD,
                         "comment": "",
                     }).then(response => {
                         console.log(response);
+                        this.$router.go({ path: "/offers" });
                     }).catch(ex => {
                         console.log(ex);
-                    })
-                } 
+                    }).then(() => {
+                        NProgress.done()
+                    });
+                }
             },
             rejectOffer() {
                 var authorizedGAxios = GAxios;
@@ -229,6 +234,7 @@
                 authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
 
                 if (this.reason != '') {
+                    NProgress.start();
                     authorizedGAxios.put(endpoints.offer + this.offerID + '/', {
                         "status": "REJECTED",
                         "reason": this.reason,
@@ -237,8 +243,11 @@
                         window.location.reload();
                     }).catch(ex => {
                         console.log(ex);
-                    })
+                    }).then(() => {
+                        NProgress.done()
+                    });
                 } else {
+                    NProgress.start();
                     authorizedGAxios.put(endpoints.offer + this.offerID + '/', {
                         "status": "REJECTED",
                     }).then(response => {
@@ -246,7 +255,9 @@
                         window.location.reload();
                     }).catch(ex => {
                         console.log(ex);
-                    })
+                    }).then(() => {
+                        NProgress.done()
+                    });
                 }
             },
             cancelOffer() {
@@ -260,6 +271,7 @@
                 }
 
                 if (this.reason != '') {
+                    NProgress.start();
                     authorizedGAxios.put(endpoints.offer + this.offerID + '/', {
                         "status": status,
                         "reason": this.reason,
@@ -268,8 +280,11 @@
                         window.location.reload();
                     }).catch(ex => {
                         console.log(ex);
-                    })
+                    }).then(() => {
+                        NProgress.done()
+                    });
                 } else {
+                    NProgress.start();
                     authorizedGAxios.put(endpoints.offer + this.offerID + '/', {
                         "status": status,
                     }).then(response => {
@@ -277,7 +292,9 @@
                         window.location.reload();
                     }).catch(ex => {
                         console.log(ex);
-                    })
+                    }).then(() => {
+                        NProgress.done()
+                    });
                 }
             },
             withdrawnOffer() {
@@ -286,6 +303,7 @@
                 authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
 
                 if (this.reason != '') {
+                    NProgress.start();
                     authorizedGAxios.put(endpoints.offer + this.offerID + '/', {
                         "status": "WITHDRAWN",
                         "reason": this.reason,
@@ -294,8 +312,11 @@
                         window.location.reload();
                     }).catch(ex => {
                         console.log(ex);
-                    })
+                    }).then(() => {
+                        NProgress.done()
+                    });
                 } else {
+                    NProgress.start();
                     authorizedGAxios.put(endpoints.offer + this.offerID + '/', {
                         "status": "WITHDRAWN",
                     }).then(response => {
@@ -303,7 +324,9 @@
                         window.location.reload();
                     }).catch(ex => {
                         console.log(ex);
-                    })
+                    }).then(() => {
+                        NProgress.done()
+                    });
                 }
             },
             statusMessage() {

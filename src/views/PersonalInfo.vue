@@ -2,7 +2,7 @@
 <div class="prueba">
     <div class="everything">
         <div class="paymentSelect">
-          <div class="paymentOptions"><ProfileInfo :name="name" :surnames="userSurnames" :email="userEmail" :phoneNumber="userPhoneNumber" :username="username"/></div>
+          <div class="paymentOptions"><ProfileInfo :name="name" :surnames="userSurnames" :email="userEmail" :paypal="paypal" :phoneNumber="userPhoneNumber" :username="username"/></div>
         </div>
     </div>
 </div>
@@ -30,6 +30,7 @@ export default {
             username: '',
             userEmail: '',
             userPhoneNumber: '',
+            paypal: '',
         };
     },
 
@@ -49,9 +50,9 @@ export default {
 
             var role = this.gsecurity.getRole();
 
-            
             if(role=='CUSTOMER'){
                 //alert(GAxiosToken)
+                NProgress.start();
                 authorizedGAxios.get(endpoints.customerPersonalInformation)
                     .then(response => {
                         var personalInformation = response.data.user;
@@ -63,14 +64,14 @@ export default {
                         this.userEmail=personalInformation['email'];
                         this.userPhoneNumber = response.data.phone;
                         this.username = personalInformation['username'];
+                }).then(() => {
+                    NProgress.done()
                 });
-            
             }
-
-            
 
             if(role=='ARTIST'){
                 //alert(GAxiosToken)
+                NProgress.start();
                 authorizedGAxios.get(endpoints.artistPersonalInformation)
                     .then(response => {
                         var personalInformation = response.data.user;
@@ -82,8 +83,10 @@ export default {
                         this.userEmail=personalInformation['email'];
                         this.userPhoneNumber = response.data.phone;
                         this.username = personalInformation['username'];
-                });
-            
+                        this.paypal = response.data.paypalAccount;
+                }).then(() => {
+                    NProgress.done()
+                });  
             }
         }
     }

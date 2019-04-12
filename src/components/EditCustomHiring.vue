@@ -42,6 +42,7 @@ export default {
 
     methods: {
         updateCustom() {
+            NProgress.start();
             GAxios.post(endpoints.custom + this.customId + '/', {
                 "minimumPrice": this.minimumPrice,
             }).then(response => {
@@ -49,13 +50,21 @@ export default {
                 this.$router.push({name: "hiringSettings"});
             }).catch(ex => {
                 console.log(ex);
-            }) 
+            }).then( () => {
+                NProgress.done();
+            })
         },
     },
 
     created() {
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+    },
+
+    beforeMount: function() {
+        if (!this.customId) {
+            this.$router.push({name: "hiringSettings"});
+        }
     },
 }
 </script>

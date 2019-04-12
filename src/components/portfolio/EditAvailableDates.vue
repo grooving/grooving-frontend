@@ -1,41 +1,47 @@
 <template>
-    <div class="container">
-      <div class="owl-wrapper horizontal-center">
-          <div class="col-sm-12 col-md-8 horizontal-center">
-              <div class="row">
-                <div class="col-8 vertical-c enter">
-                  <h3 style="text-align: left; color: black; margin:0"><strong>Available dates</strong></h3>
-                </div>
-                <div class="col-2 vertical-center" style="padding-left: 10px" >
-                    <button type="button" class="vertical-center addButton" @click="toggleImageURLInput">
-                        <i v-if="!toggleAddURL" class="material-icons arrowIcon deleteURLButton">arrow_drop_down_circle</i>
-                        <i v-else class="material-icons arrowIcon deleteURLButton">cancel</i>
-                    </button>
-                </div>
-                <div class="col-2 vertical-center" style="padding-left: 10px" >
-                    <button type="button" class="vertical-center addButton" @click="toggleDeleteURLInput">
-                        <i v-if="!toggleDeleteURL" class="material-icons arrowIcon addURLButton">arrow_drop_down_circle</i>
-                        <i v-else class="material-icons arrowIcon addURLButton">add_circle</i>
-                    </button>
-                </div>
-              </div>
-                <div class="row vertical-center">
-                    <div v-if="toggleAddURL==false" class="form-group" style="width: 100%"> 
-                        <input id="deleteDate" @keypress.enter="addRejectedDate()" type="text" v-model="deleteDate" class="form-control" placeholder="Insert a new rejected date: YYYY-MM-DD" />
+    <div>
+    <div class="container-fluid horizontal-center">
+        <div id="topContainer" class="row">
+            <div class="col-sm-12 col-md-8 horizontal-center">
+                <div id="titleAndAdd" class="row">
+                    <div id="titleContainer" class="col-8 vertical-center">
+                        <h3 class="title"><strong>Available Dates</strong></h3>
                     </div>
-                    <div v-if="toggleDeleteURL==false" class="form-group" style="width: 100%"> 
-                        <input id="addDate" @keypress.enter="addNewDate()" type="text" v-model="addDate" class="form-control" placeholder="Insert a new available date: YYYY-MM-DD" />
+                    <div id="buttonContainer" class="col-4 vertical-center buttonContainer">
+                        <button type="button" class="vertical-center addButton" @click="toggleImageURLInput">
+                            <i v-if="!toggleAddURL" class="material-icons arrowIcon deleteURLButton">arrow_drop_down_circle</i>
+                            <i v-else class="material-icons arrowIcon deleteURLButton">cancel</i>
+                        </button>
+                        <button type="button" class="vertical-center addButton" @click="toggleDeleteURLInput" style="float:right">
+                            <i v-if="!toggleDeleteURL" class="material-icons arrowIcon addURLButton">arrow_drop_down_circle</i>
+                            <i v-else class="material-icons arrowIcon addURLButton">add_circle</i>
+                        </button>
                     </div>
                 </div>
-          </div>
-          <div class="row contentCalendar">
-              <div class="col-sm-12 col-md-8 horizontal-center">
+                <div id="urlForm" class="row py-2" v-if="toggleAddURL == false">
+                    <div class="col-12 vertical-center">
+                        <input id="deleteDate" @keypress.enter="addRejectedDate()" type="text" v-model="deleteDate" class="form-control" placeholder="New rejected date: YYYY-MM-DD" />
+                    </div>
+                </div>
+                <div id="urlForm" class="row py-2" v-if="toggleDeleteURL == false">
+                    <div class="col-12 vertical-center">
+                        <input id="addDate" @keypress.enter="addNewDate()" type="text" v-model="addDate" class="form-control" placeholder="New available date: YYYY-MM-DD" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>        
+    <div class="container" style="display:flex; justify-content:center;">
+        <div class="owl-wrapper horizontal-center">
+            <div class="row contentCalendar">
+                <div class="col-sm-12 col-md-8 horizontal-center">
                     <div><vuejs-datepicker :key="actualizador" :value="model.date" v-model="model.date" :disabledDates="disabledDates"  :full-month-name="true" :inline="true"></vuejs-datepicker></div>
-              </div>
-          </div>
-      </div>
-      
-  </div>
+                </div>
+            </div>
+        </div>
+  
+    </div>
+    </div>
 </template>
 
 <script>
@@ -67,7 +73,10 @@ export default {
     },
 
     props: {
-        availableDates: Array,
+        availableDates: {
+            type: Array,
+            default: () => { return Array()},
+        },
     },
 
     components: {
@@ -106,9 +115,9 @@ export default {
                     var stringDates = Array();
                     stringDates.push(this.deleteDate);
 
-                    for (var i = 0; i < this.availableDates.length; i++) {
-                        res.push(new Date(this.availableDates[i]));
-                        stringDates.push(this.availableDates[i]);
+                    for (var i = 0; i < this.$props.availableDates.length; i++) {
+                        res.push(new Date(this.$props.availableDates[i]));
+                        stringDates.push(this.$props.availableDates[i]);
                     }
 
                     this.stringToDates = res;
@@ -137,21 +146,21 @@ export default {
                 }
                 else{
                     //alert(this.addDate);
-                    //alert(this.availableDates);
-                    var idx = this.availableDates.indexOf(this.addDate);
+                    //alert(this.$props.availableDates);
+                    var idx = this.$props.availableDates.indexOf(this.addDate);
                     //alert(idx);
                     
                     if(idx!=-1){
                         //alert("AAAAA");
-                        this.availableDates.splice(idx, 1);
-                        //alert(this.availableDates);
+                        this.$props.availableDates.splice(idx, 1);
+                        //alert(this.$props.availableDates);
 
                         var stringDates = Array();
                         var res = Array();
 
-                        for (var i = 0; i < this.availableDates.length; i++) {
-                            res.push(new Date(this.availableDates[i]));
-                            stringDates.push(this.availableDates[i]);
+                        for (var i = 0; i < this.$props.availableDates.length; i++) {
+                            res.push(new Date(this.$props.availableDates[i]));
+                            stringDates.push(this.$props.availableDates[i]);
                         }
 
                         //alert("EEEEE");
@@ -165,7 +174,7 @@ export default {
 
                         //alert("IIIIII");
 
-                        //alert(this.availableDates);
+                        //alert(this.$props.availableDates);
                         this.$parent.d_portfolioDays = stringDates;
 
                         //alert("wog!");
@@ -190,11 +199,10 @@ export default {
     },
 
     created: function() {
-        console.log(this.availableDates);
         var res = Array();
 
-        for (var i = 0; i < this.availableDates.length; i++) { 
-            res.push(new Date(this.availableDates[i]));
+        for (var i = 0; i < this.$props.availableDates.length; i++) { 
+            res.push(new Date(this.$props.availableDates[i]));
         }
 
         this.stringToDates = res;
@@ -208,11 +216,21 @@ export default {
 </script>
 
 <style scoped>
+    .buttonContainer {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
     .addButton{
-        height:65px; 
-        width:inherit; 
+        height:65px;
         background:none; 
         border:none;
+    }
+
+    div#topContainer.row {
+        margin-right: 0px;
+        margin-top: 45px;
     }
 
     .addURLButton{
@@ -243,19 +261,27 @@ export default {
         background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
     }
 
+    #topContainer{
+    padding-bottom: 15px;
+  }
+
+  #titleContainer {
+    width: 100%;
+  }
+
 .inputFecha{
     width: 100%;
 }
 
 .container{
-    padding-top: 50px;
     padding-bottom: 50px;
 }
 .acceptButton{
     background: -webkit-linear-gradient(left, #00fb82, #187fe6);
     -webkit-background-clip: text;
     background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: tran
+    rent;
     border: none;
 }
 .acceptButton:hover{
@@ -265,6 +291,10 @@ export default {
     -webkit-text-fill-color: transparent;
     border: none;
 }
+  .vertical-center{
+    display: flex; 
+    align-items: center;  /*Aligns vertically center */
+  }
 
   @media (max-width: 576px) {
     .artistImage {
@@ -330,6 +360,12 @@ export default {
     .continueButton:hover{
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;
         background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
+    }
+
+    .title{
+        text-align: left; 
+        color: black; 
+        margin: 0;
     }
 
     @media (min-width: 768px){

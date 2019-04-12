@@ -1,26 +1,41 @@
 <template>
     <div class="content">
     <form v-on:submit.prevent="addressDataSelected()">
-        <div class="form-row">
+        <div class="form-row" style="margin-top:15px">
             <div class="form-group col-12">
-                <input v-model="street" type="text" class="form-control" placeholder="Street" required>
+                <input v-model="street" type="text" class="form-control" placeholder="Address" required>
             </div>  
         </div>
         <div class="form-row">
-            <div class="form-group col-12">
-                <input v-model="zipcode" type="number" class="form-control" placeholder="Zip code" required>
+            <div class="form-group col-7">
+                <input v-model="location" type="text" class="form-control" placeholder="Town" required>
+            </div>  
+            <div class="form-group col-5">
+                <input v-model="zipcode" type="number" class="form-control" placeholder="Zipcode" required>
             </div>  
         </div>
-        <div class="form-row">
+        <!-- <div class="form-row">
             <div class="form-group col-12">
                 <input v-model="location" type="text" class="form-control" placeholder="Location" required>
             </div>  
-        </div>
+        </div> -->
+        
+            <div class="row filter-item " style="margin-bottom: 15px">
+                <b-form-select v-model="singleSelectorValue" style="width:90%; margin:0 auto;" required>
+                    <option :value="undefined" disabled>* Provinces where the artist performs *</option>
+                    <option v-for="zone in zones" :key="zone.name" :value="zone.id">
+                        
+                        <span>{{zone.name}}</span>
+                    </option>
+                </b-form-select>
+            </div>
+
         <button class="btn btn-primary continueButton" >
                 <span class="continueText">CONTINUE</span></button>
     </form>
     </div>
 </template>
+
 
 <script>
 
@@ -31,12 +46,15 @@ export default {
             type: String,
             default: '',
         },
+        selector_filters: Array,
+        zones: Array,
     },
     data() {
         return {
             location: undefined,
             zipcode: undefined,
             street: undefined,
+            singleSelectorValue: undefined,
         }
     },
     mounted() {
@@ -44,7 +62,7 @@ export default {
     },
     methods: {
         addressDataSelected(){
-            this.$emit('addressSelected', [this.location, this.zipcode, this.street]);
+            this.$emit('addressSelected', [this.location, this.zipcode, this.street, this.singleSelectorValue]);
         },
     }
 }

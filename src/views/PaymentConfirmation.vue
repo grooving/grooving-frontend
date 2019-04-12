@@ -84,7 +84,7 @@
 
             this.setPaymentConfirmation(undefined);
             
-        }
+        },
     }   
 
 </script>

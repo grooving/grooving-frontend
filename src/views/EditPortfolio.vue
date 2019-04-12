@@ -2,8 +2,8 @@
   <div>
     <form v-on:submit.prevent="savePortfolio()">
       <EditSubmenu :artistId="artistId" />
-      <div v-if="errors" class="validationErrors vertical-center">
-        <p>Sorry! Something went wrong. Try again later.</p>
+      <div id="errorsDiv" class="validationErrors vertical-center">
+        <p style="margin: 0px;">{{errors}}</p>
       </div>
       <EditPhoto :artistImage="this.d_portfolioMainPhoto" :artistBanner="this.d_portfolioBanner"/>
       <EditArtistInfo/>
@@ -11,7 +11,7 @@
 
       <EditImageCarousel :photosInfo="d_portfolioImages" :key="updateImagesKey" />
       <EditVideoCarousel :videosInfo="d_portfolioVideos" :key="updateVideosKey" />
-      <EditAvailableDates :availableDates="d_portfolioDays" :key="updateCalendatKey"/>
+      <EditAvailableDates :availableDates="this.datos[0].availableDates" :key="updateCalendatKey"/>
     </form>
   </div>
 </template>
@@ -72,6 +72,9 @@ export default {
       //New genres
       namesOfNewGenres: [],
 
+
+      errors: "",
+
     }
   },
   methods: {
@@ -81,8 +84,9 @@ export default {
     extractURLS: function(collection, key){
       var res = Array();
       
-      for(var i = 0; i < collection.length; i++)
-        res.push(collection[i][key])
+      if(collection)
+        for(var i = 0; i < collection.length; i++)
+          res.push(collection[i][key])
 
       return res;
     },
@@ -90,7 +94,8 @@ export default {
 
     // Loads portfolio data
     retreivePortfolio: function(){
-    
+      NProgress.start();      
+      
       GAxios.get(endpoints.portfolio + this.artistId + "/")
       .then(response => {
           var portfolio = response.data;
@@ -131,7 +136,9 @@ export default {
           this.updateVideosKey += 1;
   
       }).catch( () => {
-        this.errors = true;
+        this.errors = ex.response.data.error;
+        document.getElementById("errorsDiv").style.display = "block";
+        window.scrollTo(0,0);
       });
 
       GAxios.get(endpoints.genres)
@@ -141,27 +148,31 @@ export default {
           this.setAllGenres(genres)
 
       }).catch( () => {
-        this.errors = true;
+        this.errors = ex.response.data.error;
+        document.getElementById("errorsDiv").style.display = "block";
+        window.scrollTo(0,0);
       });
 
       var authorizedGAxios = GAxios;
           var GAxiosToken = this.gsecurity.getToken();
           authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
 
-          authorizedGAxios.get('/calendar/'+this.gsecurity.getId() +'/')
+          authorizedGAxios.get('/artist' + endpoints.calendar + this.gsecurity.getId() + '/')
             .then(response => {
-                var calendar = response.data;
-                this.d_portfolioDays=calendar.days;
-
+              var calendar = response.data;
+              if(calendar.length==0){
+                this.datos.push({availableDates: []});
+              }else{
+                this.datos.push({availableDates: calendar[0].days,})
+              }
                 this.updateCalendatKey += 1;
+          }).then(() => {
+            NProgress.done()
           });
-
-      
-      
     },
 
     savePortfolio: function(){
-      
+      NProgress.start(); 
       var authorizedGAxios = GAxios;
       var GAxiosToken = this.gsecurity.getToken();
       authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
@@ -190,23 +201,33 @@ export default {
       authorizedGAxios.put(endpoints.portfolio + this.artistId + '/', body)
       .then(response => {
         console.log(response.data);
-        this.$router.push("/showPortfolio/"+this.artistId)
-      }).catch(ex => {
-          console.log(ex);
-          this.errors = true;
-      });
+        this.gsecurity.setPhoto(this.d_portfolioMainPhoto);
+        window.localStorage.setItem("photo", this.d_portfolioMainPhoto);
+        //this.$router.push("/showPortfolio/"+this.artistId);
+        //window.location.reload();
+        
+        //Actualizamos el calendario
+        authorizedGAxios.put(endpoints.calendar + this.artistId + '/', body_calendar)
+        .then(response => {
+          this.$router.push("/showPortfolio/"+this.artistId)
+        }).catch(ex => {
+            console.log(ex);
+            this.errors = ex.response.data.error;
+            document.getElementById("errorsDiv").style.display = "block";
+            window.scrollTo(0,0);
+        })
 
-      authorizedGAxios.put(endpoints.calendar + this.artistId + '/', body_calendar)
-      .then(response => {
-        console.log(response.data);
-        this.$router.push("/showPortfolio/"+this.artistId)
       }).catch(ex => {
           console.log(ex);
-          this.errors = true;
+          this.errors = ex.response.data.error;
+          document.getElementById("errorsDiv").style.display = "block";
+          window.scrollTo(0,0);
+      }).then( () => {
+          NProgress.done()
       });
 
       this.setFinal();
-
+      
     },
   },
 
@@ -326,11 +347,12 @@ export default {
 
     .validationErrors{
         background-color:#f50057;
-        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);
-        
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
         color:white;
-        font-weight: bold;
         height: 100%;
+        display: none;
+        font-weight: bold;
+        padding: 10px;
         padding-top: 12px;
     }
 

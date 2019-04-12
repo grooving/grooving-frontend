@@ -1,5 +1,5 @@
 <template>
-<div class="prueba">
+<div class="hiringProcessContainer">
     <div class="title"><p>Select a payment method</p></div>
     <div v-if="errors === true" class="validationErrors">
         <p>Sorry! Something went wrong. Try again later.</p>
@@ -138,7 +138,7 @@ export default {
             font-weight: bold;
             height: 100%;
             padding-top: 5%;
-        } 
+        }
   
     }
 
@@ -155,16 +155,23 @@ export default {
             margin-right: 35%;
             margin-top:0%;
         }
+
+        .hiringProcessContainer{
+            margin-bottom: 5%;
+        }
+
         .title {
             display: inline-block;
-            margin-left: 18%;
+            margin-right: 12%;
+            margin-left: 10%;
             text-align: left;
             font-size: 50px;
             margin-top: 5%;
             margin-bottom: 0%;
-            margin-left: 1px;
+
             font-weight: bold;
         }
+
         .validationErrors{
             padding-top: 10px;
             padding-bottom: 0.25px;

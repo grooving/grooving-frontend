@@ -15,7 +15,12 @@
         </div>
         <div id="urlForm" class="row py-2" v-if="showAddURL">
           <div class="col-12 vertical-center">
-            <input @keypress.enter="add()" type="text" v-model="addImageURL" class="form-control" placeholder="Insert your URL Here..." />
+            <div class="form-group" style="width: inherit;">
+              <input @keypress.enter="add($event)" type="url" v-model="addImageURL" class="form-control" aria-describedby="imageCarouselInput" placeholder="Insert your URL Here..." />
+              <small :class="{'imageCarouselInput' : showImageCarouselInputErrors}" class="form-text text-muted">
+                Must be a .png, .gif, .jpg or .jpeg link to an image.
+              </small>
+            </div>
           </div>
         </div>
       </div>
@@ -47,6 +52,7 @@ export default {
       addImageURL: "",
       actualizador: 0,
       d_photosInfo: [],
+      showImageCarouselInputErrors: false,
     }
   },
 
@@ -63,15 +69,24 @@ export default {
       this.showAddURL = !this.showAddURL;
     },
 
-    add: function(){
+    add: function(event){
 
       if(this.addImageURL){
-        this.d_photosInfo.push({id: this.d_photosInfo.length, imageURL: this.addImageURL});
-        this.$parent.d_portfolioImages = this.d_photosInfo;
-        this.actualizador = this.actualizador + 1;
 
-        this.addImageURL = '';
-        this.toggleImageURLInput();
+        if(this.addImageURL.endsWith('.png') || this.addImageURL.endsWith('.jpg') || this.addImageURL.endsWith('.jpeg') || this.addImageURL.endsWith('.gif')){
+          this.showImageCarouselInputErrors = false;
+          this.d_photosInfo.push({id: this.d_photosInfo.length, imageURL: this.addImageURL});
+          this.$parent.d_portfolioImages = this.d_photosInfo;
+          this.actualizador = this.actualizador + 1;
+
+          this.addImageURL = '';
+          this.toggleImageURLInput();
+        }else{
+          event.preventDefault();
+          this.showImageCarouselInputErrors = true;
+        }
+      }else{
+        event.preventDefault();
       }
     },
 
@@ -112,6 +127,10 @@ export default {
     border:none;
   }
 
+  .imageCarouselInput{
+    color: #f50057 !important;
+  }
+
   .horizontal-center{
     margin: 0 auto;
   }
@@ -124,6 +143,7 @@ export default {
 
   #topContainer{
     padding-bottom: 15px;
+    margin-top: 45px;
   }
 
   .vertical-center{

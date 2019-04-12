@@ -182,6 +182,7 @@
 
     .grooving-button:hover{
         background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.7) !important;
     }
 
     .grooving-button-text {

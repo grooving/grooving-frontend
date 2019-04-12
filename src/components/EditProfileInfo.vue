@@ -9,6 +9,9 @@
                         <i class="material-icons iconOffer">clear</i>
                     </router-link>
                     <h6 class="card-subtitle mb-2 text-muted">Basic info of your Grooving account, like your name and email.</h6>
+                    <div id="errorsDiv" class="validationErrors vertical-center">
+                        <p style="margin: 0px;">{{errors}}</p>
+                    </div>
                     <div style="width:100%;margin-top:25px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">FIRST NAME</p>
                         <b-form-group>
@@ -37,11 +40,18 @@
                         <p class="card-text" style="font-weight:bold;display:inline-block;">EMAIL</p>
                         <p class="card-text" style="float:right;">{{email}}</p>
                     </div>
+                    <hr v-if="this.gsecurity.hasRole('ARTIST')" style="margin-top:0px;margin-bottom:0px;"/>
+                    <div v-if="this.gsecurity.hasRole('ARTIST')" style="width:100%;margin-top:16px;">
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">PAYPAL</p>
+                        <b-form-group>
+                            <b-form-input v-model="paypal" v-bind:value="paypal" style="text-align: right" type="email"></b-form-input>
+                        </b-form-group>
+                    </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:16px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">PHONE</p>
                         <b-form-group>
-                            <b-form-input v-model="phoneNumber" v-bind:value="phoneNumber" style="text-align: right" type="number"></b-form-input>
+                            <b-form-input v-model="phoneNumber" min="600000000" max="900000000" v-bind:value="phoneNumber" style="text-align: right" type="number"></b-form-input>
                         </b-form-group>
                     </div>
                     <div class="continueButtonDiv">
@@ -70,6 +80,7 @@ export default {
             surnames: '',
             username: '',
             email: '',
+            paypal: '',
             phoneNumber: '',
 
             errors: "",
@@ -78,6 +89,7 @@ export default {
 
     methods: {
         saveInfo() {
+            NProgress.start();
             var uri = '';
             if (this.gsecurity.hasRole('ARTIST')) {
                 uri = endpoints.artist;
@@ -85,30 +97,59 @@ export default {
                 uri = endpoints.customer;
             }
 
-            GAxios.put(uri + this.gsecurity.getId() + '/', {
-                "first_name": this.name,
-                "last_name": this.surnames,
-                "phone": this.phoneNumber,
-                "photo": this.gsecurity.getPhoto(),
-            }).then(response => {
-                console.log(response);
-                this.$router.push({name: "personalInfo"});
-            }).catch(ex => {
-                console.log(ex);
-                if (ex.reponse != null) {
-                    this.errors = ex.response.data[0];
+            if (this.gsecurity.getRole() == 'ARTIST') {
+                GAxios.put(uri + this.gsecurity.getId() + '/', {
+                    "first_name": this.name,
+                    "last_name": this.surnames,
+                    "phone": this.phoneNumber,
+                    "photo": this.gsecurity.getPhoto(),
+                    "paypalAccount": this.paypal,
+                }).then(response => {
+                    console.log(response);
+                    this.gsecurity.setFirstName(this.name);
+                    window.localStorage.setItem("firstName", this.name);
+                    this.$router.push({name: "personalInfo"});
+                    window.location.reload();
+                }).catch(ex => {
+                    console.log(ex);
+                    console.log(ex.response.data.error);
+                    this.errors = ex.response.data.error;
                     document.getElementById("errorsDiv").style.display = "block";
-                }
-            }) 
+                    window.scrollTo(0,0);
+                }).then( () => {
+                    NProgress.done();
+                })
+            } else if (this.gsecurity.getRole() == 'CUSTOMER') {
+                GAxios.put(uri + this.gsecurity.getId() + '/', {
+                    "first_name": this.name,
+                    "last_name": this.surnames,
+                    "phone": this.phoneNumber,
+                    "photo": this.gsecurity.getPhoto(),
+                }).then(response => {
+                    console.log(response);
+                    this.gsecurity.setFirstName(this.name);
+                    window.localStorage.setItem("firstName", this.name);
+                    this.$router.push({name: "personalInfo"});
+                    window.location.reload();
+                }).catch(ex => {
+                    console.log(ex);
+                    console.log(ex.response.data.error);
+                    this.errors = ex.response.data.error;
+                    document.getElementById("errorsDiv").style.display = "block";
+                    window.scrollTo(0,0);
+                }).then( () => {
+                    NProgress.done();
+                })
+            }
         },
     },
 
     beforeMount: function(){
-
         if (!this.gsecurity.isAuthenticated()) {
             this.$router.push({name: "error"});
 
         } else {
+            NProgress.start();
             var GAxiosToken = this.gsecurity.getToken();
             var authorizedGAxios = GAxios;
             authorizedGAxios.defaults.headers.common['Authorization'] = 'Token '+ GAxiosToken;
@@ -132,14 +173,19 @@ export default {
                     this.email = personalInformation['email'];
                     this.phoneNumber = response.data.phone;
                     this.username = personalInformation['username'];                    
-                });            
+
+                    if (role == 'ARTIST') {
+                        this.paypal = response.data.paypalAccount;
+                    }
+                }).then( () => {
+                    NProgress.done();
+                })          
         }
     },
 
     created() {
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
-        this.refreshGSecurityData();
     },
 }
 </script>
@@ -197,6 +243,18 @@ export default {
     select:hover{
         border-color: #187fe6;
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .5) !important;
+    }
+
+    .validationErrors{
+        background-color:#f50057;
+        border-radius: 5px;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
+        color:white;
+        display: none;
+        font-weight: bold;
+        margin-bottom: 14px;
+        padding: 10px;
+        padding-top: 12px;
     }
 
     @media (max-width:767px)  {

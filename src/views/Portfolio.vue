@@ -33,8 +33,6 @@ import Calendar from '@/components/Calendar.vue';
 import {mapActions} from 'vuex';
 import { type } from 'os';
 
-var portfolioDays = [];
-
 export default {
   name: 'Portfolio',
   components: {
@@ -107,6 +105,8 @@ export default {
     this.artistId = this.$route.params['artistId'];
 
     var authorizedGAxios = GAxios;
+
+    NProgress.start();
     authorizedGAxios.get(endpoints.portfolio+this.$route.params['artistId']+"/")
       .then(response => {
           var portfolio = response.data;
@@ -146,15 +146,7 @@ export default {
             videoCounter = videoCounter+1;
           }
 
-          this.updateVideosKey += 1;
-
-          
-
-          this.d_portfolioDays = portfolio.calendar_set[0]['days'];
-          
-
-          
-          
+          this.updateVideosKey += 1;  
                 
     });
 
@@ -165,24 +157,22 @@ export default {
         authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
       }
 
-      authorizedGAxios.get('/artist' + endpoints.calendar + this.$route.params['artistId'] + '/')
+      authorizedGAxios.get(endpoints.artistCalendar + this.$route.params['artistId'] + '/')
         .then(response => {
-            var calendar = response.data;
-            if(calendar.length==0){
-              this.datos.push({availableDates: []});
-            }
-            else{
-              this.datos.push({
-                  availableDates: calendar[0].days,
-              })
-            }
+
+          var calendar = response.data;
+          if(calendar.length==0){
+            this.datos.push({availableDates: []});
+          }else{
+            this.datos.push({availableDates: calendar[0].days,})
+          }
 
         }).catch(ex => {
             console.log(ex);
+        }).then(() => {
+          NProgress.done()
         });
-
   }
-
 }
 </script>
 

@@ -122,12 +122,12 @@ export default {
 
         if(!this.$gsecurity.isAuthenticated()) {
             console.log('Error')
-            location.replace("/#/*")
+            this.$router.push({name: "error"});
         }
 
         if(!this.$gsecurity.hasRole('CUSTOMER')) {
             console.log("Error: You are not a customer so you can't hire an artist");
-            location.replace("/#/*")
+            this.$router.push({name: "error"});
         }
 
         if(!this.artistId){
@@ -152,7 +152,8 @@ export default {
 
         /* Aquí devolvemos los packages de tipo performance */
         
-        authorizedGAxios.get(endpoints.paymentPackages + this.artistId + '/')
+        NProgress.start();        
+        authorizedGAxios.get(endpoints.paymentPackages + this.artistData.artistId + '/')
             .then(response => {
                 console.log(response.data);
                 
@@ -209,6 +210,8 @@ export default {
             }).catch(ex => {
                 console.log('Could not load Artist Info Data API');
                 console.log(ex);
+            }).then(() => {
+                NProgress.done()
             });
     },
 

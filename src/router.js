@@ -37,6 +37,8 @@ import EditFare from './views/EditFare.vue'
 import CreateFare from './views/CreateFare.vue'
 import StartingDate from './views/StartingDate.vue'
 import PerformanceSelector from './views/PerformanceSelector.vue'
+import TermsView from './views/TermsView.vue'
+import AboutView from './views/AboutView.vue'
 
 Vue.use(Router)
 
@@ -125,6 +127,7 @@ export default new Router({
       path: '/registerConfirmation',
       name: 'registerConfirmation',
       component: RegisterConfirmation,
+      props: true,
     },
     {
       path: '/priceSelector/:artistId',
@@ -233,6 +236,16 @@ export default new Router({
       path: '/startingDate/:artistId',
       name: 'startingDate',
       component: StartingDate,
+    },
+    {
+      path: '/terms',
+      name: 'terms',
+      component: TermsView,
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: AboutView,
     },
     
   ]

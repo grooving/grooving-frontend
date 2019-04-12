@@ -14,7 +14,7 @@
                     <b-dropdown-divider class="divider"/>
                 </li>
                 <li class="nav-item section" v-if="gsecurity.hasRole('ARTIST')">
-                    <div class="nav-link goTo" @click="goTo('/hiringSettings')" to="hiringSettings" data-toggle="collapse" data-target="#sidebar">Hiring Settings</div>
+                    <div class="nav-link goTo" @click="goTo('/hiringSettings')" data-toggle="collapse" data-target="#sidebar">Hiring Settings</div>
                     <b-dropdown-divider class="divider"/>
                 </li>                
                 <!-- <li class="nav-item section">
@@ -42,6 +42,7 @@ export default {
             userFirstName: '',
             artistId: '',
             url: undefined,
+            refresher: undefined,
         }
     },
     methods: {
@@ -53,11 +54,10 @@ export default {
 
         refreshGSecurityData: function() {
             this.userFirstName = this.gsecurity.getFirstName();
-            console.log(this.userFirstName);
             this.artistId = this.gsecurity.getId();
-            console.log(this.artistId);
         },
         goTo(path) {
+            
             this.url = this.$store.getters.sideMenus.url;
             if(this.url !== path) {
                 this.setURL(path);

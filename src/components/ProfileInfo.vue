@@ -32,6 +32,11 @@
                         <p class="card-text" style="font-weight:bold;display:inline-block;">EMAIL</p>
                         <p class="card-text" style="float:right;">{{email}}</p>
                     </div>
+                    <hr v-if="this.gsecurity.hasRole('ARTIST')" style="margin-top:0px;margin-bottom:0px;"/>
+                    <div v-if="this.gsecurity.hasRole('ARTIST')" style="width:100%;margin-top:16px;overflow:auto;">
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">PAYPAL</p>
+                        <p class="card-text" style="float:right;">{{paypal}}</p>
+                    </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:16px;overflow:auto;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">PHONE</p>
@@ -44,6 +49,7 @@
 </template>
 
 <script>
+import GSecurity from "@/security/GSecurity.js";
 export default {
     name: "profileInfo",
     props: {
@@ -66,7 +72,15 @@ export default {
         username: {
             type: String,
             default: 'josembell'
+        },
+        paypal: {
+            type: String,
         }
+    },
+
+    created() {
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
     },
 }
 </script>

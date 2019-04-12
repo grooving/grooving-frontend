@@ -1,5 +1,5 @@
 <template>
-    <div class="hell">
+    <div class="hiringProcessContainer">
         <div class="title">
             <p>Choose the price</p>
         </div>
@@ -222,20 +222,34 @@
         display: none;
     }
 
+    @media (max-width:767px) {
+
+        .customPriceSelector{
+            margin-top: 25px;
+            margin-bottom: 55px;
+        }
+        
+    }
+
     @media (min-width:768px)  {
         .artistImage{
             border-radius: 10px 10px 0px 0px;
         }
       
         .everything {
-            align-items: center;
             display: flex;
+            align-items: center;
             justify-content: center;
-            margin-left: 10%;
-            margin-right: 10%;
             margin-top: 5%;
-            padding: 15px;
             text-align: center;
+            padding: 15px;
+            margin-left: 35%;
+            margin-right: 35%;
+            margin-top:0%;
+        }
+
+        .hiringProcessContainer{
+            margin-bottom: 5%;
         }
 
         .tarjeta {
@@ -248,13 +262,14 @@
 
         .title {
             display: inline-block;
-            font-size: 50px;
-            font-weight: bold;
-            margin-bottom: 0%;
-            margin-left: 10%;
             margin-right: 12%;
-            margin-top: 5%;
+            margin-left: 10%;
             text-align: left;
-        } 
+            font-size: 50px;
+            margin-top: 5%;
+            margin-bottom: 0%;
+
+            font-weight: bold;
+        }
     }
 </style>

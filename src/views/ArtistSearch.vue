@@ -115,6 +115,7 @@ export default {
 
     search: function(queries){
       // Make the API call
+      NProgress.start();
       GAxios.get(endpoints.artists, {
         params: queries
       })
@@ -138,7 +139,9 @@ export default {
 
         }
       }).catch(ex => {
-          console.log(ex);
+          console.log(ex);      
+      }).then(() => {
+        NProgress.done()
       });
     }
   },
@@ -153,6 +156,7 @@ export default {
   },
 
   beforeMount: function(){
+    NProgress.start();
     // Check if we want to filter artists
     var queries = this.$route.query;
 
@@ -189,7 +193,9 @@ export default {
       this.selector_filters[0].data = tree;
 
       
-    })
+    }).then(() => {
+      NProgress.done()
+    });
 
     this.search(queries);
   },

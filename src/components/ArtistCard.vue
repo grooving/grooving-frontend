@@ -1,9 +1,12 @@
 <template>
     <div>
         <div class="card tarjeta">
-            <router-link v-bind:to="portfolioURI"><img v-bind:src="artistImage" onerror="this.src='https://cdn.pixabay.com/photo/2016/02/19/11/36/microphone-1209816_960_720.jpg'" class="card-img-top artistImage" alt="Artist's Image"></router-link>
+            <router-link v-bind:to="portfolioURI">
+                <img v-if="!artistImage" src="@/assets/defaultPhoto.png" class="card-img-top artistImage" alt="Artist's Image">
+                <img v-else class="card-img-top artistImage" :src="artistImage" alt="Artist's Image">
+            </router-link>
             <div class="card-body cuerpoTarjeta">
-                <div class="leftContent">
+                <div class="leftContent" style="width:100%">
                     <h5 class="card-title artistName">{{ artistName }}</h5>
                     <span class="card-text artistGenres">{{ genresToString() }}</span>
                 </div>
@@ -132,7 +135,8 @@ export default {
     }
 
     .hireButton:hover{
-        background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.7) !important;
+        background-image: linear-gradient(to right, #14ca9f, #1648d0) !important;
     }
 
     .hireText {

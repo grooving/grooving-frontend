@@ -1,5 +1,5 @@
 <template>
-    <div class="hell">
+    <div class="hiringProcessContainer">
         <div class="title"><p>Address information</p></div>
 
     <div class="everything">
@@ -8,7 +8,7 @@
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="cardPrice"/>
         </div>
         <div class="addDiv">
-          <div class="addressData"><AddressData :nextStep="this.nextStep" @addressSelected="addressSelected" /></div>
+          <div class="addressData"><AddressData :nextStep="this.nextStep" :zones="this.zones" @addressSelected="addressSelected" /></div>
         </div>
     </div>
     </div>
@@ -18,6 +18,8 @@
 import AddressData from '@/components/makeOffer/AddressData.vue'
 import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
 import GSecurity from '@/security/GSecurity.js';
+import GAxios from '@/utils/GAxios.js';
+import endpoints from '@/utils/endpoints.js';
 import {mapActions} from 'vuex';
 import {mapGetters} from 'vuex';
 import PaymentProcess from '@/store/modules/payment.js';
@@ -49,6 +51,14 @@ export default {
             },
 
             startHour: undefined,
+            zones: undefined,
+            selector_filters:[
+                {id: 0, text: "Zones", filterName: "zone", value: 0, data: [
+                {id: 0, text: "España", value: "0", depth: 0},
+                {id: 0, text: "Andalucia", value: "1", depth: 1},
+                {id: 0, text: "Sevilla", value: "2", depth: 2}
+                ]},
+            ], 
         }
     },
 
@@ -135,6 +145,19 @@ export default {
         this.nextStep += this.artistId;
 
     },
+
+    mounted() {
+
+        NProgress.start();
+
+        GAxios.get(endpoints.portfolioZones + this.artistId)
+        .then(response => {
+
+            this.zones = response.data;
+        
+        }).then( () => {NProgress.done()});
+
+    },
 }
 </script>
 
@@ -160,6 +183,11 @@ export default {
             margin-right: 35%;
             margin-top:0%;
         }
+        
+        .hiringProcessContainer{
+            margin-bottom: 5%;
+        }
+
         .title {
             display: inline-block;
             margin-right: 12%;
@@ -167,6 +195,8 @@ export default {
             text-align: left;
             font-size: 50px;
             margin-top: 5%;
+            margin-bottom: 0%;
+
             font-weight: bold;
         }
         

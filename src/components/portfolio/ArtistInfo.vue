@@ -1,10 +1,13 @@
 <template>
     <div class="content overlap">
         <div class="bannerIcon">
-            <img class="card-img-top banner" :src="artistBanner"/>       
+            <img v-if="artistBanner == null || artistBanner == ''" class="card-img-top nullBanner"/>
+            <img v-else v-bind:src="artistBanner" :key="artistBanner" class="card-img-top banner">
         </div>
         <div class="artistIcon">
-            <img class="card-img-top icon" :src="artistImage"/>
+            <img v-if="!artistImage" src="@/assets/defaultPhoto.png"
+                class="card-img-top icon" alt="Profile Image">
+            <img v-else class="card-img-top icon" :src="artistImage" alt="Profile Image">
         </div>
         <h1 style="font-weight: bold;">{{artistName}}</h1>
         <span class="card-text artistGenres">{{ genresToString() }}</span>
@@ -132,7 +135,20 @@ export default {
         position: relative;
         z-index: 1;
         box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, .8);
+        border: none;
+    }
 
+    .nullBanner{
+        width: 100%;
+        object-fit: cover;
+        height: 10rem;
+
+        position: relative;
+        z-index: 1;
+        box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, .8);
+        background-image: linear-gradient(to right, #00fb82, #187fe6);
+        border: none;
+        opacity: 0.5;
     }
 
     .artistIcon img{
@@ -164,8 +180,8 @@ export default {
     .rating{
         margin-bottom: 5px;
     }
-    .description p{
-        word-break: break-all;
+
+    .description p {
         margin-left: 3%;
         margin-right: 3%;
     }
@@ -232,8 +248,7 @@ export default {
             height: 100px;
         }
 
-        .description p{
-            word-break: break-all;
+        .description p {
             margin-left: 20%;
             margin-right: 20%;
         }

@@ -36,7 +36,7 @@ export default {
       this.$router.push({name: "error"});
 
     } else {
-
+      NProgress.start();
       var authorizedGAxios = GAxios;
       var GAxiosToken = this.gsecurity.getToken();
       authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
@@ -55,6 +55,8 @@ export default {
         });
       }).catch(ex => {
           console.log(ex);
+      }).then(() => {
+        NProgress.done()
       });
     }
   },

@@ -3,7 +3,7 @@
         <div class="title"><p>Create your artist account!</p></div>
         <div class="bothCards">
             <div id="signup" class="tarjeta">
-                <b-form>
+                <b-form v-on:submit="createArtist">
                     <div id="errorsDiv" class="validationErrors vertical-center">
                         <p style="margin: 0px;">{{errors}}</p>
                     </div>
@@ -47,10 +47,14 @@
                         <b-form-input v-model="input.email" type="email" placeholder="E-mail" required></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input type="number" v-model="input.phoneNumber" placeholder="Phone Number" min="0"></b-form-input>
+                        <b-form-input type="number" v-model="input.phoneNumber" placeholder="Phone Number" min="600000000" max="999999999"></b-form-input>
                     </b-form-group>
-                    <h6 class="card-subtitle mb-2 text-muted">By creating an account you agree to <a href="/">Grooving's Terms and Conditions</a>.</h6>
-                    <b-button class="continueButton" variant="primary" size="sm" type="submit" v-on:click="createArtist">SIGN IN</b-button>
+                    <div class="form-check">
+                        <b-form-checkbox id="checkbox-1" v-model="status" value="accepted" unchecked-value="not_accepted" required>
+                            <p>By creating an account you agree to <a href="/">Grooving's Terms and Conditions</a>.</p>
+                        </b-form-checkbox>
+                    </div>
+                    <b-button class="continueButton" variant="primary" size="sm" type="submit">SIGN IN</b-button>
                 </b-form>
             </div>
         </div>
@@ -85,6 +89,7 @@
                     photo: "",
                 },
                 errors: "",
+                status: 'not_accepted',
             };
         },
 
@@ -109,24 +114,39 @@
                 $('.custom-file-label').html(fileName);
             },*/
             createArtist() {
-                GAxios.post(endpoints.registerArtist, {
-                    "first_name": this.input.firstName,
-                    "last_name": this.input.lastName,
-                    "password": this.input.password,
-                    "confirm_password": this.input.confirmPassword,
-                    "username": this.input.username,
-                    "email": this.input.email,
-                    "photo": this.input.photo,
-                    "phone": this.input.phoneNumber,
-                }).then(response => {
-                    console.log(response);
-                    this.$router.push({name: "registerConfirmation"});
-                }).catch(ex => {
-                    console.log(ex.response.data);
-                    this.errors = ex.response.data[0];
+                if (this.status == 'not_accepted') {
+                    this.errors = "You must accept our terms and conditions."
                     document.getElementById("errorsDiv").style.display = "block";
-                }) 
-
+                    window.scrollTo(0,0);
+                } else if (parseInt(this.input.phoneNumber, 10) < 600000000 || parseInt(this.input.phoneNumber, 10) > 900000000) {
+                    this.errors = "The phone number must be between 600000000 and 900000000."
+                    document.getElementById("errorsDiv").style.display = "block";
+                    window.scrollTo(0,0);
+                } else {
+                    NProgress.start();
+                    GAxios.post(endpoints.registerArtist, {
+                        "artisticName": this.input.artisticName,
+                        "first_name": this.input.firstName,
+                        "last_name": this.input.lastName,
+                        "password": this.input.password,
+                        "confirm_password": this.input.confirmPassword,
+                        "username": this.input.username,
+                        "email": this.input.email,
+                        "photo": this.input.photo,
+                        "phone": this.input.phoneNumber,
+                    }).then(response => {
+                        console.log(response);
+                        this.$router.push({name: "registerConfirmation", params: {created: true}});
+                    }).catch(ex => {
+                        console.log(ex.response.data.error);
+                        this.errors = ex.response.data.error;
+                        document.getElementById("errorsDiv").style.display = "block";
+                        this.status = 'not_accepted';
+                        window.scrollTo(0,0);
+                    }).then(() => {
+                        NProgress.done()
+                    });
+                }
             },
         },
 
@@ -180,7 +200,11 @@
         font-weight: semibold;
         text-align: left;
     }
-
+    
+    .form-check {
+        padding-left: 0.7rem;
+    }
+    
     input:focus{
         border-color: #00fb82;
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;   
@@ -191,6 +215,10 @@
     input:hover{
         border-color: #187fe6;
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .3) !important;
+    }
+
+    .p {
+        padding-left: 0.7rem;
     }
 
     .profileImage {

@@ -12,7 +12,7 @@
                     <div style="width:100%;margin-top:25px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">DESCRIPTION</p>
                         <div class="input-group">
-                            <input v-model="description" type="text" class="form-control" maxlength="50" required>
+                            <input v-model="description" type="text" class="form-control" maxlength="250" required>
                         </div>
                     </div>
                     <div style="width:100%;margin-top:25px;">
@@ -62,6 +62,7 @@ export default {
     methods: {
         updatePerformance() {
             //alert(this.duration);
+            NProgress.start();
             GAxios.post(endpoints.performance + this.performanceId + '/', {
                 "info": this.description,
                 "hours":this.duration,
@@ -71,13 +72,21 @@ export default {
                 this.$router.push({name: "hiringSettings"});
             }).catch(ex => {
                 console.log(ex);
-            }) 
+            }).then( () => {
+                NProgress.done();
+            })
         },
     },
 
     created() {
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+    },
+
+    beforeMount: function() {
+        if (!this.performanceId) {
+            this.$router.push({name: "hiringSettings"});
+        }
     },
 }
 </script>
