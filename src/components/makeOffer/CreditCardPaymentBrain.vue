@@ -108,7 +108,6 @@ export default {
                     this.errors = err.message;
                     document.getElementById("errorsDiv").style.display = "block";
                     window.scrollTo(0,0);
-                }).then(() => {
                     NProgress.done();
                 });
             }

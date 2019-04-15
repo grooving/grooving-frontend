@@ -78,7 +78,7 @@ export default {
      methods: {
          
         gpay(nonce) {
-
+            
             // Preparamos una oferta con los campos de VueX, que usaremos para redactar el 
             // cuerpo de la petición
             this.preparedOffer.artistId = this.$store.getters.offerArtist.artistId,
@@ -148,10 +148,7 @@ export default {
                 body_offer['price'] = this.$store.getters.offerPerformancePack.priceHour;
                 body_offer['hours'] = this.$store.getters.offerPerformancePack.duration;
                 
-            }
-
-            
-            NProgress.start();        
+            }      
 
             authorizedGAxios.post(endpoints.eventlocation, body_eventLocation)
             .then((res) => {
@@ -161,9 +158,7 @@ export default {
                 
                 // Reference the brand-new eventLocation
                 body_offer['eventLocation_id'] = res.data.id;
-
-                
-                NProgress.start();        
+      
                 // Una vez creado el eventLocation, procedemos a crear la oferta
                 authorizedGAxios.post(endpoints.offer, body_offer)
                 .then((res) => {
@@ -173,9 +168,7 @@ export default {
                     let body_brain = {
                         'payment_method_nonce': nonce,
                         'id_offer': res.data.id,
-                    }
-
-                    NProgress.start();        
+                    }     
 
                     authorizedGAxios.post(endpoints.braintree, body_brain)
                     .then((res) => {
@@ -184,7 +177,6 @@ export default {
                     
                     })
                     .then(() => {
-                        NProgress.done()
                         this.$router.push({path: this.nextStep})
                     })
                     .catch(error => {
@@ -207,7 +199,7 @@ export default {
                     }  
                     document.getElementById("errorsDiv").style.display = "block";
                     window.scrollTo(0,0);
-                }).then( () => {NProgress.done()});
+                });
                 
             })
             .catch(error => {
@@ -218,7 +210,7 @@ export default {
                 }  
                 document.getElementById("errorsDiv").style.display = "block";
                 window.scrollTo(0,0);
-            }).then( () => {NProgress.done()});
+            });
         },
 
         

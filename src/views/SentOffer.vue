@@ -49,6 +49,7 @@ export default {
         this.gsecurity.obtainSavedCredentials();
     },
     mounted() {
+        NProgress.done();
         this.artistData.artistId = this.$store.getters.offerArtist.artistId;
         this.artistData.artisticName = this.$store.getters.offerArtist.artisticName;
         this.artistData.photo = this.$store.getters.offerArtist.photo;
