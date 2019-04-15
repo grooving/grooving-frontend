@@ -21,7 +21,7 @@
                     <div id="cvv" class="form-control test"></div>
                 </div>
             </div>
-            <div class="btn btn-primary continueButton" @click="payWithCreditCard"><span class="continueText">SEND OFFER</span></div>
+            <div id="sendButton" class="btn btn-primary continueButton" @click="payWithCreditCard"><span class="continueText">SEND OFFER</span></div>
 
         </form>
     </div>
@@ -98,6 +98,7 @@ export default {
         payWithCreditCard() {
             if(this.hostedFieldInstance)
             {
+                document.getElementById("sendButton").style.display = "none";
                 NProgress.start();
                 this.hostedFieldInstance.tokenize().then(payload => {
                     this.$emit('finishPayment', payload.nonce)
@@ -107,6 +108,7 @@ export default {
                     console.error(err);
                     this.errors = err.message;
                     document.getElementById("errorsDiv").style.display = "block";
+                    document.getElementById("sendButton").style.display = "block";
                     window.scrollTo(0,0);
                     NProgress.done();
                 });
