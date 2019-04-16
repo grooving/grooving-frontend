@@ -20,12 +20,12 @@
                 </div>
                 <div id="urlForm" class="row py-2" v-if="toggleAddURL == false">
                     <div class="col-12 vertical-center">
-                        <input id="deleteDate" @keypress.enter="addRejectedDate()" type="text" v-model="deleteDate" class="form-control" placeholder="New rejected date: YYYY-MM-DD" />
+                        <input id="deleteDate" @keypress.enter="addRejectedDate()" type="date" v-model="deleteDate" class="form-control" placeholder="New rejected date: YYYY-MM-DD" />
                     </div>
                 </div>
                 <div id="urlForm" class="row py-2" v-if="toggleDeleteURL == false">
                     <div class="col-12 vertical-center">
-                        <input id="addDate" @keypress.enter="addNewDate()" type="text" v-model="addDate" class="form-control" placeholder="New available date: YYYY-MM-DD" />
+                        <input id="addDate" @keypress.enter="addNewDate()" type="date" v-model="addDate" class="form-control" placeholder="New available date: YYYY-MM-DD" />
                     </div>
                 </div>
             </div>
