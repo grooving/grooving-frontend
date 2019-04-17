@@ -26,5 +26,5 @@ export default{
     genres: '/artisticGenders/',
     portfolioZones: '/zones/?portfolio=',
     braintree: 'braintree_token/',
-    
+    user: '/user/',
 }

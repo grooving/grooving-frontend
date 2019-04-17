@@ -108,7 +108,6 @@ export default {
         .content{
             padding-top: 5%;
             margin-right: 3%;
-            margin-left: 3%;
         }
 
         .iconOffer  {
@@ -128,7 +127,6 @@ export default {
 
         .content{
             margin-top: 10% !important;
-            margin-left: 3%;
             border-radius: 10px;
             display: flex;
             align-items: center;
