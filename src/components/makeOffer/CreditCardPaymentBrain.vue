@@ -23,6 +23,7 @@
             </div>
             <div id="sendButton" class="btn btn-primary continueButton" @click="payWithCreditCard"><span class="continueText">SEND OFFER</span></div>
 
+            <div id="paypalButton" ></div>
         </form>
     </div>
     </div>
@@ -32,6 +33,7 @@ import braintree from 'braintree-web';
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
+import {mapGetters} from 'vuex';
 
 
 export default {
@@ -39,9 +41,11 @@ export default {
     data (){
         return {
             gsecurity: GSecurity,
+            hostedFieldInstance: false,
             name: undefined,
             auth_key: undefined,
             errors: "",
+            amount: 10,
         }
     },
     methods: {
@@ -83,10 +87,52 @@ export default {
                         }
                     }
                 }
-                return braintree.hostedFields.create(options)
+                return Promise.all([
+                    braintree.hostedFields.create(options),
+                    braintree.paypalCheckout.create({ client: clientInstance })
+                    ])
                 })
-                .then(hostedFieldInstance => {
+                .then(instances => {
+
+                    const hostedFieldInstance = instances[0];
+                    const paypalCheckoutInstance = instances[1];
+
                     this.hostedFieldInstance = hostedFieldInstance;
+
+                    // Setup PayPal Button
+                    return paypal.Button.render({
+                        env: 'sandbox',
+                        style: {
+                            label: 'paypal',
+                            size: 'responsive',
+                            shape: 'rect'
+                        },
+                        payment: () => {
+                            return paypalCheckoutInstance.createPayment({
+                                    flow: 'checkout',
+                                    intent: 'sale',
+                                    amount: this.amount,
+                                    displayName: 'Braintree Testing',
+                                    currency: 'EUR'
+                            })
+                        },
+                        onAuthorize: (data, options) => {
+                            return paypalCheckoutInstance.tokenizePayment(options).then(payload => {
+                                console.log(payload);
+                                this.errors = "";
+                                this.nonce = payload.nonce;
+                            })
+                        },
+                        onCancel: (data) => {
+                            console.log(data);
+                            console.log("Payment Cancelled");
+                        },
+                        onError: (err) => {
+                            console.error(err);
+                            this.errors = "An error occurred while processing the paypal payment.";
+                        }
+                    }, '#paypalButton')
+
                 })
                 .catch(err => {
                     console.log(err)
@@ -116,6 +162,7 @@ export default {
         }
     }, 
     beforeMount() {
+        this.amount = this.$store.getters.offer.totalPrice;
         var authorizedGAxios = GAxios;
         var GAxiosToken = this.gsecurity.getToken();
         authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
