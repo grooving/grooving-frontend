@@ -25,6 +25,13 @@
                             <b-form-input v-model="surnames" v-bind:value="surnames" style="text-align: right" required></b-form-input>
                         </b-form-group>
                     </div>
+                    <hr v-if="this.gsecurity.hasRole('ARTIST')" style="margin-top:0px;margin-bottom:0px;"/>
+                    <div v-if="this.gsecurity.hasRole('ARTIST')" style="width:100%;margin-top:16px;">
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">ARTISTIC NAME</p>
+                        <b-form-group>
+                            <b-form-input v-model="artisticName" v-bind:value="artisticName" style="text-align: right" type="text"></b-form-input>
+                        </b-form-group>
+                    </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:16px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">USERNAME</p>
@@ -82,7 +89,7 @@ export default {
             email: '',
             paypal: '',
             phoneNumber: '',
-
+            artisticName: '',
             errors: "",
         };
     },
@@ -104,6 +111,7 @@ export default {
                     "phone": this.phoneNumber,
                     "photo": this.gsecurity.getPhoto(),
                     "paypalAccount": this.paypal,
+                    "artisticName": this.artisticName,
                 }).then(response => {
                     console.log(response);
                     this.gsecurity.setFirstName(this.name);
@@ -176,6 +184,7 @@ export default {
 
                     if (role == 'ARTIST') {
                         this.paypal = response.data.paypalAccount;
+                        this.artisticName = response.data.artisticName['artisticName'];
                     }
                 }).then( () => {
                     NProgress.done();

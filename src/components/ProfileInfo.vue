@@ -17,6 +17,12 @@
                         <p class="card-text" style="font-weight:bold;display:inline-block;">LAST NAME</p>
                         <p class="card-text" style="float:right;">{{surnames}}</p>
                     </div>
+                    <hr v-if="this.gsecurity.hasRole('ARTIST')" style="margin-top:0px;margin-bottom:0px;"/>
+                    <div v-if="this.gsecurity.hasRole('ARTIST')" style="width:100%;margin-top:16px;overflow:auto;">
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">ARTISTIC NAME</p>
+                        <p class="card-text" style="float:right;">{{artisticName}}</p>
+                    </div>
+                    <hr styl
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:16px;overflow:auto;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">USERNAME</p>
@@ -75,6 +81,10 @@ export default {
         },
         paypal: {
             type: String,
+        },
+        artisticName: {
+            type: String,
+            //default: 'Charli XCX'
         }
     },
 
