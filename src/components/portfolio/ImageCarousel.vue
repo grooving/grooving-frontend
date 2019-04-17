@@ -26,6 +26,7 @@ import 'owl.carousel'
 
 /* Makes Slides responsive */
 $(window).on('resize', function(){
+
   var windowWidth = $(window).width();
 
   /* Substracts some amount to ensure component's width
@@ -33,10 +34,12 @@ $(window).on('resize', function(){
   windowWidth -= 100;
 
   $('.owl-wrapper').css('width', windowWidth);
+
 });
 
 export default {
   name: "ImageCarousel",
+
   props:{
     photosInfo: {
             /* Array of dictionaries of type { id:int, imageURL: String, link: String} */
@@ -46,6 +49,7 @@ export default {
             ]
     },
   },
+
   mounted: function () {
 
     /* Initializes Owl Carousel */
@@ -58,8 +62,9 @@ export default {
       loop:true,
       margin: 10,
       autoplay: true,
-      nav: false,
+      nav: true,
       responsive:{
+
           0:{
               items:1,
           },
@@ -69,6 +74,7 @@ export default {
           992:{
               items:3,
           }
+          
       },
 
     });

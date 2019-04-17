@@ -106,6 +106,7 @@ export default {
       ...mapActions(['setCurrentGenres', 'setCurrentZones']),
   },
   mounted: function(){
+    
     this.artistId = this.$route.params['artistId'];
 
     var authorizedGAxios = GAxios;
