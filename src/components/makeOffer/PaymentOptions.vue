@@ -7,6 +7,10 @@
             <div @click="paymentOptionSelected()"
                 class="btn btn-primary continueButton"><span class="continueText">CREDIT CARD</span>
             </div>
+            <br>
+            <div @click="paymentOptionSelected()"
+                class="btn btn-primary continueButton"><span class="continueText">PAYPAL</span>
+            </div>
         </div>
     </div>
 </template>
@@ -47,6 +51,7 @@ export default {
         color: white !important;
         font-weight: bold;
         border-radius: 25px;
+        margin-top: 20px;
 
         font-size: 22px;
                 
