@@ -39,6 +39,7 @@ import StartingDate from './views/StartingDate.vue'
 import PerformanceSelector from './views/PerformanceSelector.vue'
 import TermsView from './views/TermsView.vue'
 import AboutView from './views/AboutView.vue'
+import UsersList from './views/UsersList.vue'
 
 Vue.use(Router)
 
@@ -247,6 +248,10 @@ export default new Router({
       name: 'about',
       component: AboutView,
     },
-    
+    {
+      path: '/usersList',
+      name: 'usersList',
+      component: UsersList,
+    },
   ]
 })
