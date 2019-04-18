@@ -1,20 +1,16 @@
 <template>
   <div v-if="videosInfo.length != 0" class="container-fluid">
-      <div class="owl-wrapper horizontal-center">
+      <div class="horizontal-center">
           <div class="row" style="padding-bottom: 15px">
             <div class="col-sm-12 col-md-8 horizontal-center">
               <h3 style="text-align: left; color: black;"><strong>Video Showcase</strong></h3>
             </div>
           </div>
           <div class="row">
-              <div class="col-sm-12 col-md-8 horizontal-center">
-                  <div class="col-sm-12"> 
-                    <div class="owl-carousel owl-theme"> 
-                      <div v-for="videoInfo in videosInfo" :key="videoInfo.id" class="item-video" data-merge="1">
-                        <a class="owl-video" :href="videoInfo.videoURL"></a>
-                      </div>
-                    </div> 
-                  </div>
+              <div class="owl-wrapper horizontal-center">
+                <div class="col-sm-12 col-md-8 horizontal-center">
+                  <OwlImageCarousel :photosInfo="d_photosInfo" :key="actualizador" :mode="'displayVideo'" @actionImageTrigger="openYTTab" />
+                </div>
               </div>
           </div>
       </div>
@@ -22,24 +18,65 @@
 </template>
 
 <script>
+import OwlImageCarousel from './OwlImageCarousel.vue';
 
-import 'owl.carousel/dist/assets/owl.carousel.css';
-import 'owl.carousel'
+// YT URI used to obtain the thumbnail
+const ytThumbnail_01 = 'http://i3.ytimg.com/vi/';
+const ytThumbnail_02 = '/maxresdefault.jpg';
 
-/* Makes Slides responsive */
-$(window).on('resize', function(){
-  var windowWidth = $(window).width();
+// Allowed URIs
+const ytURI1 = 'https://www.youtube.com/watch?v=';
+const ytURI2 = 'http://www.youtube.com/watch?v=';
 
-  /* Substracts some amount to ensure component's width
-  is smaller than the window */
-  windowWidth -= 100;
-
-  $('.owl-wrapper').css('width', windowWidth);
-
-});
+// Length of the YT ID
+const ytIDLength = 11;
 
 export default {
+
   name: "VideoCarousel",
+
+  components:{
+    OwlImageCarousel
+  },
+
+  data: function(){
+    return{
+      showAddURL: false,
+      addImageURL: "",
+      actualizador: 0,
+      showImageCarouselInputErrors: false,
+
+      // Array containing URLs of thumbnails
+      d_photosInfo: Array(),
+
+      // Array containing the actual links
+      d_videosInfo: Array(),
+    }
+  },
+
+  methods: {
+
+    openYTTab: function(id){
+      // Finds the selected video in the array, gets its URL and opens it
+      var selectedVideo = this.d_videosInfo.filter(x => x.id == id);
+
+      if(selectedVideo){
+        selectedVideo = selectedVideo[0];
+        window.open(selectedVideo.videoURL, '_blank');
+      }
+
+    },
+
+    getThumbnail: function(ytURL){
+        var ytVideoId;
+        var substringBeginIndex = ytURL.startsWith(ytURI1) ? ytURI1.length : ytURI2.length;
+
+        ytVideoId = ytURL.substring(substringBeginIndex, substringBeginIndex + ytIDLength);
+        return ytThumbnail_01 + ytVideoId + ytThumbnail_02;
+    },
+
+  },
+
   props:{
     videosInfo: {
             /* Array of dictionaries of type { id:int, imageURL: String, link: String} */
@@ -50,35 +87,15 @@ export default {
             ],
     },
   },
-  mounted: function(){
-    /* Initializes Owl Carousel */
-    var windowWidth = $( window ).width();
-    windowWidth -= 100;
 
-    $('.owl-wrapper').css('width', windowWidth);
+  created() {
+    this.d_videosInfo = this.$props.videosInfo;
 
-    $('.owl-carousel').owlCarousel({
-      loop:true,
-      margin: 10,
-      video: true,
-      autoplay: true,
-      nav: false,
-      responsive:{
-          0:{
-              items:1,
-              nav: true,
-              navText: ["<span style='font-size: 3rem; padding-right: 15px;'><</span>","<span style='font-size: 3rem; padding-left: 15px;'>></span>"],
-          },
-          600:{
-              items:2,
-          },
-          992:{
-              items:3,
-          }
-      },
-
-    });
-  }
+    for(var i = 0; i < this.d_videosInfo.length; i++){
+      this.d_photosInfo.push({id: i, imageURL: this.getThumbnail(this.d_videosInfo[i]['videoURL'])});
+    }
+    
+  },
 }
 </script>
 

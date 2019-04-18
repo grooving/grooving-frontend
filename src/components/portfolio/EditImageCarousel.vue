@@ -4,7 +4,7 @@
       <div class="col-sm-12 col-md-8 horizontal-center">
         <div id="titleAndAdd" class="row">
           <div id="titleContainer" class="col-8 vertical-center">
-            <h3 class="title"><strong>Image Showcase</strong></h3>
+            <h3 class="titleCarousel"><strong>Image Showcase</strong></h3>
           </div>
           <div id="buttonContainer" class="col-4 vertical-center">
             <button type="button" class="vertical-center addButton" @click="toggleImageURLInput">
@@ -26,11 +26,11 @@
       </div>
     </div>
     <div id="bottomContainer" class="row">
-        <div id="owl-container" class="col-sm-12 col-md-8 horizontal-center">
-          <div class="owl-wrapper">
-            <OwlImageCarousel :photosInfo="d_photosInfo" :key="actualizador" @deleteImage="deleteCarouselImage" />
-          </div>
+      <div class="owl-wrapper horizontal-center">
+        <div class="col-sm-12 col-md-8 horizontal-center">
+          <OwlImageCarousel :photosInfo="d_photosInfo" :key="actualizador" :mode="'edit'" @actionImageTrigger="deleteCarouselImage" />
         </div>
+      </div>
     </div>
   </div>
 </template>
@@ -135,7 +135,7 @@ export default {
     margin: 0 auto;
   }
 
-  .title{
+  .titleCarousel{
     text-align: left; 
     color: black; 
     margin: 0;

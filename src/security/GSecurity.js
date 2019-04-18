@@ -15,6 +15,7 @@ class GSecurity {
       this._token = '';
       this._photo = '';
       this._id = -1;
+      this._language = 'en';
       
       if(role && AUTH_ROLES.includes(role.toUpperCase()) && token && id != undefined && id != null && id >= 0){
         this._role = role.toUpperCase();
@@ -50,6 +51,10 @@ class GSecurity {
         return this._token;
     }
 
+    getLanguage(){
+        return this._language;
+    }
+
     // Setters
     setUsername(username){
         if(typeof username === 'string')
@@ -83,6 +88,11 @@ class GSecurity {
         if(typeof token === 'string' && token)
             this._token = token;
     }
+
+    setLanguage(language){
+        this._language = language;
+    }
+
 
 
     // Other Business Methods
