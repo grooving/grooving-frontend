@@ -24,6 +24,13 @@ export default{
 
     save : "GUARDAR",
 
+    // ----------------------------------------------------
+    //                   EventData.vue
+    // ----------------------------------------------------
+
+    description_placeholder : "Añade aquí una descripción con información relevante sobre el evento.",
+    continueButton : "CONTINUAR",
+
 
     // ----------------------------------------------------
     //                     LeftMenu.vue

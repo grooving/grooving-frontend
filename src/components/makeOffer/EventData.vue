@@ -4,21 +4,26 @@
         <div class="form-row">
             <div class="form-group col-12">
                 <textarea v-model="description" type="text" class="form-control" style="resize: none;" 
-                    placeholder="Add here relevant information about your event." rows="7" required></textarea>
+                    v-bind:placeholder="this.gtrans.translate('description_placeholder')" rows="7" required></textarea>
             </div>  
         </div>
-        <button class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span>
+        <button class="btn btn-primary continueButton"><span class="continueText">{{gtrans.translate('continueButton')}}</span>
         </button>
     </form>
     </div>
 </template>
 
 <script>
+import GSecurity from "@/security/GSecurity.js"
+import GTrans from "@/utils/GTrans.js"
+
 export default {
     name: "EventData",
     data() {
         return {
             description: undefined,
+            gsecurity: GSecurity,
+            gtrans: undefined,
         }
     },
     props: {
@@ -36,6 +41,16 @@ export default {
             this.$emit('eventDataSelected', this.description);
         }
     },
+    created: function(){
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
+    }
 }
 </script>
 

@@ -25,6 +25,13 @@ export default{
     save : "SAVE",
 
     // ----------------------------------------------------
+    //                   EventData.vue
+    // ----------------------------------------------------
+
+    description_placeholder : "Add here a description with some relevant information about your event.",
+    continueButton : "CONTINUE",
+
+    // ----------------------------------------------------
     //                     LeftMenu.vue
     // ----------------------------------------------------
 
