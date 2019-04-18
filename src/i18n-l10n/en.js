@@ -10,4 +10,15 @@ export default{
 
     prueba_test : "Grooving i18n-l10n ENGLISH",
 
+    // ----------------------------------------------------
+    //                     LeftMenu.vue
+    // ----------------------------------------------------
+
+    menu : "Menu",
+    topArtists : "Top Artists",
+    myOffers : "My Offers",
+    checkIn : "Check-In",
+    termsAndConditions : "Terms and Conditions",
+    aboutUs : "About Us",
+
 }
