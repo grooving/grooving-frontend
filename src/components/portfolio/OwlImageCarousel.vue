@@ -2,7 +2,7 @@
     <div class="owl-carousel owl-theme">       
       <div v-for="photoInfo in photosInfo" :key="photoInfo.id" class="photoContainer">
 
-        <img :src="photoInfo.imageURL" class="card-img-top carouselImage"/>
+        <img :src="photoInfo.imageURL" class="card-img-top carouselImage item" data-dot="<button role='button' class='owl-dot-button'></button>"/>
 
         <!-- If mode is editVideo, actionImage is a trashBin -->
         <img v-if="$props.mode == 'editVideo'" :id="photoInfo.id" class="actionImage" src="@/assets/img/trashbin.jpg" @click="actionImageTrigger($event)" />
@@ -72,7 +72,8 @@ export default {
       loop:true,
       margin: 10,
       autoplay: true,
-      nav: true,
+      dots: true,
+      dotsData: true,
       responsive:{
 
           0:{
@@ -84,7 +85,7 @@ export default {
           992:{
               items:3,
           }
-
+          
       },
 
     });
@@ -93,6 +94,34 @@ export default {
 
 }
 </script>
+
+<style>
+
+.owl-dots {
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+}
+
+.owl-dot {
+    background-color: #e8e5e5;
+    margin: 5px;
+    height: 3px;
+    width: 80%;
+}
+
+.owl-dot-button {
+    width: 100%;
+    height: 100%;
+    background: none;
+    border: none;
+}
+
+.owl-dot.active{
+    background-color: #9b9b9b;
+}
+
+</style>
 
 <style scoped>
 

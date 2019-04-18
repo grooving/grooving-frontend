@@ -9,7 +9,7 @@
           <div class="row">
               <div class="col-sm-12 col-md-8 horizontal-center">
                   <div class="owl-carousel owl-theme">       
-                      <a v-for="photoInfo in photosInfo" :key="photoInfo.id" :href="photoInfo.link">
+                      <a v-for="photoInfo in photosInfo" :key="photoInfo.id" :href="photoInfo.link" class="item" data-dot="<button role='button' class='owl-dot-button'></button>">
                         <img :src="photoInfo.imageURL" class="card-img-top artistImage" alt="Artist's Image">
                       </a>
                   </div>
@@ -62,7 +62,8 @@ export default {
       loop:true,
       margin: 10,
       autoplay: true,
-      nav: true,
+      dots: true,
+      dotsData: true,
       responsive:{
 
           0:{
@@ -81,6 +82,35 @@ export default {
   }
 }
 </script>
+
+<style>
+
+.owl-dots {
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+}
+
+.owl-dot {
+    background-color: #e8e5e5;
+    margin: 5px;
+    height: 3px;
+    width: 80%;
+}
+
+.owl-dot-button {
+    width: 100%;
+    height: 100%;
+    background: none;
+    border: none;
+}
+
+.owl-dot.active{
+    background-color: #9b9b9b;
+}
+
+</style>
+
 
 <style scoped>
   .horizontal-center{
