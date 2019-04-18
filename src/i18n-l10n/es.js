@@ -35,6 +35,14 @@ export default{
     date_invalid : "¡Fecha inválida!",
 
     // ----------------------------------------------------
+    //                EditImageCarousel.vue
+    // ----------------------------------------------------
+
+    artist_images : "Expositor de Imágenes",
+    image_placeholder : "Agrega la URL aquí...",
+    image_help : "Debe ser un enlace a una imagen .png, .gif, .jpg o .jpeg.",
+
+    // ----------------------------------------------------
     //                   EditSubmenu.vue
     // ----------------------------------------------------
 
