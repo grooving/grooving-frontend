@@ -5,8 +5,8 @@
         <img v-if="$props.mode == 'displayImage'" :src="photoInfo.imageURL" class="card-img-top carouselImage item" data-dot="<button role='button' class='owl-dot-button'></button>" :id="photoInfo.id" @click="imageTrigger($event)"/>
         <img v-else :src="photoInfo.imageURL" class="card-img-top carouselImage item" data-dot="<button role='button' class='owl-dot-button'></button>"/>
 
-        <!-- If mode is editVideo, actionImage is a trashBin -->
-        <img v-if="$props.mode == 'editVideo'" :id="photoInfo.id" class="actionImage" src="@/assets/img/trashbin.jpg" @click="actionImageTrigger($event)" />
+        <!-- If mode is edit, actionImage is a trashBin -->
+        <img v-if="$props.mode == 'edit'" :id="photoInfo.id" class="actionImage" src="@/assets/img/trashbin.jpg" @click="actionImageTrigger($event)" />
         <!-- If mode is displayVideo, actionImage is a play -->        
         <img v-else-if="$props.mode == 'displayVideo'" :id="photoInfo.id" class="actionImage" src="@/assets/img/play_video.png" @click="actionImageTrigger($event)" />
 
@@ -59,14 +59,18 @@ export default {
     },
 
     mode: {
-      /* Currently, only 'editVideo', 'displayVideo' and 'displayImage' are availables */
+      /* Currently, only 'edit', 'displayVideo' and 'displayImage' are availables */
       type: String,
-      default: 'editVideo',
+      default: 'edit',
     },
     
   },
 
   mounted: function () {
+
+    //If we are in 'editMode', we don't want 
+    //Owl carousel to move nor to duplicate components 
+    var editMode = this.$props.mode != 'edit';
 
     /* Initializes Owl Carousel */
     var windowWidth = $( window ).width();
@@ -75,11 +79,11 @@ export default {
     $('.owl-wrapper').css('width', windowWidth);
 
     $('.owl-carousel').owlCarousel({
-      loop:true,
+      loop: editMode,
       margin: 10,
-      autoplay: true,
-      dots: true,
-      dotsData: true,
+      autoplay: editMode,
+      dots: editMode,
+      dotsData: editMode,
       responsive:{
 
           0:{

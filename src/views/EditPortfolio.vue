@@ -11,7 +11,8 @@
 
       <EditImageCarousel :photosInfo="d_portfolioImages" :key="updateImagesKey" />
       <EditVideoCarousel :videosInfo="d_portfolioVideos" :key="updateVideosKey" />
-      <EditAvailableDates :availableDates="this.datos[0].availableDates" :key="updateCalendatKey"/>
+
+      <EditAvailableDates :availableDates="availableDates" :key="updateCalendatKey"/>
     </form>
   </div>
 </template>
@@ -33,8 +34,22 @@ import { mapGetters } from 'vuex';
 
 
 export default {
+
   name: 'EditPortfolio',
-  computed: mapGetters(['genres','zones']),
+
+  computed: {
+    
+    availableDates: function(){
+
+      if(this.datos && this.datos[0] && this.datos[0].availableDates)
+        return this.datos[0].availableDates;
+      else
+        return Array();
+
+    }
+
+  },
+
   components: {
     EditSubmenu,
     EditImageCarousel,
@@ -107,23 +122,6 @@ export default {
           this.d_portfolioArtisticName = portfolio.artisticName;
           this.d_portfolioMainPhoto = portfolio.main_photo;
           this.d_portfolioBiography = portfolio.biography;
-
-          // Genres
-          var genres = portfolio.artisticGender;
-          
-          for(var i = 0; i < genres.length; i++){
-            var genre = genres[i];
-            delete genre.parentGender;
-            this.d_portfolioGenres.push(genre);
-          }
-
-          // Zones
-          var zones = portfolio.zones;
-          
-          for(var i = 0; i < zones.length; i++){
-            var zone = zones[i];
-            this.d_portfolioZones.push(zone);
-          }
           
           // Images
           var pImages = portfolio.images;
@@ -144,9 +142,26 @@ export default {
           }
 
           this.updateVideosKey += 1;
+
+          // Genres
+          var genres = portfolio.artisticGender;
+          
+          for(var i = 0; i < genres.length; i++){
+            var genre = genres[i];
+            delete genre.parentGender;
+            this.d_portfolioGenres.push(genre);
+          }
+
+          // Zones
+          var zones = portfolio.zones;
+          
+          for(var i = 0; i < zones.length; i++){
+            var zone = zones[i];
+            this.d_portfolioZones.push(zone);
+          }
   
-      }).catch( () => {
-        this.errors = ex.response.data.error;
+      }).catch( response => {
+        this.errors = response.data.error;
         document.getElementById("errorsDiv").style.display = "block";
         window.scrollTo(0,0);
       });
