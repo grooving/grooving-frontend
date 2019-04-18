@@ -36,4 +36,12 @@ export default{
     termsAndConditions : "Términos y Condiciones",
     aboutUs : "Quiénes Somos",
 
+    // ----------------------------------------------------
+    //                 PaymentOptions.vue
+    // ----------------------------------------------------
+
+    selectMethod : "Seleccione el método de pago",
+    creditcard : "TARJETA DE CRÉDITO",
+    paypal : "PAYPAL",
+
 }

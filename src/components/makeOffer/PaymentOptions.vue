@@ -1,26 +1,31 @@
 <template>
     <div class="content">
         <div class="paymentOptions">
-            <p>Select the payment method</p>
+            <!-- <p>{{gtrans.translate('selectMethod')}}</p> -->
             <!-- <div class="continueButtonDiv"><div  class="btn btn-primary continueButton"><span class="continueText">PAYPAL</span></div @click="paymentOptionSelected()"></div> -->
-            <br>
+            <!-- <br> -->
             <div @click="paymentOptionSelected()"
-                class="btn btn-primary continueButton"><span class="continueText">CREDIT CARD</span>
+                class="btn btn-primary continueButton"><span class="continueText">{{gtrans.translate('creditcard')}}</span>
             </div>
             <br>
             <div @click="paymentOptionSelected()"
-                class="btn btn-primary continueButton"><span class="continueText">PAYPAL</span>
+                class="btn btn-primary continueButton"><span class="continueText">{{gtrans.translate('paypal')}}</span>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import GSecurity from "@/security/GSecurity.js"
+import GTrans from "@/utils/GTrans.js"
+
 export default {
     name: "PaymentOptions",
     data() {
         return {
             nextStep: undefined,
+            gsecurity: GSecurity,
+            gtrans: undefined,
         }
     },
     props: {
@@ -40,6 +45,17 @@ export default {
     mounted() {
         this.nextStep = '/payment/' + this.$route.params['artistId']
     },
+
+    created: function(){
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
+    }
 }
 </script>
 
