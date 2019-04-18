@@ -27,6 +27,15 @@ export default{
     paypal_error : "An error occurred while processing the paypal payment.",
 
     // ----------------------------------------------------
+    //                  CustomHiring.vue
+    // ----------------------------------------------------
+
+    custom_title : "Custom Hiring",
+    custom_subtitle : "The customer can decide the amount of money he will pay, so you may set a minimum price.",
+    custom_minimumPrice : "MINIMUM PRICE",
+    add : "ADD NEW",
+
+    // ----------------------------------------------------
     //                EditArtistInfo.vue
     // ----------------------------------------------------
 

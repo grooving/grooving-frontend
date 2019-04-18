@@ -27,6 +27,15 @@ export default{
     paypal_error : "Se ha producido un error al procesar el pago con PayPal.",
 
     // ----------------------------------------------------
+    //                  CustomHiring.vue
+    // ----------------------------------------------------
+
+    custom_title : "Contratación A Medida",
+    custom_subtitle : "El cliente puede decidir la cantidad de dinero a pagar, por lo que es posible que quieras indicar un precio mínimo.",
+    custom_minimumPrice : "PRECIO MÍNIMO",
+    add : "AÑADIR NUEVO",
+
+    // ----------------------------------------------------
     //                EditArtistInfo.vue
     // ----------------------------------------------------
 
