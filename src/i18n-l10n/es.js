@@ -46,10 +46,10 @@ export default{
     //                EditProfileInfo.vue
     // ----------------------------------------------------
 
-    profile_title : "Perfil",
+    profile_title : "Perfil", // Se usa también en ReducedInfo.vue
     profile_subtitle : "Información básica sobre tu cuenta de Grooving, como tu nombre y tu email.",
-    user_firstName : "NOMBRE",
-    user_lastName : "APELLIDOS",
+    user_firstName : "NOMBRE", // Se usa también en ReducedInfo.vue
+    user_lastName : "APELLIDOS", // Se usa también en ReducedInfo.vue
     user_artisticName : "NOMBRE ARTÍSTICO",
     user_username : "NOMBRE DE USUARIO",
     user_password : "CONTRASEÑA",
@@ -108,5 +108,12 @@ export default{
     selectMethod : "Seleccione el método de pago",
     creditcard : "TARJETA DE CRÉDITO",
     paypal : "PAYPAL", // Se usa también en EditProfileInfo.vue
+
+    // ----------------------------------------------------
+    //                   ReducedInfo.vue
+    // ----------------------------------------------------
+
+    info_subtitle : "Información básica sobre el cliente",
+    customer_zone : "ZONA",
 
 }
