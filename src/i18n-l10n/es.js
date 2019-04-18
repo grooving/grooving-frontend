@@ -69,6 +69,19 @@ export default{
     description_placeholder : "Añade aquí una descripción con información relevante sobre el evento.",
     continueButton : "CONTINUAR",
 
+    // ----------------------------------------------------
+    //                  ExtendedOffer.vue
+    // ----------------------------------------------------
+
+    offer : "Oferta",
+    offer_date : "Fecha",
+    offer_duration : "Duración",
+    offer_price: "Precio",
+    offer_address: "Dirección",
+    offer_package: "Paquete",
+    offer_description: "Descripción",
+    back : "ATRÁS",
+    accept : "ACEPTAR OFERTA",
 
     // ----------------------------------------------------
     //                     LeftMenu.vue

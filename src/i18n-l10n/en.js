@@ -70,6 +70,20 @@ export default{
     continueButton : "CONTINUE",
 
     // ----------------------------------------------------
+    //                  ExtendedOffer.vue
+    // ----------------------------------------------------
+
+    offer : "Offer",
+    offer_date : "Date",
+    offer_duration : "Duration",
+    offer_price: "Price",
+    offer_address: "Address",
+    offer_package: "Package",
+    offer_description: "Description",
+    back : "GO BACK",
+    accept : "ACCEPT OFFER",
+
+    // ----------------------------------------------------
     //                     LeftMenu.vue
     // ----------------------------------------------------
 

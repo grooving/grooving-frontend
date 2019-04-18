@@ -5,27 +5,27 @@
     </div>
     <div class="everything">
         <div class="card tarjeta">
-            <ul class="list-group list-group-flush"><li style="font-weight: bold" class="list-group-item">Offer #{{ offerID }}</li></ul>
+            <ul class="list-group list-group-flush"><li style="font-weight: bold" class="list-group-item">{{gtrans.translate('offer')}} #{{ offerID }}</li></ul>
             <div class="card-body cuerpoTarjeta">
                 <div class="leftContent">
                     <div class="details">
-                    <p class="card-text"><span style="font-weight: bold;">Date: </span>{{ prettifiedDate }}</p>
-                    <p class="card-text"><span style="font-weight: bold;">Duration: </span>{{ startingHour }} {{ endingHour }}h</p>
-                    <p class="card-text"><span style="font-weight: bold;">Price: </span>{{ price }}€</p>
-                    <p class="card-text"><span style="font-weight: bold;">Address: </span>{{ address }}</p>
+                    <p class="card-text"><span style="font-weight: bold;">{{gtrans.translate('offer_date')}}: </span>{{ prettifiedDate }}</p>
+                    <p class="card-text"><span style="font-weight: bold;">{{gtrans.translate('offer_duration')}}: </span>{{ startingHour }} {{ endingHour }}h</p>
+                    <p class="card-text"><span style="font-weight: bold;">{{gtrans.translate('offer_price')}}: </span>{{ price }}€</p>
+                    <p class="card-text"><span style="font-weight: bold;">{{gtrans.translate('offer_address')}}: </span>{{ address }}</p>
                     </div>
                     <div class="description">
-                        <p class="card-text"><span style="font-weight: bold;">Package: </span></p>
+                        <p class="card-text"><span style="font-weight: bold;">{{gtrans.translate('offer_package')}}: </span></p>
                         <p class="card-text">{{ packageDescription }}</p>
-                        <p class="card-text"><span style="font-weight: bold;">Description: </span></p>
+                        <p class="card-text"><span style="font-weight: bold;">{{gtrans.translate('offer_description')}}: </span></p>
                         <p class="card-text">{{ description }}</p>
                     </div>
                 </div>
                 
             </div>
             <div class="bothButtons">
-                <div class="cancelButtonDiv"><router-link v-bind:to="cancelURI" class="btn btn-primary cancelButton"><span class="continueText">CANCEL</span></router-link></div>
-                <div class="confirmButtonDiv"><div @click="accept()" class="btn btn-primary confirmButton"><span class="continueText">CONFIRM</span></div></div>
+                <div class="cancelButtonDiv"><router-link v-bind:to="cancelURI" class="btn btn-primary cancelButton"><span class="continueText">{{gtrans.translate('back')}}</span></router-link></div>
+                <div class="confirmButtonDiv"><div @click="accept()" class="btn btn-primary confirmButton"><span class="continueText">{{gtrans.translate('accept')}}</span></div></div>
             </div>
         </div>
     </div>
@@ -36,6 +36,7 @@
     import endpoints from '@/utils/endpoints.js';
     import GAxios from '../utils/GAxios.js'
     import GSecurity from '@/security/GSecurity.js';
+    import GTrans from "@/utils/GTrans.js"
 
     export default {
         name: 'extendedOffer',
@@ -46,6 +47,7 @@
                 gaxios: GAxios,
                 id: Number,
                 errors: '',
+                gtrans: undefined,
             }
         },
 
@@ -144,6 +146,18 @@
                 })              
                 },
             },
+
+
+        created: function(){
+            this.gsecurity = GSecurity;
+            this.gsecurity.obtainSavedCredentials();
+
+            this.gtrans = new GTrans(this.gsecurity.getLanguage());
+            
+            // Podemos cambiar el lenguaje así para debug...
+            //this.gtrans.setLanguage('es')
+            //this.gtrans.setLanguage('en')
+        }
     }   
 </script>
 
