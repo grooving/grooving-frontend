@@ -19,6 +19,13 @@ export default{
     paypal_error : "Se ha producido un error al procesar el pago con PayPal.",
 
     // ----------------------------------------------------
+    //                EditArtistInfo.vue
+    // ----------------------------------------------------
+
+    artist_artisticName : "Nombre Artístico",
+    artist_description : "Biografía",
+
+    // ----------------------------------------------------
     //               EditAvailableDates.vue
     // ----------------------------------------------------
 
