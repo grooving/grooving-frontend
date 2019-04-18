@@ -16,7 +16,7 @@
                         <div id="acceptButtonWrapper" class="btn buttonWrapper" style="float: right;">
                             <button class="acceptButton" @click="saveClicked()">
                                 <div class="vertical-center buttonLinks acceptText">
-                                    ACCEPT
+                                    {{gtrans.translate('save')}}
                                 </div>
                             </button>
                         </div>
@@ -29,8 +29,18 @@
 </template>
 
 <script>
+import GSecurity from "@/security/GSecurity.js"
+import GTrans from "@/utils/GTrans.js"
+
 export default {
     name: 'EditSubmenu',
+
+    data: function(){
+        return{
+            gsecurity: GSecurity,
+            gtrans: undefined,
+        }
+    },
 
     methods: {
         saveClicked: function(){
@@ -43,6 +53,17 @@ export default {
             type: Number,
             default: 0
         }
+    },
+
+    created: function(){
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+        // Podemos cambiar el lenguaje así para debug...
+        this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
     }
 }
 
