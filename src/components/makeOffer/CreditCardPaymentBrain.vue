@@ -130,6 +130,7 @@ export default {
                         onError: (err) => {
                             console.error(err);
                             this.errors = "An error occurred while processing the paypal payment.";
+                            document.getElementById("errorsDiv").style.display = "block";
                         }
                     }, '#paypalButton')
 

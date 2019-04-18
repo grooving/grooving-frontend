@@ -11,6 +11,14 @@ export default{
     prueba_test : "Grooving i18n-l10n ENGLISH",
 
     // ----------------------------------------------------
+    //             CreditCardPaymentBrain.vue
+    // ----------------------------------------------------
+
+    sendOffer : "SEND OFFER",
+    creditcard_placeholder : "Enter a 16 digits Credit Card",
+    paypal_error : "An error occurred while processing the paypal payment.",
+
+    // ----------------------------------------------------
     //                   EditSubmenu.vue
     // ----------------------------------------------------
 

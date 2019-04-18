@@ -11,6 +11,14 @@ export default{
     prueba_test : "Grooving i18n-l10n ESPAÑOL",
 
     // ----------------------------------------------------
+    //             CreditCardPaymentBrain.vue
+    // ----------------------------------------------------
+
+    sendOffer : "ENVIAR OFERTA",
+    creditcard_placeholder : "Introduzca una Tarjeta de 16 Dígitos",
+    paypal_error : "Se ha producido un error al procesar el pago con PayPal.",
+
+    // ----------------------------------------------------
     //                   EditSubmenu.vue
     // ----------------------------------------------------
 
