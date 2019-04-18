@@ -100,7 +100,7 @@
                 </div>
                 <div v-if="offerStatus === 'CONTRACT_MADE'" class="row container" v-bind:id="buttonsId()">
                     <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="disableOfferButtons()" class="btnn btn-primary rejectButton" 
-                        data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">DECLINE</span></a></div>
+                        data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">{{gtrans.translate('decline')}}</span></a></div>
                 </div>
             </div>
         </div>
@@ -112,6 +112,7 @@
     import GAxios from '../utils/GAxios.js'
     import GSecurity from '@/security/GSecurity.js';
     import endpoints from '@/utils/endpoints.js';
+    import GTrans from "@/utils/GTrans.js"
 
     export default {
         name: 'Offer',
@@ -127,6 +128,7 @@
                 cancelledCustomerMessage: 'The offer was canceled by the customer after being accepted.',
                 paymentMessage: 'The payment has already been made.',
                 ratingD: null,
+                gtrans: undefined,
             }
         },
         
@@ -344,6 +346,17 @@
                 }
             }
         },
+
+        created: function(){
+            this.gsecurity = GSecurity;
+            this.gsecurity.obtainSavedCredentials();
+
+            this.gtrans = new GTrans(this.gsecurity.getLanguage());
+            
+            // Podemos cambiar el lenguaje así para debug...
+            //this.gtrans.setLanguage('es')
+            //this.gtrans.setLanguage('en')
+        }
     }   
 
 </script>
