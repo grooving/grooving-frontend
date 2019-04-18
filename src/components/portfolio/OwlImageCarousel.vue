@@ -1,13 +1,14 @@
 <template>
-    <div class="owl-carousel owl-theme">       
+    <div class="owl-carousel owl-theme">   
       <div v-for="photoInfo in photosInfo" :key="photoInfo.id" class="photoContainer">
 
-        <img :src="photoInfo.imageURL" class="card-img-top carouselImage item" data-dot="<button role='button' class='owl-dot-button'></button>"/>
+        <img v-if="$props.mode == 'displayImage'" :src="photoInfo.imageURL" class="card-img-top carouselImage item" data-dot="<button role='button' class='owl-dot-button'></button>" :id="photoInfo.id" @click="imageTrigger($event)"/>
+        <img v-else :src="photoInfo.imageURL" class="card-img-top carouselImage item" data-dot="<button role='button' class='owl-dot-button'></button>"/>
 
         <!-- If mode is editVideo, actionImage is a trashBin -->
         <img v-if="$props.mode == 'editVideo'" :id="photoInfo.id" class="actionImage" src="@/assets/img/trashbin.jpg" @click="actionImageTrigger($event)" />
         <!-- If mode is displayVideo, actionImage is a play -->        
-        <img v-else :id="photoInfo.id" class="actionImage" src="@/assets/img/play_video.png" @click="actionImageTrigger($event)" />
+        <img v-else-if="$props.mode == 'displayVideo'" :id="photoInfo.id" class="actionImage" src="@/assets/img/play_video.png" @click="actionImageTrigger($event)" />
 
       </div>
     </div>
@@ -40,6 +41,11 @@ export default {
       this.$emit('actionImageTrigger', event.target.id);
     },
 
+    imageTrigger: function(event){
+      console.log("This event is disabled due to malfunction")
+      //this.$emit('imageTrigger', event.target.id);
+    },
+
   },
 
   props:{
@@ -53,7 +59,7 @@ export default {
     },
 
     mode: {
-      /* Currently, only 'editVideo' and 'displayVideo' are availables */
+      /* Currently, only 'editVideo', 'displayVideo' and 'displayImage' are availables */
       type: String,
       default: 'editVideo',
     },
