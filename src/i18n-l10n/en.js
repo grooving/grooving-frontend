@@ -19,6 +19,15 @@ export default{
     paypal_error : "An error occurred while processing the paypal payment.",
 
     // ----------------------------------------------------
+    //               EditAvailableDates.vue
+    // ----------------------------------------------------
+
+    availableDates : "Available Dates",
+    deleteDate : "New rejected date: YYYY-MM-DD",
+    addDate : "New available date: YYYY-MM-DD",
+    date_invalid : "Invalid date!",
+
+    // ----------------------------------------------------
     //                   EditSubmenu.vue
     // ----------------------------------------------------
 

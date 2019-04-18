@@ -19,6 +19,15 @@ export default{
     paypal_error : "Se ha producido un error al procesar el pago con PayPal.",
 
     // ----------------------------------------------------
+    //               EditAvailableDates.vue
+    // ----------------------------------------------------
+
+    availableDates : "Fechas Disponibles",
+    deleteDate : "Fecha no disponible: YYYY-MM-DD",
+    addDate : "Fecha disponible: YYYY-MM-DD",
+    date_invalid : "¡Fecha inválida!",
+
+    // ----------------------------------------------------
     //                   EditSubmenu.vue
     // ----------------------------------------------------
 
