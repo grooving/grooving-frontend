@@ -3,7 +3,7 @@
       <div class="horizontal-center">
           <div class="row" style="padding-bottom: 15px">
             <div class="col-sm-12 col-md-8 horizontal-center">
-              <h3 style="text-align: left; color: black;"><strong>Image Showcase</strong></h3>
+              <h3 style="text-align: left; color: black;"><strong>{{gtrans.translate('artist_images')}}</strong></h3>
             </div>
           </div>
           <div class="row">
@@ -21,7 +21,8 @@
 <script>
 import OwlImageCarousel from './OwlImageCarousel.vue';
 import ImagePopup from './ImagePopup.vue';
-
+import GSecurity from "@/security/GSecurity.js"
+import GTrans from "@/utils/GTrans.js"
 
 export default {
 
@@ -34,6 +35,8 @@ export default {
   data: function(){
     return{
 
+      gsecurity: GSecurity,
+      gtrans: undefined,
       actualizador: 0,
 
       // Array containing the info about photos
@@ -66,9 +69,19 @@ export default {
             ]
     },
   },
+  
+  created: function(){
+    this.gsecurity = GSecurity;
+    this.gsecurity.obtainSavedCredentials();
 
-  created() {
+    this.gtrans = new GTrans(this.gsecurity.getLanguage());
+    
+    // Podemos cambiar el lenguaje así para debug...
+    //this.gtrans.setLanguage('es')
+    //this.gtrans.setLanguage('en')
+
     this.d_photosInfo = this.$props.photosInfo;
+    console.log(this.popUpPhoto)
   },
 }
 </script>

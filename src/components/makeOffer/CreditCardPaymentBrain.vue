@@ -21,7 +21,7 @@
                     <div id="cvv" class="form-control test"></div>
                 </div>
             </div>
-            <div id="sendButton" class="btn btn-primary continueButton" @click="payWithCreditCard"><span class="continueText">SEND OFFER</span></div>
+            <div id="sendButton" class="btn btn-primary continueButton" @click="payWithCreditCard"><span class="continueText">{{gtrans.translate('sendOffer')}}</span></div>
 
             <div id="paypalButton" ></div>
         </form>
@@ -34,6 +34,7 @@ import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
 import {mapGetters} from 'vuex';
+import GTrans from "@/utils/GTrans.js"
 
 
 export default {
@@ -46,6 +47,7 @@ export default {
             auth_key: undefined,
             errors: "",
             amount: 10,
+            gtrans: undefined,
         }
     },
     methods: {
@@ -68,7 +70,7 @@ export default {
                     fields: {
                         number: {
                             selector: '#number',
-                            placeholder: 'Enter a 16 digits Credit Card',
+                            placeholder: this.gtrans.translate('creditcard_placeholder'),
                             maxCardLength: 16,
                         },
                         cvv: {
@@ -129,7 +131,8 @@ export default {
                         },
                         onError: (err) => {
                             console.error(err);
-                            this.errors = "An error occurred while processing the paypal payment.";
+                            this.errors = this.gtrans.translate('paypal_error');
+                            document.getElementById("errorsDiv").style.display = "block";
                         }
                     }, '#paypalButton')
 
@@ -175,6 +178,16 @@ export default {
         }).then(() => this.obtainInstance());        
     },
 
+    created: function(){
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
+    }
 }
 </script>
 

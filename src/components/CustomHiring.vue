@@ -3,18 +3,18 @@
         <form>
             <div class="form-row">
                 <div class="form-group col-12">
-                    <span class="card-title" style="font-weight:bold;font-size:30px;margin-bottom:12px">Custom Hiring </span>
+                    <span class="card-title" style="font-weight:bold;font-size:30px;margin-bottom:12px">{{gtrans.translate('custom_title')}} </span>
                     <router-link v-if="!empty" v-bind:to="{name: 'editCustom', params: {minimumPrice, packageId, customId}}" style="height: 28px; width: 28px; margin-bottom:12px;">
                         <i class="material-icons iconOffer">create</i>
                     </router-link>
-                    <h6 class="card-subtitle mb-2 text-muted">The customer can decide the amount of money he will pay, so you may set a minimum price. </h6>
+                    <h6 class="card-subtitle mb-2 text-muted">{{gtrans.translate('custom_subtitle')}} </h6>
                     <div v-if="!empty" style="width:100%;margin-top:25px;overflow:auto;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">MINIMUM PRICE</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('custom_minimumPrice')}}</p>
                         <p class="card-text" style="float:right;">{{minimumPrice}} €/h</p>
                     </div>
                     <router-link v-else v-bind:to="{name: 'createCustom'}">
                         <div class="continueButtonDiv">
-                            <b-button class="continueButton" variant="primary" size="sm" type="submit">ADD NEW</b-button>
+                            <b-button class="continueButton" variant="primary" size="sm" type="submit">{{gtrans.translate('add')}}</b-button>
                         </div>
                     </router-link>
                 </div>  
@@ -24,8 +24,18 @@
 </template>
 
 <script>
+import GSecurity from "@/security/GSecurity.js"
+import GTrans from "@/utils/GTrans.js"
+
 export default {
     name: "CustomHiring",
+
+    data: function(){
+        return{
+        gsecurity: GSecurity,
+        gtrans: undefined,
+        }
+    },
 
     props: {
         packageId: {},
@@ -35,6 +45,17 @@ export default {
             default: false,
         },
     },
+
+    created: function(){
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+        // Podemos cambiar el lenguaje así para debug...
+        this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
+    }
 }
 </script>
 

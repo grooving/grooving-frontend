@@ -3,20 +3,20 @@
         <form>
             <div class="form-row">
                 <div class="form-group col-12">
-                    <h5 class="card-title" style="font-weight:bold;font-size:30px;">Profile</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Some basic info about the customer:</h6>
+                    <h5 class="card-title" style="font-weight:bold;font-size:30px;">{{gtrans.translate('profile_title')}}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{gtrans.translate('info_subtitle')}}:</h6>
                     <div style="width:100%;margin-top:25px;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">NAME</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_firstName')}}</p>
                         <p class="card-text" style="float:right;">{{name}}</p>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:25px;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">SURNAMES</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_lastName')}}</p>
                         <p class="card-text" style="float:right;">{{surnames}}</p>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:16px;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">ZONE</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('customer_zone')}}</p>
                         <p class="card-text" style="float:right;">{{zone}}</p>
                     </div>
                 </div>  
@@ -26,6 +26,9 @@
 </template>
 
 <script>
+import GSecurity from "@/security/GSecurity.js"
+import GTrans from "@/utils/GTrans.js"
+
 export default {
     name: "ReducedInfo",
 
@@ -34,6 +37,8 @@ export default {
 
     data: function() {
         return {
+            gsecurity: GSecurity,
+            gtrans: undefined,
         };
     },
 
@@ -51,6 +56,17 @@ export default {
             type: String,
             default: ''
         },
+    },
+
+    created: function(){
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
     },
 
     beforeMount: function() {

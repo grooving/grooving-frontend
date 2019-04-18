@@ -40,6 +40,10 @@ import PerformanceSelector from './views/PerformanceSelector.vue'
 import TermsView from './views/TermsView.vue'
 import AboutView from './views/AboutView.vue'
 
+//BORRAR
+import Borrar from './views/About.vue'
+
+
 Vue.use(Router)
 
 export default new Router({
@@ -247,6 +251,12 @@ export default new Router({
       name: 'about',
       component: AboutView,
     },
+
+    //BORRAR
+    {
+      path: '/pruebaGTrans',
+      component: Borrar,
+    }
     
   ]
 })
