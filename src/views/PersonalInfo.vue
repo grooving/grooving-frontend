@@ -7,18 +7,18 @@
     </div>
     <div class="delete">
         <div >
-            <span class="card-title" style="font-weight:bold;font-size:30px;margin-bottom:12px">Account Management</span>
+            <span class="card-title" style="font-weight:bold;font-size:30px;margin-bottom:12px">{{gtrans.translate('management_title')}}</span>
         </div>
         <div>
             <form @submit="deleteAccount">
                 <div id="otroButton" class="continueButtonDiv">
-                    <b-button id="deleteButton" class="cancelButton" variant="primary" size="sm" v-on:click="showButtons">DELETE ACCOUNT</b-button>
+                    <b-button id="deleteButton" class="cancelButton" variant="primary" size="sm" v-on:click="showButtons">{{gtrans.translate('deleteAccount')}}</b-button>
                 </div>
                 <div id="myButtons" class="continueButtonDiv" style="display: none;">
-                    <h5 class="card-subtitle mb-2 text-muted" style="margin-bottom: 5px;">Are you sure that you want to delete your Grooving account?</h5>
-                    <h6 class="card-subtitle mb-2 text-muted" style="margin-bottom: 5px;">This operation cannot be undone.</h6>
-                    <b-button id="cancelButton" class="continueButton" variant="primary" size="sm" v-on:click="hideButtons" style="margin-right:5px">CANCEL</b-button>
-                    <b-button id="acceptButton" class="cancelButton" variant="primary" size="sm" type="submit" style="margin-left:5px">ACCEPT</b-button>
+                    <h5 class="card-subtitle mb-2 text-muted" style="margin-bottom: 5px;">{{gtrans.translate('confirmation_title')}}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted" style="margin-bottom: 5px;">{{gtrans.translate('confirmation_subtitle')}}</h6>
+                    <b-button id="cancelButton" class="continueButton" variant="primary" size="sm" v-on:click="hideButtons" style="margin-right:5px">{{gtrans.translate('cancel')}}</b-button>
+                    <b-button id="acceptButton" class="cancelButton" variant="primary" size="sm" type="submit" style="margin-left:5px">{{gtrans.translate('accept')}}</b-button>
                 </div>
             </form>
         </div>
@@ -33,6 +33,7 @@ import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
 import Vue from 'vue'
 import VueSwal from 'vue-swal'
+import GTrans from "@/utils/GTrans.js"
  
 Vue.use(VueSwal)
 
@@ -46,6 +47,7 @@ export default {
     data: function() {
         return {
             gsecurity: GSecurity,
+            gtrans: undefined,
 
             name: '',
             userSurnames: '',
@@ -63,7 +65,7 @@ export default {
             GAxios.delete(endpoints.user , {
             }).then(response => {
                 setTimeout(function(){ window.location.reload(); }, 2000);
-                this.$swal("Your account has been successfully deleted", "We are sorry to say goodbye. You can register again anytime.", "success");
+                this.$swal(this.gtrans.translate('toast_title'), this.gtrans.translate('toast_subtitle'), "success");
                 console.log(response);
                 this.gsecurity.deauthenticate();
                 this.$router.push({path: "/"});
@@ -85,6 +87,18 @@ export default {
             document.getElementById("otroButton").style.display='inline-block';
             return false;
         },
+    },
+
+
+    created: function(){
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
     },
 
     beforeMount: function(){
