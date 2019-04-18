@@ -11,6 +11,14 @@ export default{
     prueba_test : "Grooving i18n-l10n ENGLISH",
 
     // ----------------------------------------------------
+    //                CreateFareHiring.vue
+    // ----------------------------------------------------
+
+    fare_title : "Fare Hiring",
+    fare_subtitle : "You can set a fixed price you'll gain per hour.",
+    fare_fixedPrice : "FIXED PRICE",
+
+    // ----------------------------------------------------
     //             CreditCardPaymentBrain.vue
     // ----------------------------------------------------
 
@@ -60,7 +68,7 @@ export default{
     //                   EditSubmenu.vue
     // ----------------------------------------------------
 
-    save : "SAVE", // Se usa también en EditProfileInfo.vue
+    save : "SAVE", // Se usa también en EditProfileInfo.vue y CreateFareHiring.vue
 
     // ----------------------------------------------------
     //                   EventData.vue
