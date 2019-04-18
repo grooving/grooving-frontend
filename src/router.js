@@ -39,6 +39,7 @@ import StartingDate from './views/StartingDate.vue'
 import PerformanceSelector from './views/PerformanceSelector.vue'
 import TermsView from './views/TermsView.vue'
 import AboutView from './views/AboutView.vue'
+import AdminLogin from './views/AdminLogin.vue'
 
 Vue.use(Router)
 
@@ -247,6 +248,11 @@ export default new Router({
       name: 'about',
       component: AboutView,
     },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: AdminLogin
+    }
     
   ]
 })
