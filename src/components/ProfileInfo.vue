@@ -3,49 +3,49 @@
         <form>
             <div class="form-row">
                 <div class="form-group col-12">
-                    <span class="card-title" style="font-weight:bold;font-size:30px;margin-bottom:12px">Profile </span>
+                    <span class="card-title" style="font-weight:bold;font-size:30px;margin-bottom:12px">{{gtrans.translate('profile_title')}} </span>
                     <router-link v-bind:to="{name: 'editPersonalInfo', params: {}}" style="height: 28px; width: 28px; margin-bottom:12px;">
                         <i class="material-icons iconOffer">create</i>
                     </router-link>
-                    <h6 class="card-subtitle mb-2 text-muted">Basic info of your Grooving account, like your name and email.</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">{{gtrans.translate('profile_subtitle')}}</h6>
                     <div style="width:100%;margin-top:25px;overflow:auto;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">FIRST NAME</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_firstName')}}</p>
                         <p class="card-text" style="float:right;">{{name}}</p>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:25px;overflow:auto;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">LAST NAME</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_lastName')}}</p>
                         <p class="card-text" style="float:right;">{{surnames}}</p>
                     </div>
                     <hr v-if="this.gsecurity.hasRole('ARTIST')" style="margin-top:0px;margin-bottom:0px;"/>
                     <div v-if="this.gsecurity.hasRole('ARTIST')" style="width:100%;margin-top:16px;overflow:auto;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">ARTISTIC NAME</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_artisticName')}}</p>
                         <p class="card-text" style="float:right;">{{artisticName}}</p>
                     </div>
                     <hr styl
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:16px;overflow:auto;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">USERNAME</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_username')}}</p>
                         <p class="card-text" style="float:right;">{{username}}</p>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:16px;overflow:auto;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">PASSWORD</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_password')}}</p>
                         <p class="card-text" style="float:right;">&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;</p>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:16px;overflow:auto;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">EMAIL</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_email')}}</p>
                         <p class="card-text" style="float:right;">{{email}}</p>
                     </div>
                     <hr v-if="this.gsecurity.hasRole('ARTIST')" style="margin-top:0px;margin-bottom:0px;"/>
                     <div v-if="this.gsecurity.hasRole('ARTIST')" style="width:100%;margin-top:16px;overflow:auto;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">PAYPAL</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('paypal')}}</p>
                         <p class="card-text" style="float:right;">{{paypal}}</p>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:16px;overflow:auto;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">PHONE</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_phone')}}</p>
                         <p class="card-text" style="float:right;">{{phoneNumber}}</p>
                     </div>
                 </div>  
@@ -56,8 +56,16 @@
 
 <script>
 import GSecurity from "@/security/GSecurity.js";
+import GTrans from "@/utils/GTrans.js"
+
 export default {
     name: "profileInfo",
+    data: function(){
+        return{
+        gsecurity: GSecurity,
+        gtrans: undefined,
+        }
+    },
     props: {
         name: {
             type: String,
@@ -91,6 +99,12 @@ export default {
     created() {
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
     },
 }
 </script>

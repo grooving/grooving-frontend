@@ -63,15 +63,15 @@ export default{
     //                EditProfileInfo.vue
     // ----------------------------------------------------
 
-    profile_title : "Profile", // Se usa también en ReducedInfo.vue
-    profile_subtitle : "Basic info of your Grooving account, like your name and email.",
-    user_firstName : "FIRST NAME", // Se usa también en ReducedInfo.vue
-    user_lastName : "LAST NAME", // Se usa también en ReducedInfo.vue
-    user_artisticName : "ARTISTIC NAME",
-    user_username : "USERNAME",
-    user_password : "PASSWORD",
-    user_email : "EMAIL",
-    user_phone : "PHONE",
+    profile_title : "Profile", // Se usa también en ReducedInfo.vue y ProfileInfo.vue
+    profile_subtitle : "Basic info of your Grooving account, like your name and email.", // Se usa también en ProfileInfo.vue
+    user_firstName : "FIRST NAME", // Se usa también en ReducedInfo.vue y ProfileInfo.vue
+    user_lastName : "LAST NAME", // Se usa también en ReducedInfo.vue y ProfileInfo.vue
+    user_artisticName : "ARTISTIC NAME", // Se usa también en ProfileInfo.vue
+    user_username : "USERNAME", // Se usa también en ProfileInfo.vue
+    user_password : "PASSWORD", // Se usa también en ProfileInfo.vue
+    user_email : "EMAIL", // Se usa también en ProfileInfo.vue
+    user_phone : "PHONE", // Se usa también en ProfileInfo.vue
 
     // ----------------------------------------------------
     //                   EditSubmenu.vue
@@ -130,7 +130,7 @@ export default{
 
     selectMethod : "Select the payment method",
     creditcard : "CREDIT CARD",
-    paypal : "PAYPAL", // Se usa también en EditProfileInfo.vue
+    paypal : "PAYPAL", // Se usa también en EditProfileInfo.vue y ProfileInfo.vue
 
     // ----------------------------------------------------
     //                   ReducedInfo.vue
