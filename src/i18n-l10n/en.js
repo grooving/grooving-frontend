@@ -46,7 +46,7 @@ export default{
     //                EditImageCarousel.vue
     // ----------------------------------------------------
 
-    artist_images : "Image Showcase",
+    artist_images : "Image Showcase", // Se usa también en ImageCarousel.vue
     image_placeholder : "Insert your URL here...",
     image_help : "Must be a .png, .gif, .jpg or .jpeg link to an image.",
 
@@ -90,6 +90,12 @@ export default{
     offer_description: "Description",
     back : "GO BACK",
     accept : "ACCEPT OFFER",
+
+    // ----------------------------------------------------
+    //                  ImageCarousel.vue
+    // ----------------------------------------------------
+
+    image_alt : "Image",
 
     // ----------------------------------------------------
     //                     LeftMenu.vue

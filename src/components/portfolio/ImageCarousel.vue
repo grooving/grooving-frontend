@@ -3,14 +3,14 @@
       <div class="owl-wrapper horizontal-center">
           <div class="row" style="padding-bottom: 15px">
             <div class="col-sm-12 col-md-8 horizontal-center">
-              <h3 style="text-align: left; color: black;"><strong>Image Showcase</strong></h3>
+              <h3 style="text-align: left; color: black;"><strong>{{gtrans.translate('artist_images')}}</strong></h3>
             </div>
           </div>
           <div class="row">
               <div class="col-sm-12 col-md-8 horizontal-center">
                   <div class="owl-carousel owl-theme">       
                       <a v-for="photoInfo in photosInfo" :key="photoInfo.id" :href="photoInfo.link">
-                        <img :src="photoInfo.imageURL" class="card-img-top artistImage" alt="Artist's Image">
+                        <img :src="photoInfo.imageURL" class="card-img-top artistImage" v-bind:alt="gtrans.translate('image_alt')">
                       </a>
                   </div>
               </div>
@@ -23,6 +23,8 @@
 
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel'
+import GSecurity from "@/security/GSecurity.js"
+import GTrans from "@/utils/GTrans.js"
 
 /* Makes Slides responsive */
 $(window).on('resize', function(){
@@ -40,6 +42,13 @@ $(window).on('resize', function(){
 export default {
   name: "ImageCarousel",
 
+  data: function(){
+    return{
+      gsecurity: GSecurity,
+      gtrans: undefined,
+    }
+  },
+
   props:{
     photosInfo: {
             /* Array of dictionaries of type { id:int, imageURL: String, link: String} */
@@ -48,6 +57,18 @@ export default {
               {id: 0, imageURL: "https://4c79id2ej5i11apui01ll2wc-wpengine.netdna-ssl.com/wp-content/uploads/2018/09/Charli-XCX-Gallery-1.jpg", link: '#'}
             ]
     },
+  },
+  
+  created: function(){
+    this.gsecurity = GSecurity;
+    this.gsecurity.obtainSavedCredentials();
+
+    this.gtrans = new GTrans(this.gsecurity.getLanguage());
+    
+    // Podemos cambiar el lenguaje así para debug...
+    //this.gtrans.setLanguage('es')
+    //this.gtrans.setLanguage('en')
+
   },
 
   mounted: function () {

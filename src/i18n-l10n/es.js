@@ -46,7 +46,7 @@ export default{
     //                EditImageCarousel.vue
     // ----------------------------------------------------
 
-    artist_images : "Expositor de Imágenes",
+    artist_images : "Expositor de Imágenes", // Se usa también en ImageCarousel.vue
     image_placeholder : "Agrega la URL aquí...",
     image_help : "Debe ser un enlace a una imagen .png, .gif, .jpg o .jpeg.",
 
@@ -90,6 +90,12 @@ export default{
     offer_description: "Descripción",
     back : "ATRÁS",
     accept : "ACEPTAR OFERTA",
+
+    // ----------------------------------------------------
+    //                  ImageCarousel.vue
+    // ----------------------------------------------------
+
+    image_alt : "Imagen",
 
     // ----------------------------------------------------
     //                     LeftMenu.vue
