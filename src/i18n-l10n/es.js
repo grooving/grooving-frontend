@@ -43,10 +43,24 @@ export default{
     image_help : "Debe ser un enlace a una imagen .png, .gif, .jpg o .jpeg.",
 
     // ----------------------------------------------------
+    //                EditProfileInfo.vue
+    // ----------------------------------------------------
+
+    profile_title : "Perfil",
+    profile_subtitle : "Información básica sobre tu cuenta de Grooving, como tu nombre y tu email.",
+    user_firstName : "NOMBRE",
+    user_lastName : "APELLIDOS",
+    user_artisticName : "NOMBRE ARTÍSTICO",
+    user_username : "NOMBRE DE USUARIO",
+    user_password : "CONTRASEÑA",
+    user_email : "EMAIL",
+    user_phone : "TELÉFONO",
+
+    // ----------------------------------------------------
     //                   EditSubmenu.vue
     // ----------------------------------------------------
 
-    save : "GUARDAR",
+    save : "GUARDAR", // Se usa también en EditProfileInfo.vue
 
     // ----------------------------------------------------
     //                   EventData.vue
@@ -73,6 +87,6 @@ export default{
 
     selectMethod : "Seleccione el método de pago",
     creditcard : "TARJETA DE CRÉDITO",
-    paypal : "PAYPAL",
+    paypal : "PAYPAL", // Se usa también en EditProfileInfo.vue
 
 }
