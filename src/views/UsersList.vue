@@ -45,7 +45,7 @@ export default {
 
                 for (var i = 0; i < users.length; i++) {
                     this.datos.push({
-                        userId: users[i].id,
+                        userId: users[i].user.id,
                         userImage: users[i].photo,
                         userName: users[i].user.username,
                         userIsActive: users[i].user.is_active,

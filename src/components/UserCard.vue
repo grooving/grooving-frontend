@@ -53,6 +53,7 @@ export default {
 
     methods: {
         banUser() {
+            NProgress.start();
             var GAxiosToken = this.gsecurity.getToken();
             var authorizedGAxios = GAxios;
             authorizedGAxios.defaults.headers.common['Authorization'] = 'Token '+ GAxiosToken;
