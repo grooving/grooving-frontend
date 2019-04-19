@@ -3,18 +3,18 @@
      <div class="collapse navbar-collapse width px-2 bg-light" id="sidebar">
          <p>
         <div class="navContent">
-         <h2>Hello, <span>{{ userFirstName }}</span></h2>
+         <h2>{{gtrans.translate('hello')}}, <span>{{ userFirstName }}</span></h2>
             <ul class="navbar-nav mr-auto p-2 col align-self-center justify-content-center">
                 <li class="nav-item section" >
-                    <div class="nav-link goTo" @click="goTo('/personalInfo')" data-toggle="collapse" data-target="#sidebar">My Account</div>
+                    <div class="nav-link goTo" @click="goTo('/personalInfo')" data-toggle="collapse" data-target="#sidebar">{{gtrans.translate('myAccount')}}</div>
                     <b-dropdown-divider class="divider"/>
                 </li>
                 <li class="nav-item section" v-if="gsecurity.hasRole('ARTIST')">
-                    <div class="nav-link goTo" @click="goTo('/showPortfolio/'+ artistId + '/')"  data-toggle="collapse" data-target="#sidebar">My Portfolio</div>
+                    <div class="nav-link goTo" @click="goTo('/showPortfolio/'+ artistId + '/')"  data-toggle="collapse" data-target="#sidebar">{{gtrans.translate('myPortfolio')}}</div>
                     <b-dropdown-divider class="divider"/>
                 </li>
                 <li class="nav-item section" v-if="gsecurity.hasRole('ARTIST')">
-                    <div class="nav-link goTo" @click="goTo('/hiringSettings')" data-toggle="collapse" data-target="#sidebar">Hiring Settings</div>
+                    <div class="nav-link goTo" @click="goTo('/hiringSettings')" data-toggle="collapse" data-target="#sidebar">{{gtrans.translate('hiringSettings')}}</div>
                     <b-dropdown-divider class="divider"/>
                 </li>                
                 <!-- <li class="nav-item section">
@@ -22,7 +22,7 @@
                      <b-dropdown-divider class="divider"/>
                 </li> -->
                 <li class="nav-item section">
-                    <a class="nav-link" href="" v-on:click="logout()">Log Out</a>
+                    <a class="nav-link" href="" v-on:click="logout()">{{gtrans.translate('logOut')}}</a>
                 </li>
             </ul>
         </div>
@@ -32,6 +32,7 @@
 
 <script>
 import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
 import {mapActions} from 'vuex';
 
 export default {
@@ -39,6 +40,7 @@ export default {
     data: function(){
         return{
             gsecurity: GSecurity,
+            gtrans: undefined,
             userFirstName: '',
             artistId: '',
             url: undefined,
@@ -77,6 +79,12 @@ export default {
 
         // Update data that depends on GSecurity
         this.refreshGSecurityData();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+            
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
     },
 
     beforeUpdate: function() {

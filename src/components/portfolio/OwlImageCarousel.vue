@@ -17,6 +17,8 @@
 <script>
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel';
+import GSecurity from "@/security/GSecurity.js";
+import GTrans from "@/utils/GTrans.js";
 
 /* Makes Slides responsive */
 $(window).on('resize', function(){
@@ -34,7 +36,12 @@ $(window).on('resize', function(){
 export default {
 
   name: "OwlImageCarousel",
-
+  data () {
+    return {
+      gsecurity: GSecurity,
+      gtrans: undefined,
+    }
+  },
   methods: {
 
     actionImageTrigger: function(event){
@@ -47,7 +54,16 @@ export default {
     },
 
   },
+  created() {
+    this.gsecurity = GSecurity;
+    this.gsecurity.obtainSavedCredentials();
+    this.gtrans = new GTrans(this.gsecurity.getLanguage());
+      
+    // Podemos cambiar el lenguaje así para debug...
+    //this.gtrans.setLanguage('es')
+    //this.gtrans.setLanguage('en')
 
+  },
   props:{
 
     photosInfo: {
