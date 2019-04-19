@@ -1,13 +1,14 @@
 import endpoints from '../utils/endpoints.js';
 import GAxios from '../utils/GAxios.js'
 
-const ROLES = ['ANONYMOUS', 'ARTIST', 'CUSTOMER'];
-const AUTH_ROLES = ['ARTIST', 'CUSTOMER'];
+const ROLES = ['ANONYMOUS', 'ARTIST', 'CUSTOMER', 'ADMIN'];
+const AUTH_ROLES = ['ARTIST', 'CUSTOMER', 'ADMIN'];
 const UNAUTH_ROLES = ['ANONYMOUS'];
+const SUPPORTED_LANGUAGES = ['en', 'es']
 
 class GSecurity {
 
-    constructor(username = 'ANONYMOUS', role='ANONYMOUS', token='', id=-1, firstName='ANONYMOUS', photo=''){
+    constructor(username = 'ANONYMOUS', role='ANONYMOUS', token='', id=-1, firstName='ANONYMOUS', photo='', language='en'){
       
       this._username = username;
       this._firstName = firstName;
@@ -15,7 +16,6 @@ class GSecurity {
       this._token = '';
       this._photo = '';
       this._id = -1;
-      this._language = 'en';
       
       if(role && AUTH_ROLES.includes(role.toUpperCase()) && token && id != undefined && id != null && id >= 0){
         this._role = role.toUpperCase();
@@ -23,6 +23,9 @@ class GSecurity {
         this._photo = photo;
         this._id = id;
       }
+
+      if(language && SUPPORTED_LANGUAGES.includes(language.toLowerCase()))
+        this._language = 'en';        
 
     }
 
@@ -68,7 +71,7 @@ class GSecurity {
 
     setRole(role){
         if(typeof role === 'string' && role && ROLES.includes(role.toUpperCase())){
-            this._role = role;
+            this._role = role.toUpperCase();
         }
     }
 
@@ -90,7 +93,8 @@ class GSecurity {
     }
 
     setLanguage(language){
-        this._language = language;
+        if(language && SUPPORTED_LANGUAGES.includes(language.toLowerCase()))
+            this._language = language.toLowerCase();
     }
 
     // Other Business Methods
@@ -103,6 +107,8 @@ class GSecurity {
             this.setRole(localStorage.getItem("role"));
             this.setPhoto(localStorage.getItem("photo"));
             this.setId(localStorage.getItem("id"));
+
+            this.setLanguage(localStorage.getItem("language"));
         }
     }
 
@@ -113,6 +119,7 @@ class GSecurity {
         window.localStorage.setItem("photo", this.getPhoto());
         window.localStorage.setItem("firstName", this.getFirstName());
         window.localStorage.setItem("token", this.getToken());
+        window.localStorage.setItem("language", this.getLanguage());
     }
 
     deleteCredentialsInCache(){
@@ -122,6 +129,7 @@ class GSecurity {
         window.localStorage.removeItem("photo");
         window.localStorage.removeItem("firstName");
         window.localStorage.removeItem("token");
+        window.localStorage.removeItem("language");
     }
   
     async authenticate(username, password){
@@ -143,7 +151,8 @@ class GSecurity {
                     let photo = isArtist ? response.data.artist.photo : response.data.customer.photo;
                     let userName = isArtist ? response.data.artist.user.username : response.data.customer.user.username;
                     let firstName = isArtist ? response.data.artist.user.first_name : response.data.customer.user.first_name;
-
+                    let language = 'es';
+                    console.log("AUTO SET DE IDIOMA; CAMBIAR")
 
                     if(token && id && role && userName && firstName){
                         this.setToken(token);
@@ -152,6 +161,7 @@ class GSecurity {
                         this.setPhoto(photo);
                         this.setUsername(userName);
                         this.setFirstName(firstName);
+                        this.setLanguage(language);
 
                         this.saveCredentialsInCache();
                         res = true;
@@ -168,6 +178,58 @@ class GSecurity {
         return res;
     }
 
+    async sudoAuthenticate(username, password){
+
+        var res = false;
+
+        if(username && password){
+            await GAxios.post(endpoints.adminLogin, {
+                "username": username,
+                "password": password
+              }).then(response => {
+                
+                    console.log(response)
+
+                    if(response.data.admin){
+
+                        let token = response.headers['x-auth'];
+                        let id = response.data.admin.id;
+                        let role = 'ADMIN';
+                        let photo = 'http://thesource.com/wp-content/uploads/2015/11/CharliXCX_022315.jpg';
+                        let userName = response.data.admin.user.username;
+                        let firstName = response.data.admin.user.first_name;
+                        let language = 'es';
+                        console.log("AUTO SET DE IDIOMA; CAMBIAR")
+
+                        if(token && id && role ){
+                            this.setToken(token);
+                            this.setId(id);
+                            this.setRole(role);
+                            this.setPhoto(photo);
+                            this.setUsername(userName);
+                            this.setFirstName(firstName);
+                            this.setLanguage(language);
+
+                            this.saveCredentialsInCache();
+                            res = true;
+                        }else{
+                            this.deleteCredentialsInCache();
+                            res = false;
+                        }
+
+                    }else{
+                        this.deleteCredentialsInCache();
+                        res = false;
+                    }
+    
+                  }).catch(ex => {
+                    res = false;
+                  });
+        }
+        console.log(res)
+        return res;
+    }
+
     deauthenticate(){
 
         this.setUsername('ANONYMOUS')
@@ -176,6 +238,7 @@ class GSecurity {
         this.setFirstName('');
         this.setId(-1);
         this.setPhoto('');
+        this.setLanguage('en');
 
         this.deleteCredentialsInCache();
     }
