@@ -1,18 +1,26 @@
 <template>
-    <div id="wholePage" class="col-12">
+    <div  id="wholePage" class="col-12 content">
+        
+        <div id="errorsDiv" class="validationErrors vertical-center">
+            <p tyle="margin: 0px;">{{errors}}</p>
+        </div>
+        <div id="okDiv" class="validationOK vertical-center">
+            <p tyle="margin: 0px;">{{ok}}</p>
+        </div>
+        
         <div class="title"><p>Breach Notification</p></div>
         <div class="subtitle"><p>This message will be sent to all the users of the system</p></div>
         <div class="bothCards">
-            <form>
+            <form v-on:submit="createNotification">
                 <div class="form-group">
                     <small for="exampleInputEmail1">SUBJECT</small>
-                    <input style="font-weight: bold;" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Subject">
+                    <input v-model="subject" style="font-weight: bold;" type="text" class="form-control" id="notificationSubject" placeholder="Subject">
                 </div>
                 <div class="form-group">
                     <small for="exampleInputPassword1">BODY</small>
-                    <textarea class="form-control" id="exampleInputPassword1" placeholder="Enter the body of the message..."/>
+                    <textarea v-model="body" class="form-control" id="notificationBody" placeholder="Enter the body of the message..."/>
                 </div>
-                <button type="submit" class="continueButton">SUBMIT</button>
+                <button type="submit" class="continueButton">SEND</button>
             </form>
         </div>
     </div>
@@ -20,6 +28,8 @@
 
 <script>
     import GSecurity from "@/security/GSecurity.js";
+    import endpoints from '@/utils/endpoints.js';
+    import GAxios from '@/utils/GAxios.js';
 
     export default {
         name: 'BreachNotification',
@@ -30,14 +40,42 @@
         data: function() {
             return {
                 gsecurity: GSecurity,
-                input: {
-                    username: "",
-                    password: ""
-                },
+                subject: "",
+                body: "",
+                errors: "",
+                ok: "The notification was created succesfully.",
             };
         },
 
         methods: {
+            createNotification(){
+                NProgress.start();
+
+                var GAxiosToken = this.gsecurity.getToken();
+                var authorizedGAxios = GAxios;
+                authorizedGAxios.defaults.headers.common['Authorization'] = 'Token '+ GAxiosToken;
+                
+                GAxios.post(endpoints.breachNotification, {
+                    "subject": this.subject,
+                    "body": this.body
+                }).then(response => {
+                    console.log(response);
+                    document.getElementById("errorsDiv").style.display = "none";
+                    document.getElementById("okDiv").style.display = "block";
+                    this.subject="";
+                    this.body="";
+                    this.$router.push({name: "breachNotification"});
+                }).catch(ex => {
+                    console.log(ex);
+                    console.log(ex.response.data.error);
+                    this.errors = ex.response.data.error;
+                    document.getElementById("errorsDiv").style.display = "block";
+                    document.getElementById("okDiv").style.display = "none";
+                }).then( () => {
+                    NProgress.done();
+                })
+
+            }
         },
 
         props: {
@@ -47,6 +85,11 @@
         created() {
             this.gsecurity = GSecurity;
             this.gsecurity.obtainSavedCredentials();
+
+            if(!this.gsecurity.hasRole('ADMIN')) {
+                console.log("Error: You are not an administrator so you can't create breach notifications");
+                location.replace("/#/*")
+            }
         },
 
         beforeMount: function() {
@@ -58,6 +101,33 @@
 </script>
 
 <style scoped>
+
+    .content{
+        padding: 0px !important;
+    }
+
+    .validationErrors{
+        background-color:#f50057;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
+        color:white;
+        font-weight: bold;
+        display: none;
+        margin-bottom: 14px;
+        padding-top: 10px;
+        padding-bottom: 0.03px;
+    }
+
+    .validationOK{
+        background-color:hsl(155, 100%, 38%);
+        box-shadow: 0px 2px 8px 2px rgba(0, 110, 255, 0.3);      
+        color:white;
+        font-weight: bold;
+        display: none;
+        margin-bottom: 14px;
+        padding-top: 10px;
+        padding-bottom: 0.03px;
+    }
+
     * {
         font-family: "Archivo"
     }
@@ -75,6 +145,7 @@
         background-image: linear-gradient(to right, #00fb82, #187fe6);
         border: none;
         border-radius: 30px;
+        color: white;
         font-size: 25px;
         font-weight: bold;
         padding-left: 6%;
