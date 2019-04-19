@@ -83,24 +83,24 @@
                     </div>
                     <div class="row container">
                         <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="enableOfferButtons()" class="btn btn-primary cancelButton" 
-                            data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">CANCEL</span></a></div>
+                            data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">{{gtrans.translate('offer_cancel')}}</span></a></div>
                         <div v-if="offerStatus === 'PENDING' && gsecurity.hasRole('ARTIST')" class="right-div right-text2">
-                            <button class="btnn2 btn-primary confirmButton" v-on:click="rejectOffer"><span class="continueText">CONFIRM</span></button></div>
+                            <button class="btnn2 btn-primary confirmButton" v-on:click="rejectOffer"><span class="continueText">{{gtrans.translate('offer_confirm')}}</span></button></div>
                         <div v-if="offerStatus === 'PENDING' && gsecurity.hasRole('CUSTOMER')" class="right-div right-text2">
-                            <button class="btnn2 btn-primary confirmButton" v-on:click="withdrawnOffer"><span class="continueText">CONFIRM</span></button></div>
+                            <button class="btnn2 btn-primary confirmButton" v-on:click="withdrawnOffer"><span class="continueText">{{gtrans.translate('offer_confirm')}}</span></button></div>
                         <div v-if="offerStatus === 'CONTRACT_MADE'" class="right-div right-text2">
-                            <button class="btnn2 btn-primary confirmButton" v-on:click="cancelOffer"><span class="continueText">CONFIRM</span></button></div>
+                            <button class="btnn2 btn-primary confirmButton" v-on:click="cancelOffer"><span class="continueText">{{gtrans.translate('offer_confirm')}}</span></button></div>
                     </div>
                 </div>
                 <div v-if="offerStatus === 'PENDING'" class="row container" v-bind:id="buttonsId()">
                     <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="disableOfferButtons()" class="btn btn-primary rejectButton" 
-                        data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">REJECT</span></a></div>
+                        data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">{{gtrans.translate('offer_reject')}}</span></a></div>
                     <div v-if="offerStatus === 'PENDING' && gsecurity.hasRole('ARTIST')" class="right-div right-text2">
-                        <router-link v-bind:to="confirmURI" class="btn btn-primary confirmButton"><span class="continueText">DETAILS</span></router-link></div>
+                        <router-link v-bind:to="confirmURI" class="btn btn-primary confirmButton"><span class="continueText">{{gtrans.translate('offer_details')}}</span></router-link></div>
                 </div>
                 <div v-if="offerStatus === 'CONTRACT_MADE'" class="row container" v-bind:id="buttonsId()">
                     <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="disableOfferButtons()" class="btnn btn-primary rejectButton" 
-                        data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">DECLINE</span></a></div>
+                        data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">{{gtrans.translate('offer_decline')}}</span></a></div>
                 </div>
             </div>
         </div>
@@ -112,6 +112,7 @@
     import GAxios from '../utils/GAxios.js'
     import GSecurity from '@/security/GSecurity.js';
     import endpoints from '@/utils/endpoints.js';
+    import GTrans from "@/utils/GTrans.js";
 
     export default {
         name: 'Offer',
@@ -127,6 +128,7 @@
                 cancelledCustomerMessage: 'The offer was canceled by the customer after being accepted.',
                 paymentMessage: 'The payment has already been made.',
                 ratingD: null,
+                gtrans: undefined,
             }
         },
         
@@ -186,6 +188,15 @@
         },
         beforeMount () {
             this.ratingD = this.rating;
+        },
+        created() {
+            this.gsecurity = GSecurity;
+            this.gsecurity.obtainSavedCredentials();
+            this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+            // Podemos cambiar el lenguaje así para debug...
+            //this.gtrans.setLanguage('es')
+            //this.gtrans.setLanguage('en')
         },
         methods: {
             hashtag() {

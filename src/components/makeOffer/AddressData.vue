@@ -3,15 +3,15 @@
     <form v-on:submit.prevent="addressDataSelected()">
         <div class="form-row" style="margin-top:15px">
             <div class="form-group col-12">
-                <input v-model="street" type="text" class="form-control" placeholder="Address" required>
+                <input v-model="street" type="text" class="form-control" v-bind:placeholder="gtrans.translate('addressData_address')" required>
             </div>  
         </div>
         <div class="form-row">
             <div class="form-group col-7">
-                <input v-model="location" type="text" class="form-control" placeholder="Town" required>
+                <input v-model="location" type="text" class="form-control" v-bind:placeholder="gtrans.translate('addressData_town')" required>
             </div>  
             <div class="form-group col-5">
-                <input v-model="zipcode" type="number" class="form-control" placeholder="Zipcode" required>
+                <input v-model="zipcode" type="number" class="form-control" v-bind:placeholder="gtrans.translate('addressData_zipcode')" required>
             </div>  
         </div>
         <!-- <div class="form-row">
@@ -22,7 +22,7 @@
         
             <div class="row filter-item " style="margin-bottom: 15px">
                 <b-form-select v-model="singleSelectorValue" style="width:90%; margin:0 auto;" required>
-                    <option :value="undefined" disabled>* Provinces where the artist performs *</option>
+                    <option :value="undefined" disabled>{{gtrans.translate('addressData_artistProvinces')}}</option>
                     <option v-for="zone in zones" :key="zone.name" :value="zone.id">
                         
                         <span>{{zone.name}}</span>
@@ -31,13 +31,16 @@
             </div>
 
         <button class="btn btn-primary continueButton" >
-                <span class="continueText">CONTINUE</span></button>
+                <span class="continueText">{{gtrans.translate('continueButton')}}</span></button>
     </form>
     </div>
 </template>
 
 
 <script>
+
+import GTrans from "@/utils/GTrans.js";
+import GSecurity from '@/security/GSecurity.js';
 
 export default {
     name: "AddressData",
@@ -48,6 +51,7 @@ export default {
         },
         selector_filters: Array,
         zones: Array,
+        
     },
     data() {
         return {
@@ -55,6 +59,7 @@ export default {
             zipcode: undefined,
             street: undefined,
             singleSelectorValue: undefined,
+            gtrans: undefined,
         }
     },
     mounted() {
@@ -64,6 +69,18 @@ export default {
         addressDataSelected(){
             this.$emit('addressSelected', [this.location, this.zipcode, this.street, this.singleSelectorValue]);
         },
+    },
+
+    created() {
+
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
     }
 }
 </script>

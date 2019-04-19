@@ -3,16 +3,16 @@
         <form v-on:submit="createCustom">
             <div class="form-row">
                 <div class="form-group col-12">
-                    <span style="font-weight:bold;font-size:30px;">Custom Hiring </span>
+                    <span style="font-weight:bold;font-size:30px;">{{gtrans.translate('custom_title')}}</span>
                     <router-link to="hiringSettings" style="height: 28px; width: 28px">
                         <i class="material-icons iconOffer">clear</i>
                     </router-link>
-                    <h6 class="card-subtitle mb-2 text-muted">The customer can decide the amount of money he will pay, so you may set a minimun price. </h6>
+                    <h6 class="card-subtitle mb-2 text-muted">{{gtrans.translate('custom_subtitle')}}</h6>
                     <div id="errorsDiv" class="validationErrors vertical-center">
                         <p style="margin: 0px;">{{errors}}</p>
                     </div>
                     <div style="width:100%;margin-top:25px;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">MINIMUM PRICE</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('custom_minimumPrice')}}</p>
                         <div class="input-group">
                             <input v-model="minimumPrice" type="number" class="form-control" min="0.01" step="0.01" required>
                             <div class="input-group-append">
@@ -21,7 +21,7 @@
                         </div>
                     </div>
                     <div class="continueButtonDiv">
-                        <b-button class="continueButton" variant="primary" size="sm" type="submit">SAVE</b-button>
+                        <b-button class="continueButton" variant="primary" size="sm" type="submit">{{gtrans.translate('save')}}</b-button>
                     </div>
                 </div>  
             </div>
@@ -33,6 +33,7 @@
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
 
 export default {
     name: "CreateCustomHiring",
@@ -41,6 +42,7 @@ export default {
         return {
             minimumPrice: {},
             errors: "",
+            gtrans: undefined,
         }
     },
 
@@ -66,6 +68,11 @@ export default {
     created() {
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+    
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
     },
 }
 </script>

@@ -84,7 +84,7 @@ export default{
     // ----------------------------------------------------
 
     description_placeholder : "Añade aquí una descripción con información relevante sobre el evento.",
-    continueButton : "CONTINUAR", // Se usa también en StartingDatePicker.vue y Performances.vue
+    continueButton : "CONTINUAR", // Se usa también en StartingDatePicker.vue, Performances.vue y AddressData.vue
 
     // ----------------------------------------------------
     //                  ExtendedOffer.vue
@@ -186,7 +186,72 @@ export default{
     //                 EditVideoCarousel.vue
     // ----------------------------------------------------
 
-    videoShowcase : "Galería de Videos",
+    videoShowcase : "Galería de Videos", // Se usa en VideoCarousel.vue
     insertURL: "Introduzca la URL aquí...",
     validYTLink : "Debe ser un link de youtube válido.",
+
+    // ----------------------------------------------------
+    //                 EditZone.vue
+    // ----------------------------------------------------
+
+    artist_zone_submit: 'Enviar',
+
+    // ----------------------------------------------------
+    //                 HiringType.vue
+    // ----------------------------------------------------
+
+    hiring_type: 'Tipo de Contrato',
+    hiring_fare: 'Tarifa',
+    hiring_fareDescription: 'En este tipo de contrato puedes elegir la duración del evento.',
+    hiring_price: 'Precio',
+    hiring_continue: 'CONTINUAR',
+    hiring_performance: 'Espectáculo',
+    hiring_performanceDescription: 'En este tipo de contrato puedes elegir entre distintos espectáculos definidos por el artista.',
+    hiring_custom: 'A Medida',
+    hiring_customDescription: 'En este tipo de contrato tú decides la cantidad de dinero que vas a pagar.',
+    hiring_customMinimumPrice: 'Precio Mínimo',
+
+    // ----------------------------------------------------
+    //                 AddressData.vue
+    // ----------------------------------------------------
+
+    addressData_address: 'Dirección',
+    addressData_town: 'Ciudad',
+    addressData_zipcode: 'C.P.',
+    addressData_artistProvinces: 'Provincias donde el artista actúa',
+
+    // ----------------------------------------------------
+    //                 EditPerformanceHiring.vue
+    // ----------------------------------------------------
+
+    performance_title: 'Contratación por Espectáculo',
+    performance_subtitle: 'Puedes definir tus propios espectáculos indicando su descripción, duración y precio fijo.',
+    performance_description: 'DESCRIPCIÓN',
+    performance_duration: 'DURACIÓN',
+    performance_fixedPrice: 'PRECIO FIJO',
+
+    // ----------------------------------------------------
+    //                 Search.vue
+    // ----------------------------------------------------
+
+    search: 'Buscar',
+
+    // ----------------------------------------------------
+    //                 Offer.vue
+    // ----------------------------------------------------
+
+    offer_reject: 'RECHAZAR',
+    offer_decline: 'DECLINAR',
+    offer_confirm: 'CONFIRMAR',
+    offer_details: 'DETALLES',
+    offer_cancel: 'CANCELAR',
+
+
+
+
+
+    
+
+    
+
 }

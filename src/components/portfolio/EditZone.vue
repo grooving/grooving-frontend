@@ -17,7 +17,7 @@
                   </option>
               </b-form-select>
 
-              <b-button class="btt" type="button" variant="primary" v-model="newZone" @click="addZone()">Submit</b-button>
+              <b-button class="btt" type="button" variant="primary" v-model="newZone" @click="addZone()">{{zoneSubmit}}</b-button>
             </b-form>
         </template>
   </div>
@@ -26,6 +26,8 @@
 <script>
 import {mapActions} from 'vuex';
 import { mapGetters } from 'vuex';
+import GTrans from "@/utils/GTrans.js";
+import GSecurity from '@/security/GSecurity.js';
 
 export default {
 
@@ -49,6 +51,9 @@ export default {
         selectedZones: undefined,
         newZone: null,
         tree: Array(),
+
+        gtrans: undefined,
+        zoneSubmit: undefined,
 	  }
   },
   
@@ -148,6 +153,20 @@ export default {
       this.select = true;
       this.add = false;
     },
+  },
+
+  created() {
+
+    this.gsecurity = GSecurity;
+    this.gsecurity.obtainSavedCredentials();
+
+    this.gtrans = new GTrans(this.gsecurity.getLanguage());
+    
+    // Podemos cambiar el lenguaje así para debug...
+    //this.gtrans.setLanguage('es')
+    //this.gtrans.setLanguage('en')
+
+    this.zoneSubmit = this.gtrans.translate('artist_zone_submit');
   }
 }
 

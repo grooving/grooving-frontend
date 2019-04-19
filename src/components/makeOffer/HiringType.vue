@@ -1,6 +1,6 @@
 <template>
   <div class="SentOfferNotif">
-      <h2 class="titleType">Type of Hiring</h2>
+      <h2 class="titleType">{{gtrans.translate('hiring_type')}}</h2>
 
      <div class="accordion" id="accordionExample">
   <div v-if="farePrice != null && farePrice != ''" class="tarjetaB">
@@ -8,16 +8,16 @@
             data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
       <h5 class="mb-0">
         <button class="Hbutton">
-          <h5 class="titles">Fare</h5>
+          <h5 class="titles">{{gtrans.translate('hiring_fare')}}</h5>
         </button>
       </h5>
     </div>
 
     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
     <b-dropdown-divider/>
-      <div class="bodies">{{fareDescription}} <p class="price2"><strong>Price: </strong> {{farePrice}}€/h</p>
+      <div class="bodies">{{gtrans.translate('hiring_fareDescription')}} <p class="price2"><strong>{{gtrans.translate('hiring_price')}}: </strong> {{farePrice}}€/h</p>
            <div class="continueButtonDiv"><div @click="selectType('FARE')"
-            class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div></div>
+            class="btn btn-primary continueButton"><span class="continueText">{{gtrans.translate('hiring_continue')}}</span></div></div>
       </div>  
     </div>
   </div>
@@ -26,16 +26,16 @@
             data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
       <h5 class="mb-0">
         <button class="Hbutton">
-          <h5 class="titles">Performance</h5>
+          <h5 class="titles">{{gtrans.translate('hiring_performance')}}</h5>
         </button>
       </h5>
     </div>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
     <b-dropdown-divider/>
-      <div class="bodies">{{performanceDescription}} 
+      <div class="bodies">{{gtrans.translate('hiring_performanceDescription')}} 
            <div class="continueButtonDiv">
                <div @click="selectType('PERFORMANCE')" class="btn btn-primary continueButton">
-                   <span class="continueText">CONTINUE</span>
+                   <span class="continueText">{{gtrans.translate('hiring_continue')}}</span>
                 </div>
             </div>
       </div>
@@ -46,16 +46,16 @@
             data-target="#collapseThree" aria-expanded="true" aria-controls="collapseOne">
       <h5 class="mb-0">
         <button class="Hbutton" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-          <h5 class="titles">Custom</h5>
+          <h5 class="titles">{{gtrans.translate('hiring_custom')}}</h5>
         </button>
       </h5>
     </div>
     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
     <b-dropdown-divider/>
-      <div class="bodies">{{customDescription}} <p class="price2"><strong>Minimum Price: </strong> {{customMinPrice}}€/h</p>
+      <div class="bodies">{{gtrans.translate('hiring_customDescription')}} <p class="price2"><strong>{{gtrans.translate('hiring_customMinimumPrice')}}: </strong> {{customMinPrice}}€/h</p>
            <div class="continueButtonDiv">
                <div @click="selectType('CUSTOM')" class="btn btn-primary continueButton">
-                   <span class="continueText">CONTINUE</span>
+                   <span class="continueText">{{gtrans.translate('hiring_continue')}}</span>
                 </div>
             </div>
       </div>
@@ -66,6 +66,10 @@
 </template>
 
 <script>
+
+import GTrans from "@/utils/GTrans.js";
+import GSecurity from '@/security/GSecurity.js';
+
 export default {
   name: 'HiringType',
   data(){
@@ -140,6 +144,17 @@ export default {
     mounted(){
         this.artistURI = '/dateSelection/' + this.$route.params['artistId']
     },
+    created() {
+
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
+    }
 }
 </script>
 

@@ -53,7 +53,7 @@ export default {
         this.gtrans = new GTrans(this.gsecurity.getLanguage());
         
         // Podemos cambiar el lenguaje así para debug...
-        this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('es')
         //this.gtrans.setLanguage('en')
     }
 }

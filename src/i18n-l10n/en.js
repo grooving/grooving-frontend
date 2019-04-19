@@ -14,9 +14,9 @@ export default{
     //                CreateFareHiring.vue
     // ----------------------------------------------------
 
-    fare_title : "Fare Hiring",
-    fare_subtitle : "You can set a fixed price you'll gain per hour.",
-    fare_fixedPrice : "FIXED PRICE",
+    fare_title : "Fare Hiring", // Usado también en EditFareHiring.vue
+    fare_subtitle : "You can set a fixed price you'll gain per hour.", // Usado también en EditFareHiring.vue
+    fare_fixedPrice : "FIXED PRICE", // Usado también en EditFareHiring.vue
 
     // ----------------------------------------------------
     //             CreditCardPaymentBrain.vue
@@ -30,9 +30,9 @@ export default{
     //                  CustomHiring.vue
     // ----------------------------------------------------
 
-    custom_title : "Custom Hiring",
-    custom_subtitle : "The customer can decide the amount of money he will pay, so you may set a minimum price.",
-    custom_minimumPrice : "MINIMUM PRICE",
+    custom_title : "Custom Hiring", // Usado también en CreateCustomHiring.vue
+    custom_subtitle : "The customer can decide the amount of money he will pay, so you may set a minimum price.", // Usado también en CreateCustomHiring.vue
+    custom_minimumPrice : "MINIMUM PRICE", // Usado también en CreateCustomHiring.vue
     add : "ADD NEW",
 
     // ----------------------------------------------------
@@ -77,7 +77,7 @@ export default{
     //                   EditSubmenu.vue
     // ----------------------------------------------------
 
-    save : "SAVE", // Se usa también en EditProfileInfo.vue y CreateFareHiring.vue
+    save : "SAVE", // Se usa también en EditProfileInfo.vue y CreateFareHiring.vue y EditFareHiring.vue
 
     // ----------------------------------------------------
     //                   EventData.vue
@@ -189,4 +189,66 @@ export default{
     videoShowcase : "Video Showcase",
     insertURL: "Insert your URL Here...",
     validYTLink : "Must be a valid youtube link.",
+
+    // ----------------------------------------------------
+    //                 EditZone.vue
+    // ----------------------------------------------------
+
+    editZoneSubmit: 'Submit',
+
+    // ----------------------------------------------------
+    //                 HiringType.vue
+    // ----------------------------------------------------
+
+    hiring_type: 'Hiring Type',
+    hiring_fare: 'Fare',
+    hiring_fareDescription: 'In this type of contract you set the duration of the event.',
+    hiring_price: 'Price',
+    hiring_continue: 'CONTINUE',
+    hiring_performance: 'Performance',
+    hiring_performanceDescription: 'In this type con contract to can choose between different shows defined by the artist.',
+    hiring_custom: 'Custom',
+    hiring_customDescription: 'In this type of contract you decide the amount of money to pay.',
+    hiring_customMinimumPrice: 'Minimum Price',
+
+    // ----------------------------------------------------
+    //                 AddressData.vue
+    // ----------------------------------------------------
+
+    addressData_address: 'Address',
+    addressData_town: 'Town',
+    addressData_zipcode: 'Zipcode',
+    addressData_artistProvinces: 'Provinces where the artist performs',
+
+    // ----------------------------------------------------
+    //                 EditPerformanceHiring.vue
+    // ----------------------------------------------------
+
+    performance_title: 'Performance Hiring', // Se usa también en CreatePerformanceHiring.vue
+    performance_subtitle: 'You can define your own shows indicating its description, duration and price.',  // Se usa también en CreatePerformanceHiring.vue
+    performance_description: 'DESCRIPTION',  // Se usa también en CreatePerformanceHiring.vue
+    performance_duration: 'DURATION',  // Se usa también en CreatePerformanceHiring.vue
+    performance_fixedPrice: 'FIXED PRICE',  // Se usa también en CreatePerformanceHiring.vue
+
+    // ----------------------------------------------------
+    //                 Search.vue
+    // ----------------------------------------------------
+
+    search: 'Search',
+
+    // ----------------------------------------------------
+    //                 Offer.vue
+    // ----------------------------------------------------
+
+    offer_reject: 'REJECT',
+    offer_decline: 'DECLINE',
+    offer_confirm: 'CONFIRM',
+    offer_details: 'DETAILS',
+    offer_cancel: 'CANCEL',
+
+
+
+
+
+    
 }
