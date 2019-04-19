@@ -3,10 +3,10 @@
     <h1 class="titleView">{{listTitle}}</h1>
     <div class="row">
       <div v-for="user in users" :key="user.userURI" class="tarjeta col-12 col-md-6 col-xl-4">
-        <UserCard :userImage="user.userImage" :userName="user.userName" :userId="user.userID" :userIsActive="user.userIsActive"/>
+        <UserCard :userImage="user.userImage" :userName="user.userName" :userId="user.userId" :userIsActive="user.userIsActive"/>
       </div>
       <div v-if="users.length == 0" class="error">
-        <h1 class="oops">Nothing to show ☹</h1>
+        <h1 class="oops">{{gtrans.translate('oops')}} ☹</h1>
       </div>
     </div>
   </div>
@@ -15,9 +15,18 @@
 <script>
 import UserCard from '@/components/UserCard.vue';
 import GAxios from '@/utils/GAxios.js';
+import GSecurity from "@/security/GSecurity.js"
+import GTrans from "@/utils/GTrans.js"
 
 export default {
   name: 'UserList',
+
+  data: function(){
+    return{
+      gsecurity: GSecurity,
+      gtrans: undefined,
+    }
+  },
 
   components: {
     UserCard,
@@ -35,6 +44,17 @@ export default {
     }
 
   },
+
+  created: function(){
+    this.gsecurity = GSecurity;
+    this.gsecurity.obtainSavedCredentials();
+
+    this.gtrans = new GTrans(this.gsecurity.getLanguage());
+    
+    // Podemos cambiar el lenguaje así para debug...
+    //this.gtrans.setLanguage('es')
+    //this.gtrans.setLanguage('en')
+  }
 }
 
 </script>

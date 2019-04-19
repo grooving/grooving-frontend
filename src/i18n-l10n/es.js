@@ -104,7 +104,7 @@ export default{
     //                  ImageCarousel.vue
     // ----------------------------------------------------
 
-    image_alt : "Imagen",
+    image_alt : "Imagen", // Se usa también en UserCard.vue
 
     // ----------------------------------------------------
     //                     LeftMenu.vue
@@ -138,5 +138,24 @@ export default{
 
     info_subtitle : "Información básica sobre el cliente",
     customer_zone : "ZONA",
+
+    // ----------------------------------------------------
+    //                   UserCard.vue
+    // ----------------------------------------------------
+
+    ban : "BANEAR",
+    unban : "DESBANEAR",
+
+    // ----------------------------------------------------
+    //                   UserList.vue
+    // ----------------------------------------------------
+
+    oops : "Nada que mostrar",
+
+    // ----------------------------------------------------
+    //                   UsersList.vue
+    // ----------------------------------------------------
+
+    usersList : "Todos los Usuarios",
 
 }

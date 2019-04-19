@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <div class="container mt-5">
-            <UserList :listTitle="'All Users'" :users="datos" />
+            <UserList :listTitle="this.gtrans.translate('usersList')" :users="datos" />
         </div>
     </div>
 </template>
@@ -11,6 +11,8 @@
 import UserList from '@/components/UserList.vue';
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
+import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js"
 
 export default {
     name: 'UsersList',
@@ -22,6 +24,8 @@ export default {
     data: function(){
         return{
             datos: Array(),
+            gsecurity: GSecurity,
+            gtrans: undefined,
         }
     },
 
@@ -29,7 +33,11 @@ export default {
         getUsers: function(){
             NProgress.start();
 
-            GAxios.get(endpoints.users, {
+            console.log(this.gsecurity.getRole());
+            var GAxiosToken = this.gsecurity.getToken();
+            var authorizedGAxios = GAxios;
+            authorizedGAxios.defaults.headers.common['Authorization'] = 'Token '+ GAxiosToken;
+            authorizedGAxios.get(endpoints.users, {
             }).then(response => {
                 console.log(response);
 
@@ -49,6 +57,18 @@ export default {
                 NProgress.done()
             });
         }
+    },
+
+    created() {
+        // Retreive store credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+    
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
     },
 
     beforeMount(){

@@ -1,15 +1,15 @@
 <template>
     <div>
         <div class="card tarjeta">
-            <img v-if="!userImage" src="@/assets/defaultPhoto.png" class="card-img-top artistImage" alt="User's Image">
-            <img v-else class="card-img-top artistImage" :src="userImage" alt="User's Image">
+            <img v-if="!userImage" src="@/assets/defaultPhoto.png" class="card-img-top artistImage" v-bind:alt="this.gtrans.translate('image')">
+            <img v-else class="card-img-top artistImage" :src="userImage" v-bind:alt="this.gtrans.translate('image')">
             <div class="card-body cuerpoTarjeta">
                 <div class="leftContent" style="width:100%">
                     <h5 class="card-title artistName">{{ userName }}</h5>
                 </div>
                 <div class="rightContent">
-                    <button v-if="userIsActive == true" class="btn btn-primary hireButton" @click="banUser"><span class="hireText">BAN</span></button>
-                    <button v-if="userIsActive == false" class="btn btn-primary hireButton"><span class="hireText">UNBAN</span></button>
+                    <button v-if="userIsActive == true" class="btn btn-primary banButton" @click="banUser"><span class="hireText">{{gtrans.translate('ban')}}</span></button>
+                    <button v-if="userIsActive == false" class="btn btn-primary unbanButton" @click="banUser"><span class="hireText">{{gtrans.translate('unban')}}</span></button>
                 </div>
             </div>
         </div>
@@ -20,6 +20,7 @@
 import GSecurity from '@/security/GSecurity.js';
 import endpoints from '@/utils/endpoints.js';
 import GAxios from '@/utils/GAxios.js';
+import GTrans from "@/utils/GTrans.js"
 
 export default {
     name: "UserCard",
@@ -27,6 +28,7 @@ export default {
     data: function(){
         return{
             gsecurity: GSecurity,
+            gtrans: undefined,
         }
     },
 
@@ -59,11 +61,11 @@ export default {
                 }).then(response => {
                     console.log(response);
                     this.$router.push({name: "usersList"});
+                    window.location.reload();
                 }).catch(ex => {
                     console.log(ex);
                     console.log(ex.response.data.error);
                     this.errors = ex.response.data.error;
-                    document.getElementById("errorsDiv").style.display = "block";
                     window.scrollTo(0,0);
                 }).then( () => {
                     NProgress.done();
@@ -71,10 +73,15 @@ export default {
         }
     },
 
-    created() {
-        // Retreive store credentials
+    created: function(){
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
     },
 }
 </script>
@@ -108,7 +115,7 @@ export default {
         align-items: center; 
     }
 
-    .hireButton {
+    .unbanButton {
         font-size: 24px;
         font-weight:bold;
         
@@ -118,9 +125,24 @@ export default {
         background-image: linear-gradient(to right, #00fb82, #187fe6);
     }
 
-    .hireButton:hover{
+    .banButton {        
+        font-size: 24px;
+        font-weight:bold;
+        
+        border: none;
+        border-radius: 30px;
+
+        background-image: linear-gradient(to right, #FB8600, #FF0000);
+    }
+
+    .unbanButton:hover{
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.7) !important;
         background-image: linear-gradient(to right, #14ca9f, #1648d0) !important;
+    }
+
+    .banButton:hover {
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.7) !important;
+        background-image: linear-gradient(to right, #ED7F00, #A20101) !important;
     }
 
     .hireText {
