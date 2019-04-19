@@ -41,7 +41,7 @@
 
             login: async function() {
 
-                var log_result = await this.gsecurity.authenticate(this.input.username, this.input.password)
+                var log_result = await this.gsecurity.sudoAuthenticate(this.input.username, this.input.password)
 
                 if (log_result) {
                     this.$router.push({ path: "/" });
