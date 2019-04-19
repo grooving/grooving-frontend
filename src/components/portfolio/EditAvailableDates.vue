@@ -5,7 +5,7 @@
             <div class="col-sm-12 col-md-8 horizontal-center">
                 <div id="titleAndAdd" class="row">
                     <div id="titleContainer" class="col-8 vertical-center">
-                        <h3 class="title"><strong>Available Dates</strong></h3>
+                        <h3 class="title"><strong>{{gtrans.translate('availableDates')}}</strong></h3>
                     </div>
                     <div id="buttonContainer" class="col-4 vertical-center buttonContainer">
                         <button type="button" class="vertical-center addButton" @click="toggleImageURLInput">
@@ -20,12 +20,12 @@
                 </div>
                 <div id="urlForm" class="row py-2" v-if="toggleAddURL == false">
                     <div class="col-12 vertical-center">
-                        <input id="deleteDate" @keypress.enter="addRejectedDate()" type="text" v-model="deleteDate" class="form-control" placeholder="New rejected date: YYYY-MM-DD" />
+                        <input id="deleteDate" @keypress.enter="addRejectedDate()" type="text" v-model="deleteDate" class="form-control" v-bind:placeholder="this.gtrans.translate('deleteDate')" />
                     </div>
                 </div>
                 <div id="urlForm" class="row py-2" v-if="toggleDeleteURL == false">
                     <div class="col-12 vertical-center">
-                        <input id="addDate" @keypress.enter="addNewDate()" type="text" v-model="addDate" class="form-control" placeholder="New available date: YYYY-MM-DD" />
+                        <input id="addDate" @keypress.enter="addNewDate()" type="text" v-model="addDate" class="form-control" v-bind:placeholder="this.gtrans.translate('addDate')" />
                     </div>
                 </div>
             </div>
@@ -35,7 +35,10 @@
         <div class="owl-wrapper horizontal-center">
             <div class="row contentCalendar">
                 <div class="col-sm-12 col-md-8 horizontal-center">
-                    <div><vuejs-datepicker :key="actualizador" :value="model.date" v-model="model.date" :disabledDates="disabledDates"  :full-month-name="true" :inline="true"></vuejs-datepicker></div>
+                    <div>
+                        <vuejs-datepicker v-if="this.gtrans.getLanguage() == 'es'" :key="actualizador" :value="model.date" v-model="model.date" :disabledDates="disabledDates" :monday-first="true"  :full-month-name="true" :inline="true" :language="es"></vuejs-datepicker>
+                        <vuejs-datepicker v-if="this.gtrans.getLanguage() == 'en'" :key="actualizador" :value="model.date" v-model="model.date" :disabledDates="disabledDates" :full-month-name="true" :inline="true"></vuejs-datepicker>
+                    </div>
                 </div>
             </div>
         </div>
@@ -46,6 +49,9 @@
 
 <script>
 import { error } from 'util';
+import GSecurity from "@/security/GSecurity.js"
+import GTrans from "@/utils/GTrans.js"
+import { es } from 'vuejs-datepicker/dist/locale'
 
 var today = new Date();
 var yesterday = new Date();
@@ -69,6 +75,9 @@ export default {
             actualizador: 0,
             addDate: "",
             deleteDate: "",
+            gsecurity: GSecurity,
+            gtrans: undefined,
+            es: es,
         }
     },
 
@@ -104,7 +113,7 @@ export default {
                 var dateCreationOk = new Date(this.deleteDate);
                 
                 if(!dateOk || dateCreationOk == 'Invalid Date'){
-                    alert("Invalid date!")
+                    alert(this.gtrans.translate('date_invalid'))
                 }
                 else{
                     
@@ -142,7 +151,7 @@ export default {
                 var dateOk = regex.test(this.addDate);
                 var dateCreationOk = new Date(this.addDate);
                 if(!dateOk || dateCreationOk == 'Invalid Date'){
-                    alert("Invalid date!")
+                    alert(this.gtrans.translate('date_invalid'))
                 }
                 else{
                     //alert(this.addDate);
@@ -199,6 +208,15 @@ export default {
     },
 
     created: function() {
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es');
+        //this.gtrans.setLanguage('en')
+
         var res = Array();
 
         for (var i = 0; i < this.$props.availableDates.length; i++) { 
@@ -211,7 +229,7 @@ export default {
             to: yesterday,
             dates: this.stringToDates,
         }
-    },        
+    },  
 }
 </script>
 

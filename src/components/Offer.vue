@@ -72,7 +72,7 @@
                             </div>
                             
                     </div>
-                    <div v-if="reason !== '' && reason != null && (offerStatus == 'WITHDRAWN' || offerStatus == 'REJECTED' || offerStatus == 'CANCELLED_ARTIST')" class="cardTextId">
+                    <div v-if="reason !== '' && reason != null && (offerStatus == 'WITHDRAWN' || offerStatus == 'REJECTED' || offerStatus == 'CANCELLED_ARTIST' || offerStatus == 'CANCELLED_CUSTOMER')" class="cardTextId">
                        <p><span style="font-weight: bold;">&nbsp;Reason: </span> {{reason}}</p>
                     </div>
                 </div>
@@ -98,11 +98,10 @@
                     <div v-if="offerStatus === 'PENDING' && gsecurity.hasRole('ARTIST')" class="right-div right-text2">
                         <router-link v-bind:to="confirmURI" class="btn btn-primary confirmButton"><span class="continueText">DETAILS</span></router-link></div>
                 </div>
-                <!--
                 <div v-if="offerStatus === 'CONTRACT_MADE'" class="row container" v-bind:id="buttonsId()">
                     <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="disableOfferButtons()" class="btnn btn-primary rejectButton" 
                         data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">DECLINE</span></a></div>
-                </div> -->
+                </div>
             </div>
         </div>
     </div>

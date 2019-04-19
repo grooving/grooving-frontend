@@ -39,7 +39,16 @@ import StartingDate from './views/StartingDate.vue'
 import PerformanceSelector from './views/PerformanceSelector.vue'
 import TermsView from './views/TermsView.vue'
 import AboutView from './views/AboutView.vue'
+<<<<<<< HEAD
 import UsersList from './views/UsersList.vue'
+=======
+import AdminLogin from './views/AdminLogin.vue'
+import BreachNotification from './views/BreachNotification.vue'
+
+//BORRAR
+import Borrar from './views/About.vue'
+
+>>>>>>> D04S1
 
 Vue.use(Router)
 
@@ -253,5 +262,22 @@ export default new Router({
       name: 'usersList',
       component: UsersList,
     },
+
+    //BORRAR
+    {
+      path: '/pruebaGTrans',
+      component: Borrar,
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: AdminLogin
+    },
+    {
+      path: '/breachNotification',
+      name: 'breachNotification',
+      component: BreachNotification
+    }
+    
   ]
 })

@@ -7,12 +7,12 @@
     <form v-on:submit="receivePayment()">
         <div class="form-row">
             <div class="form-group col-12">
-                <p class="title">Type the code:</p>
+                <p class="title">{{gtrans.translate('inputCode')}}:</p>
                 <input id="inputCode" type="text" class="form-control" required>
             </div>  
         </div>
         <div class="continueButtonDiv"><button v-bind:to="continueURI"
-            class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></button></div>
+            class="btn btn-primary continueButton"><span class="continueText">{{gtrans.translate('send')}}</span></button></div>
 
     </form>
     </div>
@@ -24,6 +24,7 @@
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js"
 
 export default {
     name: "paymentCode",
@@ -32,6 +33,7 @@ export default {
     		gsecurity: GSecurity,
             gaxios: GAxios,
             errors: '',
+            gtrans: undefined,
     	}
     },
     props: {
@@ -82,6 +84,17 @@ export default {
                     NProgress.done()
                 });
     	}
+    },
+
+    created: function(){
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
     }
 }
 </script>

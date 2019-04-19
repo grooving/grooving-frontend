@@ -21,8 +21,9 @@
                     <div id="cvv" class="form-control test"></div>
                 </div>
             </div>
-            <div class="btn btn-primary continueButton" @click="payWithCreditCard"><span class="continueText">SEND OFFER</span></div>
+            <div id="sendButton" class="btn btn-primary continueButton" @click="payWithCreditCard"><span class="continueText">{{gtrans.translate('sendOffer')}}</span></div>
 
+            <div id="paypalButton" ></div>
         </form>
     </div>
     </div>
@@ -32,6 +33,8 @@ import braintree from 'braintree-web';
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
+import {mapGetters} from 'vuex';
+import GTrans from "@/utils/GTrans.js"
 
 
 export default {
@@ -39,9 +42,12 @@ export default {
     data (){
         return {
             gsecurity: GSecurity,
+            hostedFieldInstance: false,
             name: undefined,
             auth_key: undefined,
             errors: "",
+            amount: 10,
+            gtrans: undefined,
         }
     },
     methods: {
@@ -64,7 +70,7 @@ export default {
                     fields: {
                         number: {
                             selector: '#number',
-                            placeholder: 'Enter a 16 digits Credit Card',
+                            placeholder: this.gtrans.translate('creditcard_placeholder'),
                             maxCardLength: 16,
                         },
                         cvv: {
@@ -83,10 +89,53 @@ export default {
                         }
                     }
                 }
-                return braintree.hostedFields.create(options)
+                return Promise.all([
+                    braintree.hostedFields.create(options),
+                    braintree.paypalCheckout.create({ client: clientInstance })
+                    ])
                 })
-                .then(hostedFieldInstance => {
+                .then(instances => {
+
+                    const hostedFieldInstance = instances[0];
+                    const paypalCheckoutInstance = instances[1];
+
                     this.hostedFieldInstance = hostedFieldInstance;
+
+                    // Setup PayPal Button
+                    return paypal.Button.render({
+                        env: 'sandbox',
+                        style: {
+                            label: 'paypal',
+                            size: 'responsive',
+                            shape: 'rect'
+                        },
+                        payment: () => {
+                            return paypalCheckoutInstance.createPayment({
+                                    flow: 'checkout',
+                                    intent: 'sale',
+                                    amount: this.amount,
+                                    displayName: 'Braintree Testing',
+                                    currency: 'EUR'
+                            })
+                        },
+                        onAuthorize: (data, options) => {
+                            return paypalCheckoutInstance.tokenizePayment(options).then(payload => {
+                                console.log(payload);
+                                this.errors = "";
+                                this.nonce = payload.nonce;
+                            })
+                        },
+                        onCancel: (data) => {
+                            console.log(data);
+                            console.log("Payment Cancelled");
+                        },
+                        onError: (err) => {
+                            console.error(err);
+                            this.errors = this.gtrans.translate('paypal_error');
+                            document.getElementById("errorsDiv").style.display = "block";
+                        }
+                    }, '#paypalButton')
+
                 })
                 .catch(err => {
                     console.log(err)
@@ -98,6 +147,7 @@ export default {
         payWithCreditCard() {
             if(this.hostedFieldInstance)
             {
+                document.getElementById("sendButton").style.display = "none";
                 NProgress.start();
                 this.hostedFieldInstance.tokenize().then(payload => {
                     this.$emit('finishPayment', payload.nonce)
@@ -107,14 +157,15 @@ export default {
                     console.error(err);
                     this.errors = err.message;
                     document.getElementById("errorsDiv").style.display = "block";
+                    document.getElementById("sendButton").style.display = "block";
                     window.scrollTo(0,0);
-                }).then(() => {
                     NProgress.done();
                 });
             }
         }
     }, 
     beforeMount() {
+        this.amount = this.$store.getters.offer.totalPrice;
         var authorizedGAxios = GAxios;
         var GAxiosToken = this.gsecurity.getToken();
         authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
@@ -127,6 +178,16 @@ export default {
         }).then(() => this.obtainInstance());        
     },
 
+    created: function(){
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
+    }
 }
 </script>
 

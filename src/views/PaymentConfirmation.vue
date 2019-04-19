@@ -71,8 +71,6 @@
             ...mapActions(['setPaymentConfirmation']),
         },
         beforeMount() {
-            console.log("holita");
-
             var paymentConfirmation = this.$store.getters.paymentConfirmation;
             if(!paymentConfirmation || !paymentConfirmation.userName){
                 this.$router.push("/error")

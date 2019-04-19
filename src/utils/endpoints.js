@@ -4,6 +4,7 @@ export default{
     artistCalendar: '/artist/calendar/',
     eventlocation: '/eventlocation/',
     login: '/api/login/',
+    adminLogin: '/api/admin/login/',
     offer: '/offer/',
     artistOffers: '/artist/offers/',
     customerOffers: '/customer/offers/',

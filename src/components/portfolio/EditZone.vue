@@ -9,12 +9,14 @@
         
         <template v-if="select">
             <b-form>
-                <b-form-select :select-size="1" v-model="newZone" class="hi dropdown">
-                <template slot="first">
-                    <option disabled>-- Please select an option --</option>
-                    <option v-for="zone in zones" v-bind:key="zone.id" :value="zone">{{zone.name}}</option>
-                </template>
+              <b-form-select v-model="newZone" style="width:90%; margin:0 auto;" >
+                  <option :value="undefined">---------</option>
+                  <option v-for="opt in tree" :key="opt.id" :value="opt">
+                      <span v-for="times in opt.depth" :key="times">&nbsp;&nbsp;</span>
+                      <span>{{opt.name}}</span>
+                  </option>
               </b-form-select>
+
               <b-button class="btt" type="button" variant="primary" v-model="newZone" @click="addZone()">Submit</b-button>
             </b-form>
         </template>
@@ -43,41 +45,57 @@ export default {
     return {
         select:  false,
         add: true,
-        zones:[ 
-        {
-          id: 1,
-          name: 'Sevilla',
-        },
-        {
-          id: 2,
-          name: 'Andalucía',
-        },
-        {
-          id: 3,
-          name: 'Valencia'
-        },
-        {
-          id: 4,
-          name: 'Málaga',
-        },],
+        zones:undefined,
         selectedZones: undefined,
         newZone: null,
+        tree: Array(),
 	  }
   },
   
   beforeUpdate() {
+
     this.zones = this.$store.getters.zones.allZones;
     this.selectedZones = this.$store.getters.zones.currentZones;
     console.log('Todas las zonas' , this.zones)
     console.log('Zonas del artista' , this.selectedZones)
 
-    for (let i = 0; i < this.zones.length; i++) {
-      for(let x = 0; x < this.selectedZones.length; x++) {
-        if(this.zones[i].name == this.selectedZones[x].name) {
-            this.zones.splice(i,1);                    
+    this.tree = Array();
+
+    var pais = this.zones;
+    if(this.selectedZones.length == 0 || this.selectedZones[0].name != pais.name) {
+      this.tree.push({id:pais['id'], name: pais['name'], children:pais['children'], depth: 0});
+
+      if (this.zones.children != null) {
+        var comunidades = this.zones.children;
+
+        caloop:
+        for (let a = 0; a < comunidades.length; a++) {
+          var comunidad = comunidades[a];
+            for(let t = 0; t < this.selectedZones.length; t++) {
+              if(this.selectedZones[t].name == comunidad.name) {
+                continue caloop;
+              }
+            }
+          this.tree.push({id:comunidad['id'], name: comunidad['name'], children:comunidad['children'], depth: 1});
+
+          if(comunidades[a].children != null) {
+            var provincias = comunidades[a].children;
+
+            provloop:
+            for(let u = 0; u < provincias.length; u++) {
+              var provincia = provincias[u];
+              for(let p = 0; p < this.selectedZones.length; p++) {
+                if(this.selectedZones[p].name == provincia.name) {
+                  continue provloop;
+                }
+              }
+              this.tree.push({id:provincia['id'], name: provincia['name'], children:provincia['children'], depth: 2});
+            }
+          }
         }
       }
     }
+    console.log(this.tree)
     
   },
   beforeMount() {
@@ -86,7 +104,6 @@ export default {
   methods: {
     ...mapActions(['setNewZones']),
     deleteZone(index) {
-        this.zones.push(this.selectedZones[index]);
         this.selectedZones.splice(index,1);
         this.setNewZones(this.selectedZones);
     },
@@ -95,11 +112,28 @@ export default {
         if(!this.selectedZones.includes(this.newZone)) {
             this.selectedZones.push(this.newZone);
         }
-        
-        for (let i = 0; i < this.zones.length; i++) {
-            if (this.zones[i].name == this.newZone.name) {
-                this.zones.splice(i,1);
-            }              
+
+        if(this.newZone.children != null) {
+          var ch1 = this.newZone.children;
+          for(let i = 0; i < ch1.length; i++) {
+            for(let y = 0; y < this.selectedZones.length; y++) {
+              if(ch1[i].name == this.selectedZones[y].name) {
+                this.selectedZones.splice(y,1);
+                break;
+              }
+            }
+            if(ch1[i].children != null) {
+              var ch2 = ch1[i].children;
+              for(let x = 0; x < ch2.length; x++) {
+                for(let z = 0; z < this.selectedZones.length; z++) {
+                  if(ch2[x].name == this.selectedZones[z].name) {
+                    this.selectedZones.splice(z,1);
+                    break;
+                  }
+                }
+              }
+            }
+          }
         }
 
         this.select = false;   
@@ -110,7 +144,6 @@ export default {
         }
 
     },
-
     displaySelect() {
       this.select = true;
       this.add = false;

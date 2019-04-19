@@ -9,13 +9,20 @@
 
         <template v-if="select">
             <b-form>
-                <b-form-select :select-size="1" v-model="newGenre" class="hi dropdown">
+              <b-form-select v-model="newGenre" style="width:90%; margin:0 auto;" >
+                  <option :value="undefined">---------</option>
+                  <option v-for="opt in tree" :key="opt.id" :value="opt">
+                      <span v-for="times in opt.depth" :key="times">&nbsp;&nbsp;</span>
+                      <span>{{opt.name}}</span>
+                  </option>
+              </b-form-select>
+                <!-- <b-form-select :select-size="1" v-model="newGenre" class="hi dropdown">
                 <template slot="first">
                     <option disabled>-- Please select an option --</option>
                     <option v-for="genre in genres" v-bind:key="genre.id" :value="genre">{{genre.name}}</option>
                 </template>
                 
-                </b-form-select>
+                </b-form-select> -->
                 <b-button class="btt" type="button" variant="primary" 
                     v-model="newGenre" @click="addGenre()">Submit</b-button>
             </b-form>
@@ -45,69 +52,56 @@ export default {
     return {
         select:  false,
         add: true,
-        genres:[ 
-        {
-          id: 1,
-          name: 'Art Punk',
-        },
-        {
-          id: 2,
-          name: 'Crust Punk',
-        },
-        {
-          id: 3,
-          name: 'College Rock'
-        },
-        {
-          id: 4,
-          name: 'Britpunk',
-        },
-        {
-          id: 5,
-          name: 'Alternative Rock',
-        },
-        {
-          id: 6,
-          name: 'Jazz'
-        },
-        {
-          id: 7,
-          name: 'Punk',
-        },
-        {
-          id: 10,
-          name: 'Rock',
-        },
-        {
-          id:11,
-          name: 'Pop'
-        },
-        {
-          id: 12,
-          name: 'Alternative',
-        },
-        {
-          id: 8,
-          name: 'Crust',
-        },
-        {
-          id: 9,
-          name: "Opera"
-        }],
+        genres: undefined,
         selectedGenres: undefined,
         newGenre: null,
+        tree: Array(),
 	  }
   },
   
   beforeUpdate() {
     this.genres = this.$store.getters.genres.allGenres;
     this.selectedGenres = this.$store.getters.genres.currentGenres;
-    for (let i = 0; i < this.genres.length; i++) {
-        for(let x = 0; x < this.selectedGenres.length; x++)
-          if(this.genres[i].name == this.selectedGenres[x].name) {
-              this.genres.splice(i,1);                    
+    console.log('Todas las genres' , this.genres)
+    console.log('genres del artista' , this.selectedGenres)
+
+    this.tree = Array();
+
+    var all = this.genres;
+    if(this.selectedGenres.length == 0 || this.selectedGenres[0].name != all.name) {
+      this.tree.push({id:all['id'], name: all['name'], children:all['children'], depth: 0});
+
+      if (this.genres.children != null) {
+        var cat1 = this.genres.children;
+
+        cat1loop:
+        for (let a = 0; a < cat1.length; a++) {
+          var c1 = cat1[a];
+            for(let t = 0; t < this.selectedGenres.length; t++) {
+              if(this.selectedGenres[t].name == c1.name) {
+                continue cat1loop;
+              }
+            }
+          this.tree.push({id:c1['id'], name: c1['name'], children:c1['children'], depth: 1});
+
+          if(cat1[a].children != null) {
+            var cat2 = cat1[a].children;
+
+            cat2loop:
+            for(let u = 0; u < cat2.length; u++) {
+              var c2 = cat2[u];
+              for(let p = 0; p < this.selectedGenres.length; p++) {
+                if(this.selectedGenres[p].name == c2.name) {
+                  continue cat2loop;
+                }
+              }
+              this.tree.push({id:c2['id'], name: c2['name'], children:c2['children'], depth: 2});
+            }
           }
+        }
+      }
     }
+    console.log(this.tree)
   },
   beforeMount() {
     this.selectedGenres = this.$store.getters.genres.currentGenres;
@@ -115,7 +109,6 @@ export default {
   methods: {
     ...mapActions(['setNewGenres']),
     deleteGenre(index) {
-        this.genres.push(this.selectedGenres[index]);
         this.selectedGenres.splice(index,1);
         this.setNewGenres(this.selectedGenres);
     },
@@ -125,11 +118,28 @@ export default {
         if(!this.selectedGenres.includes(this.newGenre)) {
             this.selectedGenres.push(this.newGenre);
         }
-        
-        for (let i = 0; i < this.genres.length; i++) {
-            if (this.genres[i].name == this.newGenre.name) {
-                this.genres.splice(i,1);
-            }              
+
+        if(this.newGenre.children != null) {
+          var ch1 = this.newGenre.children;
+          for(let i = 0; i < ch1.length; i++) {
+            for(let y = 0; y < this.selectedGenres.length; y++) {
+              if(ch1[i].name == this.selectedGenres[y].name) {
+                this.selectedGenres.splice(y,1);
+                break;
+              }
+            }
+            if(ch1[i].children != null) {
+              var ch2 = ch1[i].children;
+              for(let x = 0; x < ch2.length; x++) {
+                for(let z = 0; z < this.selectedGenres.length; z++) {
+                  if(ch2[x].name == this.selectedGenres[z].name) {
+                    this.selectedGenres.splice(z,1);
+                    break;
+                  }
+                }
+              }
+            }
+          }
         }
 
         this.select = false;   

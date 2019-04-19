@@ -11,7 +11,8 @@
 
       <EditImageCarousel :photosInfo="d_portfolioImages" :key="updateImagesKey" />
       <EditVideoCarousel :videosInfo="d_portfolioVideos" :key="updateVideosKey" />
-      <EditAvailableDates :availableDates="this.datos[0].availableDates" :key="updateCalendatKey"/>
+
+      <EditAvailableDates :availableDates="availableDates" :key="updateCalendatKey"/>
     </form>
   </div>
 </template>
@@ -33,8 +34,22 @@ import { mapGetters } from 'vuex';
 
 
 export default {
+
   name: 'EditPortfolio',
-  computed: mapGetters(['genres','zones']),
+
+  computed: {
+    
+    availableDates: function(){
+
+      if(this.datos && this.datos[0] && this.datos[0].availableDates)
+        return this.datos[0].availableDates;
+      else
+        return Array();
+
+    }
+
+  },
+
   components: {
     EditSubmenu,
     EditImageCarousel,
@@ -107,23 +122,6 @@ export default {
           this.d_portfolioArtisticName = portfolio.artisticName;
           this.d_portfolioMainPhoto = portfolio.main_photo;
           this.d_portfolioBiography = portfolio.biography;
-
-          // Genres
-          var genres = portfolio.artisticGender;
-          
-          for(var i = 0; i < genres.length; i++){
-            var genre = genres[i];
-            delete genre.parentGender;
-            this.d_portfolioGenres.push(genre);
-          }
-
-          // Zones
-          var zones = portfolio.zones;
-          
-          for(var i = 0; i < zones.length; i++){
-            var zone = zones[i];
-            this.d_portfolioZones.push(zone);
-          }
           
           // Images
           var pImages = portfolio.images;
@@ -144,9 +142,26 @@ export default {
           }
 
           this.updateVideosKey += 1;
+
+          // Genres
+          var genres = portfolio.artisticGender;
+          
+          for(var i = 0; i < genres.length; i++){
+            var genre = genres[i];
+            delete genre.parentGender;
+            this.d_portfolioGenres.push(genre);
+          }
+
+          // Zones
+          var zones = portfolio.zones;
+          
+          for(var i = 0; i < zones.length; i++){
+            var zone = zones[i];
+            this.d_portfolioZones.push(zone);
+          }
   
-      }).catch( () => {
-        this.errors = ex.response.data.error;
+      }).catch( response => {
+        this.errors = response.data.error;
         document.getElementById("errorsDiv").style.display = "block";
         window.scrollTo(0,0);
       });
@@ -158,28 +173,23 @@ export default {
       }).then(response => {
 
         var root = response.data;
-        var tree = Array();
-        
-        for(var i=0; i < root['children'].length; i++){
-          // For each Comunidad Autónoma
-          var ca = root['children'][i];
 
-          for(var j=0; j < ca['children'].length; j++){
-            // For each provincia
-            var provincia = ca['children'][j];
-            tree.push({id:provincia['id'], name: provincia['name']})
-          }
-        }
+        this.setAllZones(root)
+      }).catch( () => {
+        this.errors = ex.response.data.error;
+        document.getElementById("errorsDiv").style.display = "block";
+        window.scrollTo(0,0);
+      });
 
-        this.setAllZones(tree)
-      })
+      GAxios.get(endpoints.genres, {
+      params: {
+        'tree': true
+      }
+      }).then(response => {
 
-      GAxios.get(endpoints.genres)
-      .then(response => {
-          var genres = response.data;
+        var root = response.data;
 
-          this.setAllGenres(genres)
-
+        this.setAllGenres(root)
       }).catch( () => {
         this.errors = ex.response.data.error;
         document.getElementById("errorsDiv").style.display = "block";
@@ -210,16 +220,33 @@ export default {
       var GAxiosToken = this.gsecurity.getToken();
       authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
 
-      var newGenres = this.$store.getters.genres.newGenres;
-      for(var i = 0; i < newGenres.length; i++){
-            var genre = newGenres[i].name;
+      var newG = this.$store.getters.genres.newGenres;
+      var currentG = this.$store.getters.genres.currentGenres;
+      var genresToSave = Array();
+
+      for(let a = 0; a < newG.length; a++) {
+        genresToSave.push(newG[a]);
+      }
+      for(let a = 0; a < currentG.length; a++) {
+        genresToSave.push(currentG[a]);
+      }
+      for(var i = 0; i < genresToSave.length; i++){
+            var genre = genresToSave[i].name;
             this.namesOfNewGenres.push(genre);
       }
 
-      var newZones = this.$store.getters.zones.newZones;
-      console.log(newZones)
-      for(var i = 0; i < newZones.length; i++){
-            var zone = newZones[i].name;
+      var newZ = this.$store.getters.zones.newZones;
+      var currentZ = this.$store.getters.zones.currentZones;
+      var zonesToSave = Array();
+
+      for(let a = 0; a < newZ.length; a++) {
+        zonesToSave.push(newZ[a]);
+      }
+      for(let a = 0; a < currentZ.length; a++) {
+        zonesToSave.push(currentZ[a]);
+      }
+      for(var i = 0; i < zonesToSave.length; i++){
+            var zone = zonesToSave[i].name;
             this.namesOfNewZones.push(zone);
       }
 
