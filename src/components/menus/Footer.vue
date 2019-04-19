@@ -3,9 +3,9 @@
         <footer class="bg-light">
             <div class="info">
                 
-                <span class="link" @click="goTo(aboutUsURI)">About Us | </span>
-                <span class="link" @click="goTo(termsURI)">Terms of Use | </span>
-                <span class="link">Contact Us: grupogrooving@gmail.com </span>
+                <span class="link" @click="goTo(aboutUsURI)">{{gtrans.translate('aboutUs')}} | </span>
+                <span class="link" @click="goTo(termsURI)">{{gtrans.translate('termsAndConditions')}} | </span>
+                <span class="link">{{gtrans.translate('contactUs')}}: grupogrooving@gmail.com </span>
             </div>
 
             <div style="float:clear;">Copyright © 2019:
@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
 import {mapActions} from 'vuex';
 
 export default {
@@ -24,6 +26,8 @@ export default {
         return {
             url: undefined,
             refresher: undefined,
+            gsecurity: GSecurity,
+            gtrans: undefined,
         }
     },
     props: {
@@ -59,6 +63,17 @@ export default {
                 this.$emit('samePage');
             }
         },
+    },
+    created() {
+        // Retreive stored credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+            
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
     },
 }
 </script>

@@ -84,7 +84,7 @@ export default{
     // ----------------------------------------------------
 
     description_placeholder : "Añade aquí una descripción con información relevante sobre el evento.",
-    continueButton : "CONTINUAR",
+    continueButton : "CONTINUAR", // Se usa también en StartingDatePicker.vue y Performances.vue
 
     // ----------------------------------------------------
     //                  ExtendedOffer.vue
@@ -114,8 +114,8 @@ export default{
     topArtists : "Artistas Top",
     myOffers : "Mis Ofertas",
     checkIn : "Facturación",
-    termsAndConditions : "Términos y Condiciones",
-    aboutUs : "Quiénes Somos",
+    termsAndConditions : "Términos y Condiciones", // Se usa también en Footer.vue
+    aboutUs : "Quiénes Somos", // Se usa también en Footer.vue
 
     // ----------------------------------------------------
     //                 PaymentCode.vue
@@ -139,4 +139,54 @@ export default{
     info_subtitle : "Información básica sobre el cliente",
     customer_zone : "ZONA",
 
+    // ----------------------------------------------------
+    //                 TabbedSubMenu.vue
+    // ----------------------------------------------------
+
+    pending : "Pendientes",
+    accepted : "Aceptadas",
+    rejected : "Rechazadas",
+
+    // ----------------------------------------------------
+    //                 RightMenu.vue
+    // ----------------------------------------------------
+
+    hello : "Hola",
+    myAccount : "Mi Cuenta",
+    myPortfolio : "Mi Portafolio",
+    hiringSettings: "Ajustes de Contratación",
+    logOut: "Cerrar Sesión",
+
+    // ----------------------------------------------------
+    //                 Footer.vue
+    // ----------------------------------------------------
+
+    contactUs : "Contáctanos",
+
+    // ----------------------------------------------------
+    //           makeOffer/ArtistCard.vue
+    // ----------------------------------------------------
+
+    total : "Total",
+
+    // ----------------------------------------------------
+    //                 Performances.vue
+    // ----------------------------------------------------
+
+    price : "Precio",
+    duration : "Duración",
+
+    // ----------------------------------------------------
+    //                 AvailableDates.vue
+    // ----------------------------------------------------
+
+    availableDates : "Fechas Disponibles",
+
+    // ----------------------------------------------------
+    //                 EditVideoCarousel.vue
+    // ----------------------------------------------------
+
+    videoShowcase : "Galería de Videos",
+    insertURL: "Introduzca la URL aquí...",
+    validYTLink : "Debe ser un link de youtube válido.",
 }
