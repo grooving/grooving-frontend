@@ -30,6 +30,7 @@
 </template>
 <script>
 import braintree from 'braintree-web';
+import paypal from 'paypal-checkout';
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
@@ -112,7 +113,7 @@ export default {
                         payment: () => {
                             return paypalCheckoutInstance.createPayment({
                                     flow: 'checkout',
-                                    intent: 'sale',
+                                    intent: 'authorize',
                                     amount: this.amount,
                                     displayName: 'Braintree Testing',
                                     currency: 'EUR'
@@ -123,6 +124,7 @@ export default {
                                 console.log(payload);
                                 this.errors = "";
                                 this.nonce = payload.nonce;
+                                this.$emit('finishPayment', this.nonce)
                             })
                         },
                         onCancel: (data) => {
@@ -208,12 +210,13 @@ export default {
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .3) !important;
     }
 
-    /* .test {
-        border-color: #00fb82 ;
-        font-weight: semibold ;
-        color:black ;
-        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) ;
-    } */
+    .paypalB {
+        margin-top:15px; 
+        width:200px;
+        
+        margin-left: 19%;
+
+    }
 
     input:focus + .test {
         display: block;

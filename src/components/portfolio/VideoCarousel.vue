@@ -22,7 +22,7 @@ import OwlImageCarousel from './OwlImageCarousel.vue';
 
 // YT URI used to obtain the thumbnail
 const ytThumbnail_01 = 'http://i3.ytimg.com/vi/';
-const ytThumbnail_02 = '/maxresdefault.jpg';
+const ytThumbnail_02 = '/hqdefault.jpg';
 
 // Allowed URIs
 const ytURI1 = 'https://www.youtube.com/watch?v=';
