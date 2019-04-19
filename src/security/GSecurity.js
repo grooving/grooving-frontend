@@ -1,5 +1,6 @@
 import endpoints from '../utils/endpoints.js';
 import GAxios from '../utils/GAxios.js'
+import axios from 'axios';
 
 const ROLES = ['ANONYMOUS', 'ARTIST', 'CUSTOMER', 'ADMIN'];
 const AUTH_ROLES = ['ARTIST', 'CUSTOMER', 'ADMIN'];
@@ -16,7 +17,6 @@ class GSecurity {
       this._token = '';
       this._photo = '';
       this._id = -1;
-      this._language = 'en';
       
       if(role && AUTH_ROLES.includes(role.toUpperCase()) && token && id != undefined && id != null && id >= 0){
         this._role = role.toUpperCase();
@@ -25,8 +25,8 @@ class GSecurity {
         this._id = id;
       }
 
-      if(language && SUPPORTED_LANGUAGES.includes(language.toLowerCase()))
-        this._language = 'en';        
+      // Language can be set independently of other parameters
+      this.setLanguage(language);
 
     }
 
@@ -89,13 +89,17 @@ class GSecurity {
     }
 
     setToken(token){
-        if(typeof token === 'string' && token)
+        if(typeof token === 'string' && token){
             this._token = token;
+            axios.defaults.headers.common['Authorization'] = 'Token ' + this._token;
+        }
     }
 
     setLanguage(language){
-        if(language && SUPPORTED_LANGUAGES.includes(language.toLowerCase()))
+        if(language && SUPPORTED_LANGUAGES.includes(language.toLowerCase())){
             this._language = language.toLowerCase();
+            axios.defaults.headers.common['Accept-Language'] = this._language;
+        }
     }
 
     // Other Business Methods
@@ -108,7 +112,6 @@ class GSecurity {
             this.setRole(localStorage.getItem("role"));
             this.setPhoto(localStorage.getItem("photo"));
             this.setId(localStorage.getItem("id"));
-
             this.setLanguage(localStorage.getItem("language"));
         }
     }
@@ -152,8 +155,7 @@ class GSecurity {
                     let photo = isArtist ? response.data.artist.photo : response.data.customer.photo;
                     let userName = isArtist ? response.data.artist.user.username : response.data.customer.user.username;
                     let firstName = isArtist ? response.data.artist.user.first_name : response.data.customer.user.first_name;
-                    let language = 'es';
-                    console.log("AUTO SET DE IDIOMA; CAMBIAR")
+                    let language = isArtist ? response.data.artist.language : response.data.customer.language;
 
                     if(token && id && role && userName && firstName){
                         this.setToken(token);
@@ -199,8 +201,7 @@ class GSecurity {
                         let photo = 'http://thesource.com/wp-content/uploads/2015/11/CharliXCX_022315.jpg';
                         let userName = response.data.admin.user.username;
                         let firstName = response.data.admin.user.first_name;
-                        let language = 'es';
-                        console.log("AUTO SET DE IDIOMA; CAMBIAR")
+                        let language = response.data.admin.language;
 
                         if(token && id && role ){
                             this.setToken(token);

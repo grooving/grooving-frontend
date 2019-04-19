@@ -12,11 +12,11 @@
                     </div>
                     <div  v-bind:id="'collapse'+p.package_id" class="collapse" v-bind:aria-labelledby="'heading'+p.package_id" data-parent="#accordionExample">
                         <div class="bodies">
-                            <div class="bodyParameters"><span style="font-weight:bold">Duration:</span> {{p.performance.hours}} h | <span style="font-weight:bold">Price:</span> {{p.performance.price}} € <br>
+                            <div class="bodyParameters"><span style="font-weight:bold">{{gtrans.translate('duration')}}:</span> {{p.performance.hours}} h | <span style="font-weight:bold">{{gtrans.translate('price')}}:</span> {{p.performance.price}} € <br>
                             </div>
                             <div class="continueButtonDiv">
                                 <div @click="selectPerformance(p.package_id, p.performance.price, p.performance.hours)" class="btn btn-primary continueButton">
-                                    <span class="continueText">CONTINUE</span>
+                                    <span class="continueText">{{gtrans.translate('continueButton')}}</span>
                                 </div>
                             </div>
                         </div>  
@@ -28,11 +28,16 @@
 </template>
 
 <script>
+import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
+
 export default {
     name: "Performances",
     data (){
         return {
-            performanceId: undefined
+            performanceId: undefined,
+            gsecurity: GSecurity,
+            gtrans: undefined,
         }
     },
     props: {
@@ -47,6 +52,16 @@ export default {
             var a = this.$route.params['artistId']
             this.$emit('hiring' ,perfId, perfPrice, perfDuration, a);
         }
+    },
+    created() {
+      this.gsecurity = GSecurity;
+      this.gsecurity.obtainSavedCredentials();
+      this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+      // Podemos cambiar el lenguaje así para debug...
+      //this.gtrans.setLanguage('es')
+      //this.gtrans.setLanguage('en')
+
     }
 }
 </script>

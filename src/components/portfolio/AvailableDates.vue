@@ -4,7 +4,7 @@
       <div class="owl-wrapper horizontal-center">
           <div class="row" style="padding-bottom: 15px">
             <div class="col-sm-12 col-md-8 horizontal-center">
-              <h3 class="titleCalendar" style="text-align: left;"><strong>Available Dates</strong></h3>
+              <h3 class="titleCalendar" style="text-align: left;"><strong>{{gtrans.translate('availableDates')}}</strong></h3>
             </div>
           </div>
           <div class="row contentCalendar">
@@ -18,15 +18,13 @@
 
 <script>
 
-
-
 var yesterday = new Date();
 yesterday.setDate(yesterday.getDate()-1);
 
 var rejectedDates = [];
 
-
-
+import GSecurity from "@/security/GSecurity.js";
+import GTrans from "@/utils/GTrans.js";
 
 export default {
     name: "Calendar",
@@ -41,7 +39,9 @@ export default {
             disabledDates: {
                 to: yesterday,
                 dates: rejectedDates
-            }
+            },
+            gsecurity: GSecurity,
+            gtrans: undefined,
         }
     },
 
@@ -52,7 +52,17 @@ export default {
 
             rejectedDates.push(fecha2);
         }
-  }
+    },
+    created() {
+      this.gsecurity = GSecurity;
+      this.gsecurity.obtainSavedCredentials();
+      this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+      // Podemos cambiar el lenguaje así para debug...
+      //this.gtrans.setLanguage('es')
+      //this.gtrans.setLanguage('en')
+
+    }
 }
 </script>
 
