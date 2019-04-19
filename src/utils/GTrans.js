@@ -7,8 +7,8 @@ class GTrans {
 
     constructor(language = 'en'){
 
-        if(language && SUPPORTED_LANGUAGES.includes(language))
-            this._language = language;
+        if(language && SUPPORTED_LANGUAGES.includes(language.toLowerCase()))
+            this._language = language.toLowerCase();
     }
 
     // Getters
@@ -18,8 +18,8 @@ class GTrans {
 
     // Setters
     setLanguage(language){
-        if(language && SUPPORTED_LANGUAGES.includes(language))
-            this._language = language;
+        if(language && SUPPORTED_LANGUAGES.includes(language.toLowerCase()))
+            this._language = language.toLowerCase();
     }
 
     // Other Methods

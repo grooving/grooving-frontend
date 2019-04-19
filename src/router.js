@@ -39,6 +39,8 @@ import StartingDate from './views/StartingDate.vue'
 import PerformanceSelector from './views/PerformanceSelector.vue'
 import TermsView from './views/TermsView.vue'
 import AboutView from './views/AboutView.vue'
+import AdminLogin from './views/AdminLogin.vue'
+import BreachNotification from './views/BreachNotification.vue'
 
 //BORRAR
 import Borrar from './views/About.vue'
@@ -256,6 +258,16 @@ export default new Router({
     {
       path: '/pruebaGTrans',
       component: Borrar,
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: AdminLogin
+    },
+    {
+      path: '/breachNotification',
+      name: 'breachNotification',
+      component: BreachNotification
     }
     
   ]
