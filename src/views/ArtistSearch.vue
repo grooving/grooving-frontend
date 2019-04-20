@@ -216,11 +216,6 @@ export default {
     this.tristate_filters[0]['text'] = this.gtrans.translate('filter_score');
     this.selector_filters[0]['text'] = this.gtrans.translate('filter_zones');
 
-
-    this.menu_links[2]['text'] = this.gtrans.translate('header_checkIn');
-
-    // Update data that depends on GSecurity
-    this.refreshGSecurityData();
   },
 }
 

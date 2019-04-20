@@ -281,6 +281,17 @@ export default{
     filter_zones: 'Zonas',
     filter_filterBy: 'Filtrar por',
 
+    // --------------------------------------------------------------------------------
+    //                 CreditCardPayment.vue
+    // --------------------------------------------------------------------------------
+
+    creditCard_number: 'Número',
+    creditCard_name: 'Nombre',
+    creditCard_month: 'Mes',
+    creditCard_year: 'Año',
+    creditCard_CVV: 'CVV',
+    creditCard_submit: 'ENVIAR',
+
 
 
 

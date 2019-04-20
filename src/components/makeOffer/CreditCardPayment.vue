@@ -3,7 +3,7 @@
     <form>
         <div class="form-row">
             <div class="form-group col-8">
-                <input v-model="number" maxlength="16" type="text" class="form-control" placeholder="Card number" required>
+                <input v-model="number" maxlength="16" type="text" class="form-control" v-bind:placeholder="gtrans.translate('creditCard_number')" required>
             </div>
             <div class="form-group col-4">
                 <select id="inputState" class="form-control">
@@ -16,29 +16,31 @@
         </div>
         <div class="form-row">
             <div class="form-group col-12">
-                <input v-model="name" type="text" class="form-control" placeholder="Name" required>
+                <input v-model="name" type="text" class="form-control" v-bind:placeholder="gtrans.translate('creditCard_name')" required>
             </div>
             
         </div>
 
         <div class="form-row">
             <div class="form-group col entrada">
-                <input v-model="month" min="1" max="12" maxlength="2" type="number" class="form-control" placeholder="Month" required>
+                <input v-model="month" min="1" max="12" maxlength="2" type="number" class="form-control" v-bind:placeholder="gtrans.translate('creditCard_month')" required>
             </div>
             <div class="form-group col entrada">
-                <input v-model="year" min="19" maxlength="2" type="number" class="form-control" placeholder="Year" required>
+                <input v-model="year" min="19" maxlength="2" type="number" class="form-control" v-bind:placeholder="gtrans.translate('creditCard_year')" required>
             </div>
             <div class="form-group col entrada">
-                <input v-model="cvv" maxlength="3" type="number" class="form-control" placeholder="CVV" required> 
+                <input v-model="cvv" maxlength="3" type="number" class="form-control" v-bind:placeholder="gtrans.translate('creditCard_CVV')" required> 
             </div>
         </div>
-        <div class="btn btn-primary continueButton" @click="finishPayment"><span class="continueText">SUBMIT</span></div>
+        <div class="btn btn-primary continueButton" @click="finishPayment"><span class="continueText">{{gtrans.translate('creditCard_submit')}}</span></div>
 
     </form>
     </div>
 </template>
 
 <script>
+import GSecurity from "@/security/GSecurity.js";
+import GTrans from "@/utils/GTrans.js";
 
 export default {
     name: "CreditCardPayment",
@@ -91,7 +93,16 @@ export default {
     }, 
     mounted() {
         
-    }
+    },
+
+    created() {
+        // Retreive store credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+
+        //this.gtrans.setLanguage('es');
+  },
 }
 </script>
 

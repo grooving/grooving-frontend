@@ -280,6 +280,17 @@ export default{
     filter_score: 'Score',
     filter_zones: 'Zones',
     filter_filterBy: 'Filter by',
+
+    // --------------------------------------------------------------------------------
+    //                 CreditCardPayment.vue
+    // --------------------------------------------------------------------------------
+
+    creditCard_number: 'Number',
+    creditCard_name: 'Name',
+    creditCard_month: 'Month',
+    creditCard_year: 'Year',
+    creditCard_CVV: 'CVV',
+    creditCard_submit: 'SUBMIT',
     
 
 
