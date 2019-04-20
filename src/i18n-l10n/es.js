@@ -104,7 +104,7 @@ export default{
     //                  ImageCarousel.vue
     // ----------------------------------------------------
 
-    image_alt : "Imagen",
+    image_alt : "Imagen", // Se usa también en UserCard.vue
 
     // ----------------------------------------------------
     //                     LeftMenu.vue
@@ -189,4 +189,24 @@ export default{
     videoShowcase : "Galería de Videos",
     insertURL: "Introduzca la URL aquí...",
     validYTLink : "Debe ser un link de youtube válido.",
+    
+    // ----------------------------------------------------
+    //                   UserCard.vue
+    // ----------------------------------------------------
+
+    ban : "BANEAR",
+    unban : "DESBANEAR",
+
+    // ----------------------------------------------------
+    //                   UserList.vue
+    // ----------------------------------------------------
+
+    oops : "Nada que mostrar",
+
+    // ----------------------------------------------------
+    //                   UsersList.vue
+    // ----------------------------------------------------
+
+    usersList : "Todos los Usuarios",
+
 }
