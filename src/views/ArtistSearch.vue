@@ -29,6 +29,8 @@ import ArtistList from '@/components/ArtistList.vue';
 
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
+import GSecurity from "@/security/GSecurity.js";
+import GTrans from "@/utils/GTrans.js";
 
 const showPortfolioBaseURI = '/showPortfolio/';
 const hiringBaseURI = '/makeOffer/';
@@ -44,6 +46,7 @@ export default {
 
   data: function(){
     return {
+        gtrans: undefined,
         simple_filters: [
             {id: 0, text: "Genre", filterName: "artisticGender", value: false},
             {id: 1, text: "Artist Name", filterName: "artisticName", value: true}
@@ -198,6 +201,26 @@ export default {
     });
 
     this.search(queries);
+  },
+
+  created() {
+    // Retreive store credentials
+    this.gsecurity = GSecurity;
+    this.gsecurity.obtainSavedCredentials();
+    this.gtrans = new GTrans(this.gsecurity.getLanguage());
+
+    //this.gtrans.setLanguage('es');
+
+    this.simple_filters[0]['text'] = this.gtrans.translate('filter_genre');
+    this.simple_filters[1]['text'] = this.gtrans.translate('filter_artistName');
+    this.tristate_filters[0]['text'] = this.gtrans.translate('filter_score');
+    this.selector_filters[0]['text'] = this.gtrans.translate('filter_zones');
+
+
+    this.menu_links[2]['text'] = this.gtrans.translate('header_checkIn');
+
+    // Update data that depends on GSecurity
+    this.refreshGSecurityData();
   },
 }
 

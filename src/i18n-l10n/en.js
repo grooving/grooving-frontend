@@ -245,6 +245,48 @@ export default{
     offer_confirm: 'CONFIRM',
     offer_details: 'DETAILS',
     offer_cancel: 'CANCEL',
+    offer_negotiationMessage: 'The offer is in a negotiation process.',
+    offer_withdrawnMessage: 'The offer was withdrawn by the customer before it was accepted.',
+    offer_rejectedMessage: 'The offer was rejected by the artist.',
+    offer_cancelledArtistMessage: 'The offer was canceled by the artist after being accepted.',
+    offer_cancelledCustomerMessage: 'The offer was canceled by the customer after being accepted.',
+    offer_paymentMessage: 'The payment has already been made.',
+    offer_confirmRejection: 'Please, confirm your rejection',
+    offer_rejectPlaceholder: 'You can explain the reason why you are rejecting this offer. It will be shown to the person that contacted you.',
+    offer_reason: 'Reason',
+    offer_thankYou: 'Thank you for rating the artist!',
+    offer_rateNow: 'Rate now the artist',
+
+    // ----------------------------------------------------
+    //                 Header.vue
+    // ----------------------------------------------------
+
+    header_topArtists: 'Top Artists',
+    header_myOffers: 'My Offers',
+    header_checkIn: 'Check-in',
+    header_logIn: 'Log In',
+    header_username: 'Username',
+    header_password: 'Password',
+    header_signIn: 'SIGN IN',
+    header_newUser: 'New around here?',
+    header_signUp: 'Sign up',
+
+    // --------------------------------------------------------------------------------
+    //                 ArtistSearch.vue -> FiltersModalMenu.vue + FiltersSideMenu.vue
+    // --------------------------------------------------------------------------------
+
+    filter_genre: 'Genre',
+    filter_artistName: 'Artist Name',
+    filter_score: 'Score',
+    filter_zones: 'Zones',
+    filter_filterBy: 'Filter by',
+    
+
+
+
+
+    
+
 
 
 

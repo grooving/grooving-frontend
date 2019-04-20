@@ -1,6 +1,10 @@
 <template>
     <div>
-        <div><vuejs-datepicker @input="datePickerDate" :value="model.date" v-model="model.date" :disabledDates="disabledDates"  :full-month-name="true" :inline="true"></vuejs-datepicker></div>
+        <div>
+            <vuejs-datepicker v-if="this.gtrans.getLanguage() == 'es'" @input="datePickerDate" :value="model.date" v-model="model.date" :disabledDates="disabledDates"  :monday-first="true" :full-month-name="true" :inline="true" :language="es"></vuejs-datepicker>
+            <vuejs-datepicker v-if="this.gtrans.getLanguage() == 'en'" @input="datePickerDate" :value="model.date" v-model="model.date" :disabledDates="disabledDates"  :full-month-name="true" :inline="true" ></vuejs-datepicker>
+            
+        </div>
     </div>
 </template>
 
@@ -14,6 +18,10 @@ yesterday.setMinutes(59)
 yesterday.setSeconds(59)
 yesterday.setMilliseconds(999)
 
+import GSecurity from "@/security/GSecurity.js"
+import GTrans from "@/utils/GTrans.js"
+import { es } from 'vuejs-datepicker/dist/locale'
+
 export default {
     name: "Calendar",
 
@@ -24,6 +32,9 @@ export default {
             },
             currentDate: new Date(),
             disabledDates: {},
+            gtrans:undefined,
+            gsecurity: undefined,
+            es: es
         }
     },
 
@@ -45,6 +56,16 @@ export default {
     },
 
     created: function() {
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es');
+        //this.gtrans.setLanguage('en')
+
+
         var res = Array();
 
         for (var i = 0; i < this.availableDates.length; i++) { 

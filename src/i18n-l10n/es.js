@@ -245,6 +245,41 @@ export default{
     offer_confirm: 'CONFIRMAR',
     offer_details: 'DETALLES',
     offer_cancel: 'CANCELAR',
+    offer_negotiationMessage: 'La oferta está en proceso de negociación.',
+    offer_withdrawnMessage: 'La oferta ha sido retirada por el cliente antes de ser aceptada.',
+    offer_rejectedMessage: 'La oferta ha sido rechazada por el artista.',
+    offer_cancelledArtistMessage: 'La oferta ha sido cancelada por el artista tras haber sido aceptada.',
+    offer_cancelledCustomerMessage: 'La oferta ha sido cancelada por el cliente tras haber sido aceptada.',
+    offer_paymentMessage: 'El pago ya ha sido realizado.',
+    offer_confirmRejection: 'Por favor, confirme su rechazo',
+    offer_rejectPlaceholder: 'Puedes detallar la razón por la que vas a rechazar esta oferta. Este mensaje se mostrará a la persona que te contrató.',
+    offer_reason: 'Razón',
+    offer_thankYou: '¡Gracias por puntuar al artista!',
+    offer_rateNow: 'Puntúa ahora al artista',
+
+    // ----------------------------------------------------
+    //                 Header.vue
+    // ----------------------------------------------------
+
+    header_topArtists: 'Top Artistas',
+    header_myOffers: 'Mis Ofertas',
+    header_checkIn: 'Facturación',
+    header_logIn: 'Iniciar Sesión',
+    header_username: 'Usuario',
+    header_password: 'Contraseña',
+    header_signIn: 'ENTRAR',
+    header_newUser: '¿Eres nuevo?',
+    header_signUp: 'Regístrate',
+
+    // --------------------------------------------------------------------------------
+    //                 ArtistSearch.vue -> FiltersModalMenu.vue + FiltersSideMenu.vue
+    // --------------------------------------------------------------------------------
+
+    filter_genre: 'Género',
+    filter_artistName: 'Nombre Artístico',
+    filter_score: 'Puntuación',
+    filter_zones: 'Zonas',
+    filter_filterBy: 'Filtrar por',
 
 
 

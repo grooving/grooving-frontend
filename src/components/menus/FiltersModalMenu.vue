@@ -7,7 +7,7 @@
             <div class="container-fluid panelInfoContainer">
                 <div class="col-12 col-sm-6 horizontal-center panelInfo">
                     <div id="mainTitle" class="col">
-                        <h3>Filter by</h3>
+                        <h3>{{gtrans.translate('filter_filterBy')}}</h3>
                         <hr>
                     </div>
                     <div id="switchers" class="col">
@@ -67,12 +67,17 @@
 </template>
 
 <script>
+
+import GSecurity from "@/security/GSecurity.js";
+import GTrans from "@/utils/GTrans.js";
   export default {
 
     name: 'FiltersModalMenu',
 
     data: function(){
         return{
+            gsecurity:undefined,
+            gtrans:undefined,
             title: "Filter by",
             buttonFilterStatus: 0,
             singleSelectorValue: undefined,
@@ -108,6 +113,18 @@
             this.$emit('onFiltersChange');
             this.$emit('filterSelectionClose');
         },
+    },
+
+    created() {
+        // Retreive store credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+
+        //this.gtrans.setLanguage('es');
+
+        // Update data that depends on GSecurity
+        this.refreshGSecurityData();
     },
 
     props:{
