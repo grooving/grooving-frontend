@@ -1,5 +1,5 @@
 <template>
-  <div class="SentOfferNotif">
+  <div class="PaymentNotif">
       <div class="tarjeta">
         <div class="hello">
         <div class="confirmation"><img class="tick" src="@/assets/img/approved_tick.png"/>
@@ -12,59 +12,30 @@
 </template>
 
 <script>
+import GSecurity from "@/security/GSecurity.js";
+import GTrans from "@/utils/GTrans.js";
+
 export default {
-  name: 'SentOfferNotif',
-  props: {
-        artistURI: {
-            type: String,
-            default: '#'
-        },
-        artistImage: {
-            type: String,
-            default: 'https://img.europapress.es/fotoweb/fotonoticia_20181107115306_1920.jpg',
-        },
-        artistName: {
-            type: String,
-            default: 'ROSALÍA'
-        },
-        artistGenres: {
-            type: Array,
-            default: ['Pop', 'Flamenco']
-        },
-        continueURI: {
-            type: String,
-            default: '#'
-        },
-        price: {
-          type: String,
-          default: '$63.00/h'
-        },
-        sentText: {
-          type: String,
-          default: 'Thank You'
-        },
-        noticeText: {
-          type: String,
-          default: "You won't be charged until the artist arrives at the venue."
+    name: 'PaymentNotif',
+    data() {
+        return {
+            gsecurity: GSecurity,
+            gtrans: undefined,
+            sentText: "",
+            noticeText: "",
         }
     },
+    created() {
+      this.gsecurity = GSecurity;
+      this.gsecurity.obtainSavedCredentials();
+      this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+      // Podemos cambiar el lenguaje así para debug...
+      //this.gtrans.setLanguage('es')
+      //this.gtrans.setLanguage('en')
 
-    methods: {
-        genresToString() {
-
-            var res = "";
-            var i = 0;
-
-            for (i = 0; i < this.artistGenres.length; i++) { 
-                if (i != this.artistGenres.length - 1) {
-                    res += this.artistGenres[i] + ", ";
-                } else {
-                    res += this.artistGenres[i];
-                }
-            }
-
-            return res;
-        }
+      this.sentText = this.gtrans.translate('sentText');
+      this.noticeText = this.gtrans.translate('noticeText');
     }
 }
 

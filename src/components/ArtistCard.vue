@@ -11,7 +11,7 @@
                     <span class="card-text artistGenres">{{ genresToString() }}</span>
                 </div>
                 <div v-if="gsecurity.hasRole('CUSTOMER') || !gsecurity.isAuthenticated()" class="rightContent">
-                    <router-link v-bind:to="hireURI" class="btn btn-primary hireButton"><span class="hireText">HIRE</span></router-link>
+                    <router-link v-bind:to="hireURI" class="btn btn-primary hireButton"><span class="hireText">{{gtrans.translate('hire')}}</span></router-link>
                 </div>
             </div>
         </div>
@@ -20,11 +20,11 @@
 
 <script>
 import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
 
 const showPortfolioBaseURI = '/showPortfolio/';
 const hiringBaseURI = '/hiringType/';
 const registerURI = '/newUser/';
-
 
 export default {
     name: "ArtistCard",
@@ -32,6 +32,7 @@ export default {
     data: function(){
         return{
             gsecurity: GSecurity,
+            gtrans: undefined,
         }
     },
 
@@ -91,6 +92,11 @@ export default {
         // Retreive store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+            
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
     },
 }
 </script>

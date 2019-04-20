@@ -14,9 +14,9 @@ export default{
     //                CreateFareHiring.vue
     // ----------------------------------------------------
 
-    fare_title : "Contratación por Tarifa",
-    fare_subtitle : "Puedes indicar el precio fijo que cobrarás por hora.",
-    fare_fixedPrice : "PRECIO FIJO",
+    fare_title : "Contratación por Tarifa", // Usado también en EditFareHiring.vue y FareHiring.vue
+    fare_subtitle : "Puedes indicar el precio fijo que cobrarás por hora.", // Usado también en EditFareHiring.vue y FareHiring.vue
+    fare_fixedPrice : "PRECIO FIJO", // Usado también en EditFareHiring.vue y FareHiring.vue
 
     // ----------------------------------------------------
     //             CreditCardPaymentBrain.vue
@@ -30,10 +30,10 @@ export default{
     //                  CustomHiring.vue
     // ----------------------------------------------------
 
-    custom_title : "Contratación A Medida",
-    custom_subtitle : "El cliente puede decidir la cantidad de dinero a pagar, por lo que es posible que quieras indicar un precio mínimo.",
-    custom_minimumPrice : "PRECIO MÍNIMO",
-    add : "AÑADIR NUEVO",
+    custom_title : "Contratación a Medida", // Usado también en CreateCustomHiring.vue y EditCustomHiring.vue 
+    custom_subtitle : "El cliente puede decidir la cantidad de dinero a pagar, por lo que es posible que quieras indicar un precio mínimo.", // Usado también en CreateCustomHiring.vue y EditCustomHiring.vue
+    custom_minimumPrice : "PRECIO MÍNIMO", // Usado también en CreateCustomHiring.vue y EditCustomHiring.vue
+    add : "AÑADIR NUEVO", // Usado también en FareHiring.vue
 
     // ----------------------------------------------------
     //                EditArtistInfo.vue
@@ -77,14 +77,14 @@ export default{
     //                   EditSubmenu.vue
     // ----------------------------------------------------
 
-    save : "GUARDAR", // Se usa también en EditProfileInfo.vue y CreateFareHiring.vue
+    save : "GUARDAR", // Se usa también en EditProfileInfo.vue, EditCustomHiring.vue, CreateFareHiring.vue y EditFareHiring.vue
 
     // ----------------------------------------------------
     //                   EventData.vue
     // ----------------------------------------------------
 
     description_placeholder : "Añade aquí una descripción con información relevante sobre el evento.",
-    continueButton : "CONTINUAR", // Se usa también en StartingDatePicker.vue, Performances.vue y AddressData.vue
+    continueButton : "CONTINUAR", // Se usa también en StartingDatePicker.vue, Performances.vue, CustomPrice.vue y AddressData.vue
 
     // ----------------------------------------------------
     //                  ExtendedOffer.vue
@@ -224,11 +224,11 @@ export default{
     //                 EditPerformanceHiring.vue
     // ----------------------------------------------------
 
-    performance_title: 'Contratación por Espectáculo',
-    performance_subtitle: 'Puedes definir tus propios espectáculos indicando su descripción, duración y precio fijo.',
-    performance_description: 'DESCRIPCIÓN',
-    performance_duration: 'DURACIÓN',
-    performance_fixedPrice: 'PRECIO FIJO',
+    performance_title: 'Contratación por Espectáculo', // Se usa también en CreatePerformanceHiring.vue y PerformanceHiring.vue
+    performance_subtitle: 'Puedes definir tus propios espectáculos indicando su descripción, duración y precio fijo.', // Se usa también en CreatePerformanceHiring.vue y PerformanceHiring.vue
+    performance_description: 'DESCRIPCIÓN', // Se usa también en CreatePerformanceHiring.vue y PerformanceHiring.vue
+    performance_duration: 'DURACIÓN', // Se usa también en CreatePerformanceHiring.vue y PerformanceHiring.vue
+    performance_fixedPrice: 'PRECIO FIJO', // Se usa también en CreatePerformanceHiring.vue y PerformanceHiring.vue
 
     // ----------------------------------------------------
     //                 Search.vue
@@ -292,12 +292,29 @@ export default{
     creditCard_CVV: 'CVV',
     creditCard_submit: 'ENVIAR',
 
+    // --------------------------------------------------------------------------------
+    //                               PaymentNotif.vue
+    // --------------------------------------------------------------------------------
 
-
-
-
+    sentText: 'Gracias',
+    noticeText: "No se te realizará el cargo hasta que el artista acepte la oferta.",
     
+    // --------------------------------------------------------------------------------
+    //                               ArtistCard.vue
+    // --------------------------------------------------------------------------------
 
-    
+    hire: 'CONTRATAR',
+
+    // --------------------------------------------------------------------------------
+    //                               EditGenre.vue
+    // --------------------------------------------------------------------------------
+
+    submit: 'Enviar',
+
+    // --------------------------------------------------------------------------------
+    //                               CustomPrice.vue
+    // --------------------------------------------------------------------------------
+
+    perfomanceDuration: 'Duración de la actuación',
 
 }

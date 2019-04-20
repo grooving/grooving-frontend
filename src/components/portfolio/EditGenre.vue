@@ -16,21 +16,16 @@
                       <span>{{opt.name}}</span>
                   </option>
               </b-form-select>
-                <!-- <b-form-select :select-size="1" v-model="newGenre" class="hi dropdown">
-                <template slot="first">
-                    <option disabled>-- Please select an option --</option>
-                    <option v-for="genre in genres" v-bind:key="genre.id" :value="genre">{{genre.name}}</option>
-                </template>
-                
-                </b-form-select> -->
                 <b-button class="btt" type="button" variant="primary" 
-                    v-model="newGenre" @click="addGenre()">Submit</b-button>
+                    v-model="newGenre" @click="addGenre()">{{gtrans.translate('submit')}}</b-button>
             </b-form>
         </template>
   </div>
 </template>
 
 <script>
+import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
 import {mapActions} from 'vuex';
 import { mapGetters } from 'vuex';
 
@@ -56,6 +51,8 @@ export default {
         selectedGenres: undefined,
         newGenre: null,
         tree: Array(),
+        gsecurity: GSecurity,
+        gtrans: undefined,
 	  }
   },
   
@@ -155,7 +152,16 @@ export default {
       this.select = true;
       this.add = false;
     },
-  }
+  },
+  created() {
+      this.gsecurity = GSecurity;
+      this.gsecurity.obtainSavedCredentials();
+      this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+      // Podemos cambiar el lenguaje así para debug...
+      //this.gtrans.setLanguage('es')
+      //this.gtrans.setLanguage('en')
+    }
 }
 
 

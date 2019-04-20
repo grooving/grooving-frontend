@@ -14,9 +14,9 @@ export default{
     //                CreateFareHiring.vue
     // ----------------------------------------------------
 
-    fare_title : "Fare Hiring", // Usado también en EditFareHiring.vue
-    fare_subtitle : "You can set a fixed price you'll gain per hour.", // Usado también en EditFareHiring.vue
-    fare_fixedPrice : "FIXED PRICE", // Usado también en EditFareHiring.vue
+    fare_title : "Fare Hiring", // Usado también en EditFareHiring.vue y FareHiring.vue
+    fare_subtitle : "You can set a fixed price you'll gain per hour.", // Usado también en EditFareHiring.vue y FareHiring.vue
+    fare_fixedPrice : "FIXED PRICE", // Usado también en EditFareHiring.vue y FareHiring.vue
 
     // ----------------------------------------------------
     //             CreditCardPaymentBrain.vue
@@ -30,10 +30,10 @@ export default{
     //                  CustomHiring.vue
     // ----------------------------------------------------
 
-    custom_title : "Custom Hiring", // Usado también en CreateCustomHiring.vue
-    custom_subtitle : "The customer can decide the amount of money he will pay, so you may set a minimum price.", // Usado también en CreateCustomHiring.vue
-    custom_minimumPrice : "MINIMUM PRICE", // Usado también en CreateCustomHiring.vue
-    add : "ADD NEW",
+    custom_title : "Custom Hiring", // Usado también en CreateCustomHiring.vue y EditCustomHiring.vue
+    custom_subtitle : "The customer can decide the amount of money he will pay, so you may set a minimum price.", // Usado también en CreateCustomHiring.vue y EditCustomHiring.vue
+    custom_minimumPrice : "MINIMUM PRICE", // Usado también en CreateCustomHiring.vue y EditCustomHiring.vue
+    add : "ADD NEW", // Usado también en FareHiring.vue 
 
     // ----------------------------------------------------
     //                EditArtistInfo.vue
@@ -77,14 +77,14 @@ export default{
     //                   EditSubmenu.vue
     // ----------------------------------------------------
 
-    save : "SAVE", // Se usa también en EditProfileInfo.vue y CreateFareHiring.vue y EditFareHiring.vue
+    save : "SAVE", // Se usa también en EditProfileInfo.vue, EditCustomHiring.vue, CreateFareHiring.vue y EditFareHiring.vue
 
     // ----------------------------------------------------
     //                   EventData.vue
     // ----------------------------------------------------
 
     description_placeholder : "Add here a description with some relevant information about your event.",
-    continueButton : "CONTINUE", // Se usa también en StartingDatePicker.vue y Performances.vue
+    continueButton : "CONTINUE", // Se usa también en StartingDatePicker.vue, CustomPrice.vue y Performances.vue
 
     // ----------------------------------------------------
     //                  ExtendedOffer.vue
@@ -224,11 +224,11 @@ export default{
     //                 EditPerformanceHiring.vue
     // ----------------------------------------------------
 
-    performance_title: 'Performance Hiring', // Se usa también en CreatePerformanceHiring.vue
-    performance_subtitle: 'You can define your own shows indicating its description, duration and price.',  // Se usa también en CreatePerformanceHiring.vue
-    performance_description: 'DESCRIPTION',  // Se usa también en CreatePerformanceHiring.vue
-    performance_duration: 'DURATION',  // Se usa también en CreatePerformanceHiring.vue
-    performance_fixedPrice: 'FIXED PRICE',  // Se usa también en CreatePerformanceHiring.vue
+    performance_title: 'Performance Hiring', // Se usa también en CreatePerformanceHiring.vue y PerformanceHiring.vue
+    performance_subtitle: 'You can define your own shows indicating its description, duration and price.',  // Se usa también en CreatePerformanceHiring.vue y PerformanceHiring.vue
+    performance_description: 'DESCRIPTION',  // Se usa también en CreatePerformanceHiring.vue y PerformanceHiring.vue
+    performance_duration: 'DURATION',  // Se usa también en CreatePerformanceHiring.vue y PerformanceHiring.vue
+    performance_fixedPrice: 'FIXED PRICE',  // Se usa también en CreatePerformanceHiring.vue y PerformanceHiring.vue
 
     // ----------------------------------------------------
     //                 Search.vue
@@ -292,16 +292,30 @@ export default{
     creditCard_CVV: 'CVV',
     creditCard_submit: 'SUBMIT',
     
+    // --------------------------------------------------------------------------------
+    //                               PaymentNotif.vue
+    // --------------------------------------------------------------------------------
 
+    sentText: 'Thank You',
+    noticeText: "You won't be charged until the artist accepts the offer.",
 
+    // --------------------------------------------------------------------------------
+    //                               ArtistCard.vue
+    // --------------------------------------------------------------------------------
 
+    hire: 'HIRE',
 
-    
+    // --------------------------------------------------------------------------------
+    //                               EditGenre.vue
+    // --------------------------------------------------------------------------------
 
+    submit: 'Submit',
 
+    // --------------------------------------------------------------------------------
+    //                               CustomPrice.vue
+    // --------------------------------------------------------------------------------
 
-
-
+    perfomanceDuration: 'Performance duration',
 
     
 }

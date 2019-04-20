@@ -1,8 +1,8 @@
 <template>
     <div class="content">
         <form>
-            <label for="" class="subtitle" style="font-weight:bold;">Performance duration: &nbsp;</label>
-            <label for="" class="subtitle">{{duration}} hours</label>
+            <label for="" class="subtitle" style="font-weight:bold;">{{gtrans.translate('perfomanceDuration')}}:</label>
+            <label for="" class="subtitle">{{duration}} h</label>
             <div class="input-group">
                 <input v-model="priceHour" type="number" class="form-control" :min="minPrice" step="0.01" v-on:change="priceSelected();totalPrice();" v-on:click="priceSelected();totalPrice();">
                 <div class="input-group-append">
@@ -11,7 +11,7 @@
             </div>
             <div class="continueButtonDiv">
                 <div @click="confirmPrice()" class="btn btn-primary continueButton">
-                    <span class="continueText">CONTINUE</span>
+                    <span class="continueText">{{gtrans.translate('continueButton')}}</span>
                 </div>
             </div>
         </form>
@@ -19,6 +19,9 @@
 </template>
 
 <script>
+import GSecurity from "@/security/GSecurity.js";
+import GTrans from "@/utils/GTrans.js";
+
 export default {
     name: "CustomPrice",
 
@@ -29,6 +32,8 @@ export default {
         return {
             priceHour: 8,
             emitPrice: Math.round(this.priceHour * this.duration * 100) / 100,
+            gsecurity: GSecurity,
+            gtrans: undefined,
         };
     },
 
@@ -58,7 +63,16 @@ export default {
             default: 0.01,
         }
     },
+    created() {
+      this.gsecurity = GSecurity;
+      this.gsecurity.obtainSavedCredentials();
+      this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+      // Podemos cambiar el lenguaje así para debug...
+      //this.gtrans.setLanguage('es')
+      //this.gtrans.setLanguage('en')
 
+    },
     mounted: function() {
         this.priceHour = this.$props.minPrice;
         this.totalPrice();

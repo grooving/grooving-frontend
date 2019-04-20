@@ -50,7 +50,6 @@ export default {
             {id: 1, text: this.gtrans.translate('accepted'), link:"#", icon:"check_circle"},
             {id: 2, text: this.gtrans.translate('rejected'), link:"#", icon:"cancel"}
           ]
-        
     }
 }
 </script>
