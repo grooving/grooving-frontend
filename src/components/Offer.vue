@@ -51,7 +51,7 @@
                             <p>Thank you for rating the artist!</p>
                         </div>
                     </div>
-                    <div v-if="offerStatus == 'PAYMENT_MADE' && gsecurity.hasRole('CUSTOMER') && ratingD == null" class="cardTextId">
+                    <div v-if="offerStatus == 'PAYMENT_MADE' && gsecurity.hasRole('CUSTOMER') && ratingD == null && artistId != null" class="cardTextId">
                         <p style="word-break: break-all">Rate now the artist:&nbsp;</p>
                             <div class="rating">
 

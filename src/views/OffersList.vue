@@ -52,6 +52,7 @@ import TabbedSubMenu from '@/components/menus/TabbedSubMenu.vue';
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js"
 
 var acceptURI = '/offerDetails/';
 
@@ -66,6 +67,7 @@ export default {
   data: function() {
     return {
       gsecurity: GSecurity,
+      gtrans: undefined,
       datos_prueba: [
         {
           offerID:  1, 
@@ -146,9 +148,14 @@ export default {
     },
   },
   created() {
-    // Retreive store credentials
     this.gsecurity = GSecurity;
     this.gsecurity.obtainSavedCredentials();
+
+    this.gtrans = new GTrans(this.gsecurity.getLanguage());
+    
+    // Podemos cambiar el lenguaje así para debug...
+    this.gtrans.setLanguage('es')
+    //this.gtrans.setLanguage('en')
 
     if(!this.$gsecurity.isAuthenticated()) {
       console.log('Error')
@@ -172,6 +179,7 @@ export default {
 
     authorizedGAxios.get(URI)
     .then(response => {
+      console.log(response);
       var offers = response.data.results;
 
       var name;
@@ -184,15 +192,29 @@ export default {
       for(var i = 0; i < offers.length; i++){
         var d = offers[i].date.split("T",2);
         if (this.gsecurity.hasRole('ARTIST')) {
-          name = offers[i].eventLocation.customer.user.first_name;
-          icon = offers[i].eventLocation.customer.photo;
-          link = 'customerInfo';
-          customerSurnames = offers[i].eventLocation.customer.user.last_name;
+          if (offers[i].eventLocation.customer != null) {
+            name = offers[i].eventLocation.customer.user.first_name;
+            icon = offers[i].eventLocation.customer.photo;
+            link = 'customerInfo';
+            customerSurnames = offers[i].eventLocation.customer.user.last_name;
+          } else {
+            name = this.gtrans.translate('account_deleted');
+            icon = null;
+            link = null;
+            customerSurnames = null;
+          }
         } else if (this.gsecurity.hasRole('CUSTOMER')) {
-          name = offers[i].paymentPackage.portfolio.artisticName;
-          icon = offers[i].paymentPackage.portfolio.main_photo;
-          link = 'showPortfolio';
-          artistId = offers[i].paymentPackage.portfolio.artist.id;
+          if (offers[i].artist != null) {
+            name = offers[i].artist.portfolio.artisticName;
+            icon = offers[i].artist.portfolio.artist.photo;
+            link = 'showPortfolio';
+            artistId = offers[i].artist.portfolio.artist.id;
+          } else {
+            name = this.gtrans.translate('account_deleted');
+            icon = null;
+            link = null;
+            artistId = null;
+          }
         }
         if(offers[i].status == "PAYMENT_MADE") {
           try {
