@@ -119,15 +119,15 @@ class GChat{
     // Auxiliary methods
 
     createSocket(){
-        var go = this.onReceivedMessage
+
         this._webSocket = new WebSocket(this.getURI());
 
         // ---- CUSTOM EVENTS LISTENERS -----
-
+         /*
         this._webSocket.addEventListener("open", () => {
 
             let message = {
-                'token': "a12d2b58533a9eccc2365d7ff4907f5a21ce385d", //Token del usuario logeado
+                'token': "df007880db9a4f4fdc61728b5a86aa4786320cc2", //Token del usuario logeado
                 'message': "just"
             };
 
@@ -143,6 +143,7 @@ class GChat{
         this._webSocket.addEventListener('close', () => {
             console.log("WebSocket connection closed")
         });
+        */
 
     }
 
