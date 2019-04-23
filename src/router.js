@@ -46,6 +46,7 @@ import Chat from './components/Chat.vue'
 
 //BORRAR
 import Borrar from './views/About.vue'
+import SimpleChat from './components/chat/SimpleChat'
 
 
 Vue.use(Router)
@@ -280,6 +281,12 @@ export default new Router({
       path: '/breachNotification',
       name: 'breachNotification',
       component: BreachNotification
+    },
+
+    //BORRAR
+    {
+      path: '/simpleChat/:offerId',
+      component: SimpleChat,
     }
     
   ]
