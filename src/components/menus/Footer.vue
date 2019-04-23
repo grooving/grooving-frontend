@@ -5,7 +5,10 @@
                 
                 <span class="link" @click="goTo(aboutUsURI)">{{gtrans.translate('aboutUs')}} | </span>
                 <span class="link" @click="goTo(termsURI)">{{gtrans.translate('termsAndConditions')}} | </span>
-                <span class="link">{{gtrans.translate('contactUs')}}: grupogrooving@gmail.com </span>
+                <span class="link">{{gtrans.translate('contactUs')}}: grupogrooving@gmail.com | </span>
+                <span class="link" @click="changeLanguageEn(termsURI)"><img class="lenFlag" src="@/assets/img/en.png"></span>
+                <span>⠀</span>
+                <span class="link" @click="changeLanguageEs(termsURI)"><img class="lenFlag" src="@/assets/img/es.jpg"></span>
             </div>
 
             <div style="float:clear;">Copyright © 2019:
@@ -18,7 +21,10 @@
 <script>
 import GSecurity from '@/security/GSecurity.js';
 import GTrans from "@/utils/GTrans.js";
+import GAxios from '@/utils/GAxios.js';
 import {mapActions} from 'vuex';
+import endpoints from '@/utils/endpoints.js';
+import { async } from 'q';
 
 export default {
     name: "Footer",
@@ -52,7 +58,64 @@ export default {
         }
     },
     methods: {
+        
         ...mapActions(['clearStore', 'setURL']),
+
+        changeLanguageEs(path) {
+            this.$emit('refreshRightMenu');
+            this.url = this.$store.getters.sideMenus.url;
+            if(this.url !== path) {
+                this.setURL(path);
+                this.clearStore().then(() => {
+                    this.gsecurity = GSecurity;
+
+                    if(!this.gsecurity.isAuthenticated()){
+                        this.gtrans.setLanguage('es');
+                    }
+                    else{
+                        var GAxiosToken = this.gsecurity.getToken();
+
+                        var authorizedGAxios = GAxios;
+                        authorizedGAxios.defaults.headers.common['Authorization'] = 'Token '+GAxiosToken;
+                        authorizedGAxios.get(endpoints.changeLangEs).then(response =>{
+                            console.log(response);
+                            console.log("Success!");
+                            console.log("Lenguage changed into:"+response.data.language);
+                            this.$router.go(0);
+                        });
+                    }
+                });  
+            } else {
+                this.$emit('samePage');
+            }
+        },
+
+        changeLanguageEn(path) {
+            this.$emit('refreshRightMenu');
+            this.url = this.$store.getters.sideMenus.url;
+            if(this.url !== path) {
+                this.setURL(path);
+                this.clearStore().then(() => {
+                    this.gsecurity = GSecurity
+                    var GAxiosToken = this.gsecurity.getToken();
+
+                    var authorizedGAxios = GAxios;
+                    authorizedGAxios.defaults.headers.common['Authorization'] = 'Token '+GAxiosToken;
+                    authorizedGAxios.get(endpoints.changeLangEn).then(response =>{
+                        console.log(response);
+                        console.log("Success!");
+                        console.log("Lenguage changed into:"+response.data.language);
+                        this.$router.go(0);
+                    });
+                });  
+            } else {
+                this.$emit('samePage');
+            }
+        },
+
+        
+
+
         goTo(path) {
             this.$emit('refreshRightMenu');
             this.url = this.$store.getters.sideMenus.url;
@@ -62,7 +125,7 @@ export default {
             } else {
                 this.$emit('samePage');
             }
-        },
+        }
     },
     created() {
         // Retreive stored credentials
@@ -79,6 +142,10 @@ export default {
 </script>
 
 <style scoped>
+
+    .lenFlag{
+        width: 25px;
+    }
     * {
         font-family: "Archivo"
     }
