@@ -67,23 +67,17 @@ export default {
             if(this.url !== path) {
                 this.setURL(path);
                 this.clearStore().then(() => {
-                    this.gsecurity = GSecurity;
+                    this.gsecurity = GSecurity
+                    var GAxiosToken = this.gsecurity.getToken();
 
-                    if(!this.gsecurity.isAuthenticated()){
-                        this.gtrans.setLanguage('es');
-                    }
-                    else{
-                        var GAxiosToken = this.gsecurity.getToken();
-
-                        var authorizedGAxios = GAxios;
-                        authorizedGAxios.defaults.headers.common['Authorization'] = 'Token '+GAxiosToken;
-                        authorizedGAxios.get(endpoints.changeLangEs).then(response =>{
-                            console.log(response);
-                            console.log("Success!");
-                            console.log("Lenguage changed into:"+response.data.language);
-                            this.$router.go(0);
-                        });
-                    }
+                    var authorizedGAxios = GAxios;
+                    authorizedGAxios.defaults.headers.common['Authorization'] = 'Token '+GAxiosToken;
+                    authorizedGAxios.get(endpoints.changeLangEs).then(response =>{
+                        console.log(response);
+                        console.log("Success!");
+                        console.log("Lenguage changed into:"+response.data.language);
+                        this.$router.go(0);
+                    });
                 });  
             } else {
                 this.$emit('samePage');
