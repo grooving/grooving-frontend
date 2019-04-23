@@ -42,6 +42,7 @@ import AboutView from './views/AboutView.vue'
 import UsersList from './views/UsersList.vue'
 import AdminLogin from './views/AdminLogin.vue'
 import BreachNotification from './views/BreachNotification.vue'
+import Chat from './components/Chat.vue'
 
 //BORRAR
 import Borrar from './views/About.vue'
@@ -58,6 +59,11 @@ export default new Router({
       path: "/",
       name: 'home',
       component: Home
+    },
+    {
+      path: "/chat",
+      name: 'chat',
+      component: Chat
     },
     {
       path: '/artist_search',

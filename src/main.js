@@ -4,11 +4,13 @@ import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import GSecurity from './security/GSecurity.js'
 import store from './store'
+import Chat from 'vue-beautiful-chat'
 
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.prototype.$gsecurity = GSecurity;
+Vue.use(Chat)
 
 new Vue({
   store,

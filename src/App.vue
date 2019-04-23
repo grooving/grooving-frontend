@@ -11,6 +11,7 @@
       <LeftMenu @samePage='samePage'/>
     </div>
     <router-view :key="$route.fullPath" id="mainContent"/>
+    <Chat/>
     </div>
     <footer><Footer @samePage='samePage' @refreshRightMenu='refreshRightMenu'/></footer>
   </div>
@@ -23,11 +24,12 @@ import LeftMenu from "./components/menus/LeftMenu.vue"
 import Footer from "./components/menus/Footer.vue"
 import GSecurity from "./security/GSecurity.js"
 import {mapActions} from 'vuex';
+import Chat from '@/components/Chat.vue'
 
 export default {
 
   components:{
-    Header, RightMenu, LeftMenu, Footer
+    Header, RightMenu, LeftMenu, Footer, Chat
   },
 
   data: function(){
