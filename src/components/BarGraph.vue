@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="card tarjeta">
-            <canvas id="horizontal-graph" width="800" height="450"></canvas>
+            <canvas :id="id" width="800" height="450"></canvas>
         </div>
     </div>
 </template>
@@ -39,7 +39,10 @@ export default {
         },
         graph_id: {
             type: String,
-        }
+        },
+        id: {
+            type: String,
+        },
     },
 
     created: function() {
@@ -54,7 +57,7 @@ export default {
     },
 
     mounted: function() {
-        new Chart(document.getElementById("horizontal-graph"), {
+        new Chart(document.getElementById(this.id), {
             type: 'horizontalBar',
             data: {
                 labels: [this.label1, this.label2],
@@ -96,6 +99,7 @@ export default {
         border-radius: 20px;
         box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, .2);
         padding: 15px;
+        margin-bottom: 15px !important;
     }
 </style>
 

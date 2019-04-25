@@ -227,4 +227,18 @@ export default{
     accept : "ACCEPT",
     toast_title : "Your account has been successfully deleted",
     toast_subtitle : "We are sorry to say goodbye. You can register again anytime.",
+
+    // ----------------------------------------------------
+    //                   Statistics.vue
+    // ----------------------------------------------------
+
+    statistics_title : "Statistics",
+    registered_artists: "Registered Artists",
+    registered_customers: "Registered Customers",
+    registers: "Registers",
+    registers_lm: "Registers Last Month",
+    money_earned: "Money Earned",
+    money_moved: "Money Moved",
+    money: "Money",
+    money_lm: "Money Last Month",
 }

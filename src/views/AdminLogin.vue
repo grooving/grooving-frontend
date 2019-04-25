@@ -44,7 +44,7 @@
                 var log_result = await this.gsecurity.sudoAuthenticate(this.input.username, this.input.password)
 
                 if (log_result) {
-                    this.$router.push({ path: "/" });
+                    this.$router.push({ path: "/statistics" });
                 } else {
                     $('#ddown-form-email, #ddown-form-passwd').css('border-color', 'red');
                     this.error = true;

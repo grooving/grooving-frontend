@@ -1,7 +1,8 @@
 <template>
     <div>
+        <h1 class="titleView">{{gtrans.translate('statistics_title')}}</h1>
         <div v-for="graph in barGraphs" :key="graph.title">
-            <BarGraph :key="barGraphUpdated" :data1="graph.data1" :data2="graph.data2" :label1="graph.label1" :label2="graph.label2" :title="graph.title"/>
+            <BarGraph :key="barGraphUpdated" :data1="graph.data1" :data2="graph.data2" :label1="graph.label1" :label2="graph.label2" :title="graph.title" :id="'sp_' + graph.title"/>
         </div>
     </div>
 </template>
@@ -28,31 +29,31 @@ export default {
             barGraphs: {
                 registers: {
                     data1: 0,
-                    label1: "Registered Artists",
+                    label1: "",
                     data2: 0,
-                    label2: "Registered Customers",
-                    title: "Registers",
+                    label2: "",
+                    title: "",
                 },
                 registersLastMonth: {
                     data1: 0,
-                    label1: "Registered Artists",
+                    label1: "",
                     data2: 0,
-                    label2: "Registered Customers",
-                    title: "Registers Last Month",
+                    label2: "",
+                    title: "",
                 },
                 money: {
                     data1: 0,
-                    label1: "Money Earned",
+                    label1: "",
                     data2: 0,
-                    label2: "Money Moved",
-                    title: "Money",
+                    label2: "",
+                    title: "",
                 },
                 moneyLastMonth: {    
                     moneyEarnedLastMonth: 0,
-                    label1: "Money Earned",
+                    label1: "",
                     moneyMovedLastMonth: 0,
-                    label2: "Money Moved",
-                    title: "Money Last Month",
+                    label2: "",
+                    title: "",
                 }
             },
 
@@ -76,10 +77,26 @@ export default {
         this.gsecurity.obtainSavedCredentials();
 
         this.gtrans = new GTrans(this.gsecurity.getLanguage());
-    
+        
         // Podemos cambiar el lenguaje así para debug...
         // this.gtrans.setLanguage('es')
         // this.gtrans.setLanguage('en')
+
+        this.barGraphs.registers.label1 = this.gtrans.translate('registered_artists');
+        this.barGraphs.registers.label2 = this.gtrans.translate('registered_customers');
+        this.barGraphs.registers.title = this.gtrans.translate('registers');
+
+        this.barGraphs.registersLastMonth.label1 = this.gtrans.translate('registered_artists');
+        this.barGraphs.registersLastMonth.label2 = this.gtrans.translate('registered_customers');
+        this.barGraphs.registersLastMonth.title = this.gtrans.translate('registers_lm');
+
+        this.barGraphs.money.label1 = this.gtrans.translate('money_earned');
+        this.barGraphs.money.label2 = this.gtrans.translate('money_moved');
+        this.barGraphs.money.title = this.gtrans.translate('money');
+
+        this.barGraphs.moneyLastMonth.label1 = this.gtrans.translate('money_earned');
+        this.barGraphs.moneyLastMonth.label2 = this.gtrans.translate('money_moved');
+        this.barGraphs.moneyLastMonth.title = this.gtrans.translate('money_lm');
     },
 
     beforeMount: function() {
@@ -127,3 +144,28 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+
+    .results{
+        margin: 0 auto;
+        padding: 0px;
+    }  
+
+    @media (min-width:768px) {
+        .titleView {
+            text-align: left;
+            font-weight: bold;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .titleView {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+    }
+
+</style>

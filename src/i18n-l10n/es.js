@@ -228,4 +228,18 @@ export default{
     toast_title : "Tu cuenta se ha eliminado correctamente",
     toast_subtitle : "Lamentamos decirle adiós. Puede registrarse de nuevo en cualquier momento.",
 
+    // ----------------------------------------------------
+    //                   Statistics.vue
+    // ----------------------------------------------------
+
+    statistics_title : "Estadísticas",
+    registered_artists: "Artistas Registrados",
+    registered_customers: "Clientes Registrados",
+    registers: "Registros",
+    registers_lm: "Registros durante el Último mes",
+    money_earned: "Dinero ganado",
+    money_moved: "Dinero movido",
+    money: "Dinero",
+    money_lm: "Dinero durante el Último mes",
+
 }
