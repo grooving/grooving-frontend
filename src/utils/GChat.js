@@ -132,7 +132,7 @@ class GChat{
         Returns a representation of a message
         following Vue Component's style.
     */
-    formatVueChatMessage(author, messageText){
+    formatVueChatMessage(author, messageText, messageTime='00:00'){
 
         // Can't create a constant as values
         // are copied using references
@@ -140,7 +140,8 @@ class GChat{
             author : this.getUserName() == author ? 'me' : author,
             type: 'text',
             data: {
-                text: messageText ? messageText : ''
+                text: messageText ? messageText : '',
+                time: messageTime,
             },
         }
 
