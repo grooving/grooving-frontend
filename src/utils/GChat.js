@@ -7,13 +7,15 @@ const SUPPORTED_PROTOCOLS = ['ws', 'wss']
 
 class GChat{
     
-    constructor(protocol, room){
+    constructor(protocol, room, userToken, userName){
 
-        if(this.checkProtocol(protocol) && this.checkRoom(room)){
+        if(this.checkProtocol(protocol) && this.checkRoom(room) && userToken && userName){
 
             this._protocol = protocol.toLowerCase();
             this._room = room;
             this._webSocket = undefined;
+            this._userToken = userToken;
+            this._userName = userName;
             this.createSocket();
 
         }else{
@@ -36,6 +38,14 @@ class GChat{
         return this._webSocket;
     }
 
+    getUserToken(){
+        return this._userToken;
+    }
+
+    getUserName(){
+        return this._userName;
+    }
+
     getURI(){
         return this.getProtocol() + "://" + HOST_URI + '/chat/' + this.getRoom() + "/";
     }
@@ -48,17 +58,22 @@ class GChat{
         try{
 
             var receivedMessage = JSON.parse(rawResponse)['json'];
+            console.log("Parsed Received Message: ", receivedMessage);
+
             var mode = receivedMessage['mode'];
 
             if(mode == "ERROR"){
-                res = receivedMessage['error'];
-            }else if (mode == "DATE"){
-                console.log('DATE_MODE is still under development...')
-                res = receivedMessage['date'];
+
+                res = this.formatVueChatMessage('server', receivedMessage["error"]);
+
             }else if(mode == 'MESSAGE'){
-                res = "@" + receivedMessage["username"] + " - " + receivedMessage["name"] + " - "  + receivedMessage["hour"] + ": " + receivedMessage["message"]
+
+                res = this.formatVueChatMessage(receivedMessage["username"], receivedMessage["message"]);
+
             }else{
+
                 res = 'Incorrect message format';
+
             }
 
         } catch(error){
@@ -66,7 +81,7 @@ class GChat{
             console.log("Error while processing a received message");
             console.log(error);
 
-            res = 'Unexpected error. Try Again later';
+            res = this.formatVueChatMessage('server', 'Unexpected error. Try Again later');
 
         }
 
@@ -76,13 +91,11 @@ class GChat{
     // Send Message
 
     /*
-        Sends a new message over an open socket.
-        Message can either be a string or a serilizable
-        object (using JSONParser)
+        Sends a new textMessage over an open socket.
 
         Returns: Whether the message was enqueued to be delivered or not
     */
-    sendMessage(message){
+    sendMessage(textMessage){
 
         var res = false;
 
@@ -90,23 +103,20 @@ class GChat{
         if(this.getWebSocket().readyState == 1){
 
             // Check message type
+            if(typeof textMessage === 'string'){
 
-            if(typeof message === 'object'){
+                // Create an object containing the text message and the 
+                // user token
+                let message = JSON.stringify({
+                    "token": this.getUserToken(),
+                    "message" : textMessage,
+                });
 
-                // If it's an object, we need to parse it
-                let formattedMessage = JSON.stringify(message);
-                
-                this.getWebSocket().send(formattedMessage);
-                res = true;
-
-            }else if(typeof message === 'string'){
-
-                // Directly send the string
                 this.getWebSocket().send(message);
                 res = true;
 
             }else{
-                console.log("Attempted to send a non-supported type of message: ", typeof message)
+                console.log("Attempted to send a non-supported type of message: ", typeof textMessage)
             }
 
         }else{
@@ -118,32 +128,38 @@ class GChat{
 
     // Auxiliary methods
 
+    /*
+        Returns a representation of a message
+        following Vue Component's style.
+    */
+    formatVueChatMessage(author, messageText){
+
+        // Can't create a constant as values
+        // are copied using references
+        let res = {
+            author : this.getUserName() == author ? 'me' : author,
+            type: 'text',
+            data: {
+                text: messageText ? messageText : ''
+            },
+        }
+
+        return res;
+    }
+
     createSocket(){
 
-        this._webSocket = new WebSocket(this.getURI());
+        let initMessage = {
+            "token" : this.getUserToken()
+        }
 
-        // ---- CUSTOM EVENTS LISTENERS -----
-         /*
+        this._webSocket = new WebSocket(this.getURI());
         this._webSocket.addEventListener("open", () => {
 
-            let message = {
-                'token': "df007880db9a4f4fdc61728b5a86aa4786320cc2", //Token del usuario logeado
-                'message': "just"
-            };
-
-            this.sendMessage(message);
+            console.log("WS was opened: ", this._webSocket)
+            this._webSocket.send(JSON.stringify(initMessage));
 
         });
-
-        this._webSocket.addEventListener('message', (event) => {
-            var message = this.processReceivedMessage(event.data)
-            console.log("Processed Message: ", message)
-        });
-        
-        this._webSocket.addEventListener('close', () => {
-            console.log("WebSocket connection closed")
-        });
-        */
 
     }
 

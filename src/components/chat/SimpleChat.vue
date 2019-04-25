@@ -28,25 +28,19 @@ export default {
     methods:{
 
         sendMessage: function(){
-            
+
             if(this.message && this.gchat && this.gsecurity && this.gsecurity.isAuthenticated()){
-
-                let message = {
-                    "token": this.gsecurity.getToken(),
-                    "message" : this.message
-                }
-
-                this.gchat.sendMessage(message);
+                
+                this.gchat.sendMessage(this.message);
                 this.message = "";
             }
 
         },
 
         newMessage: function(event){
-            
             let newMessage = this.gchat.processReceivedMessage(event.data);
-
-            this.log += newMessage + "\n";
+        
+            this.log += newMessage['data']['text'] + "\n";
 
         }
 
@@ -58,7 +52,8 @@ export default {
         this.gsecurity.obtainSavedCredentials();
 
         let offerId = this.$route.params['offerId'];
-        this.gchat = new GChat("ws", offerId);
+        this.gchat = new GChat("ws", offerId, this.gsecurity.getToken(), this.gsecurity.getUsername());
+        console.log(this.gchat)
 
         this.gchat.getWebSocket().addEventListener("message", (event) => {
             this.newMessage(event)
