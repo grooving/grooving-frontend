@@ -29,4 +29,5 @@ export default{
     braintree: 'braintree_token/',
     users: '/users/',
     user: '/user/',
+    statistics: '/admin/statistics/',
 }

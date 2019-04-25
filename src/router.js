@@ -42,6 +42,7 @@ import AboutView from './views/AboutView.vue'
 import UsersList from './views/UsersList.vue'
 import AdminLogin from './views/AdminLogin.vue'
 import BreachNotification from './views/BreachNotification.vue'
+import Statistics from './views/Statistics.vue'
 
 //BORRAR
 import Borrar from './views/About.vue'
@@ -274,7 +275,11 @@ export default new Router({
       path: '/breachNotification',
       name: 'breachNotification',
       component: BreachNotification
+    },
+    {
+      path: '/statistics',
+      name: 'statistics',
+      component: Statistics
     }
-    
   ]
 })
