@@ -41,6 +41,7 @@ import TermsView from './views/TermsView.vue'
 import AboutView from './views/AboutView.vue'
 import AdminLogin from './views/AdminLogin.vue'
 import BreachNotification from './views/BreachNotification.vue'
+import ManageGenres from './views/ManageGenres.vue'
 
 Vue.use(Router)
 
@@ -258,6 +259,11 @@ export default new Router({
       path: '/breachNotification',
       name: 'breachNotification',
       component: BreachNotification
+    },
+    {
+      path: '/manageGenres',
+      name: 'manageGenres',
+      component: ManageGenres
     }
     
   ]
