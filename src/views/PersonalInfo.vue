@@ -1,5 +1,6 @@
 <template>
 <div class="prueba">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <div class="everything">
         <div class="paymentSelect">
           <div class="paymentOptions"><ProfileInfo :name="name" :surnames="userSurnames" :artisticName="artisticName" :email="userEmail" :paypal="paypal" :phoneNumber="userPhoneNumber" :username="username"/></div>
@@ -8,6 +9,27 @@
     <div class="delete">
         <div >
             <span class="card-title" style="font-weight:bold;font-size:30px;margin-bottom:12px">{{gtrans.translate('management_title')}}</span>
+        </div>
+        <div>
+            <div id="otroButton" class="continueButtonDiv">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-12">
+                            <div style="width:100%;margin-top:25px;overflow:auto;">
+                                <p class="card-text" style="font-weight:bold;display:inline-block;vertical-align:middle;margin-top: 8px;">{{gtrans.translate('download_data')}}</p>
+                                <p class="card-text" style="float:right;">
+                                    <button type="button" class="addButton" @click="downloadPersonalData" style="float:right">
+                                        <i class="material-icons arrowIcon addURLButton">file_download</i>
+                                    </button>
+                                </p>
+                            </div>
+                        </div>  
+                    </div>
+                </form>
+                <!--<b-button id="downloadButton" class="continueButton" variant="primary" size="sm" v-on:click="downloadPersonalData">DESCARGAR INFORMACIÓN</b-button>-->
+                <p id="downloadMessage" class="downloadMessage">{{gtrans.translate('download_email')}}</p>
+            </div>
+            <hr style="margin-top:0px;margin-bottom:0px;"/>
         </div>
         <div>
             <form @submit="deleteAccount">
@@ -88,6 +110,21 @@ export default {
             document.getElementById("otroButton").style.display='inline-block';
             return false;
         },
+
+        downloadPersonalData(){
+            NProgress.start();
+            GAxios.post(endpoints.downloadPersonalData, {
+            }).then(response => {
+                console.log(response);
+                //document.getElementById("downloadButton").style.display="none";
+                document.getElementById("downloadMessage").style.display="block";
+            }).catch(ex => {
+                console.log(ex);
+            }).then( () => {
+                NProgress.done();
+            })
+            
+        }
     },
 
 
@@ -171,10 +208,50 @@ export default {
         font-family: "Archivo"
     }
 
+    .addButton{
+        background: -webkit-linear-gradient(left, #00fb82, #187fe6);
+        border: none;
+        border-radius: 100px;
+        display:inline-block;
+        vertical-align: middle;
+        align-items: center;
+        padding: 5px;
+    }
+
+    .addURLButton{
+        background: white;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        border: none;
+        margin: 0 auto; 
+
+        display:inline-block;
+        vertical-align: middle;
+        font-size: 30px;
+    }
+
+    .addURLButton:hover{
+        background:white;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .addButton:hover{
+        background: linear-gradient(to right, #14Ca9f, #1648d0) !important;
+    }
+
     .delete {
-        padding: 10px;
+        padding: 17px;
+        padding-left: 25px;
+        padding-right: 25px;
         margin-bottom: 5% !important;
         margin-left: 3%;
+    }
+
+    .downloadMessage{
+        display: none;
     }
 
     .continueButton {

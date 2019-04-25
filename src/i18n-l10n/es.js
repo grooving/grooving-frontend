@@ -227,5 +227,7 @@ export default{
     accept : "ACEPTAR",
     toast_title : "Tu cuenta se ha eliminado correctamente",
     toast_subtitle : "Lamentamos decirle adiós. Puede registrarse de nuevo en cualquier momento.",
+    download_data: "DESCARGAR INFO. PERSONAL",
+    download_email: "Pronto recibirás un email.",
 
 }
