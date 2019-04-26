@@ -43,6 +43,7 @@ import AdminLogin from './views/AdminLogin.vue'
 import BreachNotification from './views/BreachNotification.vue'
 import ManageGenres from './views/ManageGenres.vue'
 import CreateGenre from './views/CreateGenre.vue'
+import EditGenre from './views/EditGenre.vue'
 
 Vue.use(Router)
 
@@ -270,6 +271,12 @@ export default new Router({
       path: '/createGenre',
       name: 'createGenre',
       component: CreateGenre,
+      props: true,
+    },
+    {
+      path: '/editGenre',
+      name: 'editGenre',
+      component: EditGenre,
       props: true,
     },
     

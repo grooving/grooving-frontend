@@ -27,7 +27,7 @@
             
             <td>
               <div class="contentButtons">
-                <router-link v-bind:to="'editGenre'" class="btn btn-primary editButton"><span class="hireText">EDIT</span></router-link>
+                <router-link v-bind:to="{name: 'editGenre', params: {parentGenreId, parentGenreName, genre}}" class="btn btn-primary editButton"><span class="hireText">EDIT</span></router-link>
                 <router-link v-bind:to="'deleteGenre'" class="btn btn-primary deleteButton"><span class="hireText">DELETE</span></router-link>
               </div>
             </td>
