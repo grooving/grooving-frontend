@@ -28,5 +28,7 @@ export default{
     portfolioZones: '/zones/?portfolio=',
     braintree: 'braintree_token/',
     breachNotification: '/send_breach_notification/',
+    listGenres: '/artisticGenders/?parentId=',
+    createGenre: '/artisticGender/',
     
 }

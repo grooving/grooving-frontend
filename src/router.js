@@ -42,6 +42,7 @@ import AboutView from './views/AboutView.vue'
 import AdminLogin from './views/AdminLogin.vue'
 import BreachNotification from './views/BreachNotification.vue'
 import ManageGenres from './views/ManageGenres.vue'
+import CreateGenre from './views/CreateGenre.vue'
 
 Vue.use(Router)
 
@@ -261,10 +262,16 @@ export default new Router({
       component: BreachNotification
     },
     {
-      path: '/manageGenres',
+      path: '/manageGenres/:genreId',
       name: 'manageGenres',
       component: ManageGenres
-    }
+    },
+    {
+      path: '/createGenre',
+      name: 'createGenre',
+      component: CreateGenre,
+      props: true,
+    },
     
   ]
 })

@@ -1,6 +1,6 @@
 <template>
     <div class="hell">
-        <GenresList/>
+        <GenresList :genreBackLink="genreBackLink" :parentGenreName="genreParentName" :parentGenreId="genreParentId" :grandParentGenreId="grandParentId" :genres="genreChildren" />
     </div>
 </template>
 
@@ -8,6 +8,7 @@
 import GenresList from '@/components/GenresList.vue'
 import GSecurity from '@/security/GSecurity.js';
 import GAxios from '@/utils/GAxios.js';
+import endpoints from '@/utils/endpoints.js';
 
 export default {
 
@@ -17,13 +18,54 @@ export default {
     },
     data() {
         return {
-
-            //Hiring Process...
             gsecurity: GSecurity,
+            genreParentId: undefined,
+            genreParentName: undefined,
+            grandParentId: undefined,
+            genreBackLink: undefined,
+            genreChildren: Array(),
+
         }
     },
 
     mounted() {
+        NProgress.start();
+        this.genreId = this.$route.params['genreId'];
+        //alert(this.genreId);
+        if(this.genreId=='all'){
+            this.genreId='true';
+        }
+        
+        GAxios.get(endpoints.listGenres+this.genreId)
+            .then(response => {
+                console.log(response);
+                if(this.genreId!='true'){
+                    this.genreParentName = response.data.name;
+                    this.genreParentId = response.data.id;
+                    this.grandParentId = response.data.parent;
+                    if(this.grandParentId == 1){
+                        this.genreBackLink = 'all'
+                    }
+                    else{
+                        this.genreBackLink = this.grandParentId;
+                    }
+                    this.genreChildren = response.data.children;
+
+
+                }
+                else{
+                    this.genreParentId = response.data.id;
+                    if(this.genreParentId == null){
+                        this.genreParentId = 1;
+                    }
+                    this.genreChildren = response.data.children;
+                }
+        }).catch(ex => {
+            console.log(ex);
+            this.$router.push('/error');
+        }).then( () => {
+            NProgress.done();
+        });
 
     },
     
