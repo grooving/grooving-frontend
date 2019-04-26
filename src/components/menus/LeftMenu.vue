@@ -30,7 +30,7 @@
                 </li>
 
                 <li class="nav-item section">
-                    <div class="nav-link goTo" data-toggle="collapse" data-target="#sidebarleft" ><span class="link" @click="changeLanguageEn('a')"><img class="lenFlag" src="@/assets/img/en.png"></span><span>⠀</span><span class="link" @click="changeLanguageEs('a')"><img class="lenFlag" src="@/assets/img/es.jpg"></span></div>
+                    <div class="nav-link goTo" data-toggle="collapse" data-target="#sidebarleft" ><span class="link" @click="changeLanguage('en')"><img class="lenFlag" src="@/assets/img/en.png"></span><span>⠀</span><span class="link" @click="changeLanguage('es')"><img class="lenFlag" src="@/assets/img/es.jpg"></span></div>
                 </li>
                 
                 <!-- <li class="nav-item section">
@@ -70,53 +70,18 @@ export default {
     methods: {
         ...mapActions(['clearStore', 'setURL']),
 
-        changeLanguageEs(path) {
-            this.$emit('refreshRightMenu');
-            this.url = this.$store.getters.sideMenus.url;
-            if(this.url !== path) {
-                this.setURL(path);
-                this.clearStore().then(() => {
-                    this.gsecurity = GSecurity;
-                    var GAxiosToken = this.gsecurity.getToken();
+        changeLanguage(language) {
+            var authorizedGAxios = GAxios;
 
-                    var authorizedGAxios = GAxios;
-                    authorizedGAxios.defaults.headers.common['Authorization'] = 'Token '+GAxiosToken;
-                    authorizedGAxios.get(endpoints.changeLangEs).then(response =>{
-                        console.log(response);
-                        console.log("Success!");
-                        console.log("Lenguage changed into:"+response.data.language);
-                        this.$router.go(0);
-                    });
-                });  
-            } else {
-                this.$emit('samePage');
-            }
+            authorizedGAxios.get(endpoints.changeLang + language).then(response =>{
+                console.log('Changing Language to: ', language)
+                this.gsecurity.setLanguage(language)
+                this.$router.go(0);
+            });
+
+            this.$emit('refreshRightMenu');
         },
 
-        changeLanguageEn(path) {
-            this.$emit('refreshRightMenu');
-            this.url = this.$store.getters.sideMenus.url;
-            if(this.url !== path) {
-                this.setURL(path);
-                this.clearStore().then(() => {
-                    this.gsecurity = GSecurity
-                    var GAxiosToken = this.gsecurity.getToken();
-
-                    var authorizedGAxios = GAxios;
-                    authorizedGAxios.defaults.headers.common['Authorization'] = 'Token '+GAxiosToken;
-                    authorizedGAxios.get(endpoints.changeLangEn).then(response =>{
-                        console.log(response);
-                        console.log("Success!");
-                        console.log("Lenguage changed into:"+response.data.language);
-                        this.$router.go(0);
-                    });
-                });  
-            } else {
-                this.$emit('samePage');
-            }
-        },
-
-        
         goTo(path) {
             this.url = this.$store.getters.sideMenus.url;
             if(this.url !== path) {

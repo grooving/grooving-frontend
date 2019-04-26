@@ -27,7 +27,5 @@ export default{
     genres: '/artisticGenders/',
     portfolioZones: '/zones/?portfolio=',
     braintree: 'braintree_token/',
-    changeLangEs: '/language/?lang=es',
-    changeLangEn: '/language/?lang=en',
-    
+    changeLang: '/language/?lang=',    
 }
