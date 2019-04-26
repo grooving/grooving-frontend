@@ -22,6 +22,8 @@
 <script>
 import GSecurity from "@/security/GSecurity.js";
 import GChat from "@/utils/GChat.js";
+import GAxios from "@/utils/GAxios.js";
+import endpoints from "@/utils/endpoints.js";
 
 export default {
 
@@ -32,6 +34,7 @@ export default {
 
       gsecurity: GSecurity,
       gchat: undefined,
+      offerId: '1',
 
       // ---- Vue Beautiful Chat Properties -----
 
@@ -41,21 +44,18 @@ export default {
       //'imageUrl' is supposed to be the user avatar.
       participants: [
         {
-          id: 'rosalia',
-          name: 'Rosalía',
+          id: '',
+          name: '',
           //imageUrl: 'https://avatars3.githubusercontent.com/u/1915989?s=230&v=4'
         },
       ], 
 
       // The image displayed on the chat header
-      titleImageUrl: 'https://img.europapress.es/fotoweb/fotonoticia_20181107115306_1920.jpg',
+      titleImageUrl: require('@/assets/defaultPhoto.png'),
 
       // List of the messages to show, can be paginated and adjusted dynamically
       messageList: [
-          { type: 'text', author: 'me', data: { text: 'Mensaje tela de largo para que haya varias líneas y se vea que está roto.', time: '17:21' } },
-          { type: 'text', author: 'rosalia', data: { text: 'Hola.', time: '19:26'  } },
-          { type: 'text', author: 'rosalia', data: { text: 'Este mensaje tiene muchas palabras y por eso tiene más de 1 línea.', time: '19:26'  } },
-          { type: 'text', author: 'me', data: { text: 'Ok', time: '17:21' } }
+          { type: 'text', author: 'server', data: { text: 'Loading messages...', time: '00:00' } },
       ], 
 
       // For notification purporses
@@ -94,7 +94,7 @@ export default {
       },
 
       // when set to true always scrolls the chat to the bottom when new events are in (new message, user starts typing...) 
-      alwaysScrollToBottom: false, 
+      alwaysScrollToBottom: true, 
 
       // enables *bold* /emph/ _underline_ and such (more info at github.com/mattezza/msgdown)
       messageStyling: true ,
@@ -104,16 +104,17 @@ export default {
   methods: {
 
     sendMessage (text) {
-      console.log('wigg')
-      if (text.length > 0) {
+      if (text.length > 0 && this.gchat) {
         this.newMessagesCount = this.isChatOpen ? this.newMessagesCount : this.newMessagesCount + 1
         this.gchat.sendMessage(text);
       }
     },
 
     incomingMessage: function(event){
-      let newMessage = this.gchat.processReceivedMessage(event.data);
-      this.appendMessage(newMessage);
+      if(this.gchat){
+        let newMessage = this.gchat.processReceivedMessage(event.data);
+        this.appendMessage(newMessage);
+      }
     },
 
     appendMessage(message){
@@ -148,20 +149,52 @@ export default {
 
   },
 
-  mounted(){
+  beforeMount(){
 
+    //BORRAR
+    this.offerId = '1';
+    
     this.gsecurity = GSecurity;
     this.gsecurity.obtainSavedCredentials();
-
-    let offerId = '1';
-    this.gchat = new GChat("ws", offerId, this.gsecurity.getToken(), this.gsecurity.getUsername());
-    console.log(this.gchat)
+    this.gchat = new GChat("ws", this.offerId, this.gsecurity.getToken(), this.gsecurity.getUsername());
 
     this.gchat.getWebSocket().addEventListener("message", (event) => {
         this.incomingMessage(event);
     });
 
-  }
+    // Retrieve the conversation
+    var authorizedGAxios = GAxios;
+
+    authorizedGAxios.get(endpoints.chat + this.offerId + '/').then(response =>{
+      
+      if(this.gsecurity.hasRole('ARTIST')){
+        this.titleImageUrl = response.data.customerPhoto;
+        this.participants[0].id = response.data.customerUsername;
+        this.participants[0].name = response.data.customerName;
+      }else{
+        this.titleImageUrl = response.data.artistPhoto;
+        this.participants[0].id = response.data.artistUsername;
+        this.participants[0].name = response.data.artistName;
+      }
+
+      //If the user has no foto, we change id with the predefined one
+      if(!this.titleImageUrl) 
+        this.titleImageUrl = require('@/assets/defaultPhoto.png');
+
+      var messages = response.data.messages;
+      var history = [];
+
+      for(var i = 0; i < messages.length; i++){
+
+        var m = messages[i].json;
+        history.push(this.gchat.formatVueChatMessage(m.username, m.message, m.hour));
+      }
+
+      this.messageList = history;
+
+    });
+
+  },
 }
 </script>
 

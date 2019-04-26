@@ -1,6 +1,7 @@
 export default{
     artists: '/artists/',
     calendar: '/calendar/',
+    chat: '/chat/',
     artistCalendar: '/artist/calendar/',
     eventlocation: '/eventlocation/',
     login: '/api/login/',
