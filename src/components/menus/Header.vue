@@ -171,10 +171,17 @@ export default {
 
     login: async function() {
 
+      var oldLanguage = this.gsecurity.getLanguage();
       var log_result = await this.gsecurity.authenticate(this.input.username, this.input.password)
 
       if (log_result) {
-        this.$router.push({ path: "/" });
+
+        // If the language has changed, we need to refresh the page...
+        if(oldLanguage != this.gsecurity.getLanguage())
+          this.$router.go({ path: "/" });
+        else
+          this.$router.push({ path: "/" });  
+                  
       } else {
         $('#ddown-form-email, #ddown-form-passwd').css('border-color', 'red');
       }

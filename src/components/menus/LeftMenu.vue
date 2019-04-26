@@ -71,13 +71,33 @@ export default {
         ...mapActions(['clearStore', 'setURL']),
 
         changeLanguage(language) {
-            var authorizedGAxios = GAxios;
 
-            authorizedGAxios.get(endpoints.changeLang + language).then(response =>{
-                console.log('Changing Language to: ', language)
+            // Si el usuario está logeado, tenemos que guardar sus preferencias
+            // en su perfil
+
+            if(this.gsecurity.isAuthenticated()){
+                
+                var authorizedGAxios = GAxios;
+
+                authorizedGAxios.get(endpoints.changeLang + language).then(response =>{
+                    console.log('Changing Language in Backend to: ', language)
+                }).catch( e => {
+                    console.error('Error while processing the request... ', e);
+                }).then( () => {
+                    //Debemos esperar a obtener una respuesta de la petición para 
+                    // que la request no sea cancelada...
+
+                    // En FrontEnd siempre reflejamos los cambios
+                    this.gsecurity.setLanguage(language)
+                    this.$router.go(0);
+                    
+                });
+
+            }else{
+                // En FrontEnd siempre reflejamos los cambios
                 this.gsecurity.setLanguage(language)
                 this.$router.go(0);
-            });
+            }
 
             this.$emit('refreshRightMenu');
         },
