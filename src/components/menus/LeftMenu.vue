@@ -26,6 +26,11 @@
                 </li>
                 <li class="nav-item section">
                     <div class="nav-link goTo" @click="goTo('/about')" data-toggle="collapse" data-target="#sidebarleft" >{{gtrans.translate('aboutUs')}}</div> 
+                    <b-dropdown-divider class="divider"/>
+                </li>
+
+                <li class="nav-item section">
+                    <div class="nav-link goTo" data-toggle="collapse" data-target="#sidebarleft" ><span class="link" @click="changeLanguage('en')"><img class="lenFlag" src="@/assets/img/en.png"></span><span>⠀</span><span class="link" @click="changeLanguage('es')"><img class="lenFlag" src="@/assets/img/es.jpg"></span></div>
                 </li>
                 
                 <!-- <li class="nav-item section">
@@ -44,6 +49,8 @@
 import GSecurity from '@/security/GSecurity.js';
 import GTrans from "@/utils/GTrans.js"
 import {mapActions} from 'vuex';
+import endpoints from '@/utils/endpoints.js';
+import GAxios from '@/utils/GAxios.js';
 
 
 export default {
@@ -62,6 +69,39 @@ export default {
     },
     methods: {
         ...mapActions(['clearStore', 'setURL']),
+
+        changeLanguage(language) {
+
+            // Si el usuario está logeado, tenemos que guardar sus preferencias
+            // en su perfil
+
+            if(this.gsecurity.isAuthenticated()){
+                
+                var authorizedGAxios = GAxios;
+
+                authorizedGAxios.get(endpoints.changeLang + language).then(response =>{
+                    console.log('Changing Language in Backend to: ', language)
+                }).catch( e => {
+                    console.error('Error while processing the request... ', e);
+                }).then( () => {
+                    //Debemos esperar a obtener una respuesta de la petición para 
+                    // que la request no sea cancelada...
+
+                    // En FrontEnd siempre reflejamos los cambios
+                    this.gsecurity.setLanguage(language)
+                    this.$router.go(0);
+                    
+                });
+
+            }else{
+                // En FrontEnd siempre reflejamos los cambios
+                this.gsecurity.setLanguage(language)
+                this.$router.go(0);
+            }
+
+            this.$emit('refreshRightMenu');
+        },
+
         goTo(path) {
             this.url = this.$store.getters.sideMenus.url;
             if(this.url !== path) {
@@ -95,6 +135,10 @@ $(window).bind('scroll', function () {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+.lenFlag{
+        width: 25px;
+    }
 
 * {
     font-family: "Archivo"

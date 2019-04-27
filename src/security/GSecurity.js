@@ -9,7 +9,7 @@ const SUPPORTED_LANGUAGES = ['en', 'es']
 
 class GSecurity {
 
-    constructor(username = 'ANONYMOUS', role='ANONYMOUS', token='', id=-1, firstName='ANONYMOUS', photo='', language='en'){
+    constructor(username = 'ANONYMOUS', role='ANONYMOUS', token='', id=-1, firstName='ANONYMOUS', photo=''){
       
       this._username = username;
       this._firstName = firstName;
@@ -26,8 +26,12 @@ class GSecurity {
         this._id = id;
       }
 
-      // Language can be set independently of other parameters
-      this.setLanguage(language);
+      // Restore the language in cache
+      if(this.obtainLanguageInCache()){
+        this._language = this.obtainLanguageInCache();
+      }else{
+          this._language = 'en';
+      }
 
     }
 
@@ -100,6 +104,7 @@ class GSecurity {
         if(language && SUPPORTED_LANGUAGES.includes(language.toLowerCase())){
             this._language = language.toLowerCase();
             axios.defaults.headers.common['Accept-Language'] = this._language;
+            window.localStorage.setItem("language", this._language);
         }
     }
 
@@ -115,6 +120,10 @@ class GSecurity {
             this.setId(localStorage.getItem("id"));
             this.setLanguage(localStorage.getItem("language"));
         }
+    }
+
+    obtainLanguageInCache(){
+        return localStorage.getItem("language");
     }
 
     saveCredentialsInCache(){

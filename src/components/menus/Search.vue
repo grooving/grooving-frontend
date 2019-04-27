@@ -6,7 +6,7 @@
                 <div class="row">
                     <div class="col-10 col-lg-11">
                         <form class="form-inline my-2 my-lg-0">
-                            <input @keypress.enter="search()" v-model="searchQuery" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                            <input @keypress.enter="search()" v-model="searchQuery" class="form-control mr-sm-2" type="search" v-bind:placeholder="gtrans.translate('search')" aria-label="Search">
                         </form>
                     </div>
                     <div class="col-2 col-lg-1 vertical-center">
@@ -24,11 +24,16 @@
 </template>
 
 <script>
+
+import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
+
   export default {
     name: 'Search',
     data: function() {
         return {
-            searchQuery: ''
+            searchQuery: '',
+            gtrans: undefined,
         }
     },
     methods: {
@@ -40,6 +45,16 @@
           this.close();
           
       }
+    },
+
+    created() {
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+    
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
     },
   };
 </script>

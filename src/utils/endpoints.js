@@ -30,4 +30,5 @@ export default{
     users: '/users/',
     user: '/user/',
     statistics: '/admin/statistics/',
+    changeLang: '/language/?lang=',    
 }

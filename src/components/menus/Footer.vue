@@ -5,7 +5,10 @@
                 
                 <span class="link" @click="goTo(aboutUsURI)">{{gtrans.translate('aboutUs')}} | </span>
                 <span class="link" @click="goTo(termsURI)">{{gtrans.translate('termsAndConditions')}} | </span>
-                <span class="link">{{gtrans.translate('contactUs')}}: grupogrooving@gmail.com </span>
+                <span class="link">{{gtrans.translate('contactUs')}}: grupogrooving@gmail.com | </span>
+                <span class="link" @click="changeLanguage('en')"><img class="lenFlag" src="@/assets/img/en.png"></span>
+                <span>⠀</span>
+                <span class="link" @click="changeLanguage('es')"><img class="lenFlag" src="@/assets/img/es.jpg"></span>
             </div>
 
             <div style="float:clear;">Copyright © 2019:
@@ -18,7 +21,10 @@
 <script>
 import GSecurity from '@/security/GSecurity.js';
 import GTrans from "@/utils/GTrans.js";
+import GAxios from '@/utils/GAxios.js';
 import {mapActions} from 'vuex';
+import endpoints from '@/utils/endpoints.js';
+import { async } from 'q';
 
 export default {
     name: "Footer",
@@ -52,7 +58,40 @@ export default {
         }
     },
     methods: {
+        
         ...mapActions(['clearStore', 'setURL']),
+
+        changeLanguage(language) {
+
+            // Si el usuario está logeado, tenemos que guardar sus preferencias
+            // en su perfil
+
+            if(this.gsecurity.isAuthenticated()){
+                
+                var authorizedGAxios = GAxios;
+
+                authorizedGAxios.get(endpoints.changeLang + language).then(response =>{
+                    console.log('Changing Language in Backend to: ', language)
+                }).catch( e => {
+                    console.error('Error while processing the request... ', e);
+                }).then( () => {
+                    //Debemos esperar a obtener una respuesta de la petición para 
+                    // que la request no sea cancelada...
+
+                    // En FrontEnd siempre reflejamos los cambios
+                    this.gsecurity.setLanguage(language)
+                    this.$router.go(0);
+                    
+                });
+
+            }else{
+                // En FrontEnd siempre reflejamos los cambios
+                this.gsecurity.setLanguage(language)
+                this.$router.go(0);
+            }
+
+        },
+
         goTo(path) {
             this.$emit('refreshRightMenu');
             this.url = this.$store.getters.sideMenus.url;
@@ -63,7 +102,9 @@ export default {
                 this.$emit('samePage');
             }
         },
+
     },
+
     created() {
         // Retreive stored credentials
         this.gsecurity = GSecurity;
@@ -79,6 +120,10 @@ export default {
 </script>
 
 <style scoped>
+
+    .lenFlag{
+        width: 25px;
+    }
     * {
         font-family: "Archivo"
     }

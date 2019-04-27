@@ -30,7 +30,7 @@
             <div class="d-none d-md-inline nav-item">
               <form class="form-inline">
                 <input id="searchFormDesktop" v-model="searchQuery" class="form-control mr-sm-2" style="border-radius:100px;"
-                type="search" placeholder="Search" aria-label="Search" @keypress.enter="search()">
+                type="search" v-bind:placeholder="gtrans.translate('search')" aria-label="Search" @keypress.enter="search()">
                 <button class="btn" type="button" @click="search()">
                   <i class="material-icons align-middle">search</i>
                 </button>
@@ -53,26 +53,26 @@
                   <i class="material-icons align-middle">account_circle</i>
                 </template>
                 <b-dropdown-form class="loginDropdown">
-                  <b-form-group class="loginLabel" label="Log In" label-for="ddown-form-email">
+                  <b-form-group class="loginLabel" v-bind:label="gtrans.translate('header_logIn')" label-for="ddown-form-email">
                     <b-form-input
                       class="loginInput"
                       v-model="input.username"
                       size="sm"
-                      placeholder="Username"
+                      v-bind:placeholder="gtrans.translate('header_username')"
                       id="ddown-form-email"
                     ></b-form-input>
                   </b-form-group>
                   <b-form-group>
                     <b-form-input id="ddown-form-passwd" class="loginInput" v-on:keydown.enter="login()" v-model="input.password"
-                    type="password" size="sm" placeholder="Password"></b-form-input>
+                    type="password" size="sm" v-bind:placeholder="gtrans.translate('header_password')"></b-form-input>
                   </b-form-group>
-                  <b-button class="continueButton" variant="primary" size="sm" v-on:click="login()">SIGN IN</b-button>
+                  <b-button class="continueButton" variant="primary" size="sm" v-on:click="login()">{{gtrans.translate('header_signIn')}}</b-button>
                 </b-dropdown-form>
                 <b-dropdown-divider/>
                 <router-link to="newUser">
                 <b-dropdown-item-button class="dropdownButton">
-                  <span>New around here? </span>
-                  <span class="signUp">Sign up</span>
+                  <span>{{gtrans.translate('header_newUser')}} </span>
+                  <span class="signUp">{{gtrans.translate('header_signUp')}}</span>
                 </b-dropdown-item-button>
                 </router-link>
               </b-dropdown>
@@ -88,6 +88,7 @@
 <script>
 import Search from "./Search.vue";
 import GSecurity from "@/security/GSecurity.js";
+import GTrans from "@/utils/GTrans.js";
 import {mapActions} from 'vuex';
 
 const ARTIST_SEARCH_URI = "#/artist_search?artisticName=";
@@ -107,9 +108,10 @@ export default {
 
   data: function() {
     return {
+      gtrans:undefined,
       menu_links: [
         {
-          text: "Top Artists",
+          text: 'Top Artists',
           link: "/topArtists",
           selected: false,
           requiedRoles: []
@@ -169,10 +171,17 @@ export default {
 
     login: async function() {
 
+      var oldLanguage = this.gsecurity.getLanguage();
       var log_result = await this.gsecurity.authenticate(this.input.username, this.input.password)
 
       if (log_result) {
-        this.$router.push({ path: "/" });
+
+        // If the language has changed, we need to refresh the page...
+        if(oldLanguage != this.gsecurity.getLanguage())
+          this.$router.go({ path: "/" });
+        else
+          this.$router.push({ path: "/" });  
+                  
       } else {
         $('#ddown-form-email, #ddown-form-passwd').css('border-color', 'red');
       }
@@ -230,6 +239,13 @@ export default {
     // Retreive store credentials
     this.gsecurity = GSecurity;
     this.gsecurity.obtainSavedCredentials();
+    this.gtrans = new GTrans(this.gsecurity.getLanguage());
+
+    //this.gtrans.setLanguage('es');
+
+    this.menu_links[0]['text'] = this.gtrans.translate('header_topArtists');
+    this.menu_links[1]['text'] = this.gtrans.translate('header_myOffers');
+    this.menu_links[2]['text'] = this.gtrans.translate('header_checkIn');
 
     // Update data that depends on GSecurity
     this.refreshGSecurityData();

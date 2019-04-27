@@ -3,7 +3,7 @@
       <div class="horizontal-center">
           <div class="row" style="padding-bottom: 15px">
             <div class="col-sm-12 col-md-8 horizontal-center">
-              <h3 style="text-align: left; color: black;"><strong>Video Showcase</strong></h3>
+              <h3 style="text-align: left; color: black;"><strong>{{gtrans.translate('videoShowcase')}}</strong></h3>
             </div>
           </div>
           <div class="row">
@@ -19,6 +19,8 @@
 
 <script>
 import OwlImageCarousel from './OwlImageCarousel.vue';
+import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
 
 // YT URI used to obtain the thumbnail
 const ytThumbnail_01 = 'http://i3.ytimg.com/vi/';
@@ -51,6 +53,7 @@ export default {
 
       // Array containing the actual links
       d_videosInfo: Array(),
+      gtrans: undefined,
     }
   },
 
@@ -94,6 +97,11 @@ export default {
     for(var i = 0; i < this.d_videosInfo.length; i++){
       this.d_photosInfo.push({id: i, imageURL: this.getThumbnail(this.d_videosInfo[i]['videoURL'])});
     }
+
+    this.gsecurity = GSecurity;
+    this.gsecurity.obtainSavedCredentials();
+
+    this.gtrans = new GTrans(this.gsecurity.getLanguage());
     
   },
 }

@@ -48,11 +48,11 @@
                             <span v-else>☆</span>
                         </div>
                         <div v-if="rating == null && ratingD !== null" class="cardTextId">
-                            <p>Thank you for rating the artist!</p>
+                            <p>{{gtrans.translate('offer_thankYou')}}</p>
                         </div>
                     </div>
                     <div v-if="offerStatus == 'PAYMENT_MADE' && gsecurity.hasRole('CUSTOMER') && ratingD == null && artistId != null" class="cardTextId">
-                        <p style="word-break: break-all">Rate now the artist:&nbsp;</p>
+                        <p style="word-break: break-all">{{gtrans.translate('offer_rateNow')}}:&nbsp;</p>
                             <div class="rating">
 
                                 <span class="ratingOK" v-if="ratingD !== null && ratingD>= 1">★</span>
@@ -73,34 +73,34 @@
                             
                     </div>
                     <div v-if="reason !== '' && reason != null && (offerStatus == 'WITHDRAWN' || offerStatus == 'REJECTED' || offerStatus == 'CANCELLED_ARTIST' || offerStatus == 'CANCELLED_CUSTOMER')" class="cardTextId">
-                       <p><span style="font-weight: bold;">&nbsp;Reason: </span> {{reason}}</p>
+                       <p><span style="font-weight: bold;">&nbsp;{{gtrans.translate('offer_reason')}}: </span> {{reason}}</p>
                     </div>
                 </div>
                 <div class="collapse" v-bind:id="noHashtag()">
                     <div class="form-group">
-                        <label for="rejectionReason">Please, confirm your rejection:</label>
-                        <textarea v-model="reason" style="resize: none;" class="form-control" id="rejectionReason" rows="4" placeholder="You can explain the reason why you are rejecting this offer. It will be shown to the person that contacted you."></textarea>
+                        <label for="rejectionReason">{{gtrans.translate('offer_confirmRejection')}}:</label>
+                        <textarea v-model="reason" style="resize: none;" class="form-control" id="rejectionReason" rows="4" v-bind:placeholder="gtrans.translate('offer_rejectPlaceholder')"></textarea>
                     </div>
                     <div class="row container">
                         <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="enableOfferButtons()" class="btn btn-primary cancelButton" 
-                            data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">CANCEL</span></a></div>
+                            data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">{{gtrans.translate('offer_cancel')}}</span></a></div>
                         <div v-if="offerStatus === 'PENDING' && gsecurity.hasRole('ARTIST')" class="right-div right-text2">
-                            <button class="btnn2 btn-primary confirmButton" v-on:click="rejectOffer"><span class="continueText">CONFIRM</span></button></div>
+                            <button class="btnn2 btn-primary confirmButton" v-on:click="rejectOffer"><span class="continueText">{{gtrans.translate('offer_confirm')}}</span></button></div>
                         <div v-if="offerStatus === 'PENDING' && gsecurity.hasRole('CUSTOMER')" class="right-div right-text2">
-                            <button class="btnn2 btn-primary confirmButton" v-on:click="withdrawnOffer"><span class="continueText">CONFIRM</span></button></div>
+                            <button class="btnn2 btn-primary confirmButton" v-on:click="withdrawnOffer"><span class="continueText">{{gtrans.translate('offer_confirm')}}</span></button></div>
                         <div v-if="offerStatus === 'CONTRACT_MADE'" class="right-div right-text2">
-                            <button class="btnn2 btn-primary confirmButton" v-on:click="cancelOffer"><span class="continueText">CONFIRM</span></button></div>
+                            <button class="btnn2 btn-primary confirmButton" v-on:click="cancelOffer"><span class="continueText">{{gtrans.translate('offer_confirm')}}</span></button></div>
                     </div>
                 </div>
                 <div v-if="offerStatus === 'PENDING'" class="row container" v-bind:id="buttonsId()">
                     <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="disableOfferButtons()" class="btn btn-primary rejectButton" 
-                        data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">REJECT</span></a></div>
+                        data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">{{gtrans.translate('offer_reject')}}</span></a></div>
                     <div v-if="offerStatus === 'PENDING' && gsecurity.hasRole('ARTIST')" class="right-div right-text2">
-                        <router-link v-bind:to="confirmURI" class="btn btn-primary confirmButton"><span class="continueText">DETAILS</span></router-link></div>
+                        <router-link v-bind:to="confirmURI" class="btn btn-primary confirmButton"><span class="continueText">{{gtrans.translate('offer_details')}}</span></router-link></div>
                 </div>
                 <div v-if="offerStatus === 'CONTRACT_MADE'" class="row container" v-bind:id="buttonsId()">
                     <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="disableOfferButtons()" class="btnn btn-primary rejectButton" 
-                        data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">{{gtrans.translate('decline')}}</span></a></div>
+                        data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">{{gtrans.translate('offer_decline')}}</span></a></div>
                 </div>
             </div>
         </div>
@@ -112,7 +112,7 @@
     import GAxios from '../utils/GAxios.js'
     import GSecurity from '@/security/GSecurity.js';
     import endpoints from '@/utils/endpoints.js';
-    import GTrans from "@/utils/GTrans.js"
+    import GTrans from "@/utils/GTrans.js";
 
     export default {
         name: 'Offer',
@@ -188,6 +188,15 @@
         },
         beforeMount () {
             this.ratingD = this.rating;
+        },
+        created() {
+            this.gsecurity = GSecurity;
+            this.gsecurity.obtainSavedCredentials();
+            this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+            // Podemos cambiar el lenguaje así para debug...
+            //this.gtrans.setLanguage('es')
+            //this.gtrans.setLanguage('en')
         },
         methods: {
             hashtag() {
@@ -332,17 +341,17 @@
             },
             statusMessage() {
                 if (this.offerStatus == "NEGOTIATION") {
-                    return this.negotiationMessage;
+                    return this.gtrans.translate('offer_negotiationMessage');
                 } else if (this.offerStatus == "WITHDRAWN") {
-                    return this.withdrawnMessage;
+                    return this.gtrans.translate('offer_withdrawnMessage');
                 } else if (this.offerStatus == "REJECTED") {
-                    return this.rejectedMessage;
+                    return this.gtrans.translate('offer_rejectedMessage');
                 } else if (this.offerStatus == "CANCELLED_ARTIST") {
-                    return this.cancelledArtistMessage;
+                    return this.gtrans.translate('offer_cancelledArtistMessage');
                 } else if (this.offerStatus == "CANCELLED_CUSTOMER") {
-                    return this.cancelledCustomerMessage;
+                    return this.gtrans.translate('offer_cancelledCustomerMessage');
                 } else if (this.offerStatus == "PAYMENT_MADE") {
-                    return this.paymentMessage;
+                    return this.gtrans.translate('offer_paymentMessage');
                 }
             }
         },

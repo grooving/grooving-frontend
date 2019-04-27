@@ -3,7 +3,7 @@
         <div class="contenido">
             <div id="titulo">
                 <strong>
-                    <h3>{{ title }}</h3>
+                    <h3>{{gtrans.translate('filter_filterBy')}}</h3>
                 </strong>
             </div>
             <!-- Simple Filters -->
@@ -56,12 +56,17 @@
 </template>
 
 <script>
+
+import GSecurity from "@/security/GSecurity.js";
+import GTrans from "@/utils/GTrans.js";
 export default {
 
     name:'FiltersSideMenu',
 
     data: function(){
         return{
+            gsecurity:undefined,
+            gtrans:undefined,
             title: "Filter by",
             buttonFilterStatus: 0,
             singleSelectorValue: undefined,
@@ -134,6 +139,18 @@ export default {
         
             this.$emit('onFiltersChange');
         },
+    },
+
+    created() {
+        // Retreive store credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+
+        //this.gtrans.setLanguage('es');
+
+        // Update data that depends on GSecurity
+        this.refreshGSecurityData();
     },
 
     props:{

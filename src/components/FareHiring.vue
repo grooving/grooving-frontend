@@ -3,18 +3,18 @@
         <form>
             <div class="form-row">
                 <div class="form-group col-12">
-                    <span class="card-title" style="font-weight:bold;font-size:30px;margin-bottom:12px">Fare Hiring </span>
+                    <span class="card-title" style="font-weight:bold;font-size:30px;margin-bottom:12px">{{gtrans.translate('fare_title')}} </span>
                     <router-link v-if="!empty" v-bind:to="{name: 'editFare', params: {fixedPrice, packageId, fareId}}" style="height: 28px; width: 28px; margin-bottom:12px;">
                         <i class="material-icons iconOffer">create</i>
                     </router-link>
-                    <h6 class="card-subtitle mb-2 text-muted">You can set a fixed price you'll gain per hour. </h6>
+                    <h6 class="card-subtitle mb-2 text-muted">{{gtrans.translate('fare_subtitle')}} </h6>
                     <div v-if="!empty" style="width:100%;margin-top:25px;overflow:auto;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">FIXED PRICE</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('fare_fixedPrice')}}</p>
                         <p class="card-text" style="float:right;">{{fixedPrice}} €/h</p>
                     </div>
                     <router-link v-else v-bind:to="{name: 'createFare'}">
                         <div class="continueButtonDiv">
-                            <b-button class="continueButton" variant="primary" size="sm" type="submit">ADD NEW</b-button>
+                            <b-button class="continueButton" variant="primary" size="sm" type="submit">{{gtrans.translate('add')}}</b-button>
                         </div>
                     </router-link>
                 </div>  
@@ -24,9 +24,16 @@
 </template>
 
 <script>
+import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
 export default {
     name: "FareHiring",
-
+    data() {
+        return {
+            gsecurity: GSecurity,
+            gtrans: undefined,
+        }
+    },
     props: {
         fixedPrice: {},
         packageId: {},
@@ -36,6 +43,15 @@ export default {
         }
         
     },
+    created() {
+      this.gsecurity = GSecurity;
+      this.gsecurity.obtainSavedCredentials();
+      this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+      // Podemos cambiar el lenguaje así para debug...
+      //this.gtrans.setLanguage('es')
+      //this.gtrans.setLanguage('en')
+    }
 }
 </script>
 

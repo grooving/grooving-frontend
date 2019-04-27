@@ -3,13 +3,13 @@
         <form v-on:submit="updateFare">
             <div class="form-row">
                 <div class="form-group col-12">
-                    <span style="font-weight:bold;font-size:30px;">Fare Hiring </span>
+                    <span style="font-weight:bold;font-size:30px;">{{gtrans.translate('fare_title')}} </span>
                     <router-link v-bind:to="{name: 'hiringSettings', params: {}}" style="height: 28px; width: 28px">
                         <i class="material-icons iconOffer">clear</i>
                     </router-link>
-                    <h6 class="card-subtitle mb-2 text-muted">You can set a fixed price you'll gain per hour. </h6>
+                    <h6 class="card-subtitle mb-2 text-muted">{{gtrans.translate('fare_subtitle')}} </h6>
                     <div style="width:100%;margin-top:25px;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">FIXED PRICE</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('fare_fixedPrice')}}</p>
                         <div class="input-group">
                             <input v-model="fixedPrice" type="number" class="form-control" min="0.01" step="0.01" required>
                             <div class="input-group-append">
@@ -18,7 +18,7 @@
                         </div>
                     </div>
                     <div class="continueButtonDiv">
-                        <b-button class="continueButton" variant="primary" size="sm" type="submit">SAVE</b-button>
+                        <b-button class="continueButton" variant="primary" size="sm" type="submit">{{gtrans.translate('save')}}</b-button>
                     </div>
                 </div>  
             </div>
@@ -29,6 +29,7 @@
 <script>
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
+import GTrans from "@/utils/GTrans.js";
 import GSecurity from '@/security/GSecurity.js';
 
 export default {
@@ -38,6 +39,11 @@ export default {
         fixedPrice: {},
         packageId: {},
         fareId: {},
+    },
+    data() {
+        return {
+            gtrans: undefined,
+        }
     },
 
     methods: {
@@ -59,6 +65,12 @@ export default {
     created() {
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+    
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
     },
 
     beforeMount: function() {
