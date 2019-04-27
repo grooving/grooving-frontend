@@ -44,6 +44,7 @@ import BreachNotification from './views/BreachNotification.vue'
 import ManageGenres from './views/ManageGenres.vue'
 import CreateGenre from './views/CreateGenre.vue'
 import EditGenre from './views/EditGenre.vue'
+import DeleteGenre from './views/DeleteGenre.vue'
 
 Vue.use(Router)
 
@@ -277,6 +278,12 @@ export default new Router({
       path: '/editGenre',
       name: 'editGenre',
       component: EditGenre,
+      props: true,
+    },
+    {
+      path: '/deleteGenre',
+      name: 'deleteGenre',
+      component: DeleteGenre,
       props: true,
     },
     

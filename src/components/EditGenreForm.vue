@@ -10,7 +10,19 @@
                     <router-link v-else v-bind:to="'/manageGenres/all'" style="height: 28px; width: 28px">
                         <i class="material-icons iconOffer">clear</i>
                     </router-link>
-                    <h6 class="card-subtitle mb-2 text-muted">This sub-genre belongs to <strong>{{parentName}}</strong></h6>
+                    <h6 v-if="parentName != ''" class="card-subtitle mb-2 text-muted">This sub-genre belongs to <strong>{{parentName}}.</strong></h6>
+                    <h6 v-else class="card-subtitle mb-2 text-muted">This sub-genre belongs to <strong>the main category.</strong></h6>
+                    <div style="width:100%;margin-top:25px;">
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">PARENT GENRE</p>
+                        <div class="input-group">
+                            <select v-model="parentId" class="form-control">
+                                <option :value="1">---------</option>
+                                <option v-for="opt in tree" :key="opt.id" :value="opt.id">
+                                    <span>{{opt.name}}</span>
+                                </option>
+                            </select>
+                        </div>
+                    </div>
                     <div style="width:100%;margin-top:25px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">NAME</p>
                         <div class="input-group">
@@ -37,6 +49,16 @@ import GSecurity from '@/security/GSecurity.js';
 export default {
     name: "EditGenreForm",
 
+    data: function() {
+        return {
+            genresList: undefined,
+            errors: "",
+            gsecurity: undefined,
+            tree: Array(),
+        }
+    },
+
+
     props: {
         genreName: {},
         parentName: {},
@@ -47,17 +69,25 @@ export default {
     methods: {
         updateGenre() {
             NProgress.start();
-            GAxios.post(endpoints.createGenre + this.genreId, {
-                "minimumPrice": this.minimumPrice,
+            GAxios.put(endpoints.createGenre + this.genreId+'/', {
+                "name": this.genreName,
+                "id":this.genreId,
+                "parentGender":this.parentId
             }).then(response => {
                 console.log(response);
-                this.$router.push({name: "hiringSettings"});
+                if(this.parentId==1){
+                    this.$router.push('manageGenres/all');
+                }
+                else{
+                    this.$router.push('manageGenres/'+this.parentId);
+                }
             }).catch(ex => {
                 console.log(ex);
             }).then( () => {
                 NProgress.done();
             })
         },
+
     },
 
     created() {
@@ -66,6 +96,38 @@ export default {
     },
 
     beforeMount: function() {
+        if (!this.gsecurity.isAuthenticated()) {
+            this.$router.push({name: "error"});
+        } else {
+            this.gsecurity = GSecurity
+            var GAxiosToken = this.gsecurity.getToken();
+            var authorizedGAxios = GAxios;
+            authorizedGAxios.defaults.headers.common['Authorization'] = 'Token '+GAxiosToken;
+        }
+
+        GAxios.get(endpoints.genres+'?tree=true').then(response =>{
+            //console.log(response);
+            this.genresList = response.data;
+            var genreRoot = response.data;
+            var childrenRoot = response.data.children;
+
+            this.tree = Array();
+
+            for(var i=0; i<childrenRoot.length; i++){
+                var genre = childrenRoot[i];
+                //console.log(genre);
+                //console.log(this.genreId);
+                if(genre.id != this.genreId){
+                    this.tree.push(genre);
+
+                }
+            }
+            console.log(this.tree);
+
+
+        }).catch(ex => {
+            console.log(ex);
+        })
     },
 }
 </script>

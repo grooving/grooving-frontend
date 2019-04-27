@@ -1,6 +1,6 @@
 <template>
     <div class="hell">
-        <GenresList :genreBackLink="genreBackLink" :parentGenreName="genreParentName" :parentGenreId="genreParentId" :grandParentGenreId="grandParentId" :genres="genreChildren" />
+        <GenresList :depth="depth" :genreBackLink="genreBackLink" :parentGenreName="genreParentName" :parentGenreId="genreParentId" :grandParentGenreId="grandParentId" :genres="genreChildren" />
     </div>
 </template>
 
@@ -24,6 +24,7 @@ export default {
             grandParentId: undefined,
             genreBackLink: undefined,
             genreChildren: Array(),
+            depth: undefined,
 
         }
     },
@@ -35,31 +36,44 @@ export default {
         if(this.genreId=='all'){
             this.genreId='true';
         }
+        else if(this.genreId=='1'){
+            this.$router.push('/error');
+        }
         
         GAxios.get(endpoints.listGenres+this.genreId)
             .then(response => {
                 console.log(response);
-                if(this.genreId!='true'){
-                    this.genreParentName = response.data.name;
-                    this.genreParentId = response.data.id;
-                    this.grandParentId = response.data.parent;
-                    if(this.grandParentId == 1){
-                        this.genreBackLink = 'all'
-                    }
-                    else{
-                        this.genreBackLink = this.grandParentId;
-                    }
-                    this.genreChildren = response.data.children;
-
-
+                this.depth = response.data.depth;
+                if(this.depth > 2){
+                    console.log('Error: You cannot access to this list.');
+                    this.$router.push('/error');
                 }
                 else{
-                    this.genreParentId = response.data.id;
+                    if(this.genreId!='true'){
+                        this.genreParentName = response.data.name;
+                        this.genreParentId = response.data.id;
+                        this.grandParentId = response.data.parent;
+                        
+                        if(this.grandParentId == 1){
+                            this.genreBackLink = 'all'
+                        }
+                        else{
+                            this.genreBackLink = this.grandParentId;
+                        }
+                        this.genreChildren = response.data.children;
+
+
+                    }
+                    else{
+                        this.genreParentId = response.data.id;
                     if(this.genreParentId == null){
                         this.genreParentId = 1;
                     }
                     this.genreChildren = response.data.children;
                 }
+
+                }
+                
         }).catch(ex => {
             console.log(ex);
             this.$router.push('/error');

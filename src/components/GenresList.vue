@@ -21,14 +21,15 @@
         <tr v-for="genre in genres">
             <td class="rowWordBreak">
               <div style="display:inline-flex !important; vertical-align:top !important">
-                <router-link v-bind:to="genre.id.toString()"  class="genreLink" ><span>{{genre.name}}</span><i class="material-icons">chevron_right</i></router-link>
+                <router-link v-if="depth == 1" v-bind:to="genre.id.toString()"  class="genreLink" ><span>{{genre.name}}</span><i class="material-icons">chevron_right</i></router-link>
+                <span v-else class="genreLink">{{genre.name}}</span>
               </div>
             </td>
             
             <td>
               <div class="contentButtons">
                 <router-link v-bind:to="{name: 'editGenre', params: {parentGenreId, parentGenreName, genre}}" class="btn btn-primary editButton"><span class="hireText">EDIT</span></router-link>
-                <router-link v-bind:to="'deleteGenre'" class="btn btn-primary deleteButton"><span class="hireText">DELETE</span></router-link>
+                <router-link v-bind:to="{name: 'deleteGenre', params: {genre, parentGenreId}}" class="btn btn-primary deleteButton"><span class="hireText">DELETE</span></router-link>
               </div>
             </td>
         </tr>
@@ -76,7 +77,9 @@ export default {
         {name: 'Rock'},
         {name: 'Heavy Metal'},
         {name: 'Flamenco'}],
-    }
+    },
+    depth:{
+    },
 
   },
 }
