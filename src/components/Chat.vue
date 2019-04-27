@@ -1,5 +1,6 @@
 <template>
-    <div>
+  <div id="chat">
+    <div >
     <beautiful-chat
       :participants="participants"
       :titleImageUrl="titleImageUrl"
@@ -13,9 +14,12 @@
       :showFile="true"
       :showTypingIndicator="showTypingIndicator"
       :colors="colors"
+      :placeholder="placeholder"
       :alwaysScrollToBottom="alwaysScrollToBottom"
       :messageStyling="messageStyling"
+      :isActive= "chatActive"
       @onType="handleOnType" />
+  </div>
   </div>
 </template>
 
@@ -28,14 +32,21 @@ import endpoints from "@/utils/endpoints.js";
 export default {
 
   name: 'Chat',
-
+  props: {
+    offerId: {
+      type: Number,
+      default: 1,
+    },
+    chatActive: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data() {
     return {
-
       gsecurity: GSecurity,
       gchat: undefined,
-      offerId: '1',
-
+      placeholder: undefined,
       // ---- Vue Beautiful Chat Properties -----
 
       // List of all the participant of the conversation.
@@ -54,15 +65,13 @@ export default {
       titleImageUrl: require('@/assets/defaultPhoto.png'),
 
       // List of the messages to show, can be paginated and adjusted dynamically
-      messageList: [
-          { type: 'text', author: 'server', data: { text: 'Loading messages...', time: '00:00' } },
-      ], 
+      messageList: [], 
 
       // For notification purporses
       newMessagesCount: 0,
 
       // To determine whether the chat window should be open or closed
-      isChatOpen: false, 
+      isChatOpen: true, 
 
       // When set to a value matching the participant.id it shows the typing indicator for the specific user
       showTypingIndicator: '', 
@@ -135,7 +144,8 @@ export default {
 
     closeChat () {
       // called when the user clicks on the botton to close the chat
-      this.isChatOpen = false
+      this.$emit('closeChat');
+      this.isChatOpen = false;
     },
 
     handleScrollToTop () {
@@ -152,11 +162,9 @@ export default {
   beforeMount(){
 
     //BORRAR
-    this.offerId = '1';
-    
     this.gsecurity = GSecurity;
     this.gsecurity.obtainSavedCredentials();
-    this.gchat = new GChat("ws", this.offerId, this.gsecurity.getToken(), this.gsecurity.getUsername());
+    this.gchat = new GChat("ws", this.offerId.toString(), this.gsecurity.getToken(), this.gsecurity.getUsername());
 
     this.gchat.getWebSocket().addEventListener("message", (event) => {
         this.incomingMessage(event);
@@ -165,7 +173,7 @@ export default {
     // Retrieve the conversation
     var authorizedGAxios = GAxios;
 
-    authorizedGAxios.get(endpoints.chat + this.offerId + '/').then(response =>{
+    authorizedGAxios.get(endpoints.chat + this.offerId.toString() + '/').then(response =>{
       
       if(this.gsecurity.hasRole('ARTIST')){
         this.titleImageUrl = response.data.customerPhoto;
@@ -195,7 +203,14 @@ export default {
     });
 
   },
+  updated() {
+    this.placeholder= this.chatActive ? 'Write a reply here' : "This is the chat's history of this offer";
+  },
 }
+
+
+
+
 </script>
 
 <style scoped>

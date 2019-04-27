@@ -24,12 +24,12 @@ import LeftMenu from "./components/menus/LeftMenu.vue"
 import Footer from "./components/menus/Footer.vue"
 import GSecurity from "./security/GSecurity.js"
 import {mapActions} from 'vuex';
-import Chat from '@/components/Chat.vue'
+
 
 export default {
 
   components:{
-    Header, RightMenu, LeftMenu, Footer, Chat
+    Header, RightMenu, LeftMenu, Footer, 
   },
 
   data: function(){
