@@ -33,11 +33,11 @@ export default {
         getUsers: function(){
             NProgress.start();
 
-            console.log(this.gsecurity.getRole());
             var GAxiosToken = this.gsecurity.getToken();
             var authorizedGAxios = GAxios;
             authorizedGAxios.defaults.headers.common['Authorization'] = 'Token '+ GAxiosToken;
             authorizedGAxios.get(endpoints.users, {
+                params: this.$route.query,
             }).then(response => {
                 console.log(response);
 

@@ -92,6 +92,7 @@ import GTrans from "@/utils/GTrans.js";
 import {mapActions} from 'vuex';
 
 const ARTIST_SEARCH_URI = "#/artist_search?artisticName=";
+const ADMIN_SEARCH_URI = "#/usersList?username=";
 
 export default {
   name: "Header",
@@ -191,7 +192,11 @@ export default {
     },
 
     search: function() {
-      window.location = ARTIST_SEARCH_URI + this.searchQuery;
+
+      if(this.gsecurity && this.gsecurity.hasRole('ADMIN'))
+        window.location = ADMIN_SEARCH_URI + this.searchQuery;
+      else
+        window.location = ARTIST_SEARCH_URI + this.searchQuery;
       //window.location.reload();
     },
 
