@@ -1,8 +1,13 @@
 <template>
-    <div>
+    <div id="statsMainWrapper" class="container mt-5 px-0">
         <h1 class="titleView">{{gtrans.translate('statistics_title')}}</h1>
-        <div v-for="graph in barGraphs" :key="graph.title">
-            <BarGraph :key="barGraphUpdated" :data1="graph.data1" :data2="graph.data2" :label1="graph.label1" :label2="graph.label2" :title="graph.title" :id="'sp_' + graph.title"/>
+        <div class="row">
+            <div v-for="graph in circleProgressGraphs" :key="graph.id" class="tarjeta col-12 col-md-6 col-xl-4">
+                <CircleProgressGraph :graphTitle="graph.title" :graphId="graph.id" :percentageTotal="graph.percentageTotal" :percentageLastMonth="graph.percentageLastMonth" :key="graph.percentageTotal"/>
+            </div>
+            <div v-for="graph in barGraphs" :key="graph.title" class="tarjeta col-12 col-md-6 col-xl-4">
+                <BarGraph :key="barGraphUpdated" :data1="graph.data1" :data2="graph.data2" :label1="graph.label1" :label2="graph.label2" :title="graph.title" :id="'sp_' + graph.title"/>
+            </div>
         </div>
     </div>
 </template>
@@ -12,13 +17,14 @@ import GSecurity from "@/security/GSecurity.js"
 import GTrans from "@/utils/GTrans.js"
 import GAxios from '@/utils/GAxios.js'
 import endpoints from '@/utils/endpoints.js'
-import BarGraph from '@/components/BarGraph.vue'
+import BarGraph from '@/components/statistics/BarGraph.vue'
+import CircleProgressGraph from '@/components/statistics/CircleProgressGraph.vue'
 
 export default {
     name: "Statistics",
 
     components: {
-        BarGraph,
+        BarGraph, CircleProgressGraph
     },
 
     data: function() {
@@ -57,6 +63,39 @@ export default {
                 }
             },
 
+            circleProgressGraphs:{
+
+                acceptedOffers:{
+                    id: 'acceptedOffers',
+                    title: '',
+                    percentageTotal: 0.0,
+                    percentageLastMonth: 0.0,
+                },
+
+                rejectedOffers:{
+                    id: 'rejectedOffers',
+                    title: '',
+                    percentageTotal: 0.0,
+                    percentageLastMonth: 0.0,
+                },
+
+
+                pendingOffers:{
+                    id: 'pendingOffers',
+                    title: '',
+                    percentageTotal: 0.0,
+                    percentageLastMonth: 0.0,
+                },
+
+                paidOffers:{
+                    id: 'paidOffers',
+                    title: '',
+                    percentageTotal: 0.0,
+                    percentageLastMonth: 0.0,
+                },
+
+            },
+
             successfulContractsMoney: 0,
             successfulContractsMoneyLastMonth: 0,
             totalContractOffers: 0,
@@ -82,6 +121,7 @@ export default {
         // this.gtrans.setLanguage('es')
         // this.gtrans.setLanguage('en')
 
+        // Bar Graphs
         this.barGraphs.registers.label1 = this.gtrans.translate('registered_artists');
         this.barGraphs.registers.label2 = this.gtrans.translate('registered_customers');
         this.barGraphs.registers.title = this.gtrans.translate('registers');
@@ -97,6 +137,13 @@ export default {
         this.barGraphs.moneyLastMonth.label1 = this.gtrans.translate('money_earned');
         this.barGraphs.moneyLastMonth.label2 = this.gtrans.translate('money_moved');
         this.barGraphs.moneyLastMonth.title = this.gtrans.translate('money_lm');
+
+        // Circle Progress Graph
+        this.circleProgressGraphs.acceptedOffers.title = this.gtrans.translate('accepted_offers_ratio');
+        this.circleProgressGraphs.rejectedOffers.title = this.gtrans.translate('rejected_offers_ratio');
+        this.circleProgressGraphs.pendingOffers.title = this.gtrans.translate('pending_offers_ratio');
+        this.circleProgressGraphs.paidOffers.title = this.gtrans.translate('paid_offers_ratio');
+
     },
 
     beforeMount: function() {
@@ -113,6 +160,7 @@ export default {
                 console.log(response);
                 var statistics = response.data;
 
+                // BarGraph
                 this.barGraphs.registers.data1 = statistics.totalArtists;
                 this.barGraphs.registers.data2 = statistics.totalCustomers;
 
@@ -124,15 +172,19 @@ export default {
 
                 this.barGraphs.moneyLastMonth.data1 = statistics.moneyEarnedLastMonth;
                 this.barGraphs.moneyLastMonth.data2 = statistics.successfulContractsMoneyLastMonth;
-                
-                this.totalContractOffers = statistics.totalContractOffers;
-                this.totalContractOffersLastMonth = statistics.totalContractOffersLastMonth;
-                this.totalPaymentOffers = statistics.totalPaymentOffers;
-                this.totalPaymentOffersLastMonth = statistics.totalPaymentOffersLastMonth;
-                this.totalPendingOffers = statistics.totalPendingOffers;
-                this.totalPendingOffersLastMonth = statistics.totalPendingOffersLastMonth;
-                this.totalRejectedOffers = statistics.totalRejectedOffers;
-                this.totalRejectedOffersLastMonth = statistics.totalRejectedOffersLastMonth;
+
+                // Circle Progress Bar
+                this.circleProgressGraphs.acceptedOffers.percentageTotal = statistics.totalContractOffers;
+                this.circleProgressGraphs.acceptedOffers.percentageLastMonth = statistics.totalContractOffersLastMonth;
+
+                this.circleProgressGraphs.rejectedOffers.percentageTotal = statistics.totalRejectedOffers;
+                this.circleProgressGraphs.rejectedOffers.percentageLastMonth = statistics.totalRejectedOffersLastMonth;
+
+                this.circleProgressGraphs.pendingOffers.percentageTotal = statistics.totalPendingOffers;
+                this.circleProgressGraphs.pendingOffers.percentageLastMonth = statistics.totalPendingOffersLastMonth;
+
+                this.circleProgressGraphs.paidOffers.percentageTotal = statistics.totalPaymentOffers;
+                this.circleProgressGraphs.paidOffers.percentageLastMonth = statistics.totalPaymentOffersLastMonth;
 
                 this.barGraphUpdated += 1;
             }).catch(ex => {
@@ -152,20 +204,30 @@ export default {
         padding: 0px;
     }  
 
-    @media (min-width:768px) {
-        .titleView {
+    @media (min-width:768px)  {
+        .titleView{
             text-align: left;
             font-weight: bold;
         }
     }
 
-    @media (max-width: 768px) {
-        .titleView {
+    @media (max-width: 768px){
+        .titleView{
             text-align: center;
             font-weight: bold;
-            margin-top: 30px;
-            margin-bottom: 10px;
+            margin-bottom: 30px;
         }
+    }
+
+    .container-fluid{
+        margin-top: 50px;
+        margin-bottom: 30px;
+    }
+
+    .tarjeta{
+        padding-bottom: 20px;
+        padding-right: 0px;
+        padding-left: 0px;
     }
 
 </style>

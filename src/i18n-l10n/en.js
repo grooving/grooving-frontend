@@ -233,6 +233,8 @@ export default{
     // ----------------------------------------------------
 
     statistics_title : "Statistics",
+    statistics_showLastMonth: "Last Month",
+    statistics_showTotal: "Total",
     registered_artists: "Registered Artists",
     registered_customers: "Registered Customers",
     registers: "Registers",
@@ -241,4 +243,8 @@ export default{
     money_moved: "Money Moved",
     money: "Money",
     money_lm: "Money Last Month",
+    accepted_offers_ratio: "Ratio of Accepted Offers",
+    rejected_offers_ratio: "Ratio of Rejected Offers",
+    pending_offers_ratio: "Ratio of Pending Offers",
+    paid_offers_ratio: "Ratio of Paid Offers",
 }
