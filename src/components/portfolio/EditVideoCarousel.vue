@@ -8,7 +8,7 @@
           </div>
           <div id="buttonContainer" class="col-4 vertical-center">
             <button type="button" class="vertical-center addButton" @click="toggleImageURLInput">
-              <i v-if="showAddURL" class="material-icons arrowIcon addURLButton">cancel</i>
+              <i v-if="showAddURL" class="material-icons arrowIcon addURLButton">arrow_drop_down_circle</i>
               <i v-else class="material-icons arrowIcon addURLButton">add_circle</i>
             </button>
           </div>
@@ -16,7 +16,12 @@
         <div id="urlForm" class="row py-2" v-if="showAddURL">
           <div class="col-12 vertical-center">
             <div class="form-group" style="width: inherit;">
-              <input @keypress.enter="add($event)" type="url" v-model="addImageURL" class="form-control" aria-describedby="imageCarouselInput" :placeholder="insertURL_placeholder"/>
+              <div class="row">
+                <input @keypress.enter="add($event)" type="url" v-model="addImageURL" class="form-control col-10" aria-describedby="imageCarouselInput" :placeholder="insertURL_placeholder" />
+                <button type="button" class="addElementButton col-2" @click="add($event)">
+                  ADD
+                </button>
+              </div>
               <small :class="{'imageCarouselInput' : showImageCarouselInputErrors}" class="form-text text-muted">
                 {{gtrans.translate('validYTLink')}}
               </small>
@@ -155,6 +160,27 @@ export default {
 </script>
 
 <style scoped>
+
+.addElementButton{
+        width: 200px !important;
+        color: white !important;
+        font-weight: bold;
+        border-radius: 0px 25px 25px 0px;
+        text-align: center;
+        align-content: center;
+
+        font-size: 22px;
+                
+        border: none;
+
+
+        background-image: linear-gradient(to right, #00fb82, #187fe6);
+    }
+
+    .addElementButton:hover{
+        background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;
+    }
 
   .addURLButton{
     background: -webkit-linear-gradient(left, #00fb82, #187fe6);

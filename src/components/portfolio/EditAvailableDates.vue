@@ -20,12 +20,18 @@
                 </div>
                 <div id="urlForm" class="row py-2" v-if="toggleAddURL == false">
                     <div class="col-12 vertical-center">
-                        <input id="deleteDate" @keypress.enter="addRejectedDate()" type="text" v-model="deleteDate" class="form-control" v-bind:placeholder="this.gtrans.translate('deleteDate')" />
+                        <input id="deleteDate" @keypress.enter="addRejectedDate()" type="date" v-model="deleteDate" class="col-xs-9 form-control" v-bind:placeholder="this.gtrans.translate('deleteDate')" />
+                        <button type="button" class="deleteElementButton col-xs-3" @click="addRejectedDate()">
+                            DELETE
+                        </button>
                     </div>
                 </div>
                 <div id="urlForm" class="row py-2" v-if="toggleDeleteURL == false">
                     <div class="col-12 vertical-center">
-                        <input id="addDate" @keypress.enter="addNewDate()" type="text" v-model="addDate" class="form-control" v-bind:placeholder="this.gtrans.translate('addDate')" />
+                        <input id="addDate" @keypress.enter="addNewDate()" type="date" v-model="addDate" class="form-control col-xs-9" v-bind:placeholder="this.gtrans.translate('addDate')" />
+                        <button type="button" class="addElementButton col-xs-3" @click="addNewDate()">
+                            ADD
+                        </button>
                     </div>
                 </div>
             </div>
@@ -234,6 +240,49 @@ export default {
 </script>
 
 <style scoped>
+
+    .addElementButton{
+        width: 200px !important;
+        color: white !important;
+        font-weight: bold;
+        border-radius: 0px 25px 25px 0px;
+        text-align: center;
+        align-content: center;
+
+        font-size: 22px;
+                
+        border: none;
+
+
+        background-image: linear-gradient(to right, #00fb82, #187fe6);
+    }
+
+    .addElementButton:hover{
+        background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;
+    }
+
+    .deleteElementButton{
+        width: 200px !important;
+        color: white !important;
+        font-weight: bold;
+        border-radius: 0px 25px 25px 0px;
+        text-align: center;
+        align-content: center;
+
+        font-size: 22px;
+                
+        border: none;
+
+
+        background-image: linear-gradient(to right, #ffa726, #f44336);
+    }
+
+    .deleteElementButton:hover{
+        background-image: linear-gradient(to right, #e65100, #c62828) !important;
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;
+    }
+
     .buttonContainer {
         display: flex;
         justify-content: center;
