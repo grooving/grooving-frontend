@@ -4,65 +4,65 @@
             <div class="form-row">
                 <div class="form-group col-12">
                     
-                    <span style="font-weight:bold;font-size:30px;">Profile </span>
+                    <span style="font-weight:bold;font-size:30px;">{{gtrans.translate('profile_title')}} </span>
                     <router-link v-bind:to="{name: 'personalInfo', params: {}}" style="height: 28px; width: 28px">
                         <i class="material-icons iconOffer">clear</i>
                     </router-link>
-                    <h6 class="card-subtitle mb-2 text-muted">Basic info of your Grooving account, like your name and email.</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">{{gtrans.translate('profile_subtitle')}}</h6>
                     <div id="errorsDiv" class="validationErrors vertical-center">
                         <p style="margin: 0px;">{{errors}}</p>
                     </div>
                     <div style="width:100%;margin-top:25px;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">FIRST NAME</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_firstName')}}</p>
                         <b-form-group>
                             <b-form-input v-model="name" v-bind:value="name" style="text-align: right" required></b-form-input>
                         </b-form-group>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:25px;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">LAST NAME</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_lastName')}}</p>
                         <b-form-group>
                             <b-form-input v-model="surnames" v-bind:value="surnames" style="text-align: right" required></b-form-input>
                         </b-form-group>
                     </div>
                     <hr v-if="this.gsecurity.hasRole('ARTIST')" style="margin-top:0px;margin-bottom:0px;"/>
                     <div v-if="this.gsecurity.hasRole('ARTIST')" style="width:100%;margin-top:16px;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">ARTISTIC NAME</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_artisticName')}}</p>
                         <b-form-group>
                             <b-form-input v-model="artisticName" v-bind:value="artisticName" style="text-align: right" type="text"></b-form-input>
                         </b-form-group>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:16px;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">USERNAME</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_username')}}</p>
                         <p class="card-text" style="float:right;">{{username}}</p>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:16px;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">PASSWORD</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_password')}}</p>
                         <p class="card-text" style="float:right;">&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;</p>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:16px;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">EMAIL</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_email')}}</p>
                         <p class="card-text" style="float:right;">{{email}}</p>
                     </div>
                     <hr v-if="this.gsecurity.hasRole('ARTIST')" style="margin-top:0px;margin-bottom:0px;"/>
                     <div v-if="this.gsecurity.hasRole('ARTIST')" style="width:100%;margin-top:16px;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">PAYPAL</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('paypal')}}</p>
                         <b-form-group>
                             <b-form-input v-model="paypal" v-bind:value="paypal" style="text-align: right" type="email"></b-form-input>
                         </b-form-group>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:16px;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">PHONE</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_phone')}}</p>
                         <b-form-group>
                             <b-form-input v-model="phoneNumber" min="600000000" max="900000000" v-bind:value="phoneNumber" style="text-align: right" type="number"></b-form-input>
                         </b-form-group>
                     </div>
                     <div class="continueButtonDiv">
-                        <b-button class="continueButton" variant="primary" size="sm" type="submit">SAVE</b-button>
+                        <b-button class="continueButton" variant="primary" size="sm" type="submit">{{gtrans.translate('save')}}</b-button>
                     </div>
                 </div>  
             </div>
@@ -74,6 +74,7 @@
 import endpoints from '@/utils/endpoints.js';
 import GAxios from '../utils/GAxios.js'
 import GSecurity from "@/security/GSecurity.js";
+import GTrans from "@/utils/GTrans.js"
 
 export default {
     name: "EditProfileInfo",
@@ -91,6 +92,8 @@ export default {
             phoneNumber: '',
             artisticName: '',
             errors: "",
+            gsecurity: GSecurity,
+            gtrans: undefined,
         };
     },
 
@@ -192,10 +195,16 @@ export default {
         }
     },
 
-    created() {
+    created: function() {
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
-    },
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
+    }
 }
 </script>
 

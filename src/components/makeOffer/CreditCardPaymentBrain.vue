@@ -21,7 +21,7 @@
                     <div id="cvv" class="form-control test"></div>
                 </div>
             </div>
-            <div id="sendButton" class="btn btn-primary continueButton" @click="payWithCreditCard"><span class="continueText">SEND OFFER</span></div>
+            <div id="sendButton" class="btn btn-primary continueButton" @click="payWithCreditCard"><span class="continueText">{{gtrans.translate('sendOffer')}}</span></div>
 
             <div id="paypalButton" ></div>
         </form>
@@ -30,10 +30,12 @@
 </template>
 <script>
 import braintree from 'braintree-web';
+import paypal from 'paypal-checkout';
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
 import {mapGetters} from 'vuex';
+import GTrans from "@/utils/GTrans.js"
 
 
 export default {
@@ -46,6 +48,7 @@ export default {
             auth_key: undefined,
             errors: "",
             amount: 10,
+            gtrans: undefined,
         }
     },
     methods: {
@@ -68,7 +71,7 @@ export default {
                     fields: {
                         number: {
                             selector: '#number',
-                            placeholder: 'Enter a 16 digits Credit Card',
+                            placeholder: this.gtrans.translate('creditcard_placeholder'),
                             maxCardLength: 16,
                         },
                         cvv: {
@@ -110,7 +113,7 @@ export default {
                         payment: () => {
                             return paypalCheckoutInstance.createPayment({
                                     flow: 'checkout',
-                                    intent: 'sale',
+                                    intent: 'authorize',
                                     amount: this.amount,
                                     displayName: 'Braintree Testing',
                                     currency: 'EUR'
@@ -121,6 +124,7 @@ export default {
                                 console.log(payload);
                                 this.errors = "";
                                 this.nonce = payload.nonce;
+                                this.$emit('finishPayment', this.nonce)
                             })
                         },
                         onCancel: (data) => {
@@ -129,7 +133,8 @@ export default {
                         },
                         onError: (err) => {
                             console.error(err);
-                            this.errors = "An error occurred while processing the paypal payment.";
+                            this.errors = this.gtrans.translate('paypal_error');
+                            document.getElementById("errorsDiv").style.display = "block";
                         }
                     }, '#paypalButton')
 
@@ -175,6 +180,16 @@ export default {
         }).then(() => this.obtainInstance());        
     },
 
+    created: function(){
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
+    }
 }
 </script>
 
@@ -195,12 +210,13 @@ export default {
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .3) !important;
     }
 
-    /* .test {
-        border-color: #00fb82 ;
-        font-weight: semibold ;
-        color:black ;
-        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) ;
-    } */
+    .paypalB {
+        margin-top:15px; 
+        width:200px;
+        
+        margin-left: 19%;
+
+    }
 
     input:focus + .test {
         display: block;

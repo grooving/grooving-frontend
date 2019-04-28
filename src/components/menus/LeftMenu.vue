@@ -4,28 +4,28 @@
      <div class="collapse navbar-collapse width px-2 bg-light" id="sidebarleft">
          <p>
          <div class="navContent">
-         <h2 class="title">Menu</h2>
+         <h2 class="title">{{gtrans.translate('menu')}}</h2>
             <ul class="navbar-nav mr-auto p-2 col align-self-center justify-content-center">
                 <li class="nav-item section">
-                    <div class="nav-link goTo" @click="goTo('/topArtists')" data-toggle="collapse" data-target="#sidebarleft" >Top Artists</div> 
+                    <div class="nav-link goTo" @click="goTo('/topArtists')" data-toggle="collapse" data-target="#sidebarleft" >{{gtrans.translate('topArtists')}}</div> 
                     <b-dropdown-divider v-if="gsecurity.isAuthenticated()" class="divider"/>
                 </li>
                 <li v-if="gsecurity.isAuthenticated()" class="nav-item section">
                     <div class="nav-link goTo" @click="goTo('/offers')" data-toggle="collapse" 
-                    data-target="#sidebarleft" >My Offers</div>
+                    data-target="#sidebarleft" >{{gtrans.translate('myOffers')}}</div>
                     <b-dropdown-divider v-if="gsecurity.isAuthenticated()" class="divider"/>
                 </li>
                 
                 <li v-if="gsecurity.hasRole('ARTIST')" class="nav-item section">
-                    <div class="nav-link goTo" @click="goTo('/receivePayment')" data-toggle="collapse" data-target="#sidebarleft">Check-In</div>
+                    <div class="nav-link goTo" @click="goTo('/receivePayment')" data-toggle="collapse" data-target="#sidebarleft">{{gtrans.translate('checkIn')}}</div>
                     <b-dropdown-divider v-if="gsecurity.hasRole('ARTIST')" class="divider"/>
                 </li>
                 <li class="nav-item section">
-                    <div class="nav-link goTo" @click="goTo('/terms')" data-toggle="collapse" data-target="#sidebarleft" >Terms and Conditions</div> 
+                    <div class="nav-link goTo" @click="goTo('/terms')" data-toggle="collapse" data-target="#sidebarleft" >{{gtrans.translate('termsAndConditions')}}</div> 
                     <b-dropdown-divider class="divider"/>
                 </li>
                 <li class="nav-item section">
-                    <div class="nav-link goTo" @click="goTo('/about')" data-toggle="collapse" data-target="#sidebarleft" >About Us</div> 
+                    <div class="nav-link goTo" @click="goTo('/about')" data-toggle="collapse" data-target="#sidebarleft" >{{gtrans.translate('aboutUs')}}</div> 
                 </li>
                 
                 <!-- <li class="nav-item section">
@@ -42,6 +42,7 @@
  
 <script>
 import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js"
 import {mapActions} from 'vuex';
 
 
@@ -56,6 +57,7 @@ export default {
         return{
             gsecurity: GSecurity,
             url: undefined,
+            gtrans: undefined,
         }
     },
     methods: {
@@ -70,6 +72,15 @@ export default {
             }
         },
     },
+
+    created: function(){
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
+
+    }
 }
 
 $(window).bind('scroll', function () {

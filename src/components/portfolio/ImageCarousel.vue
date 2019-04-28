@@ -1,44 +1,64 @@
 <template>
   <div v-if="photosInfo.length != 0" class="container-fluid">
-      <div class="owl-wrapper horizontal-center">
+      <div class="horizontal-center">
           <div class="row" style="padding-bottom: 15px">
             <div class="col-sm-12 col-md-8 horizontal-center">
-              <h3 style="text-align: left; color: black;"><strong>Image Showcase</strong></h3>
+              <h3 style="text-align: left; color: black;"><strong>{{gtrans.translate('artist_images')}}</strong></h3>
             </div>
           </div>
           <div class="row">
-              <div class="col-sm-12 col-md-8 horizontal-center">
-                  <div class="owl-carousel owl-theme">       
-                      <a v-for="photoInfo in photosInfo" :key="photoInfo.id" :href="photoInfo.link">
-                        <img :src="photoInfo.imageURL" class="card-img-top artistImage" alt="Artist's Image">
-                      </a>
-                  </div>
+              <div class="owl-wrapper horizontal-center">
+                <div class="col-sm-12 col-md-8 horizontal-center">
+                  <OwlImageCarousel :photosInfo="d_photosInfo" :key="actualizador" :mode="'displayImage'" @imageTrigger="magnifyImage" />
+                </div>
               </div>
           </div>
       </div>
+      <ImagePopup  v-if="popUpPhoto != ''" :photo="popUpPhoto" @onClosePopUp="popUpPhoto = ''" />
   </div>
 </template>
 
 <script>
-
-import 'owl.carousel/dist/assets/owl.carousel.css';
-import 'owl.carousel'
-
-/* Makes Slides responsive */
-$(window).on('resize', function(){
-
-  var windowWidth = $(window).width();
-
-  /* Substracts some amount to ensure component's width
-  is smaller than the window */
-  windowWidth -= 100;
-
-  $('.owl-wrapper').css('width', windowWidth);
-
-});
+import OwlImageCarousel from './OwlImageCarousel.vue';
+import ImagePopup from './ImagePopup.vue';
+import GSecurity from "@/security/GSecurity.js"
+import GTrans from "@/utils/GTrans.js"
 
 export default {
+
   name: "ImageCarousel",
+
+  components:{
+    OwlImageCarousel, ImagePopup
+  },
+
+  data: function(){
+    return{
+
+      gsecurity: GSecurity,
+      gtrans: undefined,
+      actualizador: 0,
+
+      // Array containing the info about photos
+      d_photosInfo: Array(),
+      popUpPhoto: '',
+
+    }
+  },
+
+  methods: {
+
+    magnifyImage: function(id){
+      // Finds the selected video in the array, gets its URL and opens it
+      var selectedImage = this.d_photosInfo.filter(x => x.id == id);
+
+      if(selectedImage){
+        this.popUpPhoto = selectedImage[0].imageURL;
+      }
+
+    },
+
+  },
 
   props:{
     photosInfo: {
@@ -49,36 +69,20 @@ export default {
             ]
     },
   },
+  
+  created: function(){
+    this.gsecurity = GSecurity;
+    this.gsecurity.obtainSavedCredentials();
 
-  mounted: function () {
+    this.gtrans = new GTrans(this.gsecurity.getLanguage());
+    
+    // Podemos cambiar el lenguaje así para debug...
+    //this.gtrans.setLanguage('es')
+    //this.gtrans.setLanguage('en')
 
-    /* Initializes Owl Carousel */
-    var windowWidth = $( window ).width();
-    windowWidth -= 100;
-
-    $('.owl-wrapper').css('width', windowWidth);
-
-    $('.owl-carousel').owlCarousel({
-      loop:true,
-      margin: 10,
-      autoplay: true,
-      nav: true,
-      responsive:{
-
-          0:{
-              items:1,
-          },
-          600:{
-              items:2,
-          },
-          992:{
-              items:3,
-          }
-          
-      },
-
-    });
-  }
+    this.d_photosInfo = this.$props.photosInfo;
+    console.log(this.popUpPhoto)
+  },
 }
 </script>
 
@@ -88,20 +92,14 @@ export default {
   }
 
   @media (max-width: 576px) {
-    .artistImage {
-      object-fit: cover;
-      height: 12rem;
-      width: 100%;
-      border-radius: 10px 10px 10px 10px;
+    .owl-carousel .item-video{
+      height: 15em;
     }
   }
 
   @media (min-width: 576px) {
-    .artistImage {
-      object-fit: cover;
-      height: 15rem;
-      width: 100%;
-      border-radius: 10px 10px 10px 10px;
+    .owl-carousel .item-video{
+      height: 18rem;
     }
   }
 </style>

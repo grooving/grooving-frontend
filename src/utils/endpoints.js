@@ -31,5 +31,6 @@ export default{
     listGenres: '/artisticGenders/?parentId=',
     createGenre: '/artisticGender/',
     manageZone: '/admin/zone/',
-    
+    users: '/users/',
+    user: '/user/',
 }

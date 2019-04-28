@@ -16,17 +16,17 @@
 </template>
 
 <script>
+import GSecurity from "@/security/GSecurity.js";
+import GTrans from "@/utils/GTrans.js";
 
 export default {
     name: 'TabbedSubMenu',
     data: function(){
       return{
-          tabs: [
-            {id: 0, text:"Pending", link:"#", icon:"query_builder"},
-            {id: 1, text:"Accepted", link:"#", icon:"check_circle"},
-            {id: 2, text:"Rejected", link:"#", icon:"cancel"}
-          ],
+          tabs: undefined,
           selected: 0,
+          gsecurity: GSecurity,
+          gtrans: undefined,
       }
     },
     methods: {
@@ -35,7 +35,23 @@ export default {
           this.selected = index;
           this.$emit("selectedTab", this.selected);
         }
-      }
+    },
+    created() {
+      this.gsecurity = GSecurity;
+      this.gsecurity.obtainSavedCredentials();
+      this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+      // Podemos cambiar el lenguaje así para debug...
+      //this.gtrans.setLanguage('es')
+      //this.gtrans.setLanguage('en')
+
+      this.tabs = [
+            {id: 0, text: this.gtrans.translate('pending'), link:"#", icon:"query_builder"},
+            {id: 1, text: this.gtrans.translate('accepted'), link:"#", icon:"check_circle"},
+            {id: 2, text: this.gtrans.translate('rejected'), link:"#", icon:"cancel"}
+          ]
+        
+    }
 }
 </script>
 

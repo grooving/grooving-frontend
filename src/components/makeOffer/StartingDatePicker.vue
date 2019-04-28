@@ -14,19 +14,24 @@
                 </div>
             </div>
             <div class="align-items-center">
-                 <div class="btn btn-primary continueButton" @click="getDateInputs(hour, minutes)"><span class="continueText">CONTINUE</span></div>
+                 <div class="btn btn-primary continueButton" @click="getDateInputs(hour, minutes)"><span class="continueText">{{gtrans.translate('continueButton')}}</span></div>
             </div>
         </form>
     </div>
 </template>
 
 <script>
+import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
+
 export default {
     name: "StartingDatePicker",
     data (){
         return {
             hour: undefined,
             minutes: undefined,
+            gsecurity: GSecurity,
+            gtrans: undefined,
         }
     },
     props: {
@@ -43,6 +48,16 @@ export default {
         getDateInputs(hour, minutes) {
             this.$emit('startingHour', hour, minutes);
         }
+    },
+    created() {
+      this.gsecurity = GSecurity;
+      this.gsecurity.obtainSavedCredentials();
+      this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+      // Podemos cambiar el lenguaje así para debug...
+      //this.gtrans.setLanguage('es')
+      //this.gtrans.setLanguage('en')
+
     }
 }
 </script>
@@ -60,7 +75,7 @@ export default {
         font-weight: bold;
         border: none;
         border-radius: 30px;
-        width: 45%;
+        width: 55%;
         background-image: linear-gradient(to right, #00fb82, #187fe6);
     }
 

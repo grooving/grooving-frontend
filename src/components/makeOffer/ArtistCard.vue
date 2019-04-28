@@ -16,7 +16,7 @@
                     <p class="price">{{ price }}€/h</p>
                 </div>
                 <div v-if="totalPrice!=null" class="rightContent">
-                    <p class="price">Total: <br>{{ totalPrice }}€</p>
+                    <p class="price">{{gtrans.translate('total')}}: <br>{{ totalPrice }}€</p>
                 </div>
             </div>
         </div>
@@ -26,7 +26,9 @@
 </template>
 
 <script>
-import DoubleSlider from '@/components/makeOffer/DoubleSlider.vue'
+import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
+import DoubleSlider from '@/components/makeOffer/DoubleSlider.vue';
 import {mapActions} from 'vuex';
 
 export default {
@@ -43,6 +45,8 @@ export default {
             duration: 23.5,    
         },
         nextStep: undefined, 
+        gsecurity: GSecurity,
+        gtrans: undefined,
       }
   },
 
@@ -69,11 +73,11 @@ export default {
         },
         artistName: {
             type: String,
-            default: 'NO DATA'
+            default: "NO DATA"
         },
         artistGenres: {
             type: Array,
-            default: 'Genre 1, Genre 2'
+            default: undefined,
         },
         price: {
           type: String,
@@ -86,7 +90,18 @@ export default {
     },
     methods: {
 
-    }
+    },
+    created() {
+        // Retreive stored credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+            
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
+    },
 }
 </script>
 

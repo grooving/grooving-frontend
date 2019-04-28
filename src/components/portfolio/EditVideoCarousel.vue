@@ -4,7 +4,7 @@
       <div class="col-sm-12 col-md-8 horizontal-center">
         <div id="titleAndAdd" class="row">
           <div id="titleContainer" class="col-8 vertical-center">
-            <h3 class="title"><strong>Video Showcase</strong></h3>
+            <h3 class="titleCarousel"><strong>{{gtrans.translate('videoShowcase')}}</strong></h3>
           </div>
           <div id="buttonContainer" class="col-4 vertical-center">
             <button type="button" class="vertical-center addButton" @click="toggleImageURLInput">
@@ -16,9 +16,9 @@
         <div id="urlForm" class="row py-2" v-if="showAddURL">
           <div class="col-12 vertical-center">
             <div class="form-group" style="width: inherit;">
-              <input @keypress.enter="add($event)" type="url" v-model="addImageURL" class="form-control" aria-describedby="imageCarouselInput" placeholder="Insert your URL Here..." />
+              <input @keypress.enter="add($event)" type="url" v-model="addImageURL" class="form-control" aria-describedby="imageCarouselInput" :placeholder="insertURL_placeholder"/>
               <small :class="{'imageCarouselInput' : showImageCarouselInputErrors}" class="form-text text-muted">
-                Must be a valid youtube link.
+                {{gtrans.translate('validYTLink')}}
               </small>
             </div>
           </div>
@@ -26,17 +26,19 @@
       </div>
     </div>
     <div id="bottomContainer" class="row">
-        <div id="owl-container" class="col-sm-12 col-md-8 horizontal-center">
-          <div class="owl-wrapper">
-            <OwlImageCarousel :photosInfo="d_photosInfo" :key="actualizador" @deleteImage="deleteCarouselImage" />
-          </div>
+      <div class="owl-wrapper horizontal-center">
+        <div class="col-sm-12 col-md-8 horizontal-center">
+          <OwlImageCarousel :photosInfo="d_photosInfo" :key="actualizador" :mode="'edit'" @actionImageTrigger="deleteCarouselImage" />
         </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import OwlImageCarousel from './OwlImageCarousel.vue';
+import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
 
 // YT URI used to obtain the thumbnail
 const ytThumbnail_01 = 'http://i3.ytimg.com/vi/';
@@ -69,6 +71,10 @@ export default {
 
       // Array containing the actual links
       d_videosInfo: Array(),
+
+      gsecurity: GSecurity,
+      gtrans: undefined,
+      insertURL_placeholder: undefined,
     }
   },
 
@@ -133,6 +139,16 @@ export default {
       this.d_photosInfo.push({id: i, imageURL: this.getThumbnail(this.d_videosInfo[i]['videoURL'])});
     }
     
+    this.gsecurity = GSecurity;
+    this.gsecurity.obtainSavedCredentials();
+
+    this.gtrans = new GTrans(this.gsecurity.getLanguage());
+    
+    // Podemos cambiar el lenguaje así para debug...
+    //this.gtrans.setLanguage('es')
+    //this.gtrans.setLanguage('en')
+
+    this.insertURL_placeholder = this.gtrans.translate('insertURL'); 
   }
 
 }
@@ -169,9 +185,9 @@ export default {
     margin: 0 auto;
   }
 
-  .title{
+  .titleCarousel{
     text-align: left; 
-    color: black; 
+    color: black;
     margin: 0;
   }
 

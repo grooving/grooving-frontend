@@ -39,6 +39,7 @@ import StartingDate from './views/StartingDate.vue'
 import PerformanceSelector from './views/PerformanceSelector.vue'
 import TermsView from './views/TermsView.vue'
 import AboutView from './views/AboutView.vue'
+import UsersList from './views/UsersList.vue'
 import AdminLogin from './views/AdminLogin.vue'
 import BreachNotification from './views/BreachNotification.vue'
 import ManageGenres from './views/ManageGenres.vue'
@@ -49,6 +50,10 @@ import ManageZones from './views/ManageZones.vue'
 import CreateZone from './views/CreateZone.vue'
 import EditZone from './views/EditZone.vue'
 import DeleteZone from './views/DeleteZone.vue'
+
+
+//BORRAR
+import Borrar from './views/About.vue'
 
 
 Vue.use(Router)
@@ -257,6 +262,17 @@ export default new Router({
       path: '/about',
       name: 'about',
       component: AboutView,
+    },
+    {
+      path: '/usersList',
+      name: 'usersList',
+      component: UsersList,
+    },
+
+    //BORRAR
+    {
+      path: '/pruebaGTrans',
+      component: Borrar,
     },
     {
       path: '/admin',

@@ -144,7 +144,7 @@ export default {
           for(var i = 0; i < pImages.length; i++){
             var image = pImages[i];
             this.d_portfolioImages.push({id:imageCounter, imageURL:image});
-
+            imageCounter++;
           }
           this.updateImagesKey += 1;
 

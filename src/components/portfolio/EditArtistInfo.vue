@@ -2,14 +2,14 @@
 
     <div class="content overlap">
         <div class="inputForm">
-        <input required v-model="$parent.d_portfolioArtisticName" class="form-control inputName" type="text" id="inputName" placeholder="Name">
+        <input required v-model="$parent.d_portfolioArtisticName" class="form-control inputName" type="text" id="inputName" v-bind:placeholder="this.gtrans.translate('artist_artisticName')">
         </div>
         <div class="inputForm">
             <EditGenre/>
             <EditZone/>
         </div>
         <div class="inputForm">
-            <textarea v-model="$parent.d_portfolioBiography" class="form-control inputDescription" id="" rows="3" placeholder="Description"></textarea>
+            <textarea v-model="$parent.d_portfolioBiography" class="form-control inputDescription" id="" rows="3" v-bind:placeholder="this.gtrans.translate('artist_description')"></textarea>
         </div>
     </div>
 </template>
@@ -17,9 +17,17 @@
 <script>
 import EditGenre from '@/components/portfolio/EditGenre.vue'
 import EditZone from '@/components/portfolio/EditZone.vue'
+import GSecurity from "@/security/GSecurity.js"
+import GTrans from "@/utils/GTrans.js"
 
 export default {
     name: "EditArtistInfo",
+    data: function(){
+        return{
+            gsecurity: GSecurity,
+            gtrans: undefined,
+        }
+    },
     components: {
         EditGenre, EditZone
     },
@@ -57,6 +65,16 @@ export default {
             default: true
         },
     },
+    created: function(){
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
+    }
 }
 </script>
 
