@@ -1,6 +1,7 @@
 export default{
     artists: '/artists/',
     calendar: '/calendar/',
+    chat: '/chat/',
     artistCalendar: '/artist/calendar/',
     eventlocation: '/eventlocation/',
     login: '/api/login/',
@@ -30,5 +31,6 @@ export default{
     breachNotification: '/send_breach_notification/',
     listGenres: '/artisticGenders/?parentId=',
     createGenre: '/artisticGender/',
+    statistics: '/admin/statistics/',
     
 }

@@ -43,10 +43,7 @@ import UsersList from './views/UsersList.vue'
 import AdminLogin from './views/AdminLogin.vue'
 import BreachNotification from './views/BreachNotification.vue'
 import Statistics from './views/Statistics.vue'
-
-//BORRAR
-import Borrar from './views/About.vue'
-
+import Chat from './components/Chat.vue'
 import ManageGenres from './views/ManageGenres.vue'
 import CreateGenre from './views/CreateGenre.vue'
 import EditGenre from './views/EditGenre.vue'
@@ -64,6 +61,11 @@ export default new Router({
       path: "/",
       name: 'home',
       component: Home
+    },
+    {
+      path: "/chat",
+      name: 'chat',
+      component: Chat
     },
     {
       path: '/artist_search',
@@ -264,12 +266,6 @@ export default new Router({
       path: '/usersList',
       name: 'usersList',
       component: UsersList,
-    },
-
-    //BORRAR
-    {
-      path: '/pruebaGTrans',
-      component: Borrar,
     },
     {
       path: '/admin',

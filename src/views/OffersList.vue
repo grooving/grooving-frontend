@@ -19,9 +19,10 @@
             <span v-if="selectedTab == 1">
             <div class="row">
               <div v-for="oferta in acceptedOffers" :key="oferta.offerID" class="tarjeta col-12 col-md-6 col-xl-6">
-                <Offer :offerID="oferta.offerID" :confirmURI="oferta.confirmURI" :date="oferta.date" :price="oferta.price" 
+                <Offer @openChat="chat" :offerID="oferta.offerID" :confirmURI="oferta.confirmURI" :date="oferta.date" :price="oferta.price" 
                   :rating="oferta.rating" :place="oferta.place" :userIcon="oferta.userIcon" :userName="oferta.userName"  :offerStatus="oferta.offerStatus" :imageURI="oferta.imageURI" :customerSurnames="oferta.customerSurnames" :artistId="oferta.artistId" :reason="oferta.reason"/>
               </div>
+                <Chat :offerId="chatOfferId" :chatActive="chatActive" v-if="chatReady" @closeChat="chatReady=false" :key="chatOfferId" style="z-index: 8000; position:absolute"/>
             </div>
             <div v-if="acceptedOffers.length == 0" class="error">
               <h1 class="oops">Nothing to show ☹</h1>
@@ -43,6 +44,7 @@
         </div>
       </div>
   </div>
+  
 </template>
 
 <script>
@@ -52,7 +54,8 @@ import TabbedSubMenu from '@/components/menus/TabbedSubMenu.vue';
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
-import GTrans from "@/utils/GTrans.js"
+import GTrans from "@/utils/GTrans.js";
+import Chat from '@/components/Chat.vue';
 
 var acceptURI = '/offerDetails/';
 
@@ -62,12 +65,16 @@ export default {
   components: {
     Offer,
     TabbedSubMenu,
+    Chat,
   },
 
   data: function() {
     return {
       gsecurity: GSecurity,
       gtrans: undefined,
+      chatReady: false,
+      chatOfferId: undefined,
+      chatActive: undefined,
       datos_prueba: [
         {
           offerID:  1, 
@@ -125,6 +132,11 @@ export default {
   },
 
   methods: {
+    chat(payload) {
+      this.chatOfferId = payload[0];
+      this.chatActive = payload[1];
+      this.chatReady = true;
+    },
     toggleFilterSelectionModal: function () {
       this.showFilterSelectionModal = !this.showFilterSelectionModal;
     },

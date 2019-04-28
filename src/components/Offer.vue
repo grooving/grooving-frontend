@@ -8,14 +8,18 @@
                         <div class="priceCard"><h1>{{price}}€</h1><br>
                         </div>
                         <div  style="padding-top: 20px;">
-                        <div class="cardTextDate"><i class="material-icons iconOffer">event_note</i><p><span style="margin-bottom: 1px;">{{date}}</span></p>
+                        <div class="cardTextDate"><i class="material-icons iconOffer">event_note</i><p><span style="margin-left: 5px;margin-bottom: 1px;">{{date}}</span></p>
                         </div>
                         <br>
-                        <div class="cardTextLocation"><i class="material-icons iconOffer">location_on</i><p> {{place}}</p>
+                        <div class="cardTextLocation"><i class="material-icons iconOffer">location_on</i><p style="margin-left: 5px;">  {{place}}</p>
                         </div>
                         <br>
-                        <div class="cardTextId"><i class="material-icons iconOffer">error_outline</i><p style="word-break: break-all">ID:{{offerID}}</p>
+                        <div class="cardTextId"><i class="material-icons iconOffer ">error_outline</i><p style="margin-left: 5px; word-break: break-all">ID:{{offerID}}</p>
                         </div>
+                        <br>
+                        <div class="cardTextId" v-if="offerStatus == 'CONTRACT_MADE' || offerStatus == 'PAYMENT_MADE'" @click="openChat()"><i class="material-icons iconOffer chat">chat</i><p style="margin-left: 5px;;word-break: break-all">{{chat}}</p>
+                        </div>
+                            
                         </div>
                     </div>
                     <div class="right-div right-text">
@@ -112,7 +116,7 @@
     import GAxios from '../utils/GAxios.js'
     import GSecurity from '@/security/GSecurity.js';
     import endpoints from '@/utils/endpoints.js';
-    import GTrans from "@/utils/GTrans.js";
+    import GTrans from "@/utils/GTrans.js"
 
     export default {
         name: 'Offer',
@@ -129,6 +133,8 @@
                 paymentMessage: 'The payment has already been made.',
                 ratingD: null,
                 gtrans: undefined,
+                chat: undefined,
+                chatActive: undefined,
             }
         },
         
@@ -188,6 +194,8 @@
         },
         beforeMount () {
             this.ratingD = this.rating;
+            this.chat = this.gsecurity.hasRole('CUSTOMER') ? 'Contact the artist' : 'Contact the customer'
+            this.chatActive = this.offerStatus === 'CONTRACT_MADE' ? true : false;
         },
         created() {
             this.gsecurity = GSecurity;
@@ -269,6 +277,13 @@
                         NProgress.done()
                     });
                 }
+            },
+            openChat() {
+                var payload = Array(); 
+                payload [0]= this.offerID;
+                payload [1]= this.chatActive;
+
+                this.$emit('openChat', payload);
             },
             cancelOffer() {
                 var authorizedGAxios = GAxios;
@@ -402,6 +417,11 @@
         transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     }
 
+    .chat {
+        cursor: pointer;
+        margin-top: 3px; 
+    }
+
     .material-icons:hover {
         background: -webkit-linear-gradient(left, #000000, #000000);
         -webkit-background-clip: text;
@@ -473,6 +493,10 @@
         background: -webkit-linear-gradient(#00fb82, #187fe6);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+    }
+
+    .rigth-text {
+        margin-left: 5px;
     }
 
     .toRate:hover {
@@ -606,7 +630,6 @@
             min-width: 335px;
             box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, .2);
         }
-
 
         .priceCard h1{
         margin-bottom: 0px;
