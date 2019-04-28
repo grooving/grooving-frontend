@@ -5,18 +5,34 @@
         <div class="navContent">
          <h2>{{gtrans.translate('hello')}}, <span>{{ userFirstName }}</span></h2>
             <ul class="navbar-nav mr-auto p-2 col align-self-center justify-content-center">
-                <li class="nav-item section" >
+                <li class="nav-item section" v-if="!gsecurity.hasRole('ADMIN')" >
                     <div class="nav-link goTo" @click="goTo('/personalInfo')" data-toggle="collapse" data-target="#sidebar">{{gtrans.translate('myAccount')}}</div>
                     <b-dropdown-divider class="divider"/>
                 </li>
                 <li class="nav-item section" v-if="gsecurity.hasRole('ARTIST')">
-                    <div class="nav-link goTo" @click="goTo('/showPortfolio/'+ artistId + '/')"  data-toggle="collapse" data-target="#sidebar">{{gtrans.translate('myPortfolio')}}</div>
+                    <div class="nav-link goTo" @click="goTo('/showPortfolio/'+ userId + '/')"  data-toggle="collapse" data-target="#sidebar">{{gtrans.translate('myPortfolio')}}</div>
                     <b-dropdown-divider class="divider"/>
                 </li>
                 <li class="nav-item section" v-if="gsecurity.hasRole('ARTIST')">
                     <div class="nav-link goTo" @click="goTo('/hiringSettings')" data-toggle="collapse" data-target="#sidebar">{{gtrans.translate('hiringSettings')}}</div>
                     <b-dropdown-divider class="divider"/>
                 </li>                
+                <li class="nav-item section" v-if="gsecurity.hasRole('ADMIN')">
+                    <div class="nav-link goTo" @click="goTo('/usersList/')"  data-toggle="collapse" data-target="#sidebar">{{gtrans.translate('usersListRM')}}</div>
+                    <b-dropdown-divider class="divider"/>
+                </li>
+                <li class="nav-item section" v-if="gsecurity.hasRole('ADMIN')">
+                    <div class="nav-link goTo" @click="goTo('/manageZones/all/')"  data-toggle="collapse" data-target="#sidebar">{{gtrans.translate('manageZones')}}</div>
+                    <b-dropdown-divider class="divider"/>
+                </li>
+                <li class="nav-item section" v-if="gsecurity.hasRole('ADMIN')">
+                    <div class="nav-link goTo" @click="goTo('/manageGenres/all/')"  data-toggle="collapse" data-target="#sidebar">{{gtrans.translate('manageGenres')}}</div>
+                    <b-dropdown-divider class="divider"/>
+                </li>
+                <li class="nav-item section" v-if="gsecurity.hasRole('ADMIN')">
+                    <div class="nav-link goTo" @click="goTo('/breachNotification/')"  data-toggle="collapse" data-target="#sidebar">{{gtrans.translate('breachNotification')}}</div>
+                    <b-dropdown-divider class="divider"/>
+                </li>
                 <!-- <li class="nav-item section">
                     <a class="nav-link" href="#" data-toggle="collapse" data-target="#sidebar">Messages</a>
                      <b-dropdown-divider class="divider"/>
@@ -42,7 +58,7 @@ export default {
             gsecurity: GSecurity,
             gtrans: undefined,
             userFirstName: '',
-            artistId: '',
+            userId: '',
             url: undefined,
             refresher: undefined,
         }
@@ -56,7 +72,7 @@ export default {
 
         refreshGSecurityData: function() {
             this.userFirstName = this.gsecurity.getFirstName();
-            this.artistId = this.gsecurity.getId();
+            this.userId = this.gsecurity.getId();
         },
         goTo(path) {
             
@@ -210,7 +226,7 @@ $(window).bind('scroll', function () {
         transition: right .18s ease-in;
         z-index: 2000;
         right: -30%;  /* -width of sidebar */
-        width: 25%;  /* width of sidebar */
+        width: auto ;  /* width of sidebar */
         height: 100% !important;
         display: block;
         overflow: auto
@@ -218,7 +234,7 @@ $(window).bind('scroll', function () {
 
     #sidebar.collapse.show {
         text-align: right;
-        width: 25%;  /* width of sidebar */
+        width: auto ;  /* width of sidebar */
     }
     #sidebar {
         width: auto;

@@ -1,6 +1,6 @@
 <template>
     <div class="hell">
-        <ZonesList :key="zoneChildren" :parentId="parentId" :zones="zoneChildren" @viewPrevious="lastList" @viewChildren="updateList" @newZone="newZone"
+        <ZonesList :key="parentId" :parentId="parentId" :parentZoneName="parentZoneName" :zones="zoneChildren" @viewPrevious="lastList" @viewChildren="updateList" @newZone="newZone"
             @editZone="editZone" @deleteZone="deleteZone"/>
     </div>
 </template>
@@ -21,7 +21,7 @@ export default {
         return {
             gsecurity: GSecurity,
             parentId: undefined,
-            zoneParentName: undefined,
+            parentZoneName: undefined,
             grandParentId: undefined,
             zoneBackLink: undefined,
             zoneChildren: Array(),
@@ -65,14 +65,22 @@ export default {
         updateList(zoneId) {
             this.zoneChildren = Array();
             this.parentId = 0;
+            this.parentZoneName = '';
             for(var i = 0; i < this.tree.length; i++) {
                 if(this.tree[i].id == zoneId) {
                     if(this.tree[i].depth < 2) {
                         var children = this.tree[i].children
-                        for(var x = 0; x < children.length; x++) {
-                            var zone = children[x];
-                            this.zoneChildren.push({id:zone['id'], name: zone['name'], parent: zone['parent'], children: zone['children'], depth: this.tree[i].depth + 1})
+                        console.log(children)
+                        if(children.length > 0) {
+                            for(var x = 0; x < children.length; x++) {
+                                var zone = children[x];
+                                this.zoneChildren.push({id:zone['id'], name: zone['name'], parent: zone['parent'], children: zone['children'], depth: this.tree[i].depth + 1})
+                                this.parentId = this.tree[i].id;
+                                this.parentZoneName = this.tree[i].name;
+                            }
+                        } else {
                             this.parentId = this.tree[i].id;
+                            this.parentZoneName = this.tree[i].name;
                         }
                     }
                     else {
@@ -84,6 +92,8 @@ export default {
         },
         lastList(parentId) {
             this.zoneChildren = Array();
+            this.parentId = 0;
+            this.parentZoneName = '';
             for(var i = 0; i < this.tree.length; i++) {
                 if(this.tree[i].id == parentId) {
                     var parent = this.tree[i]
@@ -97,6 +107,7 @@ export default {
                             var zone = children[x];
                             this.zoneChildren.push({id:zone['id'], name: zone['name'], parent: zone['parent'], children: zone['children'], depth: 1})
                             this.parentId = root.id;
+                            this.parentZoneName = root.name;
                         }
                     }
                 }
@@ -123,7 +134,6 @@ export default {
       }).then(response => {
 
         var root = response.data;
-        console.log(root)
 
         this.tree.push({id:root['id'], name: root['name'], parent: root['parent'], children: root['children'], depth: 0})
         this.zoneChildren.push({id:root['id'], name: root['name'], children: root['children'], depth: 0})

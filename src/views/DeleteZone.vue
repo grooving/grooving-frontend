@@ -49,7 +49,7 @@ export default {
 
 
     methods:{
-        deleteGenre() {
+        deleteZone() {
 
             NProgress.start();
             GAxios.delete(endpoints.manageZone +this.zoneId +'/', {

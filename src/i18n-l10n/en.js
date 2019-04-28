@@ -155,7 +155,12 @@ export default{
     myAccount : "My Account",
     myPortfolio : "My Portfolio",
     hiringSettings: "Hiring Settings",
+    usersListRM: 'Users List',
+    manageZones: 'Zones Management',
+    manageGenres: 'Genres Management',
+    breachNotification: 'Breach Notification',
     logOut: "Log Out",
+
 
     // ----------------------------------------------------
     //                 Footer.vue
