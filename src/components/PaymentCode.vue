@@ -8,7 +8,7 @@
         <div class="form-row">
             <div class="form-group col-12">
                 <p class="title">{{gtrans.translate('inputCode')}}:</p>
-                <input id="inputCode" type="text" class="form-control" required>
+                <input id="inputCode" v-model="code" type="text" class="form-control" required>
             </div>  
         </div>
         <div class="continueButtonDiv"><button v-bind:to="continueURI"
@@ -27,37 +27,38 @@ import GSecurity from '@/security/GSecurity.js';
 import GTrans from "@/utils/GTrans.js"
 
 export default {
+
     name: "paymentCode",
+
     data: function(){
     	return{
     		gsecurity: GSecurity,
             gaxios: GAxios,
             errors: '',
             gtrans: undefined,
+
+            code: '',
     	}
     },
+
     props: {
-        code: {
-            type: String,
-            default: ''
-        },
         continueURI: {
             type: String,
             default: 'paymentConfirmation'
         } 
     },
+
     methods: {
     	receivePayment(){
             NProgress.start();
-    		var code = document.getElementById("inputCode").value;
 
 			var authorizedGAxios = GAxios;
             var GAxiosToken = this.gsecurity.getToken();
             authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
             //authorizedGAxios.defaults.headers.common['Content-Type'] = 'application/json';
-            console.log(code);
+            console.log(this.code);
     		authorizedGAxios.put(endpoints.paymentCode, {
-                "paymentCode":code
+                "paymentCode": this.code
     			}).then(response => {
                     console.log(response);
                     var userPicture = response.data.photo;
@@ -95,7 +96,17 @@ export default {
         // Podemos cambiar el lenguaje así para debug...
         //this.gtrans.setLanguage('es')
         //this.gtrans.setLanguage('en')
-    }
+    },
+    
+    beforeMount(){
+
+        // ----- Support for QR-Codes ----
+        // If the code is provided by URL parameters,
+        // we retrieve it
+        if(this.$route.query['paymentCode'])
+            this.code = this.$route.query['paymentCode'];
+
+    },
 }
 </script>
 
