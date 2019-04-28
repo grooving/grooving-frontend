@@ -8,13 +8,14 @@
                 class="btn btn-primary continueButton"><span class="continueText">CREDIT CARD</span>
             </div>
             <br>
-            <div @click="paymentOptionSelected()"
+            <div id="paypal-button-container"></div>
+            <!-- <div @click="paymentOptionSelected()"
                 class="btn btn-primary continueButton"><span class="continueText">PAYPAL</span>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
-
+<script src="https://www.paypal.com/sdk/js?client-id=sb"></script>
 <script>
 export default {
     name: "PaymentOptions",
@@ -39,6 +40,30 @@ export default {
     },
     mounted() {
         this.nextStep = '/payment/' + this.$route.params['artistId']
+
+        paypal.Buttons({
+
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '0.01'
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    // Show a success message to the buyer
+                    alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                });
+            }
+
+
+        }).render('#paypal-button-container');
     },
 }
 </script>
