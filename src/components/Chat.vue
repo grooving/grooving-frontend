@@ -200,6 +200,8 @@ export default {
 
       this.messageList = history;
 
+      console.log(this.messageList);
+
     });
 
   },

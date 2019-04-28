@@ -1,5 +1,6 @@
 node_modules
 node_modules/*
+!node_modules/vue-beautiful-chat/
 grooving-server/Server/\.idea/
 
 grooving-server/Server/venv/

@@ -68,7 +68,7 @@ class GChat{
 
             }else if(mode == 'MESSAGE'){
 
-                res = this.formatVueChatMessage(receivedMessage["username"], receivedMessage["message"]);
+                res = this.formatVueChatMessage(receivedMessage["username"], receivedMessage["message"], receivedMessage["hour"]);
 
             }else{
 
@@ -132,7 +132,7 @@ class GChat{
         Returns a representation of a message
         following Vue Component's style.
     */
-    formatVueChatMessage(author, messageText, messageTime='00:00'){
+    formatVueChatMessage(author, messageText, messageTime){
 
         // Can't create a constant as values
         // are copied using references
