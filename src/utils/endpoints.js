@@ -31,4 +31,5 @@ export default{
     user: '/user/',
     statistics: '/admin/statistics/',
     changeLang: '/language/?lang=',    
+    downloadPersonalData: '/downloadPersonalData/',
 }

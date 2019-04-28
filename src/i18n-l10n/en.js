@@ -227,6 +227,8 @@ export default{
     accept : "ACCEPT",
     toast_title : "Your account has been successfully deleted",
     toast_subtitle : "We are sorry to say goodbye. You can register again anytime.",
+    download_data: "DOWNLOAD PERSONAL DATA",
+    download_email: "You'll receive an email soon.",
 
     // ----------------------------------------------------
     //                   Statistics.vue
