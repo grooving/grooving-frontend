@@ -27,9 +27,8 @@ export default{
     genres: '/artisticGenders/',
     portfolioZones: '/zones/?portfolio=',
     braintree: 'braintree_token/',
-    users: '/users/',
-    user: '/user/',
-    statistics: '/admin/statistics/',
-    changeLang: '/language/?lang=',    
-    downloadPersonalData: '/downloadPersonalData/',
+    breachNotification: '/send_breach_notification/',
+    listGenres: '/artisticGenders/?parentId=',
+    createGenre: '/artisticGender/',
+    
 }

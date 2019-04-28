@@ -1,0 +1,160 @@
+<template>
+    <div class="hell">
+        <ZonesList :key="zoneChildren" :parentId="parentId" :zones="zoneChildren" @viewPrevious="lastList" @viewChildren="updateList"/>
+    </div>
+</template>
+
+<script>
+import ZonesList from '@/components/ZonesList.vue'
+import GSecurity from '@/security/GSecurity.js';
+import GAxios from '@/utils/GAxios.js';
+import endpoints from '@/utils/endpoints.js';
+
+export default {
+
+    name: 'ManageZones',
+    components: {
+        ZonesList, 
+    },
+    data() {
+        return {
+            gsecurity: GSecurity,
+            parentId: undefined,
+            zoneParentName: undefined,
+            grandParentId: undefined,
+            zoneBackLink: undefined,
+            zoneChildren: Array(),
+            depth: undefined,
+            tree: Array(),
+            allZones: undefined,
+        }
+    },
+    methods: {
+        updateList(zoneId) {
+            this.zoneChildren = Array();
+            this.parentId = 0;
+            for(var i = 0; i < this.tree.length; i++) {
+                if(this.tree[i].id == zoneId) {
+                    var children = this.tree[i].children
+                    for(var x = 0; x < children.length; x++) {
+                        var zone = children[x];
+                        this.zoneChildren.push({id:zone['id'], name: zone['name'], children: zone['children'], depth: this.tree[i].depth + 1})
+                        this.parentId = this.tree[i].id;
+                    }
+                }
+            }
+        },
+        lastList(parentID) {
+            this.zoneChildren = Array();
+            for(var i = 0; i < this.tree.length; i++) {
+                if(this.tree[i].id == parentID) {
+                    var parent = this.tree[i]
+                    var root = this.tree[0];
+                    if(parent.depth == 0) {
+                        this.zoneChildren.push({id:root['id'], name: root['name'], children: root['children'], depth: 0})
+                        this.parentId = 0;
+                    } else if (parent.depth == 1) {
+                        var children = root.children
+                        for(var x = 0; x < children.length; x++) {
+                            var zone = children[x];
+                            this.zoneChildren.push({id:zone['id'], name: zone['name'], children: zone['children'], depth: 1})
+                            this.parentId = root.id;
+                        }
+                    }
+                }
+            }
+        }
+    },
+    mounted() {
+        NProgress.start();
+        this.zoneId = this.$route.params['zoneId'];
+        if(this.zoneId=='all'){
+            this.zoneId='true';
+        }
+        else if(this.zoneId=='1'){
+            this.$router.push('/error');
+        }
+        
+      GAxios.get(endpoints.zones)
+      .then(response => {
+          this.allZones = response.data;
+  
+      }).catch( () => {
+        this.errors = ex.response.data.error;
+        document.getElementById("errorsDiv").style.display = "block";
+        window.scrollTo(0,0);
+      });
+
+      GAxios.get(endpoints.zones, {
+      params: {
+        'tree': true
+      }
+      }).then(response => {
+
+        var root = response.data;
+        console.log(root)
+
+        this.tree.push({id:root['id'], name: root['name'], children: root['children'], depth: 0})
+        this.zoneChildren.push({id:root['id'], name: root['name'], children: root['children'], depth: 0})
+        this.parentId = 0;
+        for(var i=0; i < root['children'].length; i++){
+            // For each Comunidad Autónoma
+            var ca = root['children'][i];
+            this.tree.push({id:ca['id'], name: ca['name'], children: ca['children'], depth: 1})
+
+            for(var j=0; j < ca['children'].length; j++){
+                // For each provincia
+                var provincia = ca['children'][j];
+                this.tree.push({id:provincia['id'], name: provincia['name'], children: provincia['children'], depth: 2})
+            }
+        }
+
+      }).catch( () => {
+        this.errors = ex.response.data.error;
+        document.getElementById("errorsDiv").style.display = "block";
+        window.scrollTo(0,0);
+
+      }).then(() => {
+            NProgress.done()
+        });
+
+    },
+    
+}
+</script>
+
+<style scoped>
+    * {
+        font-family: "Archivo"
+    }
+
+    .title {
+        display: none;
+    }
+
+    @media (min-width:768px)  {
+      
+        .everything {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 5%;
+            text-align: center;
+            padding: 15px;
+            margin-left: 35%;
+            margin-right: 35%;
+            margin-top:0%;
+        }
+        .title {
+            display: inline-block;
+            margin-right: 12%;
+            margin-left: 10%;
+            text-align: left;
+            font-size: 50px;
+            margin-top: 5%;
+            font-weight: bold;
+        }
+        
+    }
+
+</style>

@@ -47,6 +47,11 @@ import Statistics from './views/Statistics.vue'
 //BORRAR
 import Borrar from './views/About.vue'
 
+import ManageGenres from './views/ManageGenres.vue'
+import CreateGenre from './views/CreateGenre.vue'
+import EditGenre from './views/EditGenre.vue'
+import DeleteGenre from './views/DeleteGenre.vue'
+import ManageZones from './views/ManageZones.vue'
 
 Vue.use(Router)
 
@@ -280,6 +285,34 @@ export default new Router({
       path: '/statistics',
       name: 'statistics',
       component: Statistics
-    }
+    },
+    {
+      path: '/manageGenres/:genreId',
+      name: 'manageGenres',
+      component: ManageGenres
+    },
+    {
+      path: '/createGenre',
+      name: 'createGenre',
+      component: CreateGenre,
+      props: true,
+    },
+    {
+      path: '/editGenre',
+      name: 'editGenre',
+      component: EditGenre,
+      props: true,
+    },
+    {
+      path: '/deleteGenre',
+      name: 'deleteGenre',
+      component: DeleteGenre,
+      props: true,
+    },
+    {
+      path: '/manageZones/:zoneId',
+      name: 'manageZones',
+      component: ManageZones
+    },
   ]
 })
