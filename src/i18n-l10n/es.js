@@ -161,6 +161,10 @@ export default{
     myAccount : "Mi Cuenta",
     myPortfolio : "Mi Portafolio",
     hiringSettings: "Ajustes de Contratación",
+    usersListRM: 'Listado de Usuarios',
+    manageZones: 'Gestión de Zonas',
+    manageGenres: 'Gestión de Géneros',
+    breachNotification: 'Notificación de Brechas',
     logOut: "Cerrar Sesión",
 
     // ----------------------------------------------------

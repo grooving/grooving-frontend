@@ -33,4 +33,7 @@ export default{
     createGenre: '/artisticGender/',
     statistics: '/admin/statistics/',
     
+    manageZone: '/admin/zone/',
+    users: '/users/',
+    user: '/user/',
 }

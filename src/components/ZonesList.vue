@@ -1,15 +1,14 @@
 <template>
   <div id="results" class="container-fluid px-0 mt-0">
-    <h1 v-if="parentZoneName != ''" class="titleView"><router-link v-bind:to="zoneBackLink.toString()"><i style="font-size: 30px;" class="material-icons">chevron_left</i> {{parentZoneName}}</router-link></h1>
-    <h1 v-else class="titleView">Genres</h1>
+    <h1 v-if="parentZoneName != ''" class="titleView"><div @click="back()"><i style="font-size: 30px;" class="material-icons">chevron_left</i> {{parentZoneName}}</div></h1>
+    <h1 v-else class="titleViewNo">Zones</h1>
     <p v-if="parentZoneName == ''" class="subtitleView">You can create, edit and delete zones supported by the system.</p>
     <p v-else class="subtitleView">This is the list of sub-zones for {{parentZoneName}}.</p>
     
     <div class="row tableContent">
-      <div class="back" v-if="parentId > 0" @click="back(parentId)"><i class="material-icons arrowIcon arrow">arrow_back</i></div>
       <div v-if="zones.length==0" class="emptyZones">
-        <p>There are any zones for this category. Create a new one?</p>
-        <router-link v-bind:to="{name: 'createZone', params: {parentId, parentZoneName}}" class="btn btn-primary editButton"><span class="hireText">CREATE</span></router-link>
+        <p>There aren't any sub-zones for {{parentZoneName}} yet. Create a new one?</p>
+        <div @click="newZone" class="btn btn-primary editButton"><span class="hireText">CREATE</span></div>
       </div>
 
       <table v-else>
@@ -22,25 +21,22 @@
         <tr v-for="zone in zones" :key="zone.id">
             <td class="rowWordBreak">
               <div style="display:inline-flex !important; vertical-align:top !important">
-                <router-link v-if="depth == 1" v-bind:to="zone.id.toString()"  class="genreLink" ><span>{{zone.name}}</span><i class="material-icons">chevron_right</i></router-link>
-                <span v-else class="zoneLink">{{zone.name}}</span>
+                <div v-if="zone.depth < 2" @click="viewChildren(zone.id)"  class="zoneLink" ><span>{{zone.name}}</span><i class="material-icons">chevron_right</i></div>
+                <div v-if="zone.depth == 2" class="zoneLinkNo">{{zone.name}}</div>
               </div>
             </td>
             
             <td>
               <div class="contentButtons">
-                <div v-if="zone.depth != 2 && zone.children.length > 0" @click="viewChildren(zone.id)" class="btn btn-primary editButton sub"><span class="hireText">SUB-ZONES</span></div>
-                <div class="edit"><i class="material-icons iconOffer">edit</i></div>
-                <div class="delete"><i class="material-icons iconOffer">delete</i></div>
-                <!-- <router-link v-bind:to="{name: 'editZone', params: {parentZoneId, parentZoneName, zone}}" class="btn btn-primary editButton"><span class="hireText">EDIT</span></router-link>
-                <router-link v-bind:to="{name: 'deleteZone', params: {zone, parentZoneId}}" class="btn btn-primary deleteButton"><span class="hireText">DELETE</span></router-link> -->
+                <div @click="editZone(zone.id)" class="btn btn-primary editButton"><span class="hireText">EDIT</span></div>
+                <div @click="deleteZone(zone.id)" class="btn btn-primary deleteButton"><span class="hireText">DELETE</span></div>
               </div>
             </td>
         </tr>
       </table>
     </div>
     <div style="margin-top: 30px; margin-bottom: 30px;">
-      <router-link v-bind:to="{name: 'createZone', params: {parentId, parentZoneName}}" v-if="zones.length!=0" class="btn btn-primary editButton"><span class="hireText">NEW ZONE</span></router-link>
+      <div @click="newZone" v-if="zones.length!=0 && parentId > 0" class="btn btn-primary editButton sub"><span class="hireText">NEW ZONE</span></div>
     </div>
 
   </div>
@@ -48,19 +44,9 @@
 
 <script>
 
-import GAxios from '@/utils/GAxios.js';
-
 export default {
   name: 'ZonesList',
-
-  components: {
-  },
-
   props:{
-
-    listTitle:{
-      type: String,
-    },
     parentZoneName:{
       type: String,
       default: ''
@@ -87,12 +73,23 @@ export default {
 
   },
   methods: {
+    back() {
+      this.$emit('viewPrevious', this.parentId);
+    },
+    editZone(zoneId) {
+      this.$emit('editZone', zoneId);
+    },
+    deleteZone(zoneId) {
+      this.$emit('deleteZone', zoneId);
+    },
+    newZone() {
+      console.log(this.parentId)
+      this.$emit('newZone', this.parentId);
+    },
     viewChildren(zoneId) {
       this.$emit('viewChildren', zoneId);
     },
-    back(parentId) {
-      this.$emit('viewPrevious', parentId);
-    },
+
   },
 }
 
@@ -114,10 +111,29 @@ export default {
     margin-top: 5px;
   }
 
+  .goBack {
+    font-size: 17px;
+    vertical-align: top;
+    cursor: pointer;
+  }
+
   .zoneLink{
     display: inline-flex !important;
     vertical-align: top !important;
-    width: 80px;
+    width: 110px;
+    font-size: 18px;
+    color: #007bff;
+    cursor: pointer;
+  }
+
+  .zoneLink:hover {
+
+  }
+
+  .zoneLinkNo{
+    display: inline-flex !important;
+    vertical-align: top !important;
+    width: 110px;
     font-size: 18px;
   }
 
@@ -227,7 +243,15 @@ export default {
       font-weight: bold;
       margin-left: 25%;
       margin-right: 25%;
+      color: #007bff;
+      cursor: pointer;
+    }
 
+    .titleViewNo{
+      text-align: left;
+      font-weight: bold;
+      margin-left: 25%;
+      margin-right: 25%;
     }
 
     .subtitleView{

@@ -7,7 +7,7 @@
     <div id="datesContainer" class="datesContainer">	
     	<div class="contentCalendar">
     		<h3 class="availableDatesTitle" >Available dates</h3>
-    		<Calendar class="availableDates" :availableDates="this.datos[0].availableDates"/>
+    		<Calendar class="availableDates" :availableDates="availableDates"/>
     	</div>
     </div>
     <router-link v-if="!hideEditButton" :to="'/editPortfolio/' + artistId" class="floating-btn vertical-center">
@@ -99,6 +99,15 @@ export default {
 
     hideEditButton(){
       return !this.$gsecurity.hasRole('ARTIST')||!this.artistId || this.gsecurity.isAnonymous() || this.artistId != this.gsecurity.getId();
+    },
+
+    availableDates: function(){
+      
+      if(this.datos && this.datos[0] && this.datos[0].availableDates)
+        return this.datos[0].availableDates;
+      else
+        return Array();
+
     }
 
   },
@@ -176,7 +185,7 @@ export default {
           if(calendar.length==0){
             this.datos.push({availableDates: []});
           }else{
-            this.datos.push({availableDates: calendar[0].days,})
+            this.datos.push({availableDates: calendar.days,})
           }
 
         }).catch(ex => {

@@ -206,7 +206,7 @@ export default {
               if(calendar.length==0){
                 this.datos.push({availableDates: []});
               }else{
-                this.datos.push({availableDates: calendar[0].days,})
+                this.datos.push({availableDates: calendar.days,})
               }
                 this.updateCalendatKey += 1;
           }).then(() => {
@@ -224,12 +224,16 @@ export default {
       var currentG = this.$store.getters.genres.currentGenres;
       var genresToSave = Array();
 
-      for(let a = 0; a < newG.length; a++) {
-        genresToSave.push(newG[a]);
-      }
-      for(let a = 0; a < currentG.length; a++) {
-        genresToSave.push(currentG[a]);
-      }
+      if(newG)
+        for(let a = 0; a < newG.length; a++) {
+          genresToSave.push(newG[a]);
+        }
+
+      if(currentG)
+        for(let a = 0; a < currentG.length; a++) {
+          genresToSave.push(currentG[a]);
+        }
+
       for(var i = 0; i < genresToSave.length; i++){
             var genre = genresToSave[i].name;
             this.namesOfNewGenres.push(genre);
@@ -239,12 +243,16 @@ export default {
       var currentZ = this.$store.getters.zones.currentZones;
       var zonesToSave = Array();
 
-      for(let a = 0; a < newZ.length; a++) {
-        zonesToSave.push(newZ[a]);
-      }
-      for(let a = 0; a < currentZ.length; a++) {
-        zonesToSave.push(currentZ[a]);
-      }
+      if(newZ)
+        for(let a = 0; a < newZ.length; a++) {
+          zonesToSave.push(newZ[a]);
+        }
+      
+      if(currentZ)
+        for(let a = 0; a < currentZ.length; a++) {
+          zonesToSave.push(currentZ[a]);
+        }
+
       for(var i = 0; i < zonesToSave.length; i++){
             var zone = zonesToSave[i].name;
             this.namesOfNewZones.push(zone);
