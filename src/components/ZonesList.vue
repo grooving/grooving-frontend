@@ -6,7 +6,7 @@
     <p v-else class="subtitleView">This is the list of sub-zones for {{parentZoneName}}.</p>
     
     <div class="row tableContent">
-      <div class="back" v-if="parentId > 0" @click="back(parentId)"><i class="material-icons arrowIcon arrow">arrow_back</i></div>
+      <div class="back" v-if="parentId > 0" @click="back()"><i class="material-icons arrowIcon arrow">arrow_back</i><span class="goBack">Go Back</span></div>
       <div v-if="zones.length==0" class="emptyZones">
         <p>There are any zones for this category. Create a new one?</p>
         <router-link v-bind:to="{name: 'createZone', params: {parentId, parentZoneName}}" class="btn btn-primary editButton"><span class="hireText">CREATE</span></router-link>
@@ -29,9 +29,9 @@
             
             <td>
               <div class="contentButtons">
-                <div v-if="zone.depth != 2 && zone.children.length > 0" @click="viewChildren(zone.id)" class="btn btn-primary editButton sub"><span class="hireText">SUB-ZONES</span></div>
-                <div class="edit"><i class="material-icons iconOffer">edit</i></div>
-                <div class="delete"><i class="material-icons iconOffer">delete</i></div>
+                <div v-if="zone.depth != 2" @click="viewChildren(zone.id)" class="btn btn-primary editButton sub"><span class="hireText">SUB-ZONES</span></div>
+                <div class="edit" @click="editZone(zone.id)"><i class="material-icons iconOffer">edit</i></div>
+                <div class="delete" @click="deleteZone(zone.id)"><i class="material-icons iconOffer">delete</i></div>
                 <!-- <router-link v-bind:to="{name: 'editZone', params: {parentZoneId, parentZoneName, zone}}" class="btn btn-primary editButton"><span class="hireText">EDIT</span></router-link>
                 <router-link v-bind:to="{name: 'deleteZone', params: {zone, parentZoneId}}" class="btn btn-primary deleteButton"><span class="hireText">DELETE</span></router-link> -->
               </div>
@@ -40,7 +40,7 @@
       </table>
     </div>
     <div style="margin-top: 30px; margin-bottom: 30px;">
-      <router-link v-bind:to="{name: 'createZone', params: {parentId, parentZoneName}}" v-if="zones.length!=0" class="btn btn-primary editButton"><span class="hireText">NEW ZONE</span></router-link>
+      <div @click="newZone" v-if="zones.length!=0 && parentId > 0" class="btn btn-primary editButton sub"><span class="hireText">NEW ZONE</span></div>
     </div>
 
   </div>
@@ -48,19 +48,9 @@
 
 <script>
 
-import GAxios from '@/utils/GAxios.js';
-
 export default {
   name: 'ZonesList',
-
-  components: {
-  },
-
   props:{
-
-    listTitle:{
-      type: String,
-    },
     parentZoneName:{
       type: String,
       default: ''
@@ -87,12 +77,22 @@ export default {
 
   },
   methods: {
+    back() {
+      this.$emit('viewPrevious', this.parentId);
+    },
+    editZone(zoneId) {
+      this.$emit('editZone', zoneId);
+    },
+    deleteZone(zoneId) {
+      this.$emit('deleteZone', zoneId);
+    },
+    newZone() {
+      this.$emit('newZone', this.parentId);
+    },
     viewChildren(zoneId) {
       this.$emit('viewChildren', zoneId);
     },
-    back(parentId) {
-      this.$emit('viewPrevious', parentId);
-    },
+
   },
 }
 
@@ -112,6 +112,12 @@ export default {
     height: 30px !important;
     vertical-align: middle;
     margin-top: 5px;
+  }
+
+  .goBack {
+    font-size: 17px;
+    vertical-align: top;
+    cursor: pointer;
   }
 
   .zoneLink{

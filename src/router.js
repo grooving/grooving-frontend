@@ -46,6 +46,10 @@ import CreateGenre from './views/CreateGenre.vue'
 import EditGenre from './views/EditGenre.vue'
 import DeleteGenre from './views/DeleteGenre.vue'
 import ManageZones from './views/ManageZones.vue'
+import CreateZone from './views/CreateZone.vue'
+import EditZone from './views/EditZone.vue'
+import DeleteZone from './views/DeleteZone.vue'
+
 
 Vue.use(Router)
 
@@ -291,6 +295,24 @@ export default new Router({
       path: '/manageZones/:zoneId',
       name: 'manageZones',
       component: ManageZones
+    },
+    {
+      path: '/createZone',
+      name: 'createZone',
+      component: CreateZone,
+      props: true,
+    },
+    {
+      path: '/editZone',
+      name: 'editZone',
+      component: EditZone,
+      props: true,
+    },
+    {
+      path: '/deleteZone',
+      name: 'deleteZone',
+      component: DeleteZone,
+      props: true,
     },
   ]
 })

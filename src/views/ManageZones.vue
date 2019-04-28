@@ -1,6 +1,7 @@
 <template>
     <div class="hell">
-        <ZonesList :key="zoneChildren" :parentId="parentId" :zones="zoneChildren" @viewPrevious="lastList" @viewChildren="updateList"/>
+        <ZonesList :key="zoneChildren" :parentId="parentId" :zones="zoneChildren" @viewPrevious="lastList" @viewChildren="updateList" @newZone="newZone"
+            @editZone="editZone" @deleteZone="deleteZone"/>
     </div>
 </template>
 
@@ -27,37 +28,74 @@ export default {
             depth: undefined,
             tree: Array(),
             allZones: undefined,
+            zoneId: undefined,
         }
     },
     methods: {
+        newZone(parentId) {
+            for(var i = 0; i < this.tree.length; i++) {
+                if(this.tree[i].id == parentId) {
+                    var parentZone = this.tree[i]
+                }
+            }
+            this.$router.push({name: 'createZone', params: {parentZone}});
+        },
+        deleteZone(zoneId) {
+            for(var i = 0; i < this.tree.length; i++) {
+                if(this.tree[i].id == zoneId) {
+                    var zone = this.tree[i]
+                }
+            }
+            this.$router.push({name: 'deleteZone', params: {zone}});
+        },
+        editZone(zoneId) {
+            for(var i = 0; i < this.tree.length; i++) {
+                if(this.tree[i].id == zoneId) {
+                    var zone = this.tree[i]
+                    var parentId = zone.parent;
+                    for(var n = 0; n < this.tree.length; n++) {
+                        if(this.tree[n].id == parentId) {
+                            var parent = this.tree[n];
+                        }
+                    }
+                }
+            }
+            this.$router.push({name: 'editZone', params: {zone, parent}});
+        },
         updateList(zoneId) {
             this.zoneChildren = Array();
             this.parentId = 0;
             for(var i = 0; i < this.tree.length; i++) {
                 if(this.tree[i].id == zoneId) {
-                    var children = this.tree[i].children
-                    for(var x = 0; x < children.length; x++) {
-                        var zone = children[x];
-                        this.zoneChildren.push({id:zone['id'], name: zone['name'], children: zone['children'], depth: this.tree[i].depth + 1})
-                        this.parentId = this.tree[i].id;
+                    if(this.tree[i].depth < 2) {
+                        var children = this.tree[i].children
+                        for(var x = 0; x < children.length; x++) {
+                            var zone = children[x];
+                            this.zoneChildren.push({id:zone['id'], name: zone['name'], parent: zone['parent'], children: zone['children'], depth: this.tree[i].depth + 1})
+                            this.parentId = this.tree[i].id;
+                        }
+                    }
+                    else {
+                        var root = this.tree[0];
+                        this.zoneChildren.push({id:root['id'], name: root['name'], parent: root['parent'], children: root['children'], depth: 0})
                     }
                 }
             }
         },
-        lastList(parentID) {
+        lastList(parentId) {
             this.zoneChildren = Array();
             for(var i = 0; i < this.tree.length; i++) {
-                if(this.tree[i].id == parentID) {
+                if(this.tree[i].id == parentId) {
                     var parent = this.tree[i]
                     var root = this.tree[0];
                     if(parent.depth == 0) {
-                        this.zoneChildren.push({id:root['id'], name: root['name'], children: root['children'], depth: 0})
+                        this.zoneChildren.push({id:root['id'], name: root['name'], parent: root['parent'], children: root['children'], depth: 0})
                         this.parentId = 0;
                     } else if (parent.depth == 1) {
                         var children = root.children
                         for(var x = 0; x < children.length; x++) {
                             var zone = children[x];
-                            this.zoneChildren.push({id:zone['id'], name: zone['name'], children: zone['children'], depth: 1})
+                            this.zoneChildren.push({id:zone['id'], name: zone['name'], parent: zone['parent'], children: zone['children'], depth: 1})
                             this.parentId = root.id;
                         }
                     }
@@ -67,13 +105,6 @@ export default {
     },
     mounted() {
         NProgress.start();
-        this.zoneId = this.$route.params['zoneId'];
-        if(this.zoneId=='all'){
-            this.zoneId='true';
-        }
-        else if(this.zoneId=='1'){
-            this.$router.push('/error');
-        }
         
       GAxios.get(endpoints.zones)
       .then(response => {
@@ -94,19 +125,24 @@ export default {
         var root = response.data;
         console.log(root)
 
-        this.tree.push({id:root['id'], name: root['name'], children: root['children'], depth: 0})
+        this.tree.push({id:root['id'], name: root['name'], parent: root['parent'], children: root['children'], depth: 0})
         this.zoneChildren.push({id:root['id'], name: root['name'], children: root['children'], depth: 0})
         this.parentId = 0;
         for(var i=0; i < root['children'].length; i++){
             // For each Comunidad Autónoma
             var ca = root['children'][i];
-            this.tree.push({id:ca['id'], name: ca['name'], children: ca['children'], depth: 1})
+            this.tree.push({id:ca['id'], name: ca['name'], parent: ca['parent'], children: ca['children'], depth: 1})
 
             for(var j=0; j < ca['children'].length; j++){
                 // For each provincia
                 var provincia = ca['children'][j];
-                this.tree.push({id:provincia['id'], name: provincia['name'], children: provincia['children'], depth: 2})
+                this.tree.push({id:provincia['id'], name: provincia['name'], parent: provincia['parent'], children: provincia['children'], depth: 2})
             }
+        }
+
+        this.zoneId = this.$route.params['zoneId'];
+        if(this.zoneId !='all'){
+            this.updateList(this.zoneId)
         }
 
       }).catch( () => {

@@ -30,5 +30,6 @@ export default{
     breachNotification: '/send_breach_notification/',
     listGenres: '/artisticGenders/?parentId=',
     createGenre: '/artisticGender/',
+    manageZone: '/admin/zone/',
     
 }
