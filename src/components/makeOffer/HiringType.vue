@@ -14,7 +14,7 @@
     </div>
 
     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-    <b-dropdown-divider/>
+    <hr/>
       <div class="bodies">{{gtrans.translate('hiring_fareDescription')}} <p class="price2"><strong>{{gtrans.translate('hiring_price')}}: </strong> {{farePrice}}€/h</p>
            <div class="continueButtonDiv"><div @click="selectType('FARE')"
             class="btn btn-primary continueButton"><span class="continueText">{{gtrans.translate('hiring_continue')}}</span></div></div>
@@ -31,7 +31,7 @@
       </h5>
     </div>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-    <b-dropdown-divider/>
+    <hr>
       <div class="bodies">{{gtrans.translate('hiring_performanceDescription')}} 
            <div class="continueButtonDiv">
                <div @click="selectType('PERFORMANCE')" class="btn btn-primary continueButton">
@@ -51,7 +51,7 @@
       </h5>
     </div>
     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-    <b-dropdown-divider/>
+    <hr>
       <div class="bodies">{{gtrans.translate('hiring_customDescription')}} <p class="price2"><strong>{{gtrans.translate('hiring_customMinimumPrice')}}: </strong> {{customMinPrice}}€/h</p>
            <div class="continueButtonDiv">
                <div @click="selectType('CUSTOM')" class="btn btn-primary continueButton">
@@ -171,6 +171,12 @@ export default {
 .Hbutton{
     color: black; text-decoration: none; color: none; border: 0; background: transparent; outline:none;
 }
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
 .bodies{
     text-align: left;  padding-top: 1%; padding-bottom: 3%;
     margin-bottom: 1%; margin-left: 20px;
@@ -265,6 +271,7 @@ h2 {
 .titles {
     font-weight: bold ; 
     margin-left:-2px;
+    margin-bottom: 0px;
      
 }
  @media (min-width:768px)  {
