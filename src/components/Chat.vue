@@ -164,6 +164,8 @@ export default {
     //BORRAR
     this.gsecurity = GSecurity;
     this.gsecurity.obtainSavedCredentials();
+
+    let protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
     this.gchat = new GChat("ws", this.offerId.toString(), this.gsecurity.getToken(), this.gsecurity.getUsername());
 
     this.gchat.getWebSocket().addEventListener("message", (event) => {
