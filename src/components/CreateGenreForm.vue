@@ -15,12 +15,21 @@
                     <div id="errorsDiv" class="validationErrors vertical-center">
                         <p style="margin: 0px;">{{errors}}</p>
                     </div>
-                    <div style="width:100%;margin-top:25px;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">NAME</p>
+                     <div style="width:100%;margin-top:25px;">
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">NAME </p><small><i>   ES</i></small>
                         <div class="input-group">
-                            <input v-model="genreName" type="text" class="form-control">
+                            <input v-model="genreNameES" type="text" class="form-control">
                             <div class="input-group-append">
-                                <span class="input-group-text">Aa</span>
+                                <span class="input-group-text">ES</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width:100%;margin-top:25px;">
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">NAME</p><small><i>   EN</i></small>
+                        <div class="input-group">
+                            <input v-model="genreNameEN" type="text" class="form-control">
+                            <div class="input-group-append">
+                                <span class="input-group-text">EN</span>
                             </div>
                         </div>
                     </div>
@@ -44,7 +53,8 @@ export default {
     data: function() {
         return {
             parentGenreName: undefined,
-            genreName: "",
+            genreNameEN: "",
+            genreNameES: "",
             errors: "",
             gsecurity: undefined,
         }
@@ -64,7 +74,8 @@ export default {
 
             NProgress.start();
             GAxios.post(endpoints.createGenre, {
-                "name": this.genreName,
+                "name_es": this.genreNameES,
+                "name_en": this.genreNameEN,
                 "parentGender": this.parentGenreId
             }).then(response => {
                 console.log(response);

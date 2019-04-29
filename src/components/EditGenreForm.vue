@@ -13,22 +13,36 @@
                     <h6 v-if="parentName != ''" class="card-subtitle mb-2 text-muted">This sub-genre belongs to <strong>{{parentName}}.</strong></h6>
                     <h6 v-else class="card-subtitle mb-2 text-muted">This sub-genre belongs to <strong>the main category.</strong></h6>
                     <div style="width:100%;margin-top:25px;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">PARENT GENRE</p>
-                        <div class="input-group">
-                            <select v-model="parentId" class="form-control">
-                                <option :value="1">---------</option>
-                                <option v-for="opt in tree" :key="opt.id" :value="opt.id">
-                                    <span>{{opt.name}}</span>
-                                </option>
-                            </select>
+                        <div v-if="canChangeParent == 1">
+                            <p class="card-text" style="font-weight:bold;display:inline-block;">PARENT GENRE</p>
+                            <div class="input-group">
+                                <select v-model="parentId" class="form-control">
+                                    <option :value="1">---------</option>
+                                    <option v-for="opt in tree" :key="opt.id" :value="opt.id">
+                                        <span>{{opt.name}}</span>
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div v-else>
+                            <p class="card-text" style="font-weight:bold;display:inline-block;">You cannot change the parent genre of this genre because it has children.</p>
                         </div>
                     </div>
                     <div style="width:100%;margin-top:25px;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">NAME</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">NAME </p><small><i>   ES</i></small>
                         <div class="input-group">
-                            <input v-model="genreName" type="text" class="form-control" required>
+                            <input v-model="genreNameES" type="text" class="form-control">
                             <div class="input-group-append">
-                                <span class="input-group-text">Aa</span>
+                                <span class="input-group-text">ES</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width:100%;margin-top:25px;">
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">NAME</p><small><i>   EN</i></small>
+                        <div class="input-group">
+                            <input v-model="genreNameEN" type="text" class="form-control">
+                            <div class="input-group-append">
+                                <span class="input-group-text">EN</span>
                             </div>
                         </div>
                     </div>
@@ -55,6 +69,9 @@ export default {
             errors: "",
             gsecurity: undefined,
             tree: Array(),
+            genreNameES: undefined,
+            genreNameEN: undefined,
+            canChangeParent: undefined,
         }
     },
 
@@ -70,7 +87,8 @@ export default {
         updateGenre() {
             NProgress.start();
             GAxios.put(endpoints.createGenre + this.genreId+'/', {
-                "name": this.genreName,
+                "name_es": this.genreNameES,
+                "name_en": this.genreNameEN,
                 "id":this.genreId,
                 "parentGender":this.parentId
             }).then(response => {
@@ -104,6 +122,23 @@ export default {
             var authorizedGAxios = GAxios;
             authorizedGAxios.defaults.headers.common['Authorization'] = 'Token '+GAxiosToken;
         }
+
+        GAxios.get(endpoints.createGenre+'admin/'+this.genreId+'/').then(response =>{
+            this.genreNameES = response.data.name_es;
+            this.genreNameEN = response.data.name_en;
+            var children = response.data.children;
+            //console.log(children);
+            //alert(children.length);
+
+            if(children.length == 0){
+                this.canChangeParent = 1;
+            }
+            else{
+                this.canChangeParent = 0;
+            }
+        }).catch(ex => {
+            console.log(ex);
+        });
 
         GAxios.get(endpoints.genres+'?tree=true').then(response =>{
             //console.log(response);

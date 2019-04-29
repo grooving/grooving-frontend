@@ -21,7 +21,7 @@
         <tr v-for="genre in genres">
             <td class="rowWordBreak">
               <div style="display:inline-flex !important; vertical-align:top !important">
-                <router-link v-if="depth == 1" v-bind:to="genre.id.toString()"  class="genreLink" ><span>{{genre.name}}</span><i class="material-icons">chevron_right</i></router-link>
+                <router-link v-if="depth == 1" v-bind:to="'/manageGenres/'+genre.id.toString()"  class="genreLink" ><span>{{genre.name}}</span><i class="material-icons">chevron_right</i></router-link>
                 <span v-else class="genreLink">{{genre.name}}</span>
               </div>
             </td>
