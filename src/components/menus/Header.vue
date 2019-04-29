@@ -15,7 +15,7 @@
       <div id="navBarDesktopLinks" class="d-none d-md-block mr-auto">
         <ul class="navbar-nav row-alignment right-float">
           <li v-for="item in userVisibleLinks" :key="item.text" class="nav-item mx-2 goTo" v-bind:class="{active: item.selected}">
-            <div class="nav-link font" @click="goTo(item.link)">{{item.text}}</div>
+            <div v-if="!gsecurity.hasRole('ADMIN')" class="nav-link font" @click="goTo(item.link)">{{item.text}}</div>
           </li>
         </ul>
       </div>

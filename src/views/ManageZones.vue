@@ -53,14 +53,18 @@ export default {
                 if(this.tree[i].id == zoneId) {
                     var zone = this.tree[i]
                     var parentId = zone.parent;
-                    for(var n = 0; n < this.tree.length; n++) {
-                        if(this.tree[n].id == parentId) {
-                            var parent = this.tree[n];
+                    var parentName = ''
+                    if(parentId != 'all') {
+                        for(var n = 0; n < this.tree.length; n++) {
+                            if(this.tree[n].id == parentId) {
+                                parentName = this.tree[n];
+                            }
                         }
-                    }
+                    }                     
                 }
             }
-            this.$router.push({name: 'editZone', params: {zone, parent}});
+            console.log('hola', zone, parent)
+            this.$router.push({name: 'editZone', params: {zone, parentName}});
         },
         updateList(zoneId) {
             this.zoneChildren = Array();
@@ -85,7 +89,7 @@ export default {
                     }
                     else {
                         var root = this.tree[0];
-                        this.zoneChildren.push({id:root['id'], name: root['name'], parent: root['parent'], children: root['children'], depth: 0})
+                        this.zoneChildren.push({id:root['id'], name: root['name'], parent: 'all', children: root['children'], depth: 0})
                     }
                 }
             }
@@ -99,7 +103,7 @@ export default {
                     var parent = this.tree[i]
                     var root = this.tree[0];
                     if(parent.depth == 0) {
-                        this.zoneChildren.push({id:root['id'], name: root['name'], parent: root['parent'], children: root['children'], depth: 0})
+                        this.zoneChildren.push({id:root['id'], name: root['name'], parent: 'all', children: root['children'], depth: 0})
                         this.parentId = 0;
                     } else if (parent.depth == 1) {
                         var children = root.children
@@ -135,7 +139,7 @@ export default {
 
         var root = response.data;
 
-        this.tree.push({id:root['id'], name: root['name'], parent: root['parent'], children: root['children'], depth: 0})
+        this.tree.push({id:root['id'], name: root['name'], parent: 'all', children: root['children'], depth: 0})
         this.zoneChildren.push({id:root['id'], name: root['name'], children: root['children'], depth: 0})
         this.parentId = 0;
         for(var i=0; i < root['children'].length; i++){

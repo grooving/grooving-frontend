@@ -2,7 +2,7 @@
 <div class="prueba">
     <div class="everything">
         <div class="paymentSelect">
-          <div class="paymentOptions"><EditZoneForm :key="zone" :zone="zone" :parent="parent"/></div>
+          <div class="paymentOptions"><EditZoneForm :key="zone" :zone="zone" :parentName="parentName"/></div>
         </div>
     </div>
 </div>
@@ -22,16 +22,15 @@ export default {
     data: function() {
         return {
             gsecurity: GSecurity,
-            parent: undefined,
+            parentName: undefined,
             zone: undefined,
         }
     },
     mounted: function() {
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
-
         this.zone = (this.$attrs.zone);
-        this.parent = (this.$attrs.parent);
+        this.parentName = (this.$attrs.parentName);
     },
 }
 </script>

@@ -28,6 +28,7 @@ import GSecurity from "@/security/GSecurity.js";
 import GChat from "@/utils/GChat.js";
 import GAxios from "@/utils/GAxios.js";
 import endpoints from "@/utils/endpoints.js";
+import GTrans from "@/utils/GTrans.js";
 
 export default {
 
@@ -46,7 +47,9 @@ export default {
     return {
       gsecurity: GSecurity,
       gchat: undefined,
+      gtrans: undefined,
       placeholder: undefined,
+
       // ---- Vue Beautiful Chat Properties -----
 
       // List of all the participant of the conversation.
@@ -165,6 +168,12 @@ export default {
     this.gsecurity = GSecurity;
     this.gsecurity.obtainSavedCredentials();
 
+    this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+    // Podemos cambiar el lenguaje así para debug...
+    //this.gtrans.setLanguage('es')
+    //this.gtrans.setLanguage('en')
+
     let protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
     this.gchat = new GChat("ws", this.offerId.toString(), this.gsecurity.getToken(), this.gsecurity.getUsername());
 
@@ -208,7 +217,7 @@ export default {
 
   },
   updated() {
-    this.placeholder= this.chatActive ? 'Write a reply here' : "This is the chat's history of this offer";
+    this.placeholder= this.chatActive ? this.gtrans.translate('chatPlaceholder_1') : this.gtrans.translate('chatPlaceholder_2') ;
   },
 }
 

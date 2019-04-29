@@ -1,22 +1,22 @@
 <template>
   <div id="results" class="container-fluid px-0 mt-0">
     <h1 v-if="parentZoneName != ''" class="titleView"><div @click="back()"><i style="font-size: 30px;" class="material-icons">chevron_left</i> {{parentZoneName}}</div></h1>
-    <h1 v-else class="titleViewNo">Zones</h1>
-    <p v-if="parentZoneName == ''" class="subtitleView">You can create, edit and delete zones supported by the system.</p>
-    <p v-else class="subtitleView">This is the list of sub-zones for {{parentZoneName}}.</p>
+    <h1 v-else class="titleViewNo">{{gtrans.translate('titleListZone')}}</h1>
+    <p v-if="parentZoneName == ''" class="subtitleView">{{gtrans.translate('subtitleListZone_1')}}</p>
+    <p v-else class="subtitleView">{{gtrans.translate('subtitleListZone_2')}}{{parentZoneName}}.</p>
     
     <div class="row tableContent">
       <div v-if="zones.length==0" class="emptyZones">
-        <p>There aren't any sub-zones for {{parentZoneName}} yet. Create a new one?</p>
-        <div @click="newZone" class="btn btn-primary editButton"><span class="hireText">CREATE</span></div>
+        <p>{{gtrans.translate('empyZone_1')}}{{parentZoneName}}{{gtrans.translate('empyZone_2')}}</p>
+        <div @click="newZone" class="btn btn-primary editButton"><span class="hireText">{{gtrans.translate('createZone_1')}}</span></div>
       </div>
 
       <table v-else>
         <col width="450">
         <col width="5">
         <tr>
-          <th>NAME</th>
-          <th style="text-align:center;">OPTIONS</th>
+          <th>{{gtrans.translate('nameZone')}}</th>
+          <th style="text-align:center;">{{gtrans.translate('optionsZone')}}</th>
         </tr>
         <tr v-for="zone in zones" :key="zone.id">
             <td class="rowWordBreak">
@@ -28,15 +28,15 @@
             
             <td>
               <div class="contentButtons">
-                <div @click="editZone(zone.id)" class="btn btn-primary editButton"><span class="hireText">EDIT</span></div>
-                <div @click="deleteZone(zone.id)" class="btn btn-primary deleteButton"><span class="hireText">DELETE</span></div>
+                <div @click="editZone(zone.id)" class="btn btn-primary editButton"><span class="hireText">{{gtrans.translate('editZone')}}</span></div>
+                <div @click="deleteZone(zone.id)" class="btn btn-primary deleteButton"><span class="hireText">{{gtrans.translate('deleteZone')}}</span></div>
               </div>
             </td>
         </tr>
       </table>
     </div>
     <div style="margin-top: 30px; margin-bottom: 30px;">
-      <div @click="newZone" v-if="zones.length!=0 && parentId > 0" class="btn btn-primary editButton sub"><span class="hireText">NEW ZONE</span></div>
+      <div @click="newZone" v-if="zones.length!=0 && parentId > 0" class="btn btn-primary editButton sub"><span class="hireText">{{gtrans.translate('newZone')}}</span></div>
     </div>
 
   </div>
@@ -44,8 +44,17 @@
 
 <script>
 
+import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
+
 export default {
   name: 'ZonesList',
+  data: function(){
+      return{
+          gsecurity: GSecurity,
+          gtrans: undefined,
+      }
+  },
   props:{
     parentZoneName:{
       type: String,
@@ -83,7 +92,6 @@ export default {
       this.$emit('deleteZone', zoneId);
     },
     newZone() {
-      console.log(this.parentId)
       this.$emit('newZone', this.parentId);
     },
     viewChildren(zoneId) {
@@ -91,6 +99,17 @@ export default {
     },
 
   },
+    created() {
+      // Retreive stored credentials
+      this.gsecurity = GSecurity;
+      this.gsecurity.obtainSavedCredentials();
+
+      this.gtrans = new GTrans(this.gsecurity.getLanguage());
+          
+      // Podemos cambiar el lenguaje así para debug...
+      //this.gtrans.setLanguage('es')
+      //this.gtrans.setLanguage('en')
+    },
 }
 
 </script>
@@ -218,7 +237,7 @@ export default {
   }
 
   .sub {
-    width: 150px;
+    width: 160px;
     cursor: pointer;
 
   }

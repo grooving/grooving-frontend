@@ -2,13 +2,13 @@
 <div class="prueba">
     <div class="everything">
             <div class="contentDelete">
-                <p>Are you sure you wanna delete this zone?</p>
+                <p>{{gtrans.translate('deleteZoneWarning')}}</p>
                 <h1 style="font-weight:bold; margin-top: 10px;">{{zoneName}}</h1>
-                <p style="margin-top: 20px;">You will delete the zone and their corresponding children. This action <strong>cannot be undone.</strong></p>
+                <p style="margin-top: 20px;">{{gtrans.translate('deleteZoneInfo_1')}}<strong>{{gtrans.translate('deleteZoneInfo_2')}}</strong></p>
                 <hr>
                 <div class="contentButtons">
-                    <router-link v-bind:to="'manageZones/'+ parentZoneId" class="btn btn-primary editButton"><span class="hireText">CANCEL</span></router-link>
-                    <a  v-on:click="deleteZone()" class="btn btn-primary deleteButton"><span class="hireText">DELETE</span></a>
+                    <router-link v-bind:to="'manageZones/'+ parentZoneId" class="btn btn-primary editButton"><span class="hireText">{{gtrans.translate('cancel')}}</span></router-link>
+                    <a  v-on:click="deleteZone()" class="btn btn-primary deleteButton"><span class="hireText">{{gtrans.translate('deleteZone')}}</span></a>
                 </div>
             </div>
     </div>
@@ -19,6 +19,7 @@
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
 
 export default {
     name: 'DeleteZone',
@@ -33,6 +34,7 @@ export default {
             parentZoneId: undefined,
             zoneId: undefined,
             zoneName: undefined,
+            gtrans: undefined,   
         }
     },
 
@@ -44,6 +46,12 @@ export default {
             var GAxiosToken = this.gsecurity.getToken();
             var authorizedGAxios = GAxios;
             authorizedGAxios.defaults.headers.common['Authorization'] = 'Token '+GAxiosToken;
+
+            this.gtrans = new GTrans(this.gsecurity.getLanguage());
+                
+            // Podemos cambiar el lenguaje así para debug...
+            //this.gtrans.setLanguage('es')
+            //this.gtrans.setLanguage('en')
         }
     },
 

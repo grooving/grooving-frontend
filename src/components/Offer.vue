@@ -136,6 +136,7 @@
                 chat: undefined,
                 chatActive: undefined,
             }
+
         },
         
         props: {
@@ -194,7 +195,13 @@
         },
         beforeMount () {
             this.ratingD = this.rating;
-            this.chat = this.gsecurity.hasRole('CUSTOMER') ? 'Contact the artist' : 'Contact the customer'
+            this.negotiationMessage = this.gtrans.translate('negotiationMessage');
+            this.withdrawnMessage = this.gtrans.translate('withdrawnMessage');
+            this.rejectedMessage = this.gtrans.translate('rejectedMessage');
+            this.cancelledArtistMessage = this.gtrans.translate('cancelledArtistMessage');
+            this.cancelledCustomerMessage = this.gtrans.translate('cancelledCustomerMessage');
+            this.paymentMessage = this.gtrans.translate('paymentMessage');
+            this.chat = this.gsecurity.hasRole('CUSTOMER') ? this.gtrans.translate('contactArtist') : this.gtrans.translate('contactCustomer');
             this.chatActive = this.offerStatus === 'CONTRACT_MADE' ? true : false;
         },
         created() {

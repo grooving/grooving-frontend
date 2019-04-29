@@ -31,6 +31,15 @@ export default{
     // ----------------------------------------------------
 
     decline : "DECLINAR",
+    contactArtist : "Contacta con el artista",
+    contactCustomer : "Contacta con el cliente",
+    negotiationMessage: "La oferta se encuentra en preceso de negociación.",
+    withdrawnMessage : "La oferta fue declinada por el cliente antes de que se aceptase.",
+    rejectedMessage : "La oferta fue rechazada por el artista.",
+    cancelledArtistMessage : "La oferta fue cancelada por el artista después de ser aceptada.",
+    cancelledCustomerMessage : "La oferta fue cancelada por el cliente después de ser aceptada.",
+    paymentMessage : "El pago ya ha sido realizado.",
+
 
     // ----------------------------------------------------
     //                  CustomHiring.vue
@@ -386,5 +395,53 @@ export default{
     // --------------------------------------------------------------------------------
 
     perfomanceDuration: 'Duración de la actuación',
+
+    // ----------------------------------------------------
+    //                 ZonesList.vue
+    // ----------------------------------------------------
+
+    titleListZone : "Zonas",
+    subtitleListZone_1 : "Aquí puede crear, edit y eliminar zonas.",
+    subtitleListZone_2 : "Esta es la lista de zonas hijas de ",
+    empyZone_1: "Todavía no hay ninguna zona hija de ",
+    empyZone_2: ". ¿Quiere crear una?",
+    createZone_1: "CREAR",
+    nameZone: "NOMBRE",
+    optionsZone: "OPCIONES",
+    editZone: "EDITAR",
+    deleteZone: "BORRAR",
+    newZone: "NUEVA ZONA",
+
+    // ----------------------------------------------------
+    //                 EditZoneForm.vue
+    // ----------------------------------------------------
+
+    titleEditZone : "Editar Zona",
+    subtitleEditZone_1 : "Esta zona hija pertenece a ",
+    subtitleEditZone_2 : "la zona principal.",  
+    
+    // ----------------------------------------------------
+    //                 CreateZoneForm.vue
+    // ----------------------------------------------------
+
+    titleCreateZone : "Nueva Zona",
+    subtitleCreateZone_1 : "Está zona será una ",
+    subtitleCreateZone_2 : "zona principal.",  
+    subtitleCreateZone_3 : "Esta zona hija pertenecerá a ", 
+
+    // ----------------------------------------------------
+    //                 CreateZoneForm.vue
+    // ----------------------------------------------------
+
+    deleteZoneWarning : "¿Está seguro de que quiere eliminar esta zona?",
+    deleteZoneInfo_1 : "Se va a eliminar esta zona y sus hijas. Esta acción ",
+    deleteZoneInfo_2 : "no puede deshacerse.",
+
+    // ----------------------------------------------------
+    //                        Chat.vue
+    // ----------------------------------------------------
+
+    chatPlaceholder_1 : 'Escriba su respuesta',
+    chatPlaceholder_2 : "Este es el historial de la conversación sobre esta oferta",
 
 }

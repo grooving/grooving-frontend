@@ -111,6 +111,14 @@ export default{
     // ----------------------------------------------------
 
     decline : "DECLINE",
+    contactArtist : "Contact the artist",
+    contactCustomer : "Contact the customer",
+    negotiationMessage: "The offer is in a negotiation process.",
+    withdrawnMessage : "The offer was withdrawn by the customer before it was accepted.",
+    rejectedMessage : "The offer was rejected by the artist.",
+    cancelledArtistMessage : "The offer was canceled by the artist after being accepted.",
+    cancelledCustomerMessage : "The offer was canceled by the customer after being accepted.",
+    paymentMessage : "The payment has already been made.",
 
     // ----------------------------------------------------
     //                     LeftMenu.vue
@@ -388,5 +396,53 @@ export default{
 
     perfomanceDuration: 'Performance duration',
 
+    // ----------------------------------------------------
+    //                 ZonesList.vue
+    // ----------------------------------------------------
+
+    titleListZone : "Zones",
+    subtitleListZone_1 : "Here you can create, edit and delete zones.",
+    subtitleListZone_2 : "This is the list of sub-zones for ",
+    empyZone_1: "There aren't any sub-zones for ",
+    empyZone_2: " yet. Create a new one?",
+    createZone_1: "CREATE",
+    nameZone: "NAME",
+    optionsZone: "OPTIONS",
+    editZone: "EDIT",
+    deleteZone: "DELETE",
+    newZone: "NEW ZONE",
+
+    // ----------------------------------------------------
+    //                 EditZoneForm.vue
+    // ----------------------------------------------------
+
+    titleEditZone : "Edit Zone",
+    subtitleEditZone_1 : "This sub-zone belongs to ",
+    subtitleEditZone_2 : "the main category.",    
+
+    // ----------------------------------------------------
+    //                 CreateZoneForm.vue
+    // ----------------------------------------------------
+
+    titleCreateZone : "New Zone",
+    subtitleCreateZone_1 : "This zone will be a ",
+    subtitleCreateZone_2 : "main category.",  
+    subtitleCreateZone_3 : "This sub-zone will belong to ", 
     
+    // ----------------------------------------------------
+    //                 CreateZoneForm.vue
+    // ----------------------------------------------------
+
+    deleteZoneWarning : "Are you sure you wanna delete this zone?",
+    deleteZoneInfo_1 : "You will delete the zone and their corresponding children. This action ",
+    deleteZoneInfo_2 : "cannot be undone.",
+
+    // ----------------------------------------------------
+    //                        Chat.vue
+    // ----------------------------------------------------
+
+    chatPlaceholder_1 : 'Write a reply here',
+    chatPlaceholder_2 : "This is the chat's history of this offer",
+    
+
 }

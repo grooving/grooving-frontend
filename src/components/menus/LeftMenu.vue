@@ -6,11 +6,11 @@
          <div class="navContent">
          <h2 class="title">{{gtrans.translate('menu')}}</h2>
             <ul class="navbar-nav mr-auto p-2 col align-self-center justify-content-center">
-                <li class="nav-item section">
+                <li v-if="!gsecurity.hasRole('ADMIN')" class="nav-item section">
                     <div class="nav-link goTo" @click="goTo('/topArtists')" data-toggle="collapse" data-target="#sidebarleft" >{{gtrans.translate('topArtists')}}</div> 
-                    <b-dropdown-divider v-if="gsecurity.isAuthenticated()" class="divider"/>
+                    <b-dropdown-divider v-if="!gsecurity.hasRole('ADMIN')" class="divider"/>
                 </li>
-                <li v-if="gsecurity.isAuthenticated()" class="nav-item section">
+                <li v-if="!gsecurity.hasRole('ADMIN')" class="nav-item section">
                     <div class="nav-link goTo" @click="goTo('/offers')" data-toggle="collapse" 
                     data-target="#sidebarleft" >{{gtrans.translate('myOffers')}}</div>
                     <b-dropdown-divider v-if="gsecurity.isAuthenticated()" class="divider"/>

@@ -3,17 +3,17 @@
         <form v-on:submit="createZone">
             <div class="form-row">
                 <div class="form-group col-12">
-                    <span style="font-weight:bold;font-size:30px;">New Zone</span>
+                    <span style="font-weight:bold;font-size:30px;">{{gtrans.translate('titleCreateZone')}}</span>
                     <router-link v-bind:to="'/manageZones/'+parentZoneId" style="height: 28px; width: 28px">
                         <i class="material-icons iconOffer">clear</i>
                     </router-link>
-                    <h6 v-if="parentZoneName != ''" class="card-subtitle mb-2 text-muted">This sub-zone will belong to <strong>{{parentZoneName}}.</strong></h6>
-                    <h6 v-else class="card-subtitle mb-2 text-muted">This zone will be a <strong>principal zone.</strong></h6>
+                    <h6 v-if="parentZoneName != ''" class="card-subtitle mb-2 text-muted">{{gtrans.translate('subtitleCreateZone_3')}}<strong>{{parentZoneName}}.</strong></h6>
+                    <h6 v-else class="card-subtitle mb-2 text-muted">{{gtrans.translate('subtitleCreateZone_1')}}<strong>{{gtrans.translate('subtitleCreateZone_2')}}</strong></h6>
                     <div id="errorsDiv" class="validationErrors vertical-center">
                         <p style="margin: 0px;">{{errors}}</p>
                     </div>
                     <div style="width:100%;margin-top:25px;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">NAME</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('nameZone')}}</p>
                         <div class="input-group">
                             <input v-model="zoneName" type="text" class="form-control">
                             <div class="input-group-append">
@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <div class="continueButtonDiv">
-                        <b-button class="continueButton" variant="primary" size="sm" type="submit">SAVE</b-button>
+                        <b-button class="continueButton" variant="primary" size="sm" type="submit">{{gtrans.translate('save')}}</b-button>
                     </div>
                 </div>  
             </div>
@@ -34,6 +34,7 @@
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
 
 export default {
     name: "CreateZoneForm",
@@ -44,6 +45,7 @@ export default {
             parentZoneId: undefined,
             zoneName: "",
             errors: "",
+            gtrans: undefined,
             gsecurity: undefined,
         }
     },
@@ -102,6 +104,12 @@ export default {
     created() {
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+            
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
     },
 }
 </script>
