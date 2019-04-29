@@ -4,14 +4,14 @@
             <div class="form-row">
                 <div class="form-group col-12">
                     <span style="font-weight:bold;font-size:30px;">Edit Genre </span>
-                    <router-link v-if="parentId != '1'" v-bind:to="'/manageGenres/'+parentId" style="height: 28px; width: 28px">
+                    <router-link v-if="oldParentId != '1'" v-bind:to="'/manageGenres/'+oldParentId" style="height: 28px; width: 28px">
                         <i class="material-icons iconOffer">clear</i>
                     </router-link>
                     <router-link v-else v-bind:to="'/manageGenres/all'" style="height: 28px; width: 28px">
                         <i class="material-icons iconOffer">clear</i>
                     </router-link>
                     <h6 v-if="parentName != ''" class="card-subtitle mb-2 text-muted">This sub-genre belongs to <strong>{{parentName}}.</strong></h6>
-                    <h6 v-else class="card-subtitle mb-2 text-muted">This sub-genre belongs to <strong>the main category.</strong></h6>
+                    <h6 v-else class="card-subtitle mb-2 text-muted">This genre belongs to <strong>the main category.</strong></h6>
                     <div style="width:100%;margin-top:25px;">
                         <div v-if="canChangeParent == 1">
                             <p class="card-text" style="font-weight:bold;display:inline-block;">PARENT GENRE</p>
@@ -72,6 +72,7 @@ export default {
             genreNameES: undefined,
             genreNameEN: undefined,
             canChangeParent: undefined,
+            oldParentId: undefined,
         }
     },
 
@@ -111,6 +112,8 @@ export default {
     created() {
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+
+        this.oldParentId = this.parentId;
     },
 
     beforeMount: function() {

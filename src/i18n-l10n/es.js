@@ -387,4 +387,19 @@ export default{
 
     perfomanceDuration: 'Duración de la actuación',
 
+    // --------------------------------------------------------------------------------
+    //                               GenresList.vue
+    // --------------------------------------------------------------------------------
+
+    genres_title: 'Géneros',
+    genres_subtitle: 'Puedes crear, editar y eliminar géneros soportados por el sistema.',
+    genres_subtitle_list: 'Esta es la lista de sub-géneros de ',
+    genres_createMsg: 'No hay géneros para esta categoría. ¿Quieres crear uno nuevo?',
+    genres_name: 'NOMBRE',
+    genres_options: 'OPCIONES',
+    genres_edit: 'EDITAR',
+    genres_delete: 'ELIMINAR',
+    genres_newGenre: 'NUEVO GÉNERO',
+    
+
 }

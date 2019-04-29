@@ -1,22 +1,22 @@
 <template>
   <div id="results" class="container-fluid px-0 mt-0">
     <h1 v-if="parentGenreName != ''" class="titleView"><router-link v-bind:to="genreBackLink.toString()"><i style="font-size: 30px;" class="material-icons">chevron_left</i> {{parentGenreName}}</router-link></h1>
-    <h1 v-else class="titleView">Genres</h1>
-    <p v-if="parentGenreName == ''" class="subtitleView">You can create, edit and delete genres supported by the system.</p>
-    <p v-else class="subtitleView">This is the list of sub-genres for {{parentGenreName}}.</p>
+    <h1 v-else class="titleView">{{gtrans.translate('genres_title')}}</h1>
+    <p v-if="parentGenreName == ''" class="subtitleView">{{gtrans.translate('genres_subtitle')}}</p>
+    <p v-else class="subtitleView">{{gtrans.translate('genres_subtitle_list')}} {{parentGenreName}}.</p>
     <div class="row tableContent">
 
       <div v-if="genres.length==0" class="emptyGenres">
-        <p>There are any genres for this category. Create a new one?</p>
-        <router-link v-bind:to="{name: 'createGenre', params: {parentGenreId, parentGenreName}}" class="btn btn-primary editButton"><span class="hireText">CREATE</span></router-link>
+        <p>{{gtrans.translate('genres_createMsg')}}</p>
+        <router-link v-bind:to="{name: 'createGenre', params: {parentGenreId, parentGenreName}}" class="btn btn-primary editButton"><span class="hireText">{{gtrans.translate('genres_newGenre')}}</span></router-link>
       </div>
 
       <table v-else>
         <col width="450">
         <col width="5">
         <tr>
-          <th>NAME</th>
-          <th style="text-align:center;">OPTIONS</th>
+          <th>{{gtrans.translate('genres_name')}}</th>
+          <th style="text-align:center;">{{gtrans.translate('genres_options')}}</th>
         </tr>
         <tr v-for="genre in genres">
             <td class="rowWordBreak">
@@ -28,15 +28,15 @@
             
             <td>
               <div class="contentButtons">
-                <router-link v-bind:to="{name: 'editGenre', params: {parentGenreId, parentGenreName, genre}}" class="btn btn-primary editButton"><span class="hireText">EDIT</span></router-link>
-                <router-link v-bind:to="{name: 'deleteGenre', params: {genre, parentGenreId}}" class="btn btn-primary deleteButton"><span class="hireText">DELETE</span></router-link>
+                <router-link v-bind:to="{name: 'editGenre', params: {parentGenreId, parentGenreName, genre}}" class="btn btn-primary editButton"><span class="hireText">{{gtrans.translate('genres_edit')}}</span></router-link>
+                <router-link v-bind:to="{name: 'deleteGenre', params: {genre, parentGenreId}}" class="btn btn-primary deleteButton"><span class="hireText">{{gtrans.translate('genres_delete')}}</span></router-link>
               </div>
             </td>
         </tr>
       </table>
     </div>
     <div style="margin-top: 30px; margin-bottom: 30px;">
-      <router-link v-bind:to="{name: 'createGenre', params: {parentGenreId, parentGenreName}}" v-if="genres.length!=0" class="btn btn-primary editButton"><span class="hireText">NEW GENRE</span></router-link>
+      <router-link v-bind:to="{name: 'createGenre', params: {parentGenreId, parentGenreName}}" v-if="genres.length!=0" class="btn btn-primary editButton"><span class="hireText">{{gtrans.translate('genres_newGenre')}}</span></router-link>
     </div>
 
   </div>
@@ -45,9 +45,18 @@
 <script>
 
 import GAxios from '@/utils/GAxios.js';
+import GTrans from "@/utils/GTrans.js";
+import GSecurity from '@/security/GSecurity.js';
 
 export default {
   name: 'GenresList',
+
+  data: function(){
+    	return{
+          gsecurity: undefined,
+          gtrans: undefined,
+    	}
+    },
 
   components: {
   },
@@ -82,6 +91,17 @@ export default {
     },
 
   },
+
+  created: function(){
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
+    },
 }
 
 </script>

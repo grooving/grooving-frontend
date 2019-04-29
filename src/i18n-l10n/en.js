@@ -388,5 +388,19 @@ export default{
 
     perfomanceDuration: 'Performance duration',
 
+    // --------------------------------------------------------------------------------
+    //                               GenresList.vue
+    // --------------------------------------------------------------------------------
+
+    genres_title: 'Genres',
+    genres_subtitle: 'You can create, edit and delete genres supported by the system.',
+    genres_subtitle_list: 'This is the list of sub-genres for',
+    genres_createMsg: 'There are any genres for this category. Create a new one?',
+    genres_name: 'NAME',
+    genres_options: 'OPTIONS',
+    genres_edit: 'EDIT',
+    genres_delete: 'DELETE',
+    genres_newGenre: 'NEW GENRE',
+
     
 }
