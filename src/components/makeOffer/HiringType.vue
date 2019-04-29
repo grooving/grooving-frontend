@@ -31,7 +31,7 @@
       </h5>
     </div>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-    <b-dropdown-divider/>
+    <b-dropdown-divider />
       <div class="bodies">{{gtrans.translate('hiring_performanceDescription')}} 
            <div class="continueButtonDiv">
                <div @click="selectType('PERFORMANCE')" class="btn btn-primary continueButton">
