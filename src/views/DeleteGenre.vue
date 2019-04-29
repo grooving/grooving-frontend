@@ -2,13 +2,13 @@
 <div class="prueba">
     <div class="everything">
             <div class="contentDelete">
-                <p>Are you sure you wanna delete this genre?</p>
+                <p>{{gtrans.translate('genres_deleteQuestion')}}</p>
                 <h1 style="font-weight:bold; margin-top: 10px;">{{genre.name}}</h1>
-                <p style="margin-top: 20px;">You will delete the genre and their corresponding children. This action <strong>cannot be undone.</strong></p>
+                <p style="margin-top: 20px;">{{gtrans.translate('genres_deleteMsg')}} <strong>{{gtrans.translate('genres_undone')}}</strong></p>
                 <hr>
                 <div class="contentButtons">
-                    <router-link v-bind:to="'manageGenres/'+cancelButtonId" class="btn btn-primary editButton"><span class="hireText">CANCEL</span></router-link>
-                    <a  v-on:click="deleteGenre()" class="btn btn-primary deleteButton"><span class="hireText">DELETE</span></a>
+                    <router-link v-bind:to="'manageGenres/'+cancelButtonId" class="btn btn-primary editButton"><span class="hireText">{{gtrans.translate('genres_cancel')}}</span></router-link>
+                    <a  v-on:click="deleteGenre()" class="btn btn-primary deleteButton"><span class="hireText">{{gtrans.translate('genres_delete')}}</span></a>
                 </div>
             </div>
     </div>
@@ -20,6 +20,8 @@ import EditGenreForm from '@/components/EditGenreForm.vue';
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
+
 
 export default {
     name: 'DeleteGenre',
@@ -33,6 +35,7 @@ export default {
             genre: undefined,
             parentGenreId: undefined,
             cancelButtonId: undefined,
+            gtrans: undefined,
         }
     },
 
@@ -84,6 +87,13 @@ export default {
             this.$router.push('/manageGenres/all');
         }*/
         
+    },
+
+    created() {
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
     },
 }
 </script>

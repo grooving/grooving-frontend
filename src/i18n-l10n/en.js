@@ -402,5 +402,39 @@ export default{
     genres_delete: 'DELETE',
     genres_newGenre: 'NEW GENRE',
 
+    // --------------------------------------------------------------------------------
+    //                               CreateGenreForm.vue
+    // --------------------------------------------------------------------------------
+
+    genres_new: 'New genre',
+    genres_belong: 'This sub-genre will belong to',
+    genres_willBe: 'This genre will be a',
+    genres_principal: 'principal genre.',
+    genres_save: 'SAVE',
+
+    // --------------------------------------------------------------------------------
+    //                               EditGenreForm.vue
+    // --------------------------------------------------------------------------------
+
+    genres_editGenre: 'Edit genre',
+    genres_subbelongs: 'This sub-genre belongs to',
+    genres_belongs: 'This genre belongs to',
+    genres_mainCategory: 'the main category.',
+    genres_parent: 'PARENT GENRE',
+    genres_cannotChange: 'You cannot change the parent genre of this genre because it has sub-genres.',
+
+    // --------------------------------------------------------------------------------
+    //                               DeleteGenre.vue
+    // --------------------------------------------------------------------------------
+
+    genres_deleteQuestion: 'Are you sure you wanna delete this genre?',
+    genres_deleteMsg: 'You will delete the genre and their corresponding sub-genress. This action',
+    genres_undone: 'cannot be undone.',
+    genres_cancel: 'CANCEL',
+
+
+
+
+
     
 }

@@ -3,18 +3,18 @@
         <form v-on:submit="updateGenre">
             <div class="form-row">
                 <div class="form-group col-12">
-                    <span style="font-weight:bold;font-size:30px;">Edit Genre </span>
+                    <span style="font-weight:bold;font-size:30px;">{{gtrans.translate('genres_editGenre')}} </span>
                     <router-link v-if="oldParentId != '1'" v-bind:to="'/manageGenres/'+oldParentId" style="height: 28px; width: 28px">
                         <i class="material-icons iconOffer">clear</i>
                     </router-link>
                     <router-link v-else v-bind:to="'/manageGenres/all'" style="height: 28px; width: 28px">
                         <i class="material-icons iconOffer">clear</i>
                     </router-link>
-                    <h6 v-if="parentName != ''" class="card-subtitle mb-2 text-muted">This sub-genre belongs to <strong>{{parentName}}.</strong></h6>
-                    <h6 v-else class="card-subtitle mb-2 text-muted">This genre belongs to <strong>the main category.</strong></h6>
+                    <h6 v-if="parentName != ''" class="card-subtitle mb-2 text-muted">{{gtrans.translate('genres_subbelongs')}} <strong>{{parentName}}.</strong></h6>
+                    <h6 v-else class="card-subtitle mb-2 text-muted">{{gtrans.translate('genres_belongs')}} <strong>{{gtrans.translate('genres_mainCategory')}}</strong></h6>
                     <div style="width:100%;margin-top:25px;">
                         <div v-if="canChangeParent == 1">
-                            <p class="card-text" style="font-weight:bold;display:inline-block;">PARENT GENRE</p>
+                            <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('genres_parent')}}</p>
                             <div class="input-group">
                                 <select v-model="parentId" class="form-control">
                                     <option :value="1">---------</option>
@@ -25,11 +25,11 @@
                             </div>
                         </div>
                         <div v-else>
-                            <p class="card-text" style="font-weight:bold;display:inline-block;">You cannot change the parent genre of this genre because it has children.</p>
+                            <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('genres_cannotChange')}}</p>
                         </div>
                     </div>
                     <div style="width:100%;margin-top:25px;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">NAME </p><small><i>   ES</i></small>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('genres_name')}} </p><small><i>   ES</i></small>
                         <div class="input-group">
                             <input v-model="genreNameES" type="text" class="form-control">
                             <div class="input-group-append">
@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <div style="width:100%;margin-top:25px;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">NAME</p><small><i>   EN</i></small>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('genres_name')}}</p><small><i>   EN</i></small>
                         <div class="input-group">
                             <input v-model="genreNameEN" type="text" class="form-control">
                             <div class="input-group-append">
@@ -47,7 +47,7 @@
                         </div>
                     </div>
                     <div class="continueButtonDiv">
-                        <b-button class="continueButton" variant="primary" size="sm" type="submit">SAVE</b-button>
+                        <b-button class="continueButton" variant="primary" size="sm" type="submit">{{gtrans.translate('genres_save')}}</b-button>
                     </div>
                 </div>  
             </div>
@@ -59,6 +59,7 @@
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
 
 export default {
     name: "EditGenreForm",
@@ -73,6 +74,7 @@ export default {
             genreNameEN: undefined,
             canChangeParent: undefined,
             oldParentId: undefined,
+            gtrans: undefined,
         }
     },
 
@@ -112,6 +114,8 @@ export default {
     created() {
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
 
         this.oldParentId = this.parentId;
     },
