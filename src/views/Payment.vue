@@ -171,24 +171,24 @@ export default {
                     }     
                     console.log(nonce)
 
-                    //authorizedGAxios.post(endpoints.braintree, body_brain)
-                    //.then((res) => {
-                    //
-                    //    console.log(res)
-                    //
-                    //})
-                    //.then(() => {
-                    //    this.$router.push({path: this.nextStep})
-                    //})
-                    //.catch(error => {
-                    //    if (error.response.data.error == null){
-                    //        this.errors = error.message;
-                    //    } else {
-                    //        this.errors = error.response.data.error;
-                    //    }  
-                    //    document.getElementById("errorsDiv").style.display = "block";
-                    //    window.scrollTo(0,0);         
-                    //})
+                    authorizedGAxios.post(endpoints.braintree, body_brain)
+                    .then((res) => {
+                    
+                       console.log(res)
+                    
+                    })
+                    .then(() => {
+                       this.$router.push({path: this.nextStep})
+                    })
+                    .catch(error => {
+                       if (error.response.data.error == null){
+                           this.errors = error.message;
+                       } else {
+                           this.errors = error.response.data.error;
+                       }  
+                       document.getElementById("errorsDiv").style.display = "block";
+                       window.scrollTo(0,0);         
+                    })
 
                     
                 })

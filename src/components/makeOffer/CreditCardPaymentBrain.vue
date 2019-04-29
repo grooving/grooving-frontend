@@ -23,7 +23,7 @@
             </div>
             <div id="sendButton" class="btn btn-primary continueButton" @click="payWithCreditCard"><span class="continueText">{{gtrans.translate('sendOffer')}}</span></div>
 
-            <div id="paypalButton" ></div>
+            <div style="display:none" id="paypalButton" ></div>
         </form>
     </div>
     </div>

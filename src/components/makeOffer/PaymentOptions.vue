@@ -8,7 +8,7 @@
                 class="btn btn-primary continueButton"><span class="continueText">{{gtrans.translate('creditcard')}}</span>
             </div>
             <br>
-            <div id="paypal-button-container"></div>
+            <div style="display:none" id="paypal-button-container"></div>
             <!-- <div @click="paymentOptionSelected()"
                 class="btn btn-primary continueButton"><span class="continueText">PAYPAL</span>
             </div> -->

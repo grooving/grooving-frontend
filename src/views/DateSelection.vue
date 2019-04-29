@@ -12,7 +12,7 @@
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :price="this.cardPrice" :totalPrice="this.totalPrice"/>
         </div>
         <div class="calendarButton">
-          <div class="calendar"><Calendar @datePickerDate="calendarSelected" :availableDates="this.datos[0].availableDates"/></div>
+          <div class="calendar"><Calendar @datePickerDate="calendarSelected" :availableDates="availableDates"/></div>
           <div class="continueButtonDiv" @click="dateSelected()" ><div class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div></div>
         </div>
     </div>
@@ -37,6 +37,18 @@ export default {
     
     components: {
         Calendar, ArtistCard
+    },
+
+    computed: {
+
+        availableDates: function(){
+    
+            if(this.datos && this.datos[0] && this.datos[0].availableDates)
+                return this.datos[0].availableDates;
+            else
+                return Array();
+
+        }
     },
 
     data: function() {
@@ -146,9 +158,11 @@ export default {
             .then(response => {
                 var calendar = response.data;
 
-                this.datos.push({
-                    availableDates: calendar[0].days,
-                })
+                if(calendar.length==0){
+                    this.datos.push({availableDates: []});
+                }else{
+                    this.datos.push({availableDates: calendar.days,})
+                }
 
             }).catch(ex => {
                 console.log(ex);
