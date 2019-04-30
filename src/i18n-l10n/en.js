@@ -443,6 +443,12 @@ export default{
 
     chatPlaceholder_1 : 'Write a reply here',
     chatPlaceholder_2 : "This is the chat's history of this offer",
-    
 
+    // ----------------------------------------------------
+    //                        App.vue
+    // ----------------------------------------------------
+
+    cookies_msg: 'This website uses cookies to ensure you get the best experience on our website. By continuing to use this site you are giving us your consent to do this. You can read more about our cookies in ',
+    cookies_link: 'this link',
+    accept_cookies: "Got it",
 }
