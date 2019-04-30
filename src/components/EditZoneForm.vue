@@ -103,8 +103,9 @@ export default {
         } 
     },
     mounted() {
-        if(this.zone != undefined) {
+        if(this.zone != undefined && this.parentName != undefined) {
             this.parentZoneId = this.zone.parent;
+            console.log(this.parentName) 
             this.parentZoneName = this.parentName;
             this.zoneId = this.zone.id;
             this.zoneName = this.zone.name;

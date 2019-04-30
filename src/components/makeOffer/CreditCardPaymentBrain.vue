@@ -112,7 +112,7 @@ export default {
                         },
                         payment: () => {
                             return paypalCheckoutInstance.createPayment({
-                                    flow: 'checkout',
+                                    flow: 'vault',
                                     intent: 'authorize',
                                     amount: this.amount,
                                     displayName: 'Braintree Testing',
