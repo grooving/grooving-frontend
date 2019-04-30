@@ -471,4 +471,10 @@ export default{
     register_confirmation: 'Your account has been successfully created',
     register_thanks: 'Thank You',
     register_email: 'You will receive a welcome email shortly.',
+
+    // ----------------------------------------------------
+    //                  AddressInput.vue
+    // ----------------------------------------------------
+
+    address_info: 'Address information',
 }

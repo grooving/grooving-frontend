@@ -472,4 +472,10 @@ export default{
     register_thanks: 'Gracias',
     register_email: 'Recibirá un email de bienvenida en breve.',
 
+    // ----------------------------------------------------
+    //                  AddressInput.vue
+    // ----------------------------------------------------
+
+    address_info: 'Datos de la dirección',
+
 }
