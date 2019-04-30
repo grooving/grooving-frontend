@@ -478,4 +478,10 @@ export default{
 
     address_info: 'Datos de la dirección',
 
+    // ----------------------------------------------------
+    //                   EventInput.vue
+    // ----------------------------------------------------
+
+    event_info: 'Datos del evento',
+
 }
