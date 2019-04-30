@@ -1,7 +1,7 @@
 <template>
     <div class="everything">
         <div class="tarjeta">
-            <ul class="list-group list-group-flush"><li class="list-group-item">Offer #{{ offerID }}</li></ul>
+            <ul class="list-group list-group-flush"><li class="list-group-item">{{gtrans.translate('offer')}} #{{ offerID }}</li></ul>
             <div class="card-body cuerpoTarjeta">
                 <div class="confirmation"><img class="tick" src="@/assets/img/approved_tick.png"/>
                     <p class="price">{{sentText}}</p>
@@ -12,9 +12,8 @@
 </template>
 
 <script>
-
-
-import GSecurity from '@/security/GSecurity.js';
+import GSecurity from "@/security/GSecurity.js";
+import GTrans from "@/utils/GTrans.js";
 
     export default {
         name: 'AcceptedOffer',
@@ -26,14 +25,28 @@ import GSecurity from '@/security/GSecurity.js';
             },
             sentText: {
                 type: String,
-                default: 'You have accepted the offer'
+                default: "",
             },
         },
 
         data: function() {
             return {
                 gsecurity: GSecurity,
+                gtrans: undefined,
             }
+        },
+
+        created: function(){
+            this.gsecurity = GSecurity;
+            this.gsecurity.obtainSavedCredentials();
+
+            this.gtrans = new GTrans(this.gsecurity.getLanguage());
+            
+            // Podemos cambiar el lenguaje así para debug...
+            //this.gtrans.setLanguage('es')
+            //this.gtrans.setLanguage('en')
+
+            this.sentText = this.gtrans.translate('offer_accepted');
         },
 
         beforeMount: function() {
@@ -55,11 +68,13 @@ import GSecurity from '@/security/GSecurity.js';
         width: 140px;
         margin-bottom: 20px;
     }
+
     .price {
         font-size: 35px;
         margin-bottom: 0px;
         color: #187FE6;
     }
+
     .tarjeta {
         width: auto;
         box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, .2);
@@ -98,5 +113,4 @@ import GSecurity from '@/security/GSecurity.js';
 
         }
     }
-
 </style>

@@ -90,7 +90,7 @@ export default{
     //                  ExtendedOffer.vue
     // ----------------------------------------------------
 
-    offer : "Offer",
+    offer : "Offer", // Se usa también en AcceptedOffer.vue
     offer_date : "Date",
     offer_duration : "Duration",
     offer_price: "Price",
@@ -451,4 +451,10 @@ export default{
     cookies_msg: 'This website uses cookies to ensure you get the best experience on our website. By continuing to use this site you are giving us your consent to do this. You can read more about our cookies in ',
     cookies_link: 'this link',
     accept_cookies: "Got it",
+
+    // ----------------------------------------------------
+    //                  AcceptedOffer.vue
+    // ----------------------------------------------------
+
+    offer_accepted: 'You have accepted the offer',
 }
