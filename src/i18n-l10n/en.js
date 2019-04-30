@@ -125,7 +125,7 @@ export default{
     // ----------------------------------------------------
 
     menu : "Menu",
-    topArtists : "Top Artists",
+    topArtists : "Top Artists", // Se usa también en TopArtists.vue
     myOffers : "My Offers",
     checkIn : "Check-In",
     termsAndConditions : "Terms and Conditions", // Se usa también en Footer.vue
