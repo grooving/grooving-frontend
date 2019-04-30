@@ -444,4 +444,12 @@ export default{
     chatPlaceholder_1 : 'Escriba su respuesta',
     chatPlaceholder_2 : "Este es el historial de la conversación sobre esta oferta",
 
+    // ----------------------------------------------------
+    //                        App.vue
+    // ----------------------------------------------------
+
+    cookies_msg: 'Este sitio web utiliza cookies para ofrecerle la mejor experiencia de usuario posible en nuestra página. Si continúa navegando por este sitio, entendemos que acepta su uso. Puede leer más sobre nuestras cookies en ',
+    cookies_link: 'este enlace',
+    accept_cookies: "Entendido",
+
 }
