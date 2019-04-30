@@ -1,8 +1,8 @@
 <template>
 <div class="prueba">
     <div class="everything">
-        <div class="paymentSelect">
-          <div class="paymentOptions"><EditZoneForm :key="zone" :zone="zone" :parentName="parentName"/></div>
+        <div class="editZoneForm">
+          <div><EditZoneForm :key="zone" :zone="zone" :parentName="parentName" @error="error"/></div>
         </div>
     </div>
 </div>
@@ -24,6 +24,7 @@ export default {
             gsecurity: GSecurity,
             parentName: undefined,
             zone: undefined,
+            errors : "",
         }
     },
     mounted: function() {
@@ -31,6 +32,15 @@ export default {
         this.gsecurity.obtainSavedCredentials();
         this.zone = (this.$attrs.zone);
         this.parentName = (this.$attrs.parentName);
+    },
+    methods: {
+        error(error) {
+            console.log(error)
+            this.errors = error;
+
+            document.getElementById("errorsDiv").style.display = "block";
+            window.scrollTo(0,0);
+        }
     },
 }
 </script>

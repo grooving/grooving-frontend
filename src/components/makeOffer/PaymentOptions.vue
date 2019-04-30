@@ -1,5 +1,8 @@
 <template>
     <div class="content">
+        <div id="errorsDiv" class="validationErrors vertical-center">
+            <p style="margin: 0px;">{{errors}}</p>
+        </div>
         <div class="paymentOptions">
             <!-- <p>{{gtrans.translate('selectMethod')}}</p> -->
             <!-- <div class="continueButtonDiv"><div  class="btn btn-primary continueButton"><span class="continueText">PAYPAL</span></div @click="paymentOptionSelected()"></div> -->

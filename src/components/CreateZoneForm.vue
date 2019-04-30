@@ -75,10 +75,11 @@ export default {
                 else{
                     this.$router.push('manageZones/'+this.parentZoneId);
                 }
-            }).catch(ex => {
-                console.log(ex);
+            }).catch(error => {
+                this.errors = error.response.data.error;
             }).then( () => {
                 NProgress.done();
+                this.$emit('error', this.errors);
             })
         },
     },
@@ -169,17 +170,7 @@ export default {
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .5) !important;
     }
 
-    .validationErrors{
-        background-color:#f50057;
-        border-radius: 5px;
-        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
-        color:white;
-        display: none;
-        font-weight: bold;
-        margin-bottom: 14px;
-        padding: 10px;
-        padding-top: 12px;
-    }
+
 
     @media (max-width:767px)  {
         .content{

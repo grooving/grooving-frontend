@@ -135,6 +135,19 @@ export default {
     vertical-align: top;
     cursor: pointer;
   }
+  
+  .validationErrors{
+    background-color:#f50057;
+    border-radius: 5px;
+    box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
+    color:white;
+    display: none;
+    font-weight: bold;
+    height: 100%;
+    margin-bottom: 14px;
+    padding: 10px;
+    padding-top: 12px;
+  }
 
   .zoneLink{
     display: inline-flex !important;
@@ -233,7 +246,7 @@ export default {
   }
 
   .rowWordBreak{
-    word-break: break-all;
+    word-break: break-word;
   }
 
   .sub {
