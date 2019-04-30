@@ -3,8 +3,8 @@
         
         <div class="tarjeta">
             <a v-bind:href="customerURI">
-                <img v-if="!userPhoto" src="@/assets/defaultPhoto.png" class="card-img-top customerImage" alt="Artist's Image">
-                <img v-else v-bind:src="userPhoto" class="card-img-top customerImage" alt="Artist's Image">
+                <img v-if="!userPhoto" src="@/assets/defaultPhoto.png" class="card-img-top customerImage" v-bind:alt="this.gtrans.translate('image_alt')">
+                <img v-else v-bind:src="userPhoto" class="card-img-top customerImage" v-bind:alt="this.gtrans.translate('image_alt')">
             </a>
             <div class="card-body cuerpoTarjeta cuerpoTarjetaTop">
                 <div class="leftContent">
@@ -27,8 +27,9 @@
 
 <script>
 
-    import GAxios from '../utils/GAxios.js'
+    import GAxios from '../utils/GAxios.js';
     import GSecurity from '@/security/GSecurity.js';
+    import GTrans from "@/utils/GTrans.js"
     import endpoints from '@/utils/endpoints.js';
     import { mapGetters } from 'vuex';
     import {mapActions} from 'vuex';
@@ -39,6 +40,7 @@
         data: function() {
             return {
                 gsecurity: GSecurity,
+                gtrans: undefined,
                 gaxios: GAxios,
                 userName: '',
                 userPhoto: '',
@@ -60,7 +62,7 @@
             },
             sentText: {
                 type: String,
-                default: 'Received'
+                default: ''
             },
             price: {
                 type: String,
@@ -70,6 +72,20 @@
         methods: {
             ...mapActions(['setPaymentConfirmation']),
         },
+
+        created: function(){
+            this.gsecurity = GSecurity;
+            this.gsecurity.obtainSavedCredentials();
+
+            this.gtrans = new GTrans(this.gsecurity.getLanguage());
+            
+            // Podemos cambiar el lenguaje así para debug...
+            //this.gtrans.setLanguage('es')
+            //this.gtrans.setLanguage('en')
+
+            this.sentText = this.gtrans.translate('payment_received');
+        },
+
         beforeMount() {
             var paymentConfirmation = this.$store.getters.paymentConfirmation;
             if(!paymentConfirmation || !paymentConfirmation.userName){

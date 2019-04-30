@@ -458,4 +458,10 @@ export default{
 
     offer_accepted: 'Has aceptado la oferta',
 
+    // ----------------------------------------------------
+    //               PaymentConfirmation.vue
+    // ----------------------------------------------------
+
+    payment_received: 'Recibido',
+
 }
