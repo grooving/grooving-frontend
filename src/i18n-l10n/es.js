@@ -220,7 +220,7 @@ export default{
     //                   UserList.vue
     // ----------------------------------------------------
 
-    oops : "Nada que mostrar",
+    oops : "Nada que mostrar", // Se usa también en OffersList.vue
 
     // ----------------------------------------------------
     //                   UsersList.vue

@@ -13,7 +13,7 @@
               </div>
             </div>
             <div v-if="pendingOffers.length == 0" class="error">
-              <h1 class="oops">Nothing to show ☹</h1>
+              <h1 class="oops">{{gtrans.translate('oops')}} ☹</h1>
             </div>
             </span>
             <span v-if="selectedTab == 1">
@@ -25,7 +25,7 @@
                 <Chat :offerId="chatOfferId" :chatActive="chatActive" v-if="chatReady" @closeChat="chatReady=false" :key="chatOfferId" style="z-index: 8000; position:absolute"/>
             </div>
             <div v-if="acceptedOffers.length == 0" class="error">
-              <h1 class="oops">Nothing to show ☹</h1>
+              <h1 class="oops">{{gtrans.translate('oops')}} ☹</h1>
             </div>
             </span>
             <span v-if="selectedTab == 2">
@@ -36,7 +36,7 @@
               </div>
             </div>
             <div v-if="rejectedOffers.length == 0" class="error">
-              <h1 class="oops">Nothing to show ☹</h1>
+              <h1 class="oops">{{gtrans.translate('oops')}} ☹</h1>
             </div>
             </span>
             
@@ -166,7 +166,7 @@ export default {
     this.gtrans = new GTrans(this.gsecurity.getLanguage());
     
     // Podemos cambiar el lenguaje así para debug...
-    this.gtrans.setLanguage('es')
+    //this.gtrans.setLanguage('es')
     //this.gtrans.setLanguage('en')
 
     if(!this.$gsecurity.isAuthenticated()) {
