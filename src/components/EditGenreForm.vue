@@ -12,6 +12,9 @@
                     </router-link>
                     <h6 v-if="parentName != ''" class="card-subtitle mb-2 text-muted">{{gtrans.translate('genres_subbelongs')}} <strong>{{parentName}}.</strong></h6>
                     <h6 v-else class="card-subtitle mb-2 text-muted">{{gtrans.translate('genres_belongs')}} <strong>{{gtrans.translate('genres_mainCategory')}}</strong></h6>
+                    <div id="errorsDiv" class="validationErrors vertical-center">
+                        <p style="margin: 0px;">{{errors}}</p>
+                    </div>
                     <div style="width:100%;margin-top:25px;">
                         <div v-if="canChangeParent == 1">
                             <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('genres_parent')}}</p>
@@ -104,6 +107,9 @@ export default {
                 }
             }).catch(ex => {
                 console.log(ex);
+                console.log(ex.response.data.error);
+                this.errors = ex.response.data.error;
+                document.getElementById("errorsDiv").style.display = "block";
             }).then( () => {
                 NProgress.done();
             })
@@ -123,7 +129,8 @@ export default {
     beforeMount: function() {
         if (!this.gsecurity.isAuthenticated()) {
             this.$router.push({name: "error"});
-        } else {
+        } 
+        else {
             this.gsecurity = GSecurity
             var GAxiosToken = this.gsecurity.getToken();
             var authorizedGAxios = GAxios;
@@ -259,6 +266,18 @@ export default {
             align-items: center;
             box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, .3);
         }
+    }
+
+    .validationErrors{
+        background-color:#f50057;
+        border-radius: 5px;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
+        color:white;
+        display: none;
+        font-weight: bold;
+        margin-bottom: 14px;
+        padding: 10px;
+        padding-top: 12px;
     }
 
 </style>
