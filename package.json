@@ -21,6 +21,7 @@
     "sass-loader": "^7.1.0",
     "vue": "^2.6.6",
     "vue-beautiful-chat": "^2.2.0",
+    "vue-cookie-law": "^1.10.0",
     "vue-router": "^3.0.1",
     "vue-swal": "^1.0.0",
     "vuejs-datepicker": "^1.5.4",
