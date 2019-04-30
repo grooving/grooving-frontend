@@ -463,4 +463,12 @@ export default{
     // ----------------------------------------------------
 
     payment_received: 'Received',
+
+    // ----------------------------------------------------
+    //              RegisterConfirmation.vue
+    // ----------------------------------------------------
+
+    register_confirmation: 'Your account has been successfully created',
+    register_thanks: 'Thank You',
+    register_email: 'You will receive a welcome email shortly.',
 }
