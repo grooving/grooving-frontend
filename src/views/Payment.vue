@@ -3,7 +3,7 @@
     <div id="errorsDiv" class="validationErrors vertical-center">
         <p style="margin: 0px;">{{errors}}</p>
     </div>
-    <div class="title"><p>Payment</p></div>
+    <div class="title"><p>{{gtrans.translate('payment_payment')}}</p></div>
     <div class="everything">
         <div class="artistCard"><ArtistCard :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.cardPrice"/>
@@ -25,6 +25,7 @@ import GSecurity from '@/security/GSecurity.js';
 import {mapGetters} from 'vuex';
 import PaymentProcess from '@/store/modules/payment.js';
 import { error } from 'util';
+import GTrans from "@/utils/GTrans.js";
 
 
 export default {
@@ -39,6 +40,7 @@ export default {
         return {
             //Hiring Process...
             gsecurity: GSecurity,
+            gtrans: GTrans,
             artistId: -1,
             nextStep: undefined,
             hiringType: undefined,
@@ -222,6 +224,8 @@ export default {
         // Retrieve store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
 
         // The artist to whom the offer is created
         this.artistId = this.$route.params['artistId'];

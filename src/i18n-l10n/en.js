@@ -489,4 +489,69 @@ export default{
     // ----------------------------------------------------
 
     artists: 'Artists',
+
+    // ----------------------------------------------------
+    //                      Payment.vue
+    // ----------------------------------------------------
+
+    payment_payment: 'Payment',
+
+    // ----------------------------------------------------
+    //                      PaymentSelector.vue
+    // ----------------------------------------------------
+
+    payment_selector: 'Select a payment method',
+    payment_selector_error: 'Sorry! Something went wrong. Try again later.',
+
+    // ----------------------------------------------------
+    //                      TermsView.vue
+    // ----------------------------------------------------
+
+    terms_title: 'Terms and Conditions',
+
+    // ----------------------------------------------------
+    //                      AboutView.vue
+    // ----------------------------------------------------
+
+    about_title: 'About Us',
+
+    // ----------------------------------------------------
+    //                      NewUser.vue
+    // ----------------------------------------------------
+
+    newUser_login: 'Log In',
+    newUser_username: 'Username',
+    newUser_password: 'Password',
+    newUser_error: 'Wrong username or password!',
+    newUser_singin: 'SIGN IN',
+    newUser_new: 'New to Grooving?',
+    newUser_signup: 'SIGN UP!',
+    newUser_artist: 'Are you an artist?',
+    newUser_joinus: 'JOIN US!',
+
+    // ----------------------------------------------------
+    //                      HiringSettings.vue
+    // ----------------------------------------------------
+
+    hiringSettings_performanceHiring: 'Performance Hiring',
+    hiringSettings_performanceDescription: 'You can define your own shows indicating its description, duration and price.',
+    hiringSettings_addNew: 'ADD NEW',
+
+    // ----------------------------------------------------
+    //                      StartingDate.vue
+    // ----------------------------------------------------
+
+    startingDate_title: 'Pick a starting date',
+    startingDate_error: 'You must specific a starting hour',
+
+    // ----------------------------------------------------
+    //                      SentOffer.vue
+    // ----------------------------------------------------
+
+    sentOffer_msg: 'Your offer has been sent to the artist',
+
+
+
+
+
 }

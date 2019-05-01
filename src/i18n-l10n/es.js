@@ -48,7 +48,7 @@ export default{
     custom_title : "Contratación a Medida", // Usado también en CreateCustomHiring.vue y EditCustomHiring.vue 
     custom_subtitle : "El cliente puede decidir la cantidad de dinero a pagar, por lo que es posible que quieras indicar un precio mínimo.", // Usado también en CreateCustomHiring.vue y EditCustomHiring.vue
     custom_minimumPrice : "PRECIO MÍNIMO", // Usado también en CreateCustomHiring.vue y EditCustomHiring.vue
-    add : "AÑADIR NUEVO", // Usado también en FareHiring.vue
+    add : "NUEVO", // Usado también en FareHiring.vue
 
     // ----------------------------------------------------
     //                EditArtistInfo.vue
@@ -489,5 +489,67 @@ export default{
     // ----------------------------------------------------
 
     artists: 'Artistas',
+
+    // ----------------------------------------------------
+    //                      Payment.vue
+    // ----------------------------------------------------
+
+    payment_payment: 'Pago',
+
+    // ----------------------------------------------------
+    //                      PaymentSelector.vue
+    // ----------------------------------------------------
+
+    payment_selector: 'Selecciona un método de pago',
+    payment_selector_error: '¡Lo sentimos! Algo fue mal. Inténtalo de nuevo más tarde.',
+
+    // ----------------------------------------------------
+    //                      TermsView.vue
+    // ----------------------------------------------------
+
+    terms_title: 'Términos y Condiciones',
+
+    // ----------------------------------------------------
+    //                      AboutView.vue
+    // ----------------------------------------------------
+
+    about_title: 'Quiénes Somos',
+
+    // ----------------------------------------------------
+    //                      NewUser.vue
+    // ----------------------------------------------------
+
+    newUser_login: 'Iniciar Sesión',
+    newUser_username: 'Nombre de usuario',
+    newUser_password: 'Contraseña',
+    newUser_error: '¡Nombre de usuario o contraseña incorrecta!',
+    newUser_singin: 'ENTRAR',
+    newUser_new: '¿Nuevo en Grooving?',
+    newUser_signup: '¡REGÍSTRATE!',
+    newUser_artist: '¿Eres un artista?',
+    newUser_joinus: '¡ÚNETE!',
+
+    // ----------------------------------------------------
+    //                      HiringSettings.vue
+    // ----------------------------------------------------
+
+    hiringSettings_performanceHiring: 'Contratación por Espectáculo',
+    hiringSettings_performanceDescription: 'Puedes definir tus propios espectáculos indicando su descripción, duración y precio fijo.',
+    hiringSettings_addNew: 'NUEVO',
+
+    // ----------------------------------------------------
+    //                      StartingDate.vue
+    // ----------------------------------------------------
+
+    startingDate_title: 'Elige una fecha de comienzo',
+    startingDate_error: 'Debes de especificar una hora de comienzo',
+
+    // ----------------------------------------------------
+    //                      SentOffer.vue
+    // ----------------------------------------------------
+
+    sentOffer_msg: 'Tu oferta ha sido enviada al artista',
+    
+
 
 }

@@ -35,11 +35,11 @@
                         <form>
                             <div class="form-row">
                                 <div class="form-group col-12">
-                                    <span class="card-title" style="font-weight:bold;font-size:30px;margin-bottom:12px">Performance Hiring </span>
-                                    <h6 class="card-subtitle mb-2 text-muted">You can define your own shows indicating its description, duration and price.</h6>
+                                    <span class="card-title" style="font-weight:bold;font-size:30px;margin-bottom:12px">{{gtrans.translate('hiringSettings_performanceHiring')}}</span>
+                                    <h6 class="card-subtitle mb-2 text-muted">{{gtrans.translate('hiringSettings_performanceDescription')}}</h6>
                                     <router-link to="createPerformance">
                                         <div class="continueButtonDiv">
-                                            <b-button class="continueButton" variant="primary" size="sm" type="submit">ADD NEW</b-button>
+                                            <b-button class="continueButton" variant="primary" size="sm" type="submit">{{gtrans.translate('hiringSettings_addNew')}}</b-button>
                                         </div>
                                     </router-link>
                                 </div>  
@@ -49,7 +49,7 @@
                     <div v-else>
                         <router-link to="createPerformance">
                             <div class="continueButtonDiv">
-                                <b-button class="continueButton" variant="primary" size="sm" type="submit">ADD NEW</b-button>
+                                <b-button class="continueButton" variant="primary" size="sm" type="submit">{{gtrans.translate('hiringSettings_addNew')}}</b-button>
                             </div>
                         </router-link>
                     </div>
@@ -67,6 +67,7 @@ import PerformanceHiring from '@/components/PerformanceHiring.vue';
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
 
 export default {
     name: 'HiringSettings',
@@ -81,6 +82,7 @@ export default {
         return {
             gsecurity: GSecurity,
             packages: Array(),
+            gtrans: GTrans,
         }
     },
 
@@ -134,6 +136,7 @@ export default {
     created() {
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
     },
 }
 </script>
