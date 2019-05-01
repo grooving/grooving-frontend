@@ -6,9 +6,8 @@
                 <span class="link" @click="goTo(aboutUsURI)">{{gtrans.translate('aboutUs')}} | </span>
                 <span class="link" @click="goTo(termsURI)">{{gtrans.translate('termsAndConditions')}} | </span>
                 <span class="link">{{gtrans.translate('contactUs')}}: grupogrooving@gmail.com | </span>
-                <span class="link" @click="changeLanguage('en')"><img class="lenFlag" src="@/assets/img/en.png"></span>
-                <span>⠀</span>
-                <span class="link" @click="changeLanguage('es')"><img class="lenFlag" src="@/assets/img/es.jpg"></span>
+                <span class="link" @click="changeLanguage('en')">EN | </span>
+                <span class="link" @click="changeLanguage('es')">ES</span>
             </div>
 
             <div style="float:clear;">Copyright © 2019:

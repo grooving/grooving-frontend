@@ -1,8 +1,10 @@
 <template>
 <div>
   <div class="banners">
-  <div class="banner2"><img class="d-block w-100 banner2" src="@/assets/img/banner2.png" v-bind:alt="this.gtrans.translate('image')" style="box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .2) !important;"></div>
-  <div class="banner1"><img class="d-block w-100 banner1" src="@/assets/img/banner1.png" v-bind:alt="this.gtrans.translate('image')" style="box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .2) !important;"></div>
+    <div class="banner2" v-if="gtrans.getLanguage() == 'es'"><img class="d-block w-100 banner2" src="@/assets/img/banner2_ES.png" v-bind:alt="this.gtrans.translate('image')" style="box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .2) !important;"></div>
+    <div class="banner2" v-if="gtrans.getLanguage() == 'en'"><img class="d-block w-100 banner2" src="@/assets/img/banner2_EN.png" v-bind:alt="this.gtrans.translate('image')" style="box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .2) !important;"></div>
+    <div class="banner1" v-if="gtrans.getLanguage() == 'es'"><img class="d-block w-100 banner1" src="@/assets/img/banner_ES.png" v-bind:alt="this.gtrans.translate('image')" style="box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .2) !important;"></div>
+    <div class="banner1" v-if="gtrans.getLanguage() == 'en'"><img class="d-block w-100 banner1" src="@/assets/img/banner_EN.png" v-bind:alt="this.gtrans.translate('image')" style="box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .2) !important;"></div>
   </div>
   <div class="container-fluid">
     <div class="container"><ArtistList :listTitle="this.gtrans.translate('artists')" :artistas="datos" /></div>
