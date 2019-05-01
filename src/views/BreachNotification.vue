@@ -88,7 +88,7 @@
 
             if(!this.gsecurity.hasRole('ADMIN')) {
                 console.log("Error: You are not an administrator so you can't create breach notifications");
-                location.replace("/#/*")
+                this.$router.push({name: "error"});
             }
         },
 

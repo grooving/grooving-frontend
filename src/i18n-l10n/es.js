@@ -454,4 +454,48 @@ export default{
     cookies_link: 'este enlace',
     accept_cookies: "Entendido",
 
+    // --------------------------------------------------------------------------------
+    //                               GenresList.vue
+    // --------------------------------------------------------------------------------
+
+    genres_title: 'Géneros',
+    genres_subtitle: 'Puedes crear, editar y eliminar géneros soportados por el sistema.',
+    genres_subtitle_list: 'Esta es la lista de sub-géneros de ',
+    genres_createMsg: 'No hay géneros para esta categoría. ¿Quieres crear uno nuevo?',
+    genres_name: 'NOMBRE',
+    genres_options: 'OPCIONES',
+    genres_edit: 'EDITAR',
+    genres_delete: 'ELIMINAR',
+    genres_newGenre: 'NUEVO GÉNERO',
+
+    // --------------------------------------------------------------------------------
+    //                               CreateGenreForm.vue
+    // --------------------------------------------------------------------------------
+
+    genres_new: 'Nuevo género',
+    genres_belong: 'Este sub-género pertenecerá a',
+    genres_willBe: 'Este género será',
+    genres_principal: 'un género principal.',
+    genres_save: 'GUARDAR',
+
+    // --------------------------------------------------------------------------------
+    //                               EditGenreForm.vue
+    // --------------------------------------------------------------------------------
+    
+    genres_editGenre: 'Editar género',
+    genres_subbelongs: 'Este sub-género pertenece a',
+    genres_belongs: 'Este género pertenece a',
+    genres_mainCategory: 'la categoría principal.',
+    genres_parent: 'GÉNERO PADRE',
+    genres_cannotChange: 'No puedes cambiar el género padre porque ya existen sub-géneros pertenecientes a este género.',
+
+    // --------------------------------------------------------------------------------
+    //                               DeleteGenre.vue
+    // --------------------------------------------------------------------------------
+
+    genres_deleteQuestion: '¿Estás seguro que quieres eliminar este género?',
+    genres_deleteMsg: 'Eliminarás este género y sus correspondientes sub-géneros. Esta acción',
+    genres_undone: 'no puede ser deshecha.',
+    genres_cancel: 'CANCELAR',
+    
 }

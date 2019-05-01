@@ -29,6 +29,21 @@ export default {
         }
     },
 
+    beforeMount() {
+        if (!this.gsecurity.isAuthenticated()) {
+            this.$router.push({name: "error"});
+        } 
+
+        else if (!this.gsecurity.hasRole('ADMIN')) {
+            this.$router.push({name: "error"});
+        }
+    },
+
+     created() {
+            this.gsecurity = GSecurity;
+            this.gsecurity.obtainSavedCredentials();
+     },
+
     mounted() {
         NProgress.start();
         this.genreId = this.$route.params['genreId'];

@@ -3,29 +3,38 @@
         <form v-on:submit="createGenre">
             <div class="form-row">
                 <div class="form-group col-12">
-                    <span style="font-weight:bold;font-size:30px;">New Genre</span>
+                    <span style="font-weight:bold;font-size:30px;">{{gtrans.translate('genres_new')}}</span>
                     <router-link v-if="parentGenreId != '1'" v-bind:to="'/manageGenres/'+parentGenreId" style="height: 28px; width: 28px">
                         <i class="material-icons iconOffer">clear</i>
                     </router-link>
                     <router-link v-else v-bind:to="'/manageGenres/all'" style="height: 28px; width: 28px">
                         <i class="material-icons iconOffer">clear</i>
                     </router-link>
-                    <h6 v-if="parentGenreName != ''" class="card-subtitle mb-2 text-muted">This sub-genre will belong to <strong>{{parentGenreName}}.</strong></h6>
-                    <h6 v-else class="card-subtitle mb-2 text-muted">This genre will be a <strong>principal genre.</strong></h6>
+                    <h6 v-if="parentGenreName != ''" class="card-subtitle mb-2 text-muted">{{gtrans.translate('genres_belong')}} <strong>{{parentGenreName}}.</strong></h6>
+                    <h6 v-else class="card-subtitle mb-2 text-muted">{{gtrans.translate('genres_willBe')}} <strong>{{gtrans.translate('genres_principal')}}</strong></h6>
                     <div id="errorsDiv" class="validationErrors vertical-center">
                         <p style="margin: 0px;">{{errors}}</p>
                     </div>
-                    <div style="width:100%;margin-top:25px;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">NAME</p>
+                     <div style="width:100%;margin-top:25px;">
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('genres_name')}} </p><small><i>   ES</i></small>
                         <div class="input-group">
-                            <input v-model="genreName" type="text" class="form-control">
+                            <input v-model="genreNameES" type="text" class="form-control">
                             <div class="input-group-append">
-                                <span class="input-group-text">Aa</span>
+                                <span class="input-group-text">ES</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width:100%;margin-top:25px;">
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('genres_name')}}</p><small><i>   EN</i></small>
+                        <div class="input-group">
+                            <input v-model="genreNameEN" type="text" class="form-control">
+                            <div class="input-group-append">
+                                <span class="input-group-text">EN</span>
                             </div>
                         </div>
                     </div>
                     <div class="continueButtonDiv">
-                        <b-button class="continueButton" variant="primary" size="sm" type="submit">SAVE</b-button>
+                        <b-button class="continueButton" variant="primary" size="sm" type="submit">{{gtrans.translate('genres_save')}}</b-button>
                     </div>
                 </div>  
             </div>
@@ -37,6 +46,7 @@
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
 
 export default {
     name: "CreateGenreForm",
@@ -44,9 +54,11 @@ export default {
     data: function() {
         return {
             parentGenreName: undefined,
-            genreName: "",
+            genreNameEN: "",
+            genreNameES: "",
             errors: "",
             gsecurity: undefined,
+            gtrans: undefined,
         }
     },
 
@@ -64,7 +76,8 @@ export default {
 
             NProgress.start();
             GAxios.post(endpoints.createGenre, {
-                "name": this.genreName,
+                "name_es": this.genreNameES,
+                "name_en": this.genreNameEN,
                 "parentGender": this.parentGenreId
             }).then(response => {
                 console.log(response);
@@ -100,6 +113,8 @@ export default {
     created() {
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
     },
 }
 </script>

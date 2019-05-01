@@ -30,9 +30,21 @@ export default {
         }
     },
 
-    beforeMount: function(){
-        
+
+    beforeMount() {
+        if (!this.gsecurity.isAuthenticated()) {
+            this.$router.push({name: "error"});
+        } 
+
+        else if (!this.gsecurity.hasRole('ADMIN')) {
+            this.$router.push({name: "error"});
+        }
     },
+
+    created() {
+            this.gsecurity = GSecurity;
+            this.gsecurity.obtainSavedCredentials();
+     },
 
     mounted: function() {
         this.gsecurity = GSecurity;

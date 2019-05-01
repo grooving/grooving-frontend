@@ -33,12 +33,21 @@ export default {
     },
 
     beforeMount: function(){
+        if (!this.gsecurity.isAuthenticated()) {
+            this.$router.push({name: "error"});
+        } 
+
+        else if (!this.gsecurity.hasRole('ADMIN')) {
+            this.$router.push({name: "error"});
+        }
 
     },
 
     mounted: function() {
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+
+        
 
         if(this.$attrs.parentGenreId == undefined){
             this.$router.push('/manageGenres/all');

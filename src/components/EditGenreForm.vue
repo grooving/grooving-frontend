@@ -3,37 +3,54 @@
         <form v-on:submit="updateGenre">
             <div class="form-row">
                 <div class="form-group col-12">
-                    <span style="font-weight:bold;font-size:30px;">Edit Genre </span>
-                    <router-link v-if="parentId != '1'" v-bind:to="'/manageGenres/'+parentId" style="height: 28px; width: 28px">
+                    <span style="font-weight:bold;font-size:30px;">{{gtrans.translate('genres_editGenre')}} </span>
+                    <router-link v-if="oldParentId != '1'" v-bind:to="'/manageGenres/'+oldParentId" style="height: 28px; width: 28px">
                         <i class="material-icons iconOffer">clear</i>
                     </router-link>
                     <router-link v-else v-bind:to="'/manageGenres/all'" style="height: 28px; width: 28px">
                         <i class="material-icons iconOffer">clear</i>
                     </router-link>
-                    <h6 v-if="parentName != ''" class="card-subtitle mb-2 text-muted">This sub-genre belongs to <strong>{{parentName}}.</strong></h6>
-                    <h6 v-else class="card-subtitle mb-2 text-muted">This sub-genre belongs to <strong>the main category.</strong></h6>
+                    <h6 v-if="parentName != ''" class="card-subtitle mb-2 text-muted">{{gtrans.translate('genres_subbelongs')}} <strong>{{parentName}}.</strong></h6>
+                    <h6 v-else class="card-subtitle mb-2 text-muted">{{gtrans.translate('genres_belongs')}} <strong>{{gtrans.translate('genres_mainCategory')}}</strong></h6>
+                    <div id="errorsDiv" class="validationErrors vertical-center">
+                        <p style="margin: 0px;">{{errors}}</p>
+                    </div>
                     <div style="width:100%;margin-top:25px;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">PARENT GENRE</p>
-                        <div class="input-group">
-                            <select v-model="parentId" class="form-control">
-                                <option :value="1">---------</option>
-                                <option v-for="opt in tree" :key="opt.id" :value="opt.id">
-                                    <span>{{opt.name}}</span>
-                                </option>
-                            </select>
+                        <div v-if="canChangeParent == 1">
+                            <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('genres_parent')}}</p>
+                            <div class="input-group">
+                                <select v-model="parentId" class="form-control">
+                                    <option :value="1">---------</option>
+                                    <option v-for="opt in tree" :key="opt.id" :value="opt.id">
+                                        <span>{{opt.name}}</span>
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div v-else>
+                            <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('genres_cannotChange')}}</p>
                         </div>
                     </div>
                     <div style="width:100%;margin-top:25px;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">NAME</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('genres_name')}} </p><small><i>   ES</i></small>
                         <div class="input-group">
-                            <input v-model="genreName" type="text" class="form-control" required>
+                            <input v-model="genreNameES" type="text" class="form-control">
                             <div class="input-group-append">
-                                <span class="input-group-text">Aa</span>
+                                <span class="input-group-text">ES</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width:100%;margin-top:25px;">
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('genres_name')}}</p><small><i>   EN</i></small>
+                        <div class="input-group">
+                            <input v-model="genreNameEN" type="text" class="form-control">
+                            <div class="input-group-append">
+                                <span class="input-group-text">EN</span>
                             </div>
                         </div>
                     </div>
                     <div class="continueButtonDiv">
-                        <b-button class="continueButton" variant="primary" size="sm" type="submit">SAVE</b-button>
+                        <b-button class="continueButton" variant="primary" size="sm" type="submit">{{gtrans.translate('genres_save')}}</b-button>
                     </div>
                 </div>  
             </div>
@@ -45,6 +62,7 @@
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
 
 export default {
     name: "EditGenreForm",
@@ -55,6 +73,11 @@ export default {
             errors: "",
             gsecurity: undefined,
             tree: Array(),
+            genreNameES: "",
+            genreNameEN: "",
+            canChangeParent: undefined,
+            oldParentId: undefined,
+            gtrans: undefined,
         }
     },
 
@@ -70,7 +93,8 @@ export default {
         updateGenre() {
             NProgress.start();
             GAxios.put(endpoints.createGenre + this.genreId+'/', {
-                "name": this.genreName,
+                "name_es": this.genreNameES,
+                "name_en": this.genreNameEN,
                 "id":this.genreId,
                 "parentGender":this.parentId
             }).then(response => {
@@ -83,6 +107,9 @@ export default {
                 }
             }).catch(ex => {
                 console.log(ex);
+                console.log(ex.response.data.error);
+                this.errors = ex.response.data.error;
+                document.getElementById("errorsDiv").style.display = "block";
             }).then( () => {
                 NProgress.done();
             })
@@ -93,17 +120,39 @@ export default {
     created() {
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+
+        this.oldParentId = this.parentId;
     },
 
     beforeMount: function() {
         if (!this.gsecurity.isAuthenticated()) {
             this.$router.push({name: "error"});
-        } else {
+        } 
+        else {
             this.gsecurity = GSecurity
             var GAxiosToken = this.gsecurity.getToken();
             var authorizedGAxios = GAxios;
             authorizedGAxios.defaults.headers.common['Authorization'] = 'Token '+GAxiosToken;
         }
+
+        GAxios.get(endpoints.createGenre+'admin/'+this.genreId+'/').then(response =>{
+            this.genreNameES = response.data.name_es;
+            this.genreNameEN = response.data.name_en;
+            var children = response.data.children;
+            //console.log(children);
+            //alert(children.length);
+
+            if(children.length == 0){
+                this.canChangeParent = 1;
+            }
+            else{
+                this.canChangeParent = 0;
+            }
+        }).catch(ex => {
+            console.log(ex);
+        });
 
         GAxios.get(endpoints.genres+'?tree=true').then(response =>{
             //console.log(response);
@@ -217,6 +266,18 @@ export default {
             align-items: center;
             box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, .3);
         }
+    }
+
+    .validationErrors{
+        background-color:#f50057;
+        border-radius: 5px;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
+        color:white;
+        display: none;
+        font-weight: bold;
+        margin-bottom: 14px;
+        padding: 10px;
+        padding-top: 12px;
     }
 
 </style>
