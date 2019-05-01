@@ -35,7 +35,9 @@ export default {
         }
       }).then(response => {
 
-        var artists = response.data.results;
+        var artists = response.data;
+
+        console.log(response.data)
 
         for(var i = 0; i < artists.length; i++){
           var genres = Array();
@@ -43,7 +45,6 @@ export default {
           for(var g = 0; g < artists[i].portfolio.artisticGender.length; g++){
             genres.push(artists[i].portfolio.artisticGender[g].name);
           }
-
           this.datos.push({
             artistID: artists[i].id, 
             artistImage: artists[i].photo,
