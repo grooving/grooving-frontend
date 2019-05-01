@@ -1,6 +1,6 @@
 <template>
 <div class="hiringProcessContainer">
-    <div class="title"><p style="text-align: left !important;">Choose a time range</p></div>
+    <div class="title"><p style="text-align: left !important;">{{gtrans.translate('timeRange')}}</p></div>
     
     <div class="everything">
         <div class="artistCard"><ArtistCard 
@@ -10,7 +10,7 @@
         <div class="sliderButton" >
           <div class="slider" ><DoubleSlider style="padding-top:10%" @timeUpdate="updateTime"/></div>
           <div v-bind:to="nextStep" class="continueButtonDiv"><div style="margin: 10%;" @click="timeSelected" 
-            class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div></div>
+            class="btn btn-primary continueButton"><span class="continueText">{{gtrans.translate('continueButton')}}</span></div></div>
         </div>
     </div>
 </div>
@@ -20,6 +20,7 @@
 import DoubleSlider from '@/components/makeOffer/DoubleSlider.vue'
 import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
 import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
 import {mapActions} from 'vuex';
 import {mapGetters} from 'vuex';
 import PaymentProcess from '@/store/modules/payment.js';
@@ -37,6 +38,7 @@ export default {
             
             //Hiring Process...
             gsecurity: GSecurity,
+            gtrans: undefined,
             artistId: -1,
             nextStep: undefined,
             hiringType: undefined,
@@ -116,6 +118,12 @@ export default {
         }
 
         // ###### END OF SECURITY ACCESS CHECKS ###### 
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+            
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
 
     },
 

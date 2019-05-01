@@ -433,7 +433,7 @@ export default{
     //                 CreateZoneForm.vue
     // ----------------------------------------------------
 
-    deleteZoneWarning : "¿Está seguro de que quiere eliminar esta zona?",
+    deleteZoneWarning : "¿Estás seguro de que quiere eliminar esta zona?",
     deleteZoneInfo_1 : "Se va a eliminar esta zona y sus hijas. Esta acción ",
     deleteZoneInfo_2 : "no puede deshacerse.",
 
@@ -503,5 +503,47 @@ export default{
     genres_deleteMsg: 'Eliminarás este género y sus correspondientes sub-géneros. Esta acción',
     genres_undone: 'no puede ser deshecha.',
     genres_cancel: 'CANCELAR',
+
+    // ----------------------------------------------------
+    //                   TimeSelection.vue 
+    // ----------------------------------------------------
+
+    timeRange: 'Selecciona un intervalo de tiempo',
+
+    // ----------------------------------------------------
+    //                   DateSelection.vue 
+    // ----------------------------------------------------
+
+    chooseDate: 'Selecciona la fecha',
+
+    // ----------------------------------------------------
+    //                   PriceSelection.vue 
+    // ----------------------------------------------------
+
+    choosePrice: 'Selecciona el precio',
+
+    // ----------------------------------------------------
+    //                   ReceivePayment.vue  
+    // ----------------------------------------------------
+
+    receivePayment: 'Recibe tus pagos',
+
+    // ----------------------------------------------------
+    //             PerformanceSelector.vue.vue  
+    // ----------------------------------------------------
+
+    sorry: 'Discúlpanos, algo ha fallado. Por favor, inténtelo más tarde.',
+    choosePerformance: 'Selecciona un espectáculo',
+
+    // ----------------------------------------------------
+    //                  ArtistRegister.vue  
+    // ----------------------------------------------------
+
+    createArtistAccount: '¡Crea tu cuenta de artista!',
+    accountInfo: 'Información de cuenta',
+    passwordReq: "Tu contraseña debe tener al menos 8 caracteres y no puede contener parte o la totalidad de tu usuario, nombre, apellidos o correo electrónico.",
+    personalInfo: 'Información personal',
+    registerTerms_1: "Al crear esta cuenta aceptas los ",
+    registerTerms_2: "Términos y Condiciones de Grooving",
     
 }

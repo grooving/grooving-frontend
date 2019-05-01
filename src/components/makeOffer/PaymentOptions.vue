@@ -18,6 +18,7 @@
         </div>
     </div>
 </template>
+<script src="https://www.paypal.com/sdk/js?client-id=AVwB_2wUfHN5UCJO1Ik6uWkFbALgetwYKS5_BJ6gr9bR6wcEP5iFK84Nme_ebMbXI4yQdgH5BX2Tld2o&currency=EUR&intent=authorize"></script>
 <script>
 import GSecurity from "@/security/GSecurity.js"
 import GTrans from "@/utils/GTrans.js"

@@ -1,9 +1,9 @@
 <template>
 <div class="prueba">
     <div v-if="errors" class="validationErrors vertical-center">
-        <p>Sorry! Something went wrong. Try again later.</p>
+        <p>{{gtrans.translate('sorry')}}</p>
     </div>
-    <div class="title"><p>Choose a performance</p></div>
+    <div class="title"><p>{{gtrans.translate('choosePerformance')}}</p></div>
     <div class="everything">
         <div class="artistCard"><ArtistCard 
             :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
@@ -23,6 +23,7 @@ import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
 import {mapActions} from 'vuex';
 import { mapGetters } from 'vuex';
 import PaymentProcess from '@/store/modules/payment.js';
@@ -39,6 +40,7 @@ export default {
     data() {
         return {
             gsecurity: GSecurity,
+            gtrans: undefined,
             artistId: undefined,
             hiringType: undefined,
             artistData: {
@@ -146,6 +148,12 @@ export default {
         }
 
         // ###### END OF SECURITY ACCESS CHECKS ###### 
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+            
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
 
     },
     beforeMount: function(){

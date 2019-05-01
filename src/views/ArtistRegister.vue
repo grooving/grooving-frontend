@@ -1,13 +1,13 @@
 <template>
     <div id="wholePage">
-        <div class="title"><p>Create your artist account!</p></div>
+        <div class="title"><p>{{gtrans.translate('createArtistAccount')}}</p></div>
         <div class="bothCards">
             <div id="signup" class="tarjeta">
                 <b-form v-on:submit="createArtist">
                     <div id="errorsDiv" class="validationErrors vertical-center">
                         <p style="margin: 0px;">{{errors}}</p>
                     </div>
-                    <label for="" class="subtitle">Account Information</label>
+                    <label for="" class="subtitle">{{gtrans.translate('accountInfo')}}</label>
                     <b-form-group>
                         <b-form-input v-model="input.artisticName" placeholder="Artistic Name"></b-form-input>
                     </b-form-group>
@@ -18,12 +18,12 @@
                         <b-form-input v-model="input.password" type="password" placeholder="Password" minlength="8" required></b-form-input>
                     </b-form-group>
                     <small class="form-text text-muted" style="margin-bottom:14px">
-                        Your password must be at least 8 characters long, and can't be contained in the username, first name, last name or e-mail address.</small>
+                        {{gtrans.translate('passwordReq')}}</small>
                     <b-form-group>
                         <b-form-input v-model="input.confirmPassword" type="password" placeholder="Confirm password" minlength="8" required></b-form-input>
                     </b-form-group>
                     <hr/>
-                    <label for="" class="subtitle">Personal Information</label>
+                    <label for="" class="subtitle">{{gtrans.translate('personalInfo')}}</label>
                     <!-- <div v-if="!image">
                     </div>
                     <div v-else>
@@ -51,10 +51,10 @@
                     </b-form-group>
                     <div class="form-check">
                         <b-form-checkbox id="checkbox-1" v-model="status" value="accepted" unchecked-value="not_accepted" required>
-                            <p>By creating an account you agree to <a href="/">Grooving's Terms and Conditions</a>.</p>
+                            <p>{{gtrans.translate('registerTerms_1')}}<a href="/">{{gtrans.translate('registerTerms_2')}}</a>.</p>
                         </b-form-checkbox>
                     </div>
-                    <b-button class="continueButton" variant="primary" size="sm" type="submit">SIGN IN</b-button>
+                    <b-button class="continueButton" variant="primary" size="sm" type="submit">{{gtrans.translate('header_signIn')}}</b-button>
                 </b-form>
             </div>
         </div>
@@ -65,6 +65,7 @@
     import endpoints from '@/utils/endpoints.js';
     import GAxios from '../utils/GAxios.js'
     import GSecurity from "@/security/GSecurity.js";
+    import GTrans from "@/utils/GTrans.js";
 
     export default {
         name: 'ArtistRegister',
@@ -76,6 +77,7 @@
             return {
                 gaxios: GAxios,
                 gsecurity: GSecurity,
+                gtrans: undefined,
                 //image: "",
                 input: {
                     artisticName: "",
@@ -157,6 +159,17 @@
             if (this.gsecurity.isAuthenticated()) {
                 this.$router.push({name: "error"});
             }
+        },
+        created() {
+            // Retreive stored credentials
+            this.gsecurity = GSecurity;
+            this.gsecurity.obtainSavedCredentials();
+
+            this.gtrans = new GTrans(this.gsecurity.getLanguage());
+                
+            // Podemos cambiar el lenguaje así para debug...
+            //this.gtrans.setLanguage('es')
+            //this.gtrans.setLanguage('en')
         },
     }
         

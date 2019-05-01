@@ -4,7 +4,7 @@
     <div id="errorsDiv" class="validationErrors vertical-center">
         <p style="margin: 0px;">{{errors}}</p>
     </div>
-    <div class="title"><p>Choose a date</p></div>
+    <div class="title"><p>{{gtrans.translate('chooseDate')}}</p></div>
 
     <div class="everything">
         <div class="artistCard"><ArtistCard 
@@ -13,7 +13,7 @@
         </div>
         <div class="calendarButton">
           <div class="calendar"><Calendar @datePickerDate="calendarSelected" :availableDates="availableDates"/></div>
-          <div class="continueButtonDiv" @click="dateSelected()" ><div class="btn btn-primary continueButton"><span class="continueText">CONTINUE</span></div></div>
+          <div class="continueButtonDiv" @click="dateSelected()" ><div class="btn btn-primary continueButton"><span class="continueText">{{gtrans.translate('continueButton')}}</span></div></div>
         </div>
     </div>
 </div>
@@ -25,6 +25,7 @@ import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
 
 import GAxios from '@/utils/GAxios.js';
 import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
 import endpoints from '@/utils/endpoints.js';
 import {mapActions} from 'vuex';
 import {mapGetters} from 'vuex';
@@ -56,6 +57,7 @@ export default {
 
           //Hiring Process...
           gsecurity: GSecurity,
+          gtrans: undefined,
           artistId: -1,
           nextStep: undefined,
           hiringType: undefined,
@@ -137,6 +139,12 @@ export default {
         }
 
         // ###### END OF SECURITY ACCESS CHECKS ###### 
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+            
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
 
     },
 

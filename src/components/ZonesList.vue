@@ -152,7 +152,7 @@ export default {
   .zoneLink{
     display: inline-flex !important;
     vertical-align: top !important;
-    width: 110px;
+    width: 120px;
     font-size: 18px;
     color: #007bff;
     cursor: pointer;
@@ -165,7 +165,7 @@ export default {
   .zoneLinkNo{
     display: inline-flex !important;
     vertical-align: top !important;
-    width: 110px;
+    width: 120px;
     font-size: 18px;
   }
 

@@ -1,6 +1,6 @@
 <template>
 <div class="prueba">
-    <div class="title"><p>Receive your payments</p></div>
+    <div class="title"><p>{{gtrans.translate('receivePayment')}}</p></div>
     <div class="everything">
         <div class="paymentSelect">
           <div class="paymentOptions"><PaymentCode @errorPayment="showErrors" @offerDetails="detailsOffer" /></div>
@@ -12,6 +12,7 @@
 <script>
 import PaymentCode from '@/components/PaymentCode.vue'
 import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
 import {mapActions} from 'vuex';
 
 export default {
@@ -25,6 +26,7 @@ export default {
     data: function() {
         return {
             gsecurity: GSecurity,
+            gtrans: undefined,
         }
     },
 
@@ -43,6 +45,18 @@ export default {
         }
     },
 
+    created() {
+        // Retreive stored credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+            
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
+    },
+
     methods: {
         showErrors(value){
             this.errors=value;
@@ -54,7 +68,6 @@ export default {
             console.log(value);
 
             this.setPaymentConfirmation(value);
-
 
         }
 

@@ -6,7 +6,7 @@
     <VideoCarousel class="videoCarousel" :videosInfo="d_portfolioVideos" :key="updateVideosKey"/>
     <div id="datesContainer" class="datesContainer">	
     	<div class="contentCalendar">
-    		<h3 class="availableDatesTitle" >Available dates</h3>
+    		<h3 class="availableDatesTitle" >{{gtrans.translate('availableDates')}}</h3>
     		<Calendar class="availableDates" :availableDates="availableDates"/>
     	</div>
     </div>
@@ -28,6 +28,7 @@ import VideoCarousel from '@/components/portfolio/VideoCarousel.vue';
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
+import GTrans from "@/utils/GTrans.js";
 import Calendar from '@/components/Calendar.vue';
 
 import {mapActions} from 'vuex';
@@ -80,6 +81,7 @@ export default {
     
     return{
       gsecurity: GSecurity,
+      gtrans: undefined,
       artistId: -1,
       updateVideosKey: 0,
       updateImagesKey: 0,
@@ -193,7 +195,20 @@ export default {
         }).then(() => {
           NProgress.done()
         });
-  }
+  },
+  created() {
+
+        // Retreive store credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+            
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
+
+    },
 }
 </script>
 

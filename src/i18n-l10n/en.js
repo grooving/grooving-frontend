@@ -507,4 +507,47 @@ export default{
     cookies_msg: 'This website uses cookies to ensure you get the best experience on our website. By continuing to use this site you are giving us your consent to do this. You can read more about our cookies in ',
     cookies_link: 'this link',
     accept_cookies: "Got it",
+
+    // ----------------------------------------------------
+    //                   TimeSelection.vue 
+    // ----------------------------------------------------
+
+    timeRange: 'Choose a time range',
+
+    // ----------------------------------------------------
+    //                   DateSelection.vue 
+    // ----------------------------------------------------
+
+    chooseDate: 'Choose a date',
+
+    // ----------------------------------------------------
+    //                   PriceSelection.vue 
+    // ----------------------------------------------------
+
+    choosePrice: 'Choose the price',
+
+    // ----------------------------------------------------
+    //                   ReceivePayment.vue  
+    // ----------------------------------------------------
+
+    receivePayment: 'Receive your payments',
+
+    // ----------------------------------------------------
+    //                PerformanceSelector.vue 
+    // ----------------------------------------------------
+
+    sorry: 'Sorry! Something went wrong. Try again later.',
+    choosePerformance: 'Choose a performance',
+
+    // ----------------------------------------------------
+    //                  ArtistRegister.vue  
+    // ----------------------------------------------------
+
+    createArtistAccount: 'Create your artist account!',
+    accountInfo: 'Account Information',
+    passwordReq: "Your password must be at least 8 characters long, and can't be contained in the username, first name, last name or e-mail address.",
+    personalInfo: 'Personal Information',
+    registerTerms_1: "By creating an account you agree to ",
+    registerTerms_2: "Grooving's Terms and Conditions",
+
 }

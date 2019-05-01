@@ -1,7 +1,7 @@
 <template>
     <div class="hiringProcessContainer">
         <div class="title">
-            <p>Choose the price</p>
+            <p>{{gtrans.translate('choosePrice')}}</p>
         </div>
         <div class="everything">
             <div class="artistCard">
@@ -19,10 +19,9 @@
     import CustomPrice from '@/components/CustomPrice.vue'
     import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
     import GSecurity from '@/security/GSecurity.js'
+    import GTrans from "@/utils/GTrans.js";
     import {mapActions} from 'vuex';
     import PaymentProcess from '@/store/modules/payment.js';
-
-
 
     export default {
 
@@ -37,6 +36,7 @@
 
                 //Hiring Process...
                 gsecurity: GSecurity,
+                gtrans: undefined,
                 artistId: -1,
                 nextStep: undefined,
                 hiringType: undefined,
@@ -143,6 +143,12 @@
         }
 
         // ###### END OF SECURITY ACCESS CHECKS ###### 
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+            
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
 
         },
 
