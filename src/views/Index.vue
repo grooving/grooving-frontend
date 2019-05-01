@@ -36,7 +36,7 @@ export default {
       // Make the API call
       GAxios.get(endpoints.artists).then(response => {
 
-        var artists = response.data.results;
+        var artists = response.data;
 
         for(var i = 0; i < artists.length; i++){
           var genres = Array();
