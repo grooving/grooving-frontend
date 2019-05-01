@@ -23,14 +23,13 @@
             </div>
             <div id="sendButton" class="btn btn-primary continueButton" @click="payWithCreditCard"><span class="continueText">{{gtrans.translate('sendOffer')}}</span></div>
 
-            <div style="display:none" id="paypalButton" ></div>
+            
         </form>
     </div>
     </div>
 </template>
 <script>
 import braintree from 'braintree-web';
-import paypal from 'paypal-checkout';
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
@@ -90,53 +89,10 @@ export default {
                         }
                     }
                 }
-                return Promise.all([
-                    braintree.hostedFields.create(options),
-                    braintree.paypalCheckout.create({ client: clientInstance })
-                    ])
-                })
-                .then(instances => {
-
-                    const hostedFieldInstance = instances[0];
-                    const paypalCheckoutInstance = instances[1];
+                return braintree.hostedFields.create(options)
+                }).then(hostedFieldInstance => {
 
                     this.hostedFieldInstance = hostedFieldInstance;
-
-                    // Setup PayPal Button
-                    return paypal.Button.render({
-                        env: 'sandbox',
-                        style: {
-                            label: 'paypal',
-                            size: 'responsive',
-                            shape: 'rect'
-                        },
-                        payment: () => {
-                            return paypalCheckoutInstance.createPayment({
-                                    flow: 'vault',
-                                    intent: 'authorize',
-                                    amount: this.amount,
-                                    displayName: 'Braintree Testing',
-                                    currency: 'EUR'
-                            })
-                        },
-                        onAuthorize: (data, options) => {
-                            return paypalCheckoutInstance.tokenizePayment(options).then(payload => {
-                                console.log(payload);
-                                this.errors = "";
-                                this.nonce = payload.nonce;
-                                this.$emit('finishPayment', this.nonce)
-                            })
-                        },
-                        onCancel: (data) => {
-                            console.log(data);
-                            console.log("Payment Cancelled");
-                        },
-                        onError: (err) => {
-                            console.error(err);
-                            this.errors = this.gtrans.translate('paypal_error');
-                            document.getElementById("errorsDiv").style.display = "block";
-                        }
-                    }, '#paypalButton')
 
                 })
                 .catch(err => {
@@ -153,7 +109,6 @@ export default {
                 NProgress.start();
                 this.hostedFieldInstance.tokenize().then(payload => {
                     this.$emit('finishPayment', payload.nonce)
-                    console.log(payload.nonce)
                 })
                 .catch(err => {
                     console.error(err);

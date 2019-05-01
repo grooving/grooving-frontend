@@ -32,7 +32,7 @@ export default{
     listGenres: '/artisticGenders/?parentId=',
     createGenre: '/artisticGender/',
     statistics: '/admin/statistics/',
-    
+    paypal: '/payPaypal/',
     manageZone: '/admin/zone/',
     users: '/users/',
     user: '/user/',

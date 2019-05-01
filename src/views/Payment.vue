@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import CreditCardPayment from '@/components/makeOffer/CreditCardPayment.vue'
 import CreditCardPaymentBrain from '@/components/makeOffer/CreditCardPaymentBrain.vue'
 import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
 import GAxios from '@/utils/GAxios.js';
@@ -32,7 +31,7 @@ export default {
     name: 'payment',
 
     components: {
-        CreditCardPayment, ArtistCard, CreditCardPaymentBrain
+        ArtistCard, CreditCardPaymentBrain
     },
 
     data() {

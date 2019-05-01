@@ -10,6 +10,7 @@ const state = {
     offer: {
         hiringType: undefined,
         totalPrice: undefined,
+        paypalId: undefined,
     },
 
     date: {
@@ -105,6 +106,9 @@ const actions = {
     setPerformancePackage(state, performancePackage){
         state.commit('setPerformancePackage', performancePackage)
     },
+    setPayPal(state, paypalId){
+        state.commit('setPayPal', paypalId)
+    },
 
     //Other methods
 
@@ -162,6 +166,9 @@ const mutations = {
             state.offer.totalPrice = n.toFixed(2);
         }
     },
+    setPayPal(state, paypalId){
+        state.offer.paypalId = paypalId;
+    },
 
     setEventAddress(state, address) {
 
@@ -217,6 +224,7 @@ const mutations = {
         //Offer
         state.offer.hiringType = undefined;
         state.offer.totalPrice = undefined;
+        state.offer.paypalId = undefined;
     
         //Date
         state.date.date = undefined;

@@ -37,8 +37,6 @@ export default {
 
         var artists = response.data;
 
-        console.log(response.data)
-
         for(var i = 0; i < artists.length; i++){
           var genres = Array();
 

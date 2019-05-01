@@ -11,7 +11,6 @@
       <LeftMenu @samePage='samePage'/>
     </div>
     <router-view :key="$route.fullPath" id="mainContent"/>
-    <Chat/>
     </div>
     <footer><Footer @samePage='samePage' @refreshRightMenu='refreshRightMenu'/></footer>
     <cookie-law :key="refreshC" theme="blood-orange--rounded">

@@ -12,7 +12,7 @@
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.cardPrice"/>
         </div>
         <div class="paymentSelect">
-          <div class="paymentOptions" style="min-width: 250px;"><PaymentOptions @paymentOptionSelected="paymentSelected()"/></div>
+          <div class="paymentOptions" style="min-width: 250px;"><PaymentOptions @paymentOptionSelected="paymentSelected()" @finishPayment="gpay"/></div>
         </div>
     </div>
 </div>
@@ -24,6 +24,8 @@ import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
 import GSecurity from '@/security/GSecurity.js';
 import { mapGetters } from 'vuex';
 import PaymentProcess from '@/store/modules/payment.js';
+import GAxios from '@/utils/GAxios.js';
+import endpoints from '@/utils/endpoints.js';
 
 export default {
     name: 'PaymentSelector',
@@ -46,11 +48,173 @@ export default {
                 photo: undefined,
                 genres: undefined,
             },
+            packageId: undefined,
+            creditCard: {
+                number: undefined, 
+                name: undefined, 
+                month: undefined, 
+                year: undefined, 
+                cvv: undefined, 
+            },
+            preparedDate: {
+                fecha: undefined, 
+                startHour: undefined, 
+                duration: undefined,
+            },
+            preparedOffer: {
+                artistId: undefined, 
+                hiringType: undefined, 
+                location: undefined, 
+                zipcode: undefined, 
+                street: undefined, 
+                description: undefined,
+                zoneId: undefined,
+            },
+            errors: "",
 
         }
     },
 
     methods: {
+        gpay(authorizationID) {
+            NProgress.start();
+            this.nextStep = '/sentOffer/';
+            this.nextStep += this.artistId;
+            
+            // Preparamos una oferta con los campos de VueX, que usaremos para redactar el 
+            // cuerpo de la petición
+            this.preparedOffer.artistId = this.$store.getters.offerArtist.artistId,
+            this.preparedOffer.hiringType = this.$store.getters.offer.hiringType,
+            this.preparedOffer.location = this.$store.getters.offerEvent.location,
+            this.preparedOffer.zipcode = this.$store.getters.offerEvent.zipcode,
+            this.preparedOffer.street = this.$store.getters.offerEvent.street,
+            this.preparedOffer.description = this.$store.getters.offerEvent.description,
+            this.preparedOffer.zoneId = this.$store.getters.offerEvent.zone,
+
+            console.log("Oferta preparada: ", this.preparedOffer);
+
+            // Preparamos una fecha con los campos de VueX, que usaremos para redactar el 
+            // cuerpo de la petición
+            this.preparedDate.startHour = this.$store.getters.offerDate.hour,
+            this.preparedDate.fecha = this.$store.getters.offerDate.date,
+            this.preparedDate.duration = this.$store.getters.offerDate.duration;
+
+            // Retrieve the PackageID the user selected, by means 
+            // of the hiringType
+            if(this.hiringType == "FARE")
+                this.packageId = this.$store.getters.offerFarePack.packageId;
+            else if(this.hiringType == "CUSTOM")
+                this.packageId = this.$store.getters.offerCustomPack.packageId;
+            else if(this.hiringType == "PERFORMANCE"){
+                this.packageId = this.$store.getters.offerPerformancePack.packageId;
+            }
+
+            // Preparamos el cuerpo genérico de las peticiones
+            let body_eventLocation = {
+                "name": this.preparedOffer.location,
+                "equipment": null,
+                "description": this.preparedOffer.description,
+                "address": this.preparedOffer.street + ', ' + this.preparedOffer.zipcode,
+                "zone_id": this.preparedOffer.zoneId,
+            }
+
+            let body_offer = {
+                'description': this.preparedOffer.description,
+                'date': this.preparedDate.fecha + 'T' + this.preparedDate.startHour + ':00',
+                'hours': this.preparedDate.duration,
+                'paymentPackage_id': this.packageId,
+                'eventLocation_id' : 1,
+            }
+            
+            // *** Realizamos dos peticiones secuenciales ***
+            var authorizedGAxios = GAxios;
+            var GAxiosToken = this.gsecurity.getToken();
+            authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
+
+            // Completamos el cuerpo genérico con los campos restantes para cada tipo
+            if(this.hiringType == "FARE"){
+                this.packageId = this.$store.getters.offerFarePack.packageId;
+                body_offer['price'] = this.$store.getters.offer.totalPrice;
+                body_offer['hours'] = this.$store.getters.offerDate.duration;
+                
+            }
+
+            if(this.hiringType == "CUSTOM"){
+                this.packageId = this.$store.getters.offerCustomPack.packageId;
+                body_offer['price'] = this.$store.getters.offer.totalPrice;
+                body_offer['hours'] = this.$store.getters.offerDate.duration;
+            }
+
+            if(this.hiringType == 'PERFORMANCE'){
+                this.packageId = this.$store.getters.offerPerformancePack.packageId;
+                body_offer['price'] = this.$store.getters.offerPerformancePack.priceHour;
+                body_offer['hours'] = this.$store.getters.offerPerformancePack.duration;
+                
+            }      
+
+            authorizedGAxios.post(endpoints.eventlocation, body_eventLocation)
+            .then((res) => {
+                
+                console.log("Event Location Created...")
+                console.log(res)
+                
+                // Reference the brand-new eventLocation
+                body_offer['eventLocation_id'] = res.data.id;
+      
+                // Una vez creado el eventLocation, procedemos a crear la oferta
+                authorizedGAxios.post(endpoints.offer, body_offer)
+                .then((res) => {
+                    console.log("Offer Created...")
+                    console.log(res)
+
+                    let body_payPal = {
+                        'authorization_id': authorizationID,
+                        'id_offer': res.data.id,
+                    }     
+
+                    authorizedGAxios.post(endpoints.paypal, body_payPal)
+                    .then((res) => {
+                    
+                       console.log(res)
+                    
+                    })
+                    .then(() => {
+                        NProgress.done();
+                       this.$router.push({path: this.nextStep})
+                    })
+                    .catch(error => {
+                       if (error.response.data.error == null){
+                           this.errors = error.message;
+                       } else {
+                           this.errors = error.response.data.error;
+                       }  
+                       document.getElementById("errorsDiv").style.display = "block";
+                       window.scrollTo(0,0);         
+                    })
+
+                    
+                })
+                .catch(error => {
+                    if (error.response.data.error == null){
+                        this.errors = error.message;
+                    } else {
+                        this.errors = error.response.data.error;
+                    }  
+                    document.getElementById("errorsDiv").style.display = "block";
+                    window.scrollTo(0,0);
+                });
+                
+            })
+            .catch(error => {
+                if (error.response.data.error == null){
+                    this.errors = error.message;
+                } else {
+                    this.errors = error.response.data.error;
+                }  
+                document.getElementById("errorsDiv").style.display = "block";
+                window.scrollTo(0,0);
+            });
+        },
         
         paymentSelected(){ 
 

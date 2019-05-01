@@ -7,18 +7,17 @@
             <!-- <p>{{gtrans.translate('selectMethod')}}</p> -->
             <!-- <div class="continueButtonDiv"><div  class="btn btn-primary continueButton"><span class="continueText">PAYPAL</span></div @click="paymentOptionSelected()"></div> -->
             <!-- <br> -->
-            <div @click="paymentOptionSelected()"
+            <div v-if="!paid" @click="paymentOptionSelected()"
                 class="btn btn-primary continueButton"><span class="continueText">{{gtrans.translate('creditcard')}}</span>
             </div>
             <br><br>
-            <div id="paypal-button-container" class="button"></div>
-            <!-- <div @click="paymentOptionSelected()"
-                class="btn btn-primary continueButton"><span class="continueText">PAYPAL</span>
-            </div> -->
+            <div v-if="!paid" id="paypal-button-container" class="button"></div>
+            <div v-if="paid" id="sendButton" class="btn btn-primary continueButton" style="margin-bottom: 40%" @click="payWithPayPal"><span class="continueText">{{gtrans.translate('sendOffer')}}</span></div>
+
         </div>
     </div>
 </template>
-<script src="https://www.paypal.com/sdk/js?client-id=AVwB_2wUfHN5UCJO1Ik6uWkFbALgetwYKS5_BJ6gr9bR6wcEP5iFK84Nme_ebMbXI4yQdgH5BX2Tld2o&currency=EUR&intent=authorize"></script>
+
 <script>
 import GSecurity from "@/security/GSecurity.js"
 import GTrans from "@/utils/GTrans.js"
@@ -30,6 +29,9 @@ export default {
             nextStep: undefined,
             gsecurity: GSecurity,
             gtrans: undefined,
+            paid: false,
+            authId: undefined,
+            amount: 10.56,
         }
     },
     props: {
@@ -44,12 +46,42 @@ export default {
         paymentOptionSelected(){
             this.$emit('paymentOptionSelected', 'CREDITCARD');
         },
-
+        payWithPayPal() {
+            this.$emit('finishPayment', this.authId)
+        },
+        paymentMade() {
+            this.paid = true;
+        }
+    },
+    beforeMount() {
+        this.amount = this.$store.getters.offer.totalPrice;
     },
     mounted() {
+
         this.nextStep = '/payment/' + this.$route.params['artistId']
 
-       paypal.Buttons({
+        let  createOrder = (data, actions) => {
+        // Make a call to the REST api to create the payment
+            return actions.order.create({
+            purchase_units: [{
+                    amount: {
+                        value: this.amount
+                    }
+                }]
+            });
+        }
+        let  onApprove = (data, actions) => {
+            NProgress.start();
+            // Authorize the transaction
+            actions.order.authorize().then(payload => {
+                    this.authId = payload.id;
+                }).then(() => {
+                    this.paid = true;
+                    NProgress.done();
+                });
+            
+        }
+        paypal.Buttons({
 
         style: {
                 color:  'blue',
@@ -61,27 +93,8 @@ export default {
                 size: 'responsive',
                 height: 44,
         },
-        createOrder: function(data, actions) {
-            return actions.order.create({
-                purchase_units: [{
-                    amount: {
-                        value: '0.01'
-                    }
-                }]
-            });
-        },
-        onApprove: function(data, actions) {
-
-            // Authorize the transaction
-            actions.order.authorize().then(function(authorization) {
-
-                // Get the authorization id
-                var authorizationID = authorization.purchase_units[0]
-                .payments.authorizations[0].id
-
-                // Call your server to validate and capture the transaction
-            });
-        }
+        createOrder,
+        onApprove,
     }).render('#paypal-button-container');
     },
 
@@ -94,7 +107,8 @@ export default {
         // Podemos cambiar el lenguaje así para debug...
         //this.gtrans.setLanguage('es')
         //this.gtrans.setLanguage('en')
-    }
+    },
+
 }
 </script>
 
