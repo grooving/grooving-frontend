@@ -36,4 +36,5 @@ export default{
     manageZone: '/admin/zone/',
     users: '/users/',
     user: '/user/',
+    image: '/image/'
 }

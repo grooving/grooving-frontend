@@ -13,7 +13,8 @@
         <div class="artistIcon">
             <img class="card-img-top icon" :src="artistImage"/>
              <div class="card-img-overlay" style="top: -20px;">
-                <img class="profile_photo"  src="@/assets/img/edit.png" @click="showPhotoInput()"/>
+                <input type="file" accept="image/*" class="custom-file-input" id="customFile" @change="onFileChange">
+                <img class="profile_photo"  src="@/assets/img/edit.png" @click="onFileChange()"/>
              </div>
         </div></div>
         <div >
@@ -38,9 +39,78 @@
 </template>
 
 <script>
+import endpoints from '@/utils/endpoints.js';
+import GAxios from '../utils/GAxios.js';
+import GSecurity from "@/security/GSecurity.js";
+import GImage from '@/utils/GImage.js';
 
 export default {
     name: "EditPhoto",
+
+    data() {
+        return {
+            gaxios: GAxios,
+            gsecurity: GSecurity,
+            gimage: undefined,
+
+            editPhoto: false,
+            editBanner: false,
+            newPhoto: undefined,
+            newBanner: undefined,
+        }
+    },
+
+    methods: {
+        createImage(file) {
+            var image = new Image();
+            var reader = new FileReader();
+            var vm = this;
+
+            console.log('VM :', vm)
+
+            reader.onload = (e) => {
+                vm.image = e.target.result;
+
+                this.gimage = new GImage(vm.image, 'PROFILE');
+                let imageRequestBody = this.gimage.getRequestBody();
+
+                this.gaxios.put(endpoints.image).then(x => {
+                    console.log(x);
+                }).catch(x => {
+                    console.log(x);
+                });
+
+
+            };
+            reader.readAsDataURL(file);
+        },
+
+        onFileChange(e) {
+            var files = e.target.files || e.dataTransfer.files;
+            if (!files.length) {
+                return;
+            }
+            this.createImage(files[0]);
+            var fileName = files[0].name;
+            $('.custom-file-label').html(fileName);
+        },
+
+        showPhotoInput(){
+            this.editPhoto = true;
+        }, 
+        showBannerInput(){
+            this.editBanner = true;
+        }, 
+        toogleBannerInput(event) {
+            this.editBanner = false;
+            event.preventDefault();
+        },
+        tooglePhotoInput(event) {
+            this.editPhoto = false;
+            event.preventDefault();
+        }
+    },
+
     props: {
         artistURI: {
             type: String,
@@ -57,30 +127,6 @@ export default {
         errors :{
             type: Boolean,
             default: true
-        }
-    },
-    data() {
-        return {
-            editPhoto: false,
-            editBanner: false,
-            newPhoto: undefined,
-            newBanner: undefined,
-        }
-    },
-    methods: {
-        showPhotoInput(){
-            this.editPhoto = true;
-        }, 
-        showBannerInput(){
-            this.editBanner = true;
-        }, 
-        toogleBannerInput(event) {
-            this.editBanner = false;
-            event.preventDefault();
-        },
-        tooglePhotoInput(event) {
-            this.editPhoto = false;
-            event.preventDefault();
         }
     },
 

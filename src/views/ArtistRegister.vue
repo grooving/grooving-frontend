@@ -24,16 +24,20 @@
                     </b-form-group>
                     <hr/>
                     <label for="" class="subtitle">Personal Information</label>
-                    <!-- <div v-if="!image">
-                    </div>
-                    <div v-else>
+
+                    <div v-if="image">
                         <img :src="image" class="profileImage"/>
-                    </div> -->
-                    <img v-if="input.photo" :src="input.photo" class="profileImage"/>
-                    <!-- <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="customFile" @change="onFileChange">
-                        <label class="custom-file-label" for="customFile">Upload a Photo</label>
-                    </div> -->
+                    </div>
+                    <!-- 
+                        OLD
+
+                        <img v-if="input.photo" :src="input.photo" class="profileImage"/> 
+                        
+                        -->
+                    <div class="custom-file">
+                        <input type="file" accept="image/*" class="custom-file-input" id="customFile" @change="onFileChange">
+                        <label class="custom-file-label" for="customFile" style>Upload a Photo</label>
+                    </div>
                     <b-form-group>
                         <b-form-input type="url" v-model="input.photo" placeholder="Profile Photo URL" maxlength="255"></b-form-input>
                     </b-form-group>
@@ -63,8 +67,9 @@
 
 <script>
     import endpoints from '@/utils/endpoints.js';
-    import GAxios from '../utils/GAxios.js'
+    import GAxios from '../utils/GAxios.js';
     import GSecurity from "@/security/GSecurity.js";
+    import GImage from '@/utils/GImage.js';
 
     export default {
         name: 'ArtistRegister',
@@ -76,7 +81,9 @@
             return {
                 gaxios: GAxios,
                 gsecurity: GSecurity,
-                //image: "",
+                gimage: undefined,
+
+                image: "",
                 input: {
                     artisticName: "",
                     username: "",
@@ -94,13 +101,26 @@
         },
 
         methods: {
-            /*createImage(file) {
+            createImage(file) {
                 var image = new Image();
                 var reader = new FileReader();
                 var vm = this;
 
+                console.log('VM :', vm)
+
                 reader.onload = (e) => {
                     vm.image = e.target.result;
+
+                    this.gimage = new GImage(vm.image, 'PROFILE');
+                    let imageRequestBody = this.gimage.getRequestBody();
+
+                    this.gaxios.put(endpoints.image).then(x => {
+                        console.log(x);
+                    }).catch(x => {
+                        console.log(x);
+                    });
+
+
                 };
                 reader.readAsDataURL(file);
             },
@@ -112,7 +132,7 @@
                 this.createImage(files[0]);
                 var fileName = files[0].name;
                 $('.custom-file-label').html(fileName);
-            },*/
+            },
             createArtist() {
                 if (this.status == 'not_accepted') {
                     this.errors = "You must accept our terms and conditions."
@@ -196,9 +216,13 @@
     }
 
     .custom-file-label {
-        color: #6c757d;
-        font-weight: semibold;
         text-align: left;
+        min-width: 100%;
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        right: 0;
+        white-space: nowrap;
     }
     
     .form-check {
