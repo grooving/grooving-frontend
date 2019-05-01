@@ -446,4 +446,12 @@ export default{
     chatPlaceholder_err_1 : "Trying to reconnect to the server...",
     chatPlaceholder_err_2 : "Could not connect to the server",
     
+
+    // ----------------------------------------------------
+    //                        App.vue
+    // ----------------------------------------------------
+
+    cookies_msg: 'This website uses cookies to ensure you get the best experience on our website. By continuing to use this site you are giving us your consent to do this. You can read more about our cookies in ',
+    cookies_link: 'this link',
+    accept_cookies: "Got it",
 }

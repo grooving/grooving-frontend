@@ -1,5 +1,8 @@
 <template>
 <div class="prueba">
+    <div id="errorsDiv" class="validationErrors vertical-center">
+        <p style="margin: 0px;">{{errors}}</p>
+    </div>
     <div class="everything">
             <div class="contentDelete">
                 <p>{{gtrans.translate('deleteZoneWarning')}}</p>
@@ -35,6 +38,7 @@ export default {
             zoneId: undefined,
             zoneName: undefined,
             gtrans: undefined,   
+            errors: "",
         }
     },
 
@@ -64,14 +68,15 @@ export default {
             }).then(response => {
                 console.log(response);
                 this.$router.push('/manageZones/'+this.parentZoneId);
-            }).catch(ex => {
-                console.log(ex);
-                console.log(ex.response.data.error);
-                this.errors = ex.response.data.error;
+            }).catch(error => {
+                if (error.response.data.error == null){
+                    this.errors = error.message;
+                } else {
+                    this.errors = error.response.data.error;
+                }  
                 document.getElementById("errorsDiv").style.display = "block";
-            }).then( () => {
-                NProgress.done();
-            })
+                window.scrollTo(0,0);
+            });
         },
     },
 
@@ -92,6 +97,19 @@ export default {
 <style scoped>
     * {
         font-family: "Archivo"
+    }
+
+    .validationErrors{
+        background-color:#f50057;
+        border-radius: 5px;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
+        color:white;
+        display: none;
+        font-weight: bold;
+        height: 100%;
+        margin-bottom: 14px;
+        padding: 10px;
+        padding-top: 12px;
     }
 
      @media (min-width:768px)  {

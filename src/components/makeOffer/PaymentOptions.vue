@@ -1,5 +1,8 @@
 <template>
     <div class="content">
+        <div id="errorsDiv" class="validationErrors vertical-center">
+            <p style="margin: 0px;">{{errors}}</p>
+        </div>
         <div class="paymentOptions">
             <!-- <p>{{gtrans.translate('selectMethod')}}</p> -->
             <!-- <div class="continueButtonDiv"><div  class="btn btn-primary continueButton"><span class="continueText">PAYPAL</span></div @click="paymentOptionSelected()"></div> -->
@@ -7,15 +10,14 @@
             <div @click="paymentOptionSelected()"
                 class="btn btn-primary continueButton"><span class="continueText">{{gtrans.translate('creditcard')}}</span>
             </div>
-            <br>
-            <div style="display:none" id="paypal-button-container"></div>
+            <br><br>
+            <div id="paypal-button-container" class="button"></div>
             <!-- <div @click="paymentOptionSelected()"
                 class="btn btn-primary continueButton"><span class="continueText">PAYPAL</span>
             </div> -->
         </div>
     </div>
 </template>
-<script src="https://www.paypal.com/sdk/js?client-id=sb"></script>
 <script>
 import GSecurity from "@/security/GSecurity.js"
 import GTrans from "@/utils/GTrans.js"
@@ -46,29 +48,40 @@ export default {
     mounted() {
         this.nextStep = '/payment/' + this.$route.params['artistId']
 
-        paypal.Buttons({
+       paypal.Buttons({
 
-            // Set up the transaction
-            createOrder: function(data, actions) {
-                return actions.order.create({
-                    purchase_units: [{
-                        amount: {
-                            value: '0.01'
-                        }
-                    }]
-                });
-            },
+        style: {
+                color:  'blue',
+                shape:  'pill',
+                label:  'paypal',
+                fundingicons: 'false',
+                tagline: 'false',
+                layout: 'horizontal',
+                size: 'responsive',
+                height: 44,
+        },
+        createOrder: function(data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: '0.01'
+                    }
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
 
-            // Finalize the transaction
-            onApprove: function(data, actions) {
-                return actions.order.capture().then(function(details) {
-                    // Show a success message to the buyer
-                    alert('Transaction completed by ' + details.payer.name.given_name + '!');
-                });
-            }
+            // Authorize the transaction
+            actions.order.authorize().then(function(authorization) {
 
+                // Get the authorization id
+                var authorizationID = authorization.purchase_units[0]
+                .payments.authorizations[0].id
 
-        }).render('#paypal-button-container');
+                // Call your server to validate and capture the transaction
+            });
+        }
+    }).render('#paypal-button-container');
     },
 
     created: function(){
@@ -102,6 +115,8 @@ export default {
         background-image: linear-gradient(to right, #00fb82, #187fe6);
     }
 
+
+
     .continueButton:hover{
         background-image: linear-gradient(to right, #14Ca9f, #1648d0) !important;
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .7) !important;
@@ -115,6 +130,12 @@ export default {
             width: 100%;
 
         }   
+
+        .button {
+            width: 60%;
+            max-width: 300px;
+            margin: 0 auto;
+        }
     }
         
     @media (min-width:768px)  {
@@ -147,6 +168,10 @@ export default {
 
 
             background-image: linear-gradient(to right, #00fb82, #187fe6);
+        }
+
+        .button {
+            width: 100%;
         }
 
         .continueButton:hover{

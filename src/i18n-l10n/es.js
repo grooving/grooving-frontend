@@ -446,4 +446,12 @@ export default{
     chatPlaceholder_err_1 : "Tratanto de reconectar con el servidor...",
     chatPlaceholder_err_2 : "No se puede conectar con el servidor",
 
+    // ----------------------------------------------------
+    //                        App.vue
+    // ----------------------------------------------------
+
+    cookies_msg: 'Este sitio web utiliza cookies para ofrecerle la mejor experiencia de usuario posible en nuestra página. Si continúa navegando por este sitio, entendemos que acepta su uso. Puede leer más sobre nuestras cookies en ',
+    cookies_link: 'este enlace',
+    accept_cookies: "Entendido",
+
 }

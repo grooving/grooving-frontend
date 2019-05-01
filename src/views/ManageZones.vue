@@ -57,13 +57,12 @@ export default {
                     if(parentId != 'all') {
                         for(var n = 0; n < this.tree.length; n++) {
                             if(this.tree[n].id == parentId) {
-                                parentName = this.tree[n];
+                                parentName = this.tree[n].name;
                             }
                         }
                     }                     
                 }
             }
-            console.log('hola', zone, parent)
             this.$router.push({name: 'editZone', params: {zone, parentName}});
         },
         updateList(zoneId) {
@@ -74,7 +73,6 @@ export default {
                 if(this.tree[i].id == zoneId) {
                     if(this.tree[i].depth < 2) {
                         var children = this.tree[i].children
-                        console.log(children)
                         if(children.length > 0) {
                             for(var x = 0; x < children.length; x++) {
                                 var zone = children[x];

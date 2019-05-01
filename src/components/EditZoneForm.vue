@@ -34,7 +34,7 @@ import GSecurity from '@/security/GSecurity.js';
 import GTrans from "@/utils/GTrans.js";
 
 export default {
-    name: "EditGenreForm",
+    name: "EditZoneForm",
 
     data: function() {
         return {
@@ -73,10 +73,11 @@ export default {
                 else{
                     this.$router.push('manageZones/'+this.parentZoneId);
                 }
-            }).catch(ex => {
-                console.log(ex);
+            }).catch(error => {
+                this.errors = error.response.data.error;
             }).then( () => {
                 NProgress.done();
+                this.$emit('error', this.errors);
             })
         },
 
@@ -103,8 +104,9 @@ export default {
         } 
     },
     mounted() {
-        if(this.zone != undefined) {
+        if(this.zone != undefined && this.parentName != undefined) {
             this.parentZoneId = this.zone.parent;
+            console.log(this.parentName) 
             this.parentZoneName = this.parentName;
             this.zoneId = this.zone.id;
             this.zoneName = this.zone.name;

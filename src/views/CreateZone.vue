@@ -1,8 +1,11 @@
 <template>
 <div class="prueba">
+    <div id="errorsDiv" class="validationErrors vertical-center">
+        <p style="margin: 0px;">{{errors}}</p>
+    </div>
     <div class="everything">
         <div>
-          <div class="zoneForm"><CreateZoneForm :key="parentZone" :parentZone="parentZone"/></div>
+          <div class="zoneForm"><CreateZoneForm :key="parentZone" :parentZone="parentZone" @error="error"/></div>
         </div>
     </div>
 </div>
@@ -21,6 +24,7 @@ export default {
         return {
             gsecurity: GSecurity,
             parentZone: undefined,
+            errors : "",
         }
     },
     mounted: function() {
@@ -34,12 +38,33 @@ export default {
             this.parentZone = (this.$attrs.parentZone);
         }
     },
+    methods: {
+        error(error) {
+            console.log(error)
+            this.errors = error;
+
+            document.getElementById("errorsDiv").style.display = "block";
+            window.scrollTo(0,0);
+        }
+    },
 }
 </script>
 
 <style scoped>
     * {
         font-family: "Archivo"
+    }
+
+    .validationErrors{
+        background-color:#f50057;
+        border-radius: 5px;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
+        color:white;
+        display: none;
+        font-weight: bold;
+        margin-bottom: 14px;
+        padding: 10px;
+        padding-top: 12px;
     }
 
     @media (min-width:768px)  {
