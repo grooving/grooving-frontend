@@ -550,6 +550,42 @@ export default{
 
     sentOffer_msg: 'Your offer has been sent to the artist',
 
+    // ----------------------------------------------------
+    //                     CustomerRegister.vue
+    // ----------------------------------------------------
+
+    customerRegister_title: 'Create your customer account',
+    customerRegister_accountInfo: 'Account Information',
+    customerRegister_artisticName: 'Artistic Name',
+    customerRegister_username: 'Username',
+    customerRegister_password: 'Password',
+    customerRegister_passwordReq: "Your password must be at least 8 characters long, and can't be contained in the username, first name, last name or e-mail address.",
+    customerRegister_confirmPassword: 'Confirm Password',
+    customerRegister_personalInfo: 'Personal Information',
+    customerRegister_photo: '"Profile Photo URL',
+    customerRegister_firstName: 'First Name',
+    customerRegister_lastName: 'Last Name',
+    customerRegister_email: 'E-mail',
+    customerRegister_phoneNumber: 'Phone Number',
+    customerRegister_terms1: 'By creating an account you agree to',
+    customerRegister_terms2: "Grooving's Terms and Conditions",
+    customerRegister_signIn: 'SIGN IN',
+
+    // ----------------------------------------------------
+    //                     ErrorView.vue
+    // ----------------------------------------------------
+
+    error_oops: 'Oops!',
+    error_something: 'Something went wrong!',
+    error_try: 'Try again later.',
+
+    // ----------------------------------------------------
+    //                     TypeOfHiring.vue
+    // ----------------------------------------------------
+
+    type_title: 'Choose type of hiring',
+    type_available: 'Sorry, this artist is unavailable temporarily',
+
 
 
 
