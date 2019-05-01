@@ -29,7 +29,16 @@ export default {
     },
 
     beforeMount: function() {
-        if (!this.gsecurity.hasRole('ARTIST')) {
+
+        // ----- Support for QR-Codes ----
+        // Redirection to login page if not log in
+        let code = undefined;
+        if(this.$route.query['paymentCode'])
+            code = this.$route.query['paymentCode'];
+
+        if(!this.gsecurity.isAuthenticated()){
+            this.$router.push({name: "newUser", query: {paymentCode: code}});
+        }else if (!this.gsecurity.hasRole('ARTIST')) {
             this.$router.push({name: "error"});
         }
     },

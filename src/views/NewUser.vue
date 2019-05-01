@@ -1,14 +1,17 @@
 <template>
     <div id="wholePage">
+        <div v-if="errors" id="errorsDiv" class="validationErrors">
+            <p style="margin: 0px;">{{errors}}</p>
+        </div>
         <div class="title"><p>Log In</p></div>
         <div class="bothCards">
             <div id="signin" class="tarjeta">
                 <b-form>
                     <b-form-group>
-                        <b-form-input v-model="input.username" size="lg" placeholder="Username" id="ddown-form-email"></b-form-input>
+                        <b-form-input v-model="input.username" size="lg" placeholder="Username" id="ddown-form-email2"></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input v-on:keydown.enter="login()" v-model="input.password" type="password" size="lg" placeholder="Password" id="ddown-form-passwd"></b-form-input>
+                        <b-form-input v-on:keydown.enter="login()" v-model="input.password" type="password" size="lg" placeholder="Password" id="ddown-form-passwd2"></b-form-input>
                         <p v-if="error" class="err">Wrong username or password!</p>
                     </b-form-group>
                     <b-button class="continueButton singin" variant="primary" size="sm" v-on:click="login()">SIGN IN</b-button>
@@ -33,6 +36,7 @@
 
 <script>
     import GSecurity from "@/security/GSecurity.js";
+    import GTrans from "@/utils/GTrans.js";
 
     export default {
         name: 'NewUser',
@@ -43,10 +47,14 @@
         data: function() {
             return {
                 gsecurity: GSecurity,
+                gtrans: undefined,
                 input: {
                     username: "",
                     password: ""
                 },
+                
+                paymentCode: undefined,
+                errors: '',
             };
         },
 
@@ -57,7 +65,15 @@
                 var log_result = await this.gsecurity.authenticate(this.input.username, this.input.password)
 
                 if (log_result) {
-                    this.$router.push({ path: "/" });
+
+                    // ----- Support for QR-Codes ----
+                    // Redirection to the receive payment view if 
+                    // URL param is set...
+                    if(this.paymentCode){
+                        this.$router.push({ name: "receivePayment", query: {paymentCode: this.paymentCode} })
+                    }else{
+                        this.$router.push({ path: "/" });
+                    }
                 } else {
                     $('#ddown-form-email, #ddown-form-passwd').css('border-color', 'red');
                     this.error = true;
@@ -72,6 +88,13 @@
         created() {
             this.gsecurity = GSecurity;
             this.gsecurity.obtainSavedCredentials();
+            this.gtrans = new GTrans(this.gsecurity.getLanguage());
+
+            if(this.$route.query['paymentCode']){
+                this.errors = this.gtrans.translate('login_required');
+                this.paymentCode = this.$route.query['paymentCode'];
+            }
+
         },
 
         beforeMount: function() {
@@ -170,6 +193,18 @@
         font-size: 50px;
         font-weight: bold;
         margin-top: 5%;
+    }
+
+    .validationErrors{
+        background-color:#f50057;
+        border-radius: 5px;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
+        color:white;
+        font-weight: bold;
+        height: 100%;
+        margin-bottom: 14px;
+        padding: 10px;
+        padding-top: 12px;
     }
 
     @media (max-width:767px)  {

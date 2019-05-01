@@ -447,6 +447,12 @@ export default{
     chatPlaceholder_err_2 : "No se puede conectar con el servidor",
 
     // ----------------------------------------------------
+    //                        NewUser.vue
+    // ----------------------------------------------------
+
+    login_required: 'You must log in to perform this action',
+
+    // ----------------------------------------------------
     //                        App.vue
     // ----------------------------------------------------
 

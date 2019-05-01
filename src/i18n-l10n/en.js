@@ -493,8 +493,13 @@ export default{
     chatPlaceholder_2 : "This is the chat's history of this offer",
     chatPlaceholder_err_1 : "Trying to reconnect to the server...",
     chatPlaceholder_err_2 : "Could not connect to the server",
-    
 
+    // ----------------------------------------------------
+    //                        NewUser.vue
+    // ----------------------------------------------------
+
+    login_required: 'You must log in to perform this action',
+    
     // ----------------------------------------------------
     //                        App.vue
     // ----------------------------------------------------
