@@ -119,6 +119,7 @@
     import GTrans from "@/utils/GTrans.js"
 
     export default {
+        
         name: 'Offer',
 
         data: function() {

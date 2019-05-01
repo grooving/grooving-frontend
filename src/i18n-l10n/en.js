@@ -443,6 +443,7 @@ export default{
 
     chatPlaceholder_1 : 'Write a reply here',
     chatPlaceholder_2 : "This is the chat's history of this offer",
+    chatPlaceholder_err_1 : "Trying to reconnect to the server...",
+    chatPlaceholder_err_2 : "Could not connect to the server",
     
-
 }

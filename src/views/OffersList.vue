@@ -72,6 +72,7 @@ export default {
     return {
       gsecurity: GSecurity,
       gtrans: undefined,
+
       chatReady: false,
       chatOfferId: undefined,
       chatActive: undefined,
@@ -137,28 +138,12 @@ export default {
       this.chatActive = payload[1];
       this.chatReady = true;
     },
-    toggleFilterSelectionModal: function () {
-      this.showFilterSelectionModal = !this.showFilterSelectionModal;
-    },
-
-    updateFilters: function() {
-      var selected = Array();
-
-      for(var i = 0; i < arguments[0].length; i++){
-        selected.push(arguments[0][i]);
-      }
-
-      for(var j = 0; j < this.filter_parameters.length; j++){
-        if(selected.includes(this.filter_parameters[j].id)){
-          this.filter_parameters[j].selected = true;
-        }
-      }        
-    },
 
     setSelectedTab(status) {
       this.selectedTab = status;
     },
   },
+
   created() {
     this.gsecurity = GSecurity;
     this.gsecurity.obtainSavedCredentials();
@@ -166,14 +151,14 @@ export default {
     this.gtrans = new GTrans(this.gsecurity.getLanguage());
     
     // Podemos cambiar el lenguaje así para debug...
-    this.gtrans.setLanguage('es')
+    //this.gtrans.setLanguage('es')
     //this.gtrans.setLanguage('en')
 
     if(!this.$gsecurity.isAuthenticated()) {
       console.log('Error')
       location.replace("/#/*")
-      
     }
+    
   },
 
   beforeMount: function() {

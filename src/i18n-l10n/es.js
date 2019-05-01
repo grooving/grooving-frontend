@@ -443,5 +443,7 @@ export default{
 
     chatPlaceholder_1 : 'Escriba su respuesta',
     chatPlaceholder_2 : "Este es el historial de la conversación sobre esta oferta",
+    chatPlaceholder_err_1 : "Tratanto de reconectar con el servidor...",
+    chatPlaceholder_err_2 : "No se puede conectar con el servidor",
 
 }

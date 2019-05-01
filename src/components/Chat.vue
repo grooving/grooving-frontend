@@ -17,7 +17,7 @@
       :placeholder="placeholder"
       :alwaysScrollToBottom="alwaysScrollToBottom"
       :messageStyling="messageStyling"
-      :isActive= "chatActive"
+      :isActive= "isActive"
       @onType="handleOnType" />
   </div>
   </div>
@@ -30,24 +30,24 @@ import GAxios from "@/utils/GAxios.js";
 import endpoints from "@/utils/endpoints.js";
 import GTrans from "@/utils/GTrans.js";
 
+const CONNECTION_RETRIALS = 2; 
+
 export default {
 
   name: 'Chat',
-  props: {
-    offerId: {
-      type: Number,
-      default: 1,
-    },
-    chatActive: {
-      type: Boolean,
-      default: true,
-    },
-  },
+
   data() {
     return {
+
+      // Utils
       gsecurity: GSecurity,
       gchat: undefined,
       gtrans: undefined,
+
+      // View Specific Properties
+      chatProtocol: undefined,
+      chatErrorCount: 0,
+      chatClosingCount: 0,
       placeholder: undefined,
 
       // ---- Vue Beautiful Chat Properties -----
@@ -113,7 +113,64 @@ export default {
     }
   },
 
+  computed:{
+
+    isActive: function(){
+      return this.chatActive && this.chatErrorCount == 0;
+    }
+
+  },
+
   methods: {
+
+    safelyCreateChatInstance: function(){
+      while(this.chatErrorCount < CONNECTION_RETRIALS && this.chatClosingCount < CONNECTION_RETRIALS){
+
+        try {
+          this.gchat = new GChat(this.protocol, this.offerId.toString(), this.gsecurity.getToken(), this.gsecurity.getUsername());
+          console.log(this.chatErrorCount)
+          
+          // When the chat receives a message
+          this.gchat.getWebSocket().addEventListener("message", (event) => {
+            this.incomingMessage(event);
+          });
+
+          // When the chat unexpectely encounters an error
+          this.gchat.getWebSocket().addEventListener("error", (event) => {
+            console.log("Chat Message encountered and error!");
+            console.log("Trying to safely recreate the instance...");
+            this.chatErrorCount += 1;
+            this.safelyCreateChatInstance();
+          });
+
+          // When the chat closes
+          //    --> 1000: Normal close
+          //    --> Other: Abnormal/erroneous close
+          this.gchat.getWebSocket().addEventListener("close", (event) => {
+
+            let exitCode = event.code;
+            console.log("Chat Message has closed! Exit Code: ", exitCode);
+
+            if(exitCode == 1000){
+              this.chatClosingCount++;
+            }else{
+              this.chatErrorCount++;
+            }
+
+            this.safelyCreateChatInstance();
+
+          });
+
+          break;
+        } catch (error) {
+          console.log("Error in the initialization phase of the Chat: ", error);
+          console.log("Attempting to retry...")
+
+          this.chatErrorCount += 1;
+        }
+
+      }
+    },
 
     sendMessage (text) {
       if (text.length > 0 && this.gchat) {
@@ -125,7 +182,8 @@ export default {
     incomingMessage: function(event){
       if(this.gchat){
         let newMessage = this.gchat.processReceivedMessage(event.data);
-        this.appendMessage(newMessage);
+        if(newMessage.author != 'server')
+          this.appendMessage(newMessage);
       }
     },
 
@@ -162,28 +220,29 @@ export default {
 
   },
 
+  props: {
+    offerId: {
+      type: Number,
+      required: true,
+    },
+    chatActive: {
+      type: Boolean,
+      default: true,
+    },
+  },
+
   beforeMount(){
 
-    //BORRAR
     this.gsecurity = GSecurity;
     this.gsecurity.obtainSavedCredentials();
-
     this.gtrans = new GTrans(this.gsecurity.getLanguage());
-        
-    // Podemos cambiar el lenguaje así para debug...
-    //this.gtrans.setLanguage('es')
-    //this.gtrans.setLanguage('en')
+    this.protocol = window.location.protocol == 'https:' ? 'wss' : 'ws';
+    
+    // Try to create a new chat instance
+    this.safelyCreateChatInstance();
 
-    let protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    this.gchat = new GChat("ws", this.offerId.toString(), this.gsecurity.getToken(), this.gsecurity.getUsername());
-
-    this.gchat.getWebSocket().addEventListener("message", (event) => {
-        this.incomingMessage(event);
-    });
-
-    // Retrieve the conversation
+    // Retrieve the conversation's history
     var authorizedGAxios = GAxios;
-
     authorizedGAxios.get(endpoints.chat + this.offerId.toString() + '/').then(response =>{
       
       if(this.gsecurity.hasRole('ARTIST')){
@@ -201,15 +260,13 @@ export default {
         this.titleImageUrl = require('@/assets/defaultPhoto.png');
 
       var messages = response.data.messages;
-      var history = [];
 
+      // Update message list
       for(var i = 0; i < messages.length; i++){
 
         var m = messages[i].json;
-        history.push(this.gchat.formatVueChatMessage(m.username, m.message, m.hour));
+        this.messageList.push(this.gchat.formatVueChatMessage(m.username, m.message, m.hour));
       }
-
-      this.messageList = history;
 
       console.log(this.messageList);
 
@@ -217,7 +274,15 @@ export default {
 
   },
   updated() {
-    this.placeholder= this.chatActive ? this.gtrans.translate('chatPlaceholder_1') : this.gtrans.translate('chatPlaceholder_2') ;
+
+    if(this.chatErrorCount == 0){
+      this.placeholder = this.chatActive ? this.gtrans.translate('chatPlaceholder_1') : this.gtrans.translate('chatPlaceholder_2') ;
+    }else if(this.chatErrorCount == 1){
+      this.placeholder = this.gtrans.translate('chatPlaceholder_err_1');
+    }else{
+      this.placeholder = this.gtrans.translate('chatPlaceholder_err_2');
+    }
+
   },
 }
 
