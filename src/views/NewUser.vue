@@ -3,30 +3,30 @@
         <div v-if="errors" id="errorsDiv" class="validationErrors">
             <p style="margin: 0px;">{{errors}}</p>
         </div>
-        <div class="title"><p>Log In</p></div>
+        <div class="title"><p>{{gtrans.translate('newUser_login')}}</p></div>
         <div class="bothCards">
             <div id="signin" class="tarjeta">
                 <b-form>
                     <b-form-group>
-                        <b-form-input v-model="input.username" size="lg" placeholder="Username" id="ddown-form-email2"></b-form-input>
+                        <b-form-input v-model="input.username" size="lg" :placeholder="gtrans.translate('newUser_username')" id="ddown-form-email2"></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input v-on:keydown.enter="login()" v-model="input.password" type="password" size="lg" placeholder="Password" id="ddown-form-passwd2"></b-form-input>
-                        <p v-if="error" class="err">Wrong username or password!</p>
+                        <b-form-input v-on:keydown.enter="login()" v-model="input.password" type="password" size="lg" v-bind:placeholder="gtrans.translate('newUser_password')" id="ddown-form-passwd2"></b-form-input>
+                        <p v-if="error" class="err">{{gtrans.translate('newUser_error')}}</p>
                     </b-form-group>
-                    <b-button class="continueButton singin" variant="primary" size="sm" v-on:click="login()">SIGN IN</b-button>
+                    <b-button class="continueButton singin" variant="primary" size="sm" v-on:click="login()">{{gtrans.translate('newUser_singin')}}</b-button>
                 </b-form>
             </div>
             <div id="signup" class="tarjeta border-top">
                 <b-form>
-                    <div id="textCustomer" class="infoText"><span>New to Grooving?</span></div>
+                    <div id="textCustomer" class="infoText"><span>{{gtrans.translate('newUser_new')}}</span></div>
                     <router-link to="/customerRegister">
-                        <b-button class="continueButton" variant="primary" size="sm">SIGN UP!</b-button>
+                        <b-button class="continueButton" variant="primary" size="sm">{{gtrans.translate('newUser_signup')}}</b-button>
                     </router-link>
                     <hr/>
-                    <div id="textCustomer" class="infoText"><span>Are you an artist?</span></div>
+                    <div id="textCustomer" class="infoText"><span>{{gtrans.translate('newUser_artist')}}</span></div>
                     <router-link to="/artistRegister">
-                        <b-button class="continueButton" variant="primary" size="sm">JOIN US!</b-button>
+                        <b-button class="continueButton" variant="primary" size="sm">{{gtrans.translate('newUser_joinus')}}</b-button>
                     </router-link>
                 </b-form>
             </div>
@@ -47,7 +47,7 @@
         data: function() {
             return {
                 gsecurity: GSecurity,
-                gtrans: undefined,
+                gtrans: GTrans,
                 input: {
                     username: "",
                     password: ""

@@ -1,6 +1,6 @@
 <template>
 <div class="prueba">
-    <div class="title"><p>Your offer has been sent to the artist</p></div>
+    <div class="title"><p>{{gtrans.translate('sentOffer_msg')}}</p></div>
     
     <div class="everything">
         <div class="artistCard"><ArtistCard 
@@ -19,6 +19,7 @@ import ArtistCard from '@/components/makeOffer/ArtistCard.vue'
 import GSecurity from '@/security/GSecurity.js';
 import {mapActions} from 'vuex';
 import { mapGetters } from 'vuex';
+import GTrans from "@/utils/GTrans.js";
 
 export default {
     name: 'SentOffer',
@@ -35,6 +36,7 @@ export default {
                 genres: undefined,
             },
             gsecurity: GSecurity,
+            gtrans: GTrans,
             totalPrice: undefined,
             cardPrice: undefined,
             nextStep: undefined,
@@ -47,6 +49,7 @@ export default {
         // Retreive store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
     },
     mounted() {
         NProgress.done();

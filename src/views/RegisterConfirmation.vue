@@ -1,6 +1,6 @@
 <template>
     <div class="everything">
-        <div class="title"><p>Your account has been successfully created</p></div>
+        <div class="title"><p>{{gtrans.translate('register_confirmation')}}</p></div>
         <div class="tarjeta">
             <div class="confirmation"><img class="tick" src="@/assets/img/approved_tick.png"/>
                 <p class="sentText">{{sentText}}</p>
@@ -11,6 +11,9 @@
 </template>
 
 <script>
+import GSecurity from "@/security/GSecurity.js";
+import GTrans from "@/utils/GTrans.js";
+
 export default {
     name: 'RegisterConfirmation',
 
@@ -19,25 +22,35 @@ export default {
 
     data: function() {
         return {
+            gsecurity: GSecurity,
+            gtrans: undefined,
         };
     },
 
     props: {
         sentText: {
             type: String,
-            default: 'Thank You',
+            default: '',
         },
         noticeText: {
             type: String,
-            default: "You will receive a welcome email shortly.",
+            default: "",
         },
         created: false,
     },
 
-    beforeMount: function() {
-        if (!this.created) {
-            this.$router.push({name: "error"});
-        }
+    created: function(){
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
+
+        this.sentText = this.gtrans.translate('register_thanks');
+        this.noticeText = this.gtrans.translate('register_email');
     },
 }
 </script>

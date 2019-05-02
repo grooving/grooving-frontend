@@ -1,6 +1,6 @@
 <template>
     <div class="hiringProcessContainer">
-        <div class="title"><p>Address information</p></div>
+        <div class="title"><p>{{gtrans.translate('address_info')}}</p></div>
 
     <div class="everything">
         <div class="artistCard"><ArtistCard 
@@ -23,6 +23,7 @@ import endpoints from '@/utils/endpoints.js';
 import {mapActions} from 'vuex';
 import {mapGetters} from 'vuex';
 import PaymentProcess from '@/store/modules/payment.js';
+import GTrans from "@/utils/GTrans.js";
 
 export default {
 
@@ -39,6 +40,8 @@ export default {
 
             //Hiring Process...
             gsecurity: GSecurity,
+            gtrans: undefined,
+
             artistId: -1,
             nextStep: undefined,
             hiringType: undefined,
@@ -86,6 +89,12 @@ export default {
         // Retreive store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
 
         // The artist to whom the offer is created
         this.artistId = this.$route.params['artistId'];

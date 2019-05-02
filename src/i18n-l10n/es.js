@@ -48,7 +48,7 @@ export default{
     custom_title : "Contratación a Medida", // Usado también en CreateCustomHiring.vue y EditCustomHiring.vue 
     custom_subtitle : "El cliente puede decidir la cantidad de dinero a pagar, por lo que es posible que quieras indicar un precio mínimo.", // Usado también en CreateCustomHiring.vue y EditCustomHiring.vue
     custom_minimumPrice : "PRECIO MÍNIMO", // Usado también en CreateCustomHiring.vue y EditCustomHiring.vue
-    add : "AÑADIR NUEVO", // Usado también en FareHiring.vue
+    add : "NUEVO", // Usado también en FareHiring.vue
 
     // ----------------------------------------------------
     //                EditArtistInfo.vue
@@ -105,7 +105,7 @@ export default{
     //                  ExtendedOffer.vue
     // ----------------------------------------------------
 
-    offer : "Oferta",
+    offer : "Oferta", // Se usa también en AcceptedOffer.vue
     offer_date : "Fecha",
     offer_duration : "Duración",
     offer_price: "Precio",
@@ -126,7 +126,7 @@ export default{
     // ----------------------------------------------------
 
     menu : "Menú",
-    topArtists : "Artistas Top",
+    topArtists : "Artistas Top", // Se usa también en TopArtists.vue
     myOffers : "Mis Ofertas",
     checkIn : "Facturación",
     termsAndConditions : "Términos y Condiciones", // Se usa también en Footer.vue
@@ -220,7 +220,7 @@ export default{
     //                   UserList.vue
     // ----------------------------------------------------
 
-    oops : "Nada que mostrar",
+    oops : "Nada que mostrar", // Se usa también en OffersList.vue
 
     // ----------------------------------------------------
     //                   UsersList.vue
@@ -546,4 +546,141 @@ export default{
     registerTerms_1: "Al crear esta cuenta aceptas los ",
     registerTerms_2: "Términos y Condiciones de Grooving",
     
+    // ----------------------------------------------------
+    //                  AcceptedOffer.vue
+    // ----------------------------------------------------
+
+    offer_accepted: 'Has aceptado la oferta',
+
+    // ----------------------------------------------------
+    //               PaymentConfirmation.vue
+    // ----------------------------------------------------
+
+    payment_received: 'Recibido',
+
+    // ----------------------------------------------------
+    //              RegisterConfirmation.vue
+    // ----------------------------------------------------
+
+    register_confirmation: 'Su cuenta se ha creado satisfactoriamente',
+    register_thanks: 'Gracias',
+    register_email: 'Recibirá un email de bienvenida en breve.',
+
+    // ----------------------------------------------------
+    //                  AddressInput.vue
+    // ----------------------------------------------------
+
+    address_info: 'Datos de la dirección',
+
+    // ----------------------------------------------------
+    //                   EventInput.vue
+    // ----------------------------------------------------
+
+    event_info: 'Datos del evento',
+
+    // ----------------------------------------------------
+    //                      Index.vue
+    // ----------------------------------------------------
+
+    artists: 'Artistas',
+
+    // ----------------------------------------------------
+    //                      Payment.vue
+    // ----------------------------------------------------
+
+    payment_payment: 'Pago',
+
+    // ----------------------------------------------------
+    //                      PaymentSelector.vue
+    // ----------------------------------------------------
+
+    payment_selector: 'Selecciona un método de pago',
+    payment_selector_error: '¡Lo sentimos! Algo fue mal. Inténtalo de nuevo más tarde.',
+
+    // ----------------------------------------------------
+    //                      TermsView.vue
+    // ----------------------------------------------------
+
+    terms_title: 'Términos y Condiciones',
+
+    // ----------------------------------------------------
+    //                      AboutView.vue
+    // ----------------------------------------------------
+
+    about_title: 'Quiénes Somos',
+
+    // ----------------------------------------------------
+    //                      NewUser.vue
+    // ----------------------------------------------------
+
+    newUser_login: 'Iniciar Sesión',
+    newUser_username: 'Nombre de usuario',
+    newUser_password: 'Contraseña',
+    newUser_error: '¡Nombre de usuario o contraseña incorrecta!',
+    newUser_singin: 'ENTRAR',
+    newUser_new: '¿Nuevo en Grooving?',
+    newUser_signup: '¡REGÍSTRATE!',
+    newUser_artist: '¿Eres un artista?',
+    newUser_joinus: '¡ÚNETE!',
+
+    // ----------------------------------------------------
+    //                      HiringSettings.vue
+    // ----------------------------------------------------
+
+    hiringSettings_performanceHiring: 'Contratación por Espectáculo',
+    hiringSettings_performanceDescription: 'Puedes definir tus propios espectáculos indicando su descripción, duración y precio fijo.',
+    hiringSettings_addNew: 'NUEVO',
+
+    // ----------------------------------------------------
+    //                      StartingDate.vue
+    // ----------------------------------------------------
+
+    startingDate_title: 'Elige una fecha de comienzo',
+    startingDate_error: 'Debes de especificar una hora de comienzo',
+
+    // ----------------------------------------------------
+    //                      SentOffer.vue
+    // ----------------------------------------------------
+
+    sentOffer_msg: 'Tu oferta ha sido enviada al artista',
+
+    // ----------------------------------------------------
+    //                     CustomerRegister.vue
+    // ----------------------------------------------------
+
+    customerRegister_title: 'Crea tu cuenta de cliente',
+    customerRegister_accountInfo: 'Información de la Cuenta',
+    customerRegister_artisticName: 'Nombre Artístico',
+    customerRegister_username: 'Nombre de usuario',
+    customerRegister_password: 'Contraseña',
+    customerRegister_passwordReq: "Tu contraseña debe de tener 8 dígitos de longitud y no puede contener tu nombre de usuario, nombre, apellidos o email.",
+    customerRegister_confirmPassword: 'Confirmar contraseña',
+    customerRegister_personalInfo: 'Información Personal',
+    customerRegister_photo: 'URL de Foto de perfil',
+    customerRegister_firstName: 'Nombre',
+    customerRegister_lastName: 'Apellidos',
+    customerRegister_email: 'E-mail',
+    customerRegister_phoneNumber: 'Número de teléfono',
+    customerRegister_terms1: 'Creando la cuenta confirmas que estás de acuerdo con los',
+    customerRegister_terms2: "Términos y Condiciones de Grooving",
+    customerRegister_signIn: 'REGISTRAR',
+
+    // ----------------------------------------------------
+    //                     ErrorView.vue
+    // ----------------------------------------------------
+
+    error_oops: '¡Ups!',
+    error_something: '¡Algo fue mal!',
+    error_try: 'Inténtalo de nuevo más tarde.',
+
+    // ----------------------------------------------------
+    //                     TypeOfHiring.vue
+    // ----------------------------------------------------
+
+    type_title: 'Elige un tipo de contrato',
+    type_available: 'Lo sentimos, este artista no está disponible temporalmente',
+
+    
+
+
 }

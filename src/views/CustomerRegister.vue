@@ -1,26 +1,26 @@
 <template>
     <div id="wholePage">
-        <div class="title"><p>Create your customer account!</p></div>
+        <div class="title"><p>{{gtrans.translate('customerRegister_title')}}</p></div>
         <div class="bothCards">
             <div id="signup" class="tarjeta">
                 <b-form v-on:submit="createCustomer">
                     <div id="errorsDiv" class="validationErrors vertical-center">
                         <p style="margin: 0px;">{{errors}}</p>
                     </div>
-                    <label for="" class="subtitle">Account Information</label>
+                    <label for="" class="subtitle">{{gtrans.translate('customerRegister_accountInfo')}}</label>
                     <b-form-group>
-                        <b-form-input v-model="input.username" placeholder="Username" required></b-form-input>
+                        <b-form-input v-model="input.username" v-bind:placeholder="gtrans.translate('customerRegister_username')" required></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input v-model="input.password" type="password" placeholder="Password" minlength="8" required></b-form-input>
+                        <b-form-input v-model="input.password" type="password" v-bind:placeholder="gtrans.translate('customerRegister_password')" minlength="8" required></b-form-input>
                     </b-form-group>
                     <small class="form-text text-muted" style="margin-bottom:14px">
-                        Your password must be at least 8 characters long, and can't be contained in the username, first name, last name or e-mail address.</small>
+                        {{gtrans.translate('customerRegister_passwordReq')}}</small>
                     <b-form-group>
-                        <b-form-input v-model="input.confirmPassword" type="password" placeholder="Confirm password" minlength="8" required></b-form-input>
+                        <b-form-input v-model="input.confirmPassword" type="password" v-bind:placeholder="gtrans.translate('customerRegister_confirmPassword')" minlength="8" required></b-form-input>
                     </b-form-group>
                     <hr/>
-                    <label for="" class="subtitle">Personal Information</label>
+                    <label for="" class="subtitle">{{gtrans.translate('customerRegister_personalInfo')}}</label>
                     <!-- <div v-if="!image">
                     </div>
                     <div v-else>
@@ -32,26 +32,26 @@
                         <label class="custom-file-label" for="customFile">Upload a Photo</label>
                     </div> -->
                     <b-form-group>
-                        <b-form-input type="url" v-model="input.photo" placeholder="Profile Photo URL"></b-form-input>
+                        <b-form-input type="url" v-model="input.photo" v-bind:placeholder="gtrans.translate('customerRegister_photo')"></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input v-model="input.firstName" placeholder="First Name" required></b-form-input>
+                        <b-form-input v-model="input.firstName" v-bind:placeholder="gtrans.translate('customerRegister_firstName')" required></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input v-model="input.lastName" placeholder="Last Name" required></b-form-input>
+                        <b-form-input v-model="input.lastName" v-bind:placeholder="gtrans.translate('customerRegister_lastName')" required></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input v-model="input.email" type="email" placeholder="E-mail" required></b-form-input>
+                        <b-form-input v-model="input.email" type="email" v-bind:placeholder="gtrans.translate('customerRegister_email')" required></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input type="number" v-model="input.phoneNumber" placeholder="Phone Number" min="600000000" max="999999999"></b-form-input>
+                        <b-form-input type="number" v-model="input.phoneNumber" v-bind:placeholder="gtrans.translate('customerRegister_phoneNumber')" min="600000000" max="999999999"></b-form-input>
                     </b-form-group>
                     <div class="form-check">
                         <b-form-checkbox id="checkbox-1" v-model="status" value="accepted" unchecked-value="not_accepted" required>
-                            <p>By creating an account you agree to <a href="/">Grooving's Terms and Conditions</a>.</p>
+                            <p>{{gtrans.translate('customerRegister_terms1')}} <router-link to="terms">{{gtrans.translate('customerRegister_terms2')}}</router-link>.</p>
                         </b-form-checkbox>
                     </div>
-                    <b-button class="continueButton" variant="primary" size="sm" type="submit">SIGN IN</b-button>
+                    <b-button class="continueButton" variant="primary" size="sm" type="submit">{{gtrans.translate('customerRegister_signIn')}}</b-button>
                 </b-form>
             </div>
         </div>
@@ -62,6 +62,7 @@
     import endpoints from '@/utils/endpoints.js';
     import GAxios from '../utils/GAxios.js'
     import GSecurity from "@/security/GSecurity.js";
+    import GTrans from "@/utils/GTrans.js";
 
     export default {
         name: 'CustomerRegister',
@@ -73,6 +74,7 @@
             return {
                 gaxios: GAxios,
                 gsecurity: GSecurity,
+                gtrans: GTrans,
                 //image: "",
                 input: {
                     username: "",
@@ -152,6 +154,15 @@
             if (this.gsecurity.isAuthenticated()) {
                 this.$router.push({name: "error"});
             }
+        },
+
+        created() {
+        
+        // Retreive store credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
         },
     }
         

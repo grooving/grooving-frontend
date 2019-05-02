@@ -3,7 +3,7 @@
     <div v-if="errors" class="validationErrors vertical-center">
         <p>{{errors}}</p>
     </div>
-    <div class="title"><p>Pick a starting date</p></div>
+    <div class="title"><p>{{gtrans.translate('startingDate_title')}}</p></div>
     <div class="everything">
         <div class="artistCard"><ArtistCard :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.totalPrice"/>
@@ -26,6 +26,7 @@ import { mapGetters } from 'vuex';
 import {mapActions} from 'vuex';
 import PaymentProcess from '@/store/modules/payment.js';
 import { error } from 'util';
+import GTrans from "@/utils/GTrans.js";
 
 export default {
 
@@ -41,6 +42,7 @@ export default {
             artistId: undefined,
             hiringType: undefined,
             cardPrice: undefined,
+            gtrans: GTrans,
             creditCard: {
                 number: undefined, 
                 name: undefined, 
@@ -100,7 +102,7 @@ export default {
 
                 });
             }else{
-                this.errors = 'You must specific a starting hour';
+                this.errors = this.gtrans.translate('startingDate_error');
                 document.getElementById("errorsDiv").style.display = "block";
             }
 
@@ -113,6 +115,8 @@ export default {
         // Retreive store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
 
         // The artist to whom the offer is created
         this.artistId = this.$route.params['artistId'];

@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <div class="container mt-5">
-      <ArtistList :listTitle="'Top Artists'" :artistas="datos" />
+      <ArtistList :listTitle="this.gtrans.translate('topArtists')" :artistas="datos" />
     </div>
   </div>
 </template>
@@ -11,6 +11,8 @@
 import ArtistList from '@/components/ArtistList.vue';
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
+import GSecurity from "@/security/GSecurity.js";
+import GTrans from "@/utils/GTrans.js";
 
 export default {
   name: 'TopArtists',
@@ -21,6 +23,9 @@ export default {
 
   data: function(){
     return{
+      gsecurity: GSecurity,
+      gtrans: undefined,
+
       datos: Array(),
     }
   },
@@ -57,6 +62,17 @@ export default {
         NProgress.done()
       });
     }
+  },
+
+  created: function(){
+    this.gsecurity = GSecurity;
+    this.gsecurity.obtainSavedCredentials();
+
+    this.gtrans = new GTrans(this.gsecurity.getLanguage());
+    
+    // Podemos cambiar el lenguaje así para debug...
+    //this.gtrans.setLanguage('es')
+    //this.gtrans.setLanguage('en')
   },
 
   beforeMount(){

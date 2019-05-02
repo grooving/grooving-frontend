@@ -1,14 +1,15 @@
 <template>
   <div class="error">
-    <h1 class="oops">Oops! ☹</h1>
-    <h4>Something went wrong!</h4>
-    <h4>{{message}}</h4>
+    <h1 class="oops">{{gtrans.translate('error_oops')}} ☹</h1>
+    <h4>{{gtrans.translate('error_something')}}</h4>
+    <h4>{{gtrans.translate('error_try')}}</h4>
   </div>
 </template>
 
 <script>
 
 import GSecurity from "@/security/GSecurity.js";
+import GTrans from "@/utils/GTrans.js";
 
 export default {
   name: 'ErrorView',
@@ -21,6 +22,7 @@ export default {
   data() {
     return {
       gsecurity: GSecurity,
+      gtrans: GTrans,
     }  
   },
 
@@ -28,7 +30,15 @@ export default {
     // Retreive store credentials
     this.gsecurity = GSecurity;
     this.gsecurity.obtainSavedCredentials();
+    this.gtrans = new GTrans(this.gsecurity.getLanguage());
   },
+
+  created(){
+    this.gsecurity = GSecurity;
+    this.gsecurity.obtainSavedCredentials();
+    this.gtrans = new GTrans(this.gsecurity.getLanguage());
+
+  }
 }
 </script>
 

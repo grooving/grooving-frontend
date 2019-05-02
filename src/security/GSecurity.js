@@ -32,6 +32,7 @@ class GSecurity {
       }else{
           this._language = 'en';
       }
+      axios.defaults.headers.common['Accept-Language'] = this._language;
 
     }
 

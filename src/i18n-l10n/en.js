@@ -90,7 +90,7 @@ export default{
     //                  ExtendedOffer.vue
     // ----------------------------------------------------
 
-    offer : "Offer",
+    offer : "Offer", // Se usa también en AcceptedOffer.vue
     offer_date : "Date",
     offer_duration : "Duration",
     offer_price: "Price",
@@ -125,7 +125,7 @@ export default{
     // ----------------------------------------------------
 
     menu : "Menu",
-    topArtists : "Top Artists",
+    topArtists : "Top Artists", // Se usa también en TopArtists.vue
     myOffers : "My Offers",
     checkIn : "Check-In",
     termsAndConditions : "Terms and Conditions", // Se usa también en Footer.vue
@@ -220,7 +220,7 @@ export default{
     //                   UserList.vue
     // ----------------------------------------------------
 
-    oops : "Nothing to show",
+    oops : "Nothing to show", // Se usa también en OffersList.vue
 
     // ----------------------------------------------------
     //                   UsersList.vue
@@ -549,5 +549,143 @@ export default{
     personalInfo: 'Personal Information',
     registerTerms_1: "By creating an account you agree to ",
     registerTerms_2: "Grooving's Terms and Conditions",
+
+    // ----------------------------------------------------
+    //                  AcceptedOffer.vue
+    // ----------------------------------------------------
+
+    offer_accepted: 'You have accepted the offer',
+
+    // ----------------------------------------------------
+    //               PaymentConfirmation.vue
+    // ----------------------------------------------------
+
+    payment_received: 'Received',
+
+    // ----------------------------------------------------
+    //              RegisterConfirmation.vue
+    // ----------------------------------------------------
+
+    register_confirmation: 'Your account has been successfully created',
+    register_thanks: 'Thank You',
+    register_email: 'You will receive a welcome email shortly.',
+
+    // ----------------------------------------------------
+    //                  AddressInput.vue
+    // ----------------------------------------------------
+
+    address_info: 'Address information',
+
+    // ----------------------------------------------------
+    //                   EventInput.vue
+    // ----------------------------------------------------
+
+    event_info: 'Event information',
+
+    // ----------------------------------------------------
+    //                      Index.vue
+    // ----------------------------------------------------
+
+    artists: 'Artists',
+
+    // ----------------------------------------------------
+    //                      Payment.vue
+    // ----------------------------------------------------
+
+    payment_payment: 'Payment',
+
+    // ----------------------------------------------------
+    //                      PaymentSelector.vue
+    // ----------------------------------------------------
+
+    payment_selector: 'Select a payment method',
+    payment_selector_error: 'Sorry! Something went wrong. Try again later.',
+
+    // ----------------------------------------------------
+    //                      TermsView.vue
+    // ----------------------------------------------------
+
+    terms_title: 'Terms and Conditions',
+
+    // ----------------------------------------------------
+    //                      AboutView.vue
+    // ----------------------------------------------------
+
+    about_title: 'About Us',
+
+    // ----------------------------------------------------
+    //                      NewUser.vue
+    // ----------------------------------------------------
+
+    newUser_login: 'Log In',
+    newUser_username: 'Username',
+    newUser_password: 'Password',
+    newUser_error: 'Wrong username or password!',
+    newUser_singin: 'SIGN IN',
+    newUser_new: 'New to Grooving?',
+    newUser_signup: 'SIGN UP!',
+    newUser_artist: 'Are you an artist?',
+    newUser_joinus: 'JOIN US!',
+
+    // ----------------------------------------------------
+    //                      HiringSettings.vue
+    // ----------------------------------------------------
+
+    hiringSettings_performanceHiring: 'Performance Hiring',
+    hiringSettings_performanceDescription: 'You can define your own shows indicating its description, duration and price.',
+    hiringSettings_addNew: 'ADD NEW',
+
+    // ----------------------------------------------------
+    //                      StartingDate.vue
+    // ----------------------------------------------------
+
+    startingDate_title: 'Pick a starting date',
+    startingDate_error: 'You must specific a starting hour',
+
+    // ----------------------------------------------------
+    //                      SentOffer.vue
+    // ----------------------------------------------------
+
+    sentOffer_msg: 'Your offer has been sent to the artist',
+
+    // ----------------------------------------------------
+    //                     CustomerRegister.vue
+    // ----------------------------------------------------
+
+    customerRegister_title: 'Create your customer account',
+    customerRegister_accountInfo: 'Account Information',
+    customerRegister_artisticName: 'Artistic Name',
+    customerRegister_username: 'Username',
+    customerRegister_password: 'Password',
+    customerRegister_passwordReq: "Your password must be at least 8 characters long, and can't be contained in the username, first name, last name or e-mail address.",
+    customerRegister_confirmPassword: 'Confirm Password',
+    customerRegister_personalInfo: 'Personal Information',
+    customerRegister_photo: '"Profile Photo URL',
+    customerRegister_firstName: 'First Name',
+    customerRegister_lastName: 'Last Name',
+    customerRegister_email: 'E-mail',
+    customerRegister_phoneNumber: 'Phone Number',
+    customerRegister_terms1: 'By creating an account you agree to',
+    customerRegister_terms2: "Grooving's Terms and Conditions",
+    customerRegister_signIn: 'SIGN IN',
+
+    // ----------------------------------------------------
+    //                     ErrorView.vue
+    // ----------------------------------------------------
+
+    error_oops: 'Oops!',
+    error_something: 'Something went wrong!',
+    error_try: 'Try again later.',
+
+    // ----------------------------------------------------
+    //                     TypeOfHiring.vue
+    // ----------------------------------------------------
+
+    type_title: 'Choose type of hiring',
+    type_available: 'Sorry, this artist is unavailable temporarily',
+
+
+
+
 
 }
