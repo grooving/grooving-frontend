@@ -1,6 +1,6 @@
 <template>
 <div class="hiringProcessContainer">
-    <div class="title"><p>Choose type of hiring </p></div>
+    <div class="title"><p>{{gtrans.translate('type_title')}}</p></div>
     
     <div class="everything">
         <div class="artistCard">
@@ -10,7 +10,7 @@
             :farePrice="this.farePackage.priceHour" :customMinPrice="this.customPackage.minimumPrice" :performancePackages="performancePackages" /></div>
         <div v-else>
             <div class="notice">
-                <h2 class="oops">Sorry, this artist is unavailable temporarily ☹</h2>
+                <h2 class="oops">{{gtrans.translate('type_available')}} ☹</h2>
             </div>
         </div>
     </div>
@@ -24,6 +24,7 @@ import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
 import GSecurity from '@/security/GSecurity.js';
 import {mapActions} from 'vuex';
+import GTrans from "@/utils/GTrans.js";
 
 export default {
     
@@ -40,6 +41,7 @@ export default {
             gsecurity: GSecurity,
             artistId: -1,
             artistData: Array(),
+            gtrans: GTrans,
 
             // Type: Fare
             farePackage: {
@@ -133,6 +135,7 @@ export default {
         // Retrieve store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
 
         // The artist to whom the offer is created
         this.artistId = this.$route.params['artistId'];

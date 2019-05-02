@@ -1,21 +1,24 @@
 <template>
 <div>
   <div class="banners">
-  <div class="banner2"><img class="d-block w-100 banner2" src="@/assets/img/banner2.png" alt="First slide" style="box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .2) !important;"></div>
-  <div class="banner1"><img class="d-block w-100 banner1" src="@/assets/img/banner1.png" alt="First slide" style="box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .2) !important;"></div>
+    <div class="banner2" v-if="gtrans.getLanguage() == 'es'"><img class="d-block w-100 banner2" src="@/assets/img/banner2_ES.png" v-bind:alt="this.gtrans.translate('image')" style="box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .2) !important;"></div>
+    <div class="banner2" v-if="gtrans.getLanguage() == 'en'"><img class="d-block w-100 banner2" src="@/assets/img/banner2_EN.png" v-bind:alt="this.gtrans.translate('image')" style="box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .2) !important;"></div>
+    <div class="banner1" v-if="gtrans.getLanguage() == 'es'"><img class="d-block w-100 banner1" src="@/assets/img/banner_ES.png" v-bind:alt="this.gtrans.translate('image')" style="box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .2) !important;"></div>
+    <div class="banner1" v-if="gtrans.getLanguage() == 'en'"><img class="d-block w-100 banner1" src="@/assets/img/banner_EN.png" v-bind:alt="this.gtrans.translate('image')" style="box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .2) !important;"></div>
   </div>
   <div class="container-fluid">
-    <div class="container"><ArtistList :listTitle="'Artists'" :artistas="datos" /></div>
+    <div class="container"><ArtistList :listTitle="this.gtrans.translate('artists')" :artistas="datos" /></div>
   </div>
   </div>
 
 </template>
 
 <script>
-  
 import ArtistList from '@/components/ArtistList.vue';
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
+import GSecurity from "@/security/GSecurity.js";
+import GTrans from "@/utils/GTrans.js";
 
 export default {
   name: 'index',
@@ -26,6 +29,9 @@ export default {
 
   data: function(){
     return{
+      gsecurity: GSecurity,
+      gtrans: undefined,
+
       datos: Array(),
     }
   },
@@ -59,6 +65,17 @@ export default {
         NProgress.done()
       });
     }
+  },
+
+  created: function(){
+    this.gsecurity = GSecurity;
+    this.gsecurity.obtainSavedCredentials();
+
+    this.gtrans = new GTrans(this.gsecurity.getLanguage());
+    
+    // Podemos cambiar el lenguaje así para debug...
+    //this.gtrans.setLanguage('es')
+    //this.gtrans.setLanguage('en')
   },
 
   beforeMount(){

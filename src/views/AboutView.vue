@@ -1,6 +1,6 @@
 <template>
     <div class="aboutContent">
-        <p class="title">About Us</p>
+        <p class="title">{{gtrans.translate('about_title')}}</p>
             <span class="text"><AboutText :aboutUs="this.aboutUs" /></span>
         </div>
     </div>
@@ -10,6 +10,7 @@
 import AboutText from '@/components/AboutText.vue'
 import GSecurity from '@/security/GSecurity.js';
 import GAxios from '@/utils/GAxios.js';
+import GTrans from "@/utils/GTrans.js";
 
 export default {
 
@@ -23,6 +24,7 @@ export default {
             //Hiring Process...
             gsecurity: GSecurity,
             aboutUs: undefined,
+            gtrans: GTrans,
         }
     },
 
@@ -38,6 +40,15 @@ export default {
         }).then( () => {NProgress.done()});
 
     },
+
+    created() {
+
+        // Retrieve store credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+    }
     
 }
 </script>

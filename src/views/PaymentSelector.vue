@@ -1,8 +1,8 @@
 <template>
 <div class="hiringProcessContainer">
-    <div class="title"><p>Select a payment method</p></div>
+    <div class="title"><p>{{gtrans.translate('payment_selector')}}</p></div>
     <div v-if="errors === true" class="validationErrors">
-        <p>Sorry! Something went wrong. Try again later.</p>
+        <p>{{gtrans.translate('payment_selector_error')}}</p>
         <!--<p>Error en el numero</p>
         <p>Error en el mes</p>-->
     </div>
@@ -26,6 +26,7 @@ import { mapGetters } from 'vuex';
 import PaymentProcess from '@/store/modules/payment.js';
 import GAxios from '@/utils/GAxios.js';
 import endpoints from '@/utils/endpoints.js';
+import GTrans from "@/utils/GTrans.js";
 
 export default {
     name: 'PaymentSelector',
@@ -38,6 +39,7 @@ export default {
         return {
             //Hiring Process...
             gsecurity: GSecurity,
+            gtrans: GTrans,
             artistId: -1,
             nextStep: undefined,
             hiringType: undefined,
@@ -231,6 +233,8 @@ export default {
         // Retreive store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+
 
         // The artist to whom the offer is created
         this.artistId = this.$route.params['artistId'];

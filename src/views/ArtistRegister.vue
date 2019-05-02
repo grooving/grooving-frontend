@@ -9,18 +9,18 @@
                     </div>
                     <label for="" class="subtitle">{{gtrans.translate('accountInfo')}}</label>
                     <b-form-group>
-                        <b-form-input v-model="input.artisticName" placeholder="Artistic Name"></b-form-input>
+                        <b-form-input v-model="input.artisticName" v-bind:placeholder="gtrans.translate('customerRegister_artisticName')"></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input v-model="input.username" placeholder="Username" required></b-form-input>
+                        <b-form-input v-model="input.username" v-bind:placeholder="gtrans.translate('customerRegister_username')" required></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input v-model="input.password" type="password" placeholder="Password" minlength="8" required></b-form-input>
+                        <b-form-input v-model="input.password" type="password" v-bind:placeholder="gtrans.translate('customerRegister_password')" minlength="8" required></b-form-input>
                     </b-form-group>
                     <small class="form-text text-muted" style="margin-bottom:14px">
                         {{gtrans.translate('passwordReq')}}</small>
                     <b-form-group>
-                        <b-form-input v-model="input.confirmPassword" type="password" placeholder="Confirm password" minlength="8" required></b-form-input>
+                        <b-form-input v-model="input.confirmPassword" type="password" v-bind:placeholder="gtrans.translate('customerRegister_confirmPassword')" minlength="8" required></b-form-input>
                     </b-form-group>
                     <hr/>
                     <label for="" class="subtitle">{{gtrans.translate('personalInfo')}}</label>
@@ -35,19 +35,19 @@
                         <label class="custom-file-label" for="customFile">Upload a Photo</label>
                     </div> -->
                     <b-form-group>
-                        <b-form-input type="url" v-model="input.photo" placeholder="Profile Photo URL" maxlength="255"></b-form-input>
+                        <b-form-input type="url" v-model="input.photo" v-bind:placeholder="gtrans.translate('customerRegister_photo')" maxlength="255"></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input v-model="input.firstName" placeholder="First Name" required></b-form-input>
+                        <b-form-input v-model="input.firstName" v-bind:placeholder="gtrans.translate('customerRegister_firstName')" required></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input v-model="input.lastName" placeholder="Last Name" required></b-form-input>
+                        <b-form-input v-model="input.lastName" v-bind:placeholder="gtrans.translate('customerRegister_lastName')" required></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input v-model="input.email" type="email" placeholder="E-mail" required></b-form-input>
+                        <b-form-input v-model="input.email" type="email" v-bind:placeholder="gtrans.translate('customerRegister_email')" required></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input type="number" v-model="input.phoneNumber" placeholder="Phone Number" min="600000000" max="999999999"></b-form-input>
+                        <b-form-input type="number" v-model="input.phoneNumber" v-bind:placeholder="gtrans.translate('customerRegister_phoneNumber')" min="600000000" max="999999999"></b-form-input>
                     </b-form-group>
                     <div class="form-check">
                         <b-form-checkbox id="checkbox-1" v-model="status" value="accepted" unchecked-value="not_accepted" required>
@@ -77,7 +77,7 @@
             return {
                 gaxios: GAxios,
                 gsecurity: GSecurity,
-                gtrans: undefined,
+                gtrans: GTrans,
                 //image: "",
                 input: {
                     artisticName: "",
@@ -151,6 +151,7 @@
                 }
             },
         },
+        
 
         props: {
         },
@@ -160,16 +161,14 @@
                 this.$router.push({name: "error"});
             }
         },
-        created() {
-            // Retreive stored credentials
-            this.gsecurity = GSecurity;
-            this.gsecurity.obtainSavedCredentials();
 
-            this.gtrans = new GTrans(this.gsecurity.getLanguage());
-                
-            // Podemos cambiar el lenguaje así para debug...
-            //this.gtrans.setLanguage('es')
-            //this.gtrans.setLanguage('en')
+        created() {
+        
+        // Retreive store credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
         },
     }
         

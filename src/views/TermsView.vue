@@ -1,6 +1,6 @@
 <template>
     <div class="hell">
-        <div class="title"><p>Terms and Conditions</p></div>
+        <div class="title"><p>{{gtrans.translate('terms_title')}}</p></div>
 
     <div class="everything">
         <div class="addDiv">
@@ -14,6 +14,7 @@
 import TermsText from '@/components/TermsText.vue'
 import GSecurity from '@/security/GSecurity.js';
 import GAxios from '@/utils/GAxios.js';
+import GTrans from "@/utils/GTrans.js";
 
 export default {
 
@@ -27,6 +28,7 @@ export default {
             //Hiring Process...
             gsecurity: GSecurity,
             termsAndCond: undefined,
+            gtrans: GTrans,
         }
     },
 
@@ -42,6 +44,15 @@ export default {
         }).then( () => {NProgress.done()});
 
     },
+
+    created() {
+
+        // Retrieve store credentials
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+    }
     
 }
 </script>
