@@ -175,6 +175,9 @@ export default {
 
           this.updateVideosKey += 1;  
                 
+    }).catch( () => {
+      // If there was an error while loading the request (entity does not exist, ...)
+      this.$router.push('/error');
     });
 
 
@@ -197,7 +200,8 @@ export default {
           }
 
         }).catch(ex => {
-            console.log(ex);
+            // If there was an error while loading the request (entity does not exist, ...)
+            this.$router.push('/error');
         }).then(() => {
           NProgress.done()
         }).then(() => {
