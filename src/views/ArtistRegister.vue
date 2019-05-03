@@ -9,18 +9,18 @@
                     </div>
                     <label for="" class="subtitle">{{gtrans.translate('accountInfo')}}</label>
                     <b-form-group>
-                        <b-form-input v-model="input.artisticName" v-bind:placeholder="gtrans.translate('customerRegister_artisticName')"></b-form-input>
+                        <b-form-input v-model="input.artisticName" maxlength="140" v-bind:placeholder="gtrans.translate('customerRegister_artisticName')"></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input v-model="input.username" v-bind:placeholder="gtrans.translate('customerRegister_username')" required></b-form-input>
+                        <b-form-input v-model="input.username" maxlength="30" v-bind:placeholder="gtrans.translate('customerRegister_username')" required></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input v-model="input.password" type="password" v-bind:placeholder="gtrans.translate('customerRegister_password')" minlength="8" required></b-form-input>
+                        <b-form-input v-model="input.password" maxlength="30" type="password" v-bind:placeholder="gtrans.translate('customerRegister_password')" minlength="8" required></b-form-input>
                     </b-form-group>
                     <small class="form-text text-muted" style="margin-bottom:14px">
                         {{gtrans.translate('passwordReq')}}</small>
                     <b-form-group>
-                        <b-form-input v-model="input.confirmPassword" type="password" v-bind:placeholder="gtrans.translate('customerRegister_confirmPassword')" minlength="8" required></b-form-input>
+                        <b-form-input v-model="input.confirmPassword" maxlength="30" type="password" v-bind:placeholder="gtrans.translate('customerRegister_confirmPassword')" minlength="8" required></b-form-input>
                     </b-form-group>
                     <hr/>
                     <label for="" class="subtitle">{{gtrans.translate('personalInfo')}}</label>
@@ -35,16 +35,16 @@
                         <label class="custom-file-label" for="customFile">Upload a Photo</label>
                     </div> -->
                     <b-form-group>
-                        <b-form-input type="url" v-model="input.photo" v-bind:placeholder="gtrans.translate('customerRegister_photo')" maxlength="255"></b-form-input>
+                        <b-form-input type="url" v-model="input.photo" v-bind:placeholder="gtrans.translate('customerRegister_photo')" maxlength="500"></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input v-model="input.firstName" v-bind:placeholder="gtrans.translate('customerRegister_firstName')" required></b-form-input>
+                        <b-form-input v-model="input.firstName" maxlength="30" v-bind:placeholder="gtrans.translate('customerRegister_firstName')" required></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input v-model="input.lastName" v-bind:placeholder="gtrans.translate('customerRegister_lastName')" required></b-form-input>
+                        <b-form-input v-model="input.lastName" maxlength="150" v-bind:placeholder="gtrans.translate('customerRegister_lastName')" required></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input v-model="input.email" type="email" v-bind:placeholder="gtrans.translate('customerRegister_email')" required></b-form-input>
+                        <b-form-input v-model="input.email" maxlength="50" type="email" v-bind:placeholder="gtrans.translate('customerRegister_email')" required></b-form-input>
                     </b-form-group>
                     <b-form-group>
                         <b-form-input type="number" v-model="input.phoneNumber" v-bind:placeholder="gtrans.translate('customerRegister_phoneNumber')" min="600000000" max="999999999"></b-form-input>
@@ -120,7 +120,7 @@
                     this.errors = this.gtrans.translate('terms_error');
                     document.getElementById("errorsDiv").style.display = "block";
                     window.scrollTo(0,0);
-                } else if (parseInt(this.input.phoneNumber, 10) < 600000000 || parseInt(this.input.phoneNumber, 10) > 900000000) {
+                } else if (parseInt(this.input.phoneNumber, 10) < 600000000 || parseInt(this.input.phoneNumber, 10) > 999999999) {
                     this.errors = this.gtrans.translate('phone_error');
                     document.getElementById("errorsDiv").style.display = "block";
                     window.scrollTo(0,0);

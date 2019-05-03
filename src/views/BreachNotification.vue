@@ -14,11 +14,11 @@
             <form v-on:submit="createNotification">
                 <div class="form-group">
                     <small for="exampleInputEmail1">SUBJECT</small>
-                    <input v-model="subject" style="font-weight: bold;" type="text" class="form-control" id="notificationSubject" placeholder="Subject">
+                    <input v-model="subject" style="font-weight: bold;" type="text" maxlength="100" class="form-control" id="notificationSubject" placeholder="Subject">
                 </div>
                 <div class="form-group">
                     <small for="exampleInputPassword1">BODY</small>
-                    <textarea v-model="body" class="form-control" id="notificationBody" placeholder="Enter the body of the message..."/>
+                    <textarea v-model="body" class="form-control" id="notificationBody" maxlength="700" placeholder="Enter the body of the message..."/>
                 </div>
                 <button type="submit" class="continueButton">SEND</button>
             </form>

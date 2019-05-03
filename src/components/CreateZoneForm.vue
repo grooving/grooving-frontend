@@ -12,7 +12,7 @@
                     <div style="width:100%;margin-top:25px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('nameZone')}}</p>
                         <div class="input-group">
-                            <input v-model="zoneName" type="text" class="form-control">
+                            <input v-model="zoneName" type="text" maxlength="140" class="form-control">
                             <div class="input-group-append">
                                 <span class="input-group-text">Aa</span>
                             </div>

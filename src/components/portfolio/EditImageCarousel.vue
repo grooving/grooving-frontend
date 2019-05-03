@@ -17,7 +17,7 @@
           <div class="col-12 vertical-center">
             <div class="form-group" style="width: inherit;">
               <div class="row">
-                <input @keypress.enter="add($event)" type="url" v-model="addImageURL" class="form-control col-8" aria-describedby="imageCarouselInput"  v-bind:placeholder="this.gtrans.translate('image_placeholder')" />
+                <input @keypress.enter="add($event)" type="url" maxlength="500" v-model="addImageURL" class="form-control col-8" aria-describedby="imageCarouselInput"  v-bind:placeholder="this.gtrans.translate('image_placeholder')" />
                 <button type="button" class="addElementButton col-4" @click="add($event)">
                   {{gtrans.translate('add_carousel')}}
                 </button>

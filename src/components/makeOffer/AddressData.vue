@@ -3,15 +3,15 @@
     <form v-on:submit.prevent="addressDataSelected()">
         <div class="form-row" style="margin-top:15px">
             <div class="form-group col-12">
-                <input v-model="street" type="text" class="form-control" v-bind:placeholder="gtrans.translate('addressData_address')" required>
+                <input v-model="street" type="text" maxlength="100" class="form-control" v-bind:placeholder="gtrans.translate('addressData_address')" required>
             </div>  
         </div>
         <div class="form-row">
             <div class="form-group col-7">
-                <input v-model="location" type="text" class="form-control" v-bind:placeholder="gtrans.translate('addressData_town')" required>
+                <input v-model="location" type="text" maxlength="100" class="form-control" v-bind:placeholder="gtrans.translate('addressData_town')" required>
             </div>  
             <div class="form-group col-5">
-                <input v-model="zipcode" type="number" class="form-control" v-bind:placeholder="gtrans.translate('addressData_zipcode')" required>
+                <input v-model="zipcode" type="number" maxlength="50" min="0" class="form-control" v-bind:placeholder="gtrans.translate('addressData_zipcode')" required>
             </div>  
         </div>
         <!-- <div class="form-row">

@@ -20,12 +20,12 @@
             <div >
                 <div >
                     <div v-if='editBanner' class="inputForm ">
-                        <input @keypress.enter="toogleBannerInput($event)" class="form-control" type="url"  
+                        <input @keypress.enter="toogleBannerInput($event)" class="form-control" type="url" maxlength="500"  
                             v-bind:placeholder="this.gtrans.translate('banner_placeholder')" v-model="$parent.d_portfolioBanner">
                     </div>
 
                     <div class="inputForm" v-if="editPhoto">
-                        <input @keypress.enter="tooglePhotoInput($event)" type="url" v-model="$parent.d_portfolioMainPhoto" class="form-control" 
+                        <input @keypress.enter="tooglePhotoInput($event)" type="url" v-model="$parent.d_portfolioMainPhoto" class="form-control" maxlength="500"
                             v-bind:placeholder="this.gtrans.translate('profileImage_placeholder')" />
                     </div>
                 </div>

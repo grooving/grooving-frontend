@@ -55,7 +55,7 @@ export default{
     // ----------------------------------------------------
 
     artist_artisticName : "Nombre Artístico",
-    artist_description : "Biografía",
+    artist_description : "Biografía (1000 caracteres máx)",
 
     // ----------------------------------------------------
     //               EditAvailableDates.vue
@@ -100,7 +100,7 @@ export default{
     //                   EventData.vue
     // ----------------------------------------------------
 
-    description_placeholder : "Añade aquí una descripción con información relevante sobre el evento.",
+    description_placeholder : "Añade aquí una descripción con información relevante sobre el evento. (500 caracteres máx)",
     continueButton : "CONTINUAR", // Se usa también en StartingDatePicker.vue, Performances.vue, CustomPrice.vue y AddressData.vue
 
     // ----------------------------------------------------

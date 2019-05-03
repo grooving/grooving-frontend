@@ -7,7 +7,7 @@
     <div id="datesContainer" class="datesContainer">	
     	<div class="contentCalendar">
     		<h3 class="availableDatesTitle" >{{gtrans.translate('availableDates')}}</h3>
-    		<Calendar class="availableDates" :availableDates="availableDates"/>
+    		<Calendar :key="refreshC" class="availableDates" :availableDates="datos.availableDates"/>
     	</div>
     </div>
     <router-link v-if="!hideEditButton" :to="'/editPortfolio/' + artistId" class="floating-btn vertical-center">
@@ -92,8 +92,12 @@ export default {
       d_portfolioImages: Array(),
       d_portfolioVideos: Array(),
       d_portfolioDays: Array(),
-      datos: Array(),
+      datos: {
+        availableDates: Array(),
+      },
       rating: undefined,
+
+      refreshC: 1,
     }
   },
 
@@ -187,13 +191,17 @@ export default {
           if(calendar.length==0){
             this.datos.push({availableDates: []});
           }else{
-            this.datos.push({availableDates: calendar.days,})
+            for (var i = 0; i < calendar.days.length; i++) {
+              this.datos.availableDates.push(calendar.days[i])
+            }
           }
 
         }).catch(ex => {
             console.log(ex);
         }).then(() => {
           NProgress.done()
+        }).then(() => {
+          this.refreshC++;
         });
   },
   created() {

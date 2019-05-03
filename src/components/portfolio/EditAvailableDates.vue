@@ -141,7 +141,7 @@ export default {
                         to: yesterday,
                         dates: this.stringToDates,
                     };
-
+                    this.availableDates = stringDates;
                     this.$parent.d_portfolioDays = stringDates;
                 }
 
@@ -160,15 +160,10 @@ export default {
                     alert(this.gtrans.translate('date_invalid'))
                 }
                 else{
-                    //alert(this.addDate);
-                    //alert(this.$props.availableDates);
                     var idx = this.$props.availableDates.indexOf(this.addDate);
-                    //alert(idx);
                     
                     if(idx!=-1){
-                        //alert("AAAAA");
                         this.$props.availableDates.splice(idx, 1);
-                        //alert(this.$props.availableDates);
 
                         var stringDates = Array();
                         var res = Array();
@@ -178,8 +173,6 @@ export default {
                             stringDates.push(this.$props.availableDates[i]);
                         }
 
-                        //alert("EEEEE");
-
                         this.stringToDates = res;
 
                         this.disabledDates = {
@@ -187,12 +180,8 @@ export default {
                             dates: this.stringToDates,
                         }
 
-                        //alert("IIIIII");
-
-                        //alert(this.$props.availableDates);
+                        this.availableDates = stringDates;                        
                         this.$parent.d_portfolioDays = stringDates;
-
-                        //alert("wog!");
                     }
                     
                 }
@@ -200,14 +189,9 @@ export default {
 
                 this.addImageURL = '';
                 this.toggleDeleteURLInput();
-
-                
-
-                
             }
-
-            
         },
+
         getFechas: function() {
             return this.disabledDates;
         }
