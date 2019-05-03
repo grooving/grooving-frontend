@@ -17,9 +17,8 @@
                         <div class="cardTextId"><i class="material-icons iconOffer ">error_outline</i><p style="margin-left: 5px; word-break: break-all">ID:{{offerID}}</p>
                         </div>
                         <br>
-                        <div class="cardTextId" v-if="offerStatus == 'CONTRACT_MADE' || offerStatus == 'PAYMENT_MADE'" @click="openChat()"><i class="material-icons iconOffer chat">chat</i><p style="margin-left: 5px;;word-break: break-all">{{chat}}</p>
-                        </div>
-                            
+                        <button v-if="offerStatus == 'CONTRACT_MADE' || offerStatus == 'PAYMENT_MADE'" @click="openChat()" class="btn btn-primary continueButton"><span class="continueText">{{gtrans.translate('chat')}}</span></button>
+                                                   
                         </div>
                     </div>
                     <div class="right-div right-text">
@@ -407,6 +406,19 @@
         font-family: "Archivo"
     }
 
+    .continueButton {
+        font-size: 18px;
+        padding-left: 5%;
+        padding-right: 5%;
+        border: none;
+        border-radius: 30px;
+        width: fit-content;
+        margin-top: 2%;
+        font-weight: bold;
+        background-image: linear-gradient(#ffc107, #ff9800);
+        
+    }
+
     .btnn {
         text-align: center;
         vertical-align: middle;
@@ -637,6 +649,12 @@
         .tarjeta {
             min-width: 335px;
             box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, .2);
+        }
+
+        .continueButton{
+            
+            margin-right: 25%;
+            margin-left: 25%;
         }
 
         .priceCard h1{

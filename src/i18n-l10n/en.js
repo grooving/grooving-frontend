@@ -122,6 +122,7 @@ export default{
     cancelledArtistMessage : "The offer was canceled by the artist after being accepted.",
     cancelledCustomerMessage : "The offer was canceled by the customer after being accepted.",
     paymentMessage : "The payment has already been made.",
+    chat: "Chat",
 
     // ----------------------------------------------------
     //                     LeftMenu.vue

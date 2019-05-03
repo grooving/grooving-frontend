@@ -40,7 +40,7 @@ export default{
     cancelledArtistMessage : "La oferta fue cancelada por el artista después de ser aceptada.",
     cancelledCustomerMessage : "La oferta fue cancelada por el cliente después de ser aceptada.",
     paymentMessage : "El pago ya ha sido realizado.",
-
+    chat: "Chat",
 
     // ----------------------------------------------------
     //                  CustomHiring.vue

@@ -32,7 +32,7 @@ import DoubleSlider from '@/components/makeOffer/DoubleSlider.vue';
 import {mapActions} from 'vuex';
 
 export default {
-  name: 'TimeSelection',
+  name: 'ArtistCard',
 
   components: {
     DoubleSlider
