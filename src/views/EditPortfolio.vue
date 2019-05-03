@@ -12,7 +12,7 @@
       <EditImageCarousel :photosInfo="d_portfolioImages" :key="updateImagesKey" />
       <EditVideoCarousel :videosInfo="d_portfolioVideos" :key="updateVideosKey" />
 
-      <EditAvailableDates :availableDates="availableDates" :key="updateCalendatKey"/>
+      <EditAvailableDates :availableDates="availableDates" :key="updateCalendarKey"/>
     </form>
   </div>
 </template>
@@ -65,7 +65,7 @@ export default {
       gsecurity: GSecurity,
       updateVideosKey: 0,
       updateImagesKey: 0,
-      updateCalendatKey: 0,
+      updateCalendarKey: 0,
       artistId: -1,
       errors: false,
 
@@ -208,7 +208,7 @@ export default {
               }else{
                 this.datos.push({availableDates: calendar.days,})
               }
-                this.updateCalendatKey += 1;
+                this.updateCalendarKey += 1;
           }).then(() => {
             NProgress.done()
           });
