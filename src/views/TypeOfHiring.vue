@@ -197,6 +197,7 @@ export default {
         }).catch(ex => {
             console.log('Could not load Artist Info Data API');
             console.log(ex);
+            this.$router.push('/error');
         });
 
         // ** Hiring Types - Right Card **
@@ -230,6 +231,7 @@ export default {
         }).catch(ex => {
             console.log('Could not load Payment Packages API')
             console.log(ex);
+            this.$router.push('/error');
         }).then(() => {
             NProgress.done()
         });

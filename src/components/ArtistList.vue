@@ -6,7 +6,7 @@
         <ArtistCard :artistImage="artist.artistImage" :artistName="artist.artistName" :artistGenres="artist.artistGenres" :artistId="artist.artistID" />
       </div>
       <div v-if="artistas.length == 0" class="error">
-        <h1 class="oops">Nothing to show ☹</h1>
+        <h1 class="oops">{{gtrans.translate('oops')}} ☹</h1>
       </div>
     </div>
   </div>
@@ -15,12 +15,19 @@
 <script>
 import ArtistCard from '@/components/ArtistCard.vue';
 import GAxios from '@/utils/GAxios.js';
+import GSecurity from '@/security/GSecurity.js';
+import GTrans from '@/utils/GTrans.js';
 
 export default {
   name: 'ArtistsList',
 
   components: {
     ArtistCard,
+  },
+
+  data:{
+      gsecurity: GSecurity,
+      gtrans: undefined,
   },
 
   props:{
@@ -35,6 +42,18 @@ export default {
     }
 
   },
+
+  created: function(){
+    this.gsecurity = GSecurity;
+    this.gsecurity.obtainSavedCredentials();
+
+    this.gtrans = new GTrans(this.gsecurity.getLanguage());
+    
+    // Podemos cambiar el lenguaje así para debug...
+    //this.gtrans.setLanguage('es')
+    //this.gtrans.setLanguage('en')
+
+  }
 }
 
 </script>

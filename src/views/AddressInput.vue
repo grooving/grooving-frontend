@@ -1,6 +1,10 @@
 <template>
+    
     <div class="hiringProcessContainer">
-        <div class="title"><p>{{gtrans.translate('address_info')}}</p></div>
+    <div v-if="errors" class="validationErrors vertical-center">
+        <p>{{errors}}</p>
+    </div>
+    <div class="title"><p>{{gtrans.translate('address_info')}}</p></div>
 
     <div class="everything">
         <div class="artistCard"><ArtistCard 
@@ -41,7 +45,7 @@ export default {
             //Hiring Process...
             gsecurity: GSecurity,
             gtrans: undefined,
-
+            errors: undefined,
             artistId: -1,
             nextStep: undefined,
             hiringType: undefined,
@@ -71,16 +75,33 @@ export default {
 
         addressSelected(address) {
             
-            this.setEventAddress(address).then(() => {
+            if(address[0] == '' || address[0] == undefined){
+                this.errors = this.gtrans.translate('address_town_error');
+            }
+            else if(address[1] == '' || address[1] == undefined || isNaN(address[1])){
+                this.errors = this.gtrans.translate('address_zip_error');
+            }
+            else if(address[2] == '' || address[2] == undefined){
+                this.errors = this.gtrans.translate('address_address_error');
+            }
+            else if(address[3] == '' || address[3] == undefined || address[3] == 0){
+                this.errors = this.gtrans.translate('address_province_error');
+            }
+            else{
 
-                // If VueX has correcty saved the address
-                this.$router.push(this.nextStep)
+                this.setEventAddress(address).then(() => {
 
-            }).catch( e => {
+                    // If VueX has correcty saved the address
+                    this.$router.push(this.nextStep)
 
-                console.log('Error: Could not set address in VueX');
-                console.log(e);
-            });
+                }).catch( e => {
+
+                    console.log('Error: Could not set address in VueX');
+                    console.log(e);
+                });
+
+            }
+            
         },
     },
 
@@ -177,6 +198,16 @@ export default {
 <style scoped>
     * {
         font-family: "Archivo"
+    }
+
+    .validationErrors{
+        background-color:#f50057;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);
+        
+        color:white;
+        font-weight: bold;
+        height: 100%;
+        padding-top: 12px;
     }
 
     .title {

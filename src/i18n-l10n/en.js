@@ -364,6 +364,7 @@ export default{
     filter_score: 'Score',
     filter_zones: 'Zones',
     filter_filterBy: 'Filter by',
+    search_title: 'Search Results',
 
     // --------------------------------------------------------------------------------
     //                 CreditCardPayment.vue
@@ -584,6 +585,10 @@ export default{
     // ----------------------------------------------------
 
     address_info: 'Address information',
+    address_address_error: 'You must introduce an address',
+    address_town_error: 'You must introduce a town',
+    address_zip_error: 'You must introduce a Zip code',
+    address_province_error: 'You must choose a provice',
 
     // ----------------------------------------------------
     //                   EventInput.vue

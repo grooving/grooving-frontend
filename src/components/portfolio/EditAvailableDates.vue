@@ -182,6 +182,9 @@ export default {
 
                         this.availableDates = stringDates;                        
                         this.$parent.d_portfolioDays = stringDates;
+                    } else {
+                        this.availableDates = this.$props.availableDates;
+                        this.$parent.d_portfolioDays = this.$props.availableDates;
                     }
                     
                 }
