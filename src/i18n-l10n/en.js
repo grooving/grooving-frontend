@@ -526,6 +526,8 @@ export default{
     // ----------------------------------------------------
 
     chooseDate: 'Choose a date',
+    chooseDateError: 'You must select a date.',
+    setDateVueX: "Error: Could not set date in VueX",
 
     // ----------------------------------------------------
     //                   PriceSelection.vue 
@@ -533,6 +535,7 @@ export default{
 
     choosePrice: 'Choose the price',
     selectPrice: "You must select a price...",
+    
 
     // ----------------------------------------------------
     //                   ReceivePayment.vue  
