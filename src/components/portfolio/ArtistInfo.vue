@@ -32,7 +32,7 @@
             <span v-else>☆</span>
         </div>
         <div class="description">
-            <p>{{artistDescription}}</p>
+            <p style="white-space: pre-wrap;">{{artistDescription}}</p>
         </div>
         <div>
         <span class="card-text artistGenres">{{ zonesToString() }}</span>
