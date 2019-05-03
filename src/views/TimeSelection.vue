@@ -168,7 +168,7 @@ export default {
         border: none;
         border-radius: 30px;
         width: 65%;
-
+        font-weight: bold;
         background-image: linear-gradient(to right, #00fb82, #187fe6);
     }
 

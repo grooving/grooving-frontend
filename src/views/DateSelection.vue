@@ -96,12 +96,14 @@ export default {
                     console.log('Error: Could not set date in VueX');
                     console.log(e);
 
-                    this.errors = 'Error: Could not set date in VueX';
+                    this.errors = this.gtrans.translate('setDateVueX');
+                    window.scrollTo(0,0);
                     document.getElementById("errorsDiv").style.display = "block";
                     
                 });
             }else{
-                this.errors = 'You must select a date.';
+                this.errors = this.gtrans.translate('chooseDateError');
+                window.scrollTo(0,0);
                 document.getElementById("errorsDiv").style.display = "block";
             }
         },
@@ -237,6 +239,7 @@ export default {
         border-radius: 30px;
         width: 65%;
         background-image: linear-gradient(to right, #00fb82, #187fe6);
+        font-weight: bold;
     }
 
     .continueButton:hover{
@@ -247,6 +250,7 @@ export default {
     .continueButtonDiv {
         margin-top: 30px;
         margin-bottom: 15px;
+        
     }
 
     .calendarButton  {

@@ -523,6 +523,8 @@ export default{
     // ----------------------------------------------------
 
     chooseDate: 'Selecciona la fecha',
+    chooseDateError: 'Debes seleccionar una fecha.',
+    setDateVueX: "Error: No se ha podido guardar la fecha en VueX",
 
     // ----------------------------------------------------
     //                   PriceSelection.vue 
@@ -530,6 +532,7 @@ export default{
 
     choosePrice: 'Selecciona el precio',
     selectPrice: "Debes seleccionar un precio...",
+    
 
     // ----------------------------------------------------
     //                   ReceivePayment.vue  
