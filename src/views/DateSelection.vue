@@ -12,7 +12,7 @@
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :price="this.cardPrice" :totalPrice="this.totalPrice"/>
         </div>
         <div class="calendarButton">
-          <div class="calendar"><Calendar @datePickerDate="calendarSelected" :availableDates="availableDates"/></div>
+          <div class="calendar"><Calendar :key="refreshC" @datePickerDate="calendarSelected" :availableDates="datos.availableDates"/></div>
           <div class="continueButtonDiv" @click="dateSelected()" ><div class="btn btn-primary continueButton"><span class="continueText">{{gtrans.translate('continueButton')}}</span></div></div>
         </div>
     </div>
@@ -69,10 +69,14 @@ export default {
               genres: undefined,
           },
 
-          datos: Array(),
+          datos: {
+              availableDates: Array(),
+            },
           fecha: '',
           totalPrice: undefined,
           errors: "",
+
+          refreshC: 1,
         }
     },
 
@@ -169,12 +173,16 @@ export default {
                 if(calendar.length==0){
                     this.datos.push({availableDates: []});
                 }else{
-                    this.datos.push({availableDates: calendar.days,})
+                    for (var i = 0; i < calendar.days.length; i++) {
+                        this.datos.availableDates.push(calendar.days[i])
+                    }
                 }
 
             }).catch(ex => {
                 console.log(ex);
-            }).then( () => {NProgress.done()});
+            }).then( () => {NProgress.done()}).then(() => {
+          this.refreshC++;
+        });
 
         
         // Obtenemos el precio de la tarjeta izq
