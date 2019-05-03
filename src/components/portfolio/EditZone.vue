@@ -1,6 +1,6 @@
 <template>
     <div>
-        
+        <h4 style="margin-bottom:0px;margin-top:10px;"><strong>{{gtrans.translate('artist_zone_title')}}</strong></h4>
         <b-button v-for="(zone, index) in selectedZones" v-bind:key="zone.id" v-bind:index="index" @click="deleteZone(index)" class="btt">{{zone.name}}</b-button>
         
         <template v-if="add">

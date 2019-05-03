@@ -1,6 +1,6 @@
 <template>
     <div>
-        
+        <h4 style="margin-bottom:0px;margin-top:10px;"><strong>{{gtrans.translate('artist_genre_title')}}</strong></h4>
         <b-button v-for="(genre, index) in selectedGenres" v-bind:key="genre.id" v-bind:index="index" @click="deleteGenre(index)" class="btt">{{genre.name}}</b-button>
         
         <template v-if="add">
