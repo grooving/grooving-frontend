@@ -1,6 +1,6 @@
 <template>
     <div class="hell">
-        <div class="title"><p>{{gtrans.translate('terms_title')}}</p></div>
+        <div class="title"><p style="text-align: center">{{gtrans.translate('terms_title')}}</p></div>
 
     <div class="everything">
         <div class="addDiv">
@@ -63,7 +63,24 @@ export default {
     }
 
     .title {
-        display: none;
+        display: inline-block;
+        margin-right: 12%;
+        margin-left: 10%;
+        text-align: left;
+        font-size: 2em;
+        margin-top: 5%;
+        font-weight: bold;
+    }
+
+    .everything {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 5%;
+        text-align: center;
+        margin-left: 5%;
+        margin-right: 5%;
+        margin-top:0%;
     }
 
     @media (min-width:768px)  {
