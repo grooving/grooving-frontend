@@ -401,7 +401,7 @@ export default{
     //                               CustomPrice.vue
     // --------------------------------------------------------------------------------
 
-    perfomanceDuration: 'Duración de la actuación',
+    perfomanceDuration: "Duración de la actuación: ",
 
     // ----------------------------------------------------
     //                 ZonesList.vue
@@ -528,6 +528,7 @@ export default{
     // ----------------------------------------------------
 
     choosePrice: 'Selecciona el precio',
+    selectPrice: "Debes seleccionar un precio...",
 
     // ----------------------------------------------------
     //                   ReceivePayment.vue  
@@ -580,6 +581,10 @@ export default{
     // ----------------------------------------------------
 
     address_info: 'Datos de la dirección',
+    address_address_error: 'Debes introducir una dirección',
+    address_town_error: 'Debes introducir una ciudad',
+    address_zip_error: 'Debes introducir un código postal',
+    address_province_error: 'Debes elegir una provincia',
 
     // ----------------------------------------------------
     //                   EventInput.vue

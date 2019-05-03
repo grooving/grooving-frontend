@@ -1,8 +1,8 @@
 <template>
     <div class="content">
         <form>
-            <label for="" class="subtitle" style="font-weight:bold;">{{gtrans.translate('perfomanceDuration')}}:</label>
-            <label for="" class="subtitle">{{duration}} h</label>
+            <label for="" class="subtitle" style="font-weight:bold;">{{gtrans.translate('perfomanceDuration')}} </label>
+            <label for="" class="subtitle">&nbsp;{{duration}}h</label>
             <div class="input-group">
                 <input v-model="priceHour" type="number" class="form-control" :min="minPrice" step="0.01" v-on:change="priceSelected();totalPrice();" v-on:click="priceSelected();totalPrice();">
                 <div class="input-group-append">

@@ -1,12 +1,15 @@
 <template>
     <div class="hiringProcessContainer">
+        <div id="errorsDiv" class="validationErrors vertical-center">
+            <p style="margin: 0px;">{{errors}}</p>
+        </div>
         <div class="title">
             <p>{{gtrans.translate('choosePrice')}}</p>
         </div>
         <div class="everything">
             <div class="artistCard">
                 <ArtistCard :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
-                :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :price="price"/>
+                :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="price"/>
             </div>
             <div class="customPriceSelector">
                 <div><CustomPrice @confirmPrice="confirmPrice" @priceSelected="priceValue" :duration="date.duration" :minPrice="cardPrice"  /></div>
@@ -54,6 +57,7 @@
                     duration: undefined,
                 },
                 price: '',
+                errors: "",
             };
         },
 
@@ -67,8 +71,8 @@
 
             confirmPrice(){
 
-                if(this.price){
-
+                if(this.price > 0){
+                    console.log('holat',this.price)
                     this.setOfferPrice(this.price).then(() => {
 
                         // If VueX has correcty saved the price
@@ -80,9 +84,8 @@
                     });
 
                 }else{
-
-                    alert('You must select a price...');
-
+                    this.errors = this.gtrans.translate('selectPrice');
+                    console.log(this.errors)
                 }
             }
         },
@@ -108,7 +111,7 @@
 
         created() {
 
-                    // Retreive store credentials
+        // Retreive store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
 
@@ -182,6 +185,17 @@
         font-family: "Archivo"
     }
 
+    .validationErrors{
+        background-color:#f50057;
+        border-radius: 5px;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
+        color:white;
+        display: none;
+        font-weight: bold;
+        margin-bottom: 14px;
+        padding: 10px;
+        padding-top: 12px;
+    }
     .artistGenres {
         color: #187FE6;
         font-size: 18px;
