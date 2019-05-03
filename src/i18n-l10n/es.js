@@ -261,10 +261,10 @@ export default{
     statistics_title : "Estadísticas",
     statistics_showLastMonth: "Último mes",
     statistics_showTotal: "Total",
-    registered_artists: "Artistas Registrados",
-    registered_customers: "Clientes Registrados",
-    registers: "Registros",
-    registers_lm: "Registros durante el Último mes",
+    registered_artists: "Artistas Activos",
+    registered_customers: "Clientes Activos",
+    registers: "Usuarios",
+    registers_lm: "Usuarios durante el Último mes",
     money_earned: "Dinero ganado",
     money_moved: "Dinero movido",
     money: "Dinero",
@@ -402,7 +402,7 @@ export default{
     //                               CustomPrice.vue
     // --------------------------------------------------------------------------------
 
-    perfomanceDuration: 'Duración de la actuación',
+    perfomanceDuration: "Duración de la actuación: ",
 
     // ----------------------------------------------------
     //                 ZonesList.vue
@@ -529,6 +529,7 @@ export default{
     // ----------------------------------------------------
 
     choosePrice: 'Selecciona el precio',
+    selectPrice: "Debes seleccionar un precio...",
 
     // ----------------------------------------------------
     //                   ReceivePayment.vue  
@@ -707,5 +708,17 @@ export default{
 
     adminSite : "Sitio del Administrador",
     wrongPass : "¡Usuario o contraseña incorrecta!",
+
+    // ----------------------------------------------------
+    //                  BreachNotification.vue
+    // ----------------------------------------------------
+    breach_title: 'Notificación de Brechas',
+    breach_subtitle: 'Este mensaje será enviado a todos los usuarios del sistema',
+    breach_subject: 'ASUNTO',
+    breach_body: 'CUERPO',
+    breach_subject_p: 'Asunto',
+    breach_body_p: 'Introduce el cuerpo del mensaje...',
+    breach_send: 'ENVIAR',
+    breach_ok: 'La notificación fue creada exitosamente',
 
 }

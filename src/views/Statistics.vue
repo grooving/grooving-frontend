@@ -1,7 +1,7 @@
 <template>
     <div id="statsMainWrapper" class="container mt-5 px-0">
         <h1 class="titleView">{{gtrans.translate('statistics_title')}}</h1>
-        <div class="row">
+        <div class="container row vertical-center mx-0 px-0">
             <div v-for="graph in circleProgressGraphs" :key="graph.id" class="tarjeta col-12 col-md-6 col-xl-4">
                 <CircleProgressGraph :graphTitle="graph.title" :graphId="graph.id" :percentageTotal="graph.percentageTotal" :percentageLastMonth="graph.percentageLastMonth" :key="graph.percentageTotal"/>
             </div>
@@ -228,6 +228,11 @@ export default {
         padding-bottom: 20px;
         padding-right: 0px;
         padding-left: 0px;
+    }
+
+    .vertical-center{
+        align-items: center;  /*Aligns vertically center */
+        justify-content: center; /*Aligns horizontally center */
     }
 
 </style>

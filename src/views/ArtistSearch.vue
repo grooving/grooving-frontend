@@ -127,6 +127,10 @@ export default {
 
         var artists = response.data;
 
+        // Clear the cached list
+        this.datos_artistas = Array();
+
+
         for(var i = 0; i < artists.length; i++){
           var genres = Array();
 
