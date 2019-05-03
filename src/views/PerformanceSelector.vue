@@ -69,6 +69,7 @@ export default {
     methods: {
         ...mapActions(['setPerformancePackage']),
         ...mapActions(['setOffer']),
+        ...mapActions(['setOfferPrice']),
 
         selectPerformance() {
             if(this.performancePackageId){
@@ -90,6 +91,8 @@ export default {
                 // Actualizamos el siguiente paso
                 this.nextStep = '/dateSelection/'+this.artistData.artistId;
 
+                this.setOfferPrice(perfPrice);
+
                 if(this.hiringType == 'PERFORMANCE'){
 
                     // Creamos el customPackage asociado con los datos...
@@ -104,8 +107,6 @@ export default {
                 }
 
             });
-
-
 
         }
 

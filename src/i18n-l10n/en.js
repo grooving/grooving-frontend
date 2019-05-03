@@ -400,7 +400,7 @@ export default{
     //                               CustomPrice.vue
     // --------------------------------------------------------------------------------
 
-    perfomanceDuration: 'Performance duration',
+    perfomanceDuration: "Performance duration: ",
 
     // ----------------------------------------------------
     //                 ZonesList.vue
@@ -531,6 +531,7 @@ export default{
     // ----------------------------------------------------
 
     choosePrice: 'Choose the price',
+    selectPrice: "You must select a price...",
 
     // ----------------------------------------------------
     //                   ReceivePayment.vue  

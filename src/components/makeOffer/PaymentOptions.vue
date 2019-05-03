@@ -54,7 +54,12 @@ export default {
         }
     },
     beforeMount() {
-        this.amount = this.$store.getters.offer.totalPrice;
+        this.hiringType = this.$store.getters.offer.hiringType;
+        if(this.hiringType == 'FARE' || this.hiringType == 'CUSTOM'){
+            this.amount = this.$store.getters.offer.totalPrice; 
+        } else if(this.hiringType == 'PERFORMANCE') {
+            this.amount = this.$store.getters.offerPerformancePack.priceHour; 
+        }
     },
     mounted() {
 

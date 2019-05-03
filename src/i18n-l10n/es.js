@@ -400,7 +400,7 @@ export default{
     //                               CustomPrice.vue
     // --------------------------------------------------------------------------------
 
-    perfomanceDuration: 'Duración de la actuación',
+    perfomanceDuration: "Duración de la actuación: ",
 
     // ----------------------------------------------------
     //                 ZonesList.vue
@@ -527,6 +527,7 @@ export default{
     // ----------------------------------------------------
 
     choosePrice: 'Selecciona el precio',
+    selectPrice: "Debes seleccionar un precio...",
 
     // ----------------------------------------------------
     //                   ReceivePayment.vue  
