@@ -688,8 +688,11 @@ export default{
     type_title: 'Choose type of hiring',
     type_available: 'Sorry, this artist is unavailable temporarily',
 
+    // ----------------------------------------------------
+    //                     EditPhoto.vue
+    // ----------------------------------------------------
 
-
-
+    banner_placeholder: 'Add the URL of your new banner',
+    profileImage_placeholder: 'Add the URL of your new profile image',
 
 }

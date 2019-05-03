@@ -21,12 +21,12 @@
                 <div >
                     <div v-if='editBanner' class="inputForm ">
                         <input @keypress.enter="toogleBannerInput($event)" class="form-control" type="url"  
-                            placeholder="Add the URL of your new banner" v-model="$parent.d_portfolioBanner">
+                            v-bind:placeholder="this.gtrans.translate('banner_placeholder')" v-model="$parent.d_portfolioBanner">
                     </div>
 
                     <div class="inputForm" v-if="editPhoto">
                         <input @keypress.enter="tooglePhotoInput($event)" type="url" v-model="$parent.d_portfolioMainPhoto" class="form-control" 
-                            placeholder="Add the URL of your new profile image" />
+                            v-bind:placeholder="this.gtrans.translate('profileImage_placeholder')" />
                     </div>
                 </div>
             </div>
@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import GSecurity from "@/security/GSecurity.js"
+import GTrans from "@/utils/GTrans.js"
 
 export default {
     name: "EditPhoto",
@@ -61,6 +63,9 @@ export default {
     },
     data() {
         return {
+            gsecurity: GSecurity,
+            gtrans: undefined,
+
             editPhoto: false,
             editBanner: false,
             newPhoto: undefined,
@@ -84,6 +89,16 @@ export default {
         }
     },
 
+    created: function(){
+        this.gsecurity = GSecurity;
+        this.gsecurity.obtainSavedCredentials();
+
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
+        
+        // Podemos cambiar el lenguaje así para debug...
+        //this.gtrans.setLanguage('es')
+        //this.gtrans.setLanguage('en')
+    }
 }
 </script>
 

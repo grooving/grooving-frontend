@@ -684,7 +684,11 @@ export default{
     type_title: 'Elige un tipo de contrato',
     type_available: 'Lo sentimos, este artista no está disponible temporalmente',
 
-    
+    // ----------------------------------------------------
+    //                     EditPhoto.vue
+    // ----------------------------------------------------
 
+    banner_placeholder: 'Introduzca la URL de su nuevo banner',
+    profileImage_placeholder: 'Introduzca la URL de su nueva foto de perfil',
 
 }
