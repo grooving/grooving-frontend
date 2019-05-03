@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div v-if="errors" class="validationErrors vertical-center">
+        <p>{{errors}}</p>
+    </div>
     <hr />
     <TabbedSubMenu @selectedTab="setSelectedTab"/>
     <div class="container-fluid" style="padding-top: 20px">
@@ -72,7 +75,7 @@ export default {
     return {
       gsecurity: GSecurity,
       gtrans: undefined,
-
+      errors: undefined,
       chatReady: false,
       chatOfferId: undefined,
       chatActive: undefined,
@@ -238,6 +241,7 @@ export default {
       }
     }).catch(ex => {
         console.log(ex);
+        this.errors = ex.response.data.error;
     }).then(() => {
       NProgress.done()
     });
@@ -246,6 +250,16 @@ export default {
 </script>
 
 <style scoped>
+
+.validationErrors{
+        background-color:#f50057;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);
+        
+        color:white;
+        font-weight: bold;
+        height: 100%;
+        padding-top: 12px;
+    }
 
   .error{
     padding-top: 50px;
