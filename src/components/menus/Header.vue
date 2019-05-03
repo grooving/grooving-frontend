@@ -68,7 +68,7 @@
                   </b-form-group>
                   <b-button class="continueButton" variant="primary" size="sm" v-on:click="login()">{{gtrans.translate('header_signIn')}}</b-button>
                 </b-dropdown-form>
-                <b-dropdown-divider/>
+                <b-dropdown-divider style="margin-bottom:0px"/>
                 <router-link to="newUser">
                 <b-dropdown-item-button class="dropdownButton">
                   <span>{{gtrans.translate('header_newUser')}} </span>
@@ -340,6 +340,10 @@ export default {
 
   .navbar {
     box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  .dropdown-item:hover {
+    background-image: linear-gradient(to right, #b5ffdb, #a8c9ea);
   }
   
 </style>
