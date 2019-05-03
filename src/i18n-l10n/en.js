@@ -549,6 +549,8 @@ export default{
     personalInfo: 'Personal Information',
     registerTerms_1: "By creating an account you agree to ",
     registerTerms_2: "Grooving's Terms and Conditions",
+    terms_error: "You must accept our terms and conditions.", // Se usa también en CustomerRegister.vue
+    phone_error: "The phone number must be between 600000000 and 999999999.", // Se usa también en CustomerRegister.vue
 
     // ----------------------------------------------------
     //                  AcceptedOffer.vue

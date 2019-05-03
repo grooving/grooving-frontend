@@ -113,11 +113,11 @@
             },*/
             createCustomer() {
                 if (this.status == 'not_accepted') {
-                    this.errors = "You must accept our terms and conditions."
+                    this.errors = this.gtrans.translate('terms_error');
                     document.getElementById("errorsDiv").style.display = "block";
                     window.scrollTo(0,0);
                 } else if (parseInt(this.input.phoneNumber, 10) < 600000000 || parseInt(this.input.phoneNumber, 10) > 900000000) {
-                    this.errors = "The phone number must be between 600000000 and 900000000."
+                    this.errors = this.gtrans.translate('phone_error');
                     document.getElementById("errorsDiv").style.display = "block";
                     window.scrollTo(0,0);
                 } else {
