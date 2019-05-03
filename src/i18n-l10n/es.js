@@ -580,6 +580,10 @@ export default{
     // ----------------------------------------------------
 
     address_info: 'Datos de la dirección',
+    address_address_error: 'Debes introducir una dirección',
+    address_town_error: 'Debes introducir una ciudad',
+    address_zip_error: 'Debes introducir un código postal',
+    address_province_error: 'Debes elegir una provincia',
 
     // ----------------------------------------------------
     //                   EventInput.vue
