@@ -127,6 +127,7 @@ export default {
     display: flex;
     justify-content: center;
     padding-top: 10px;
+    cursor: default !important;
 }
 
 .owl-dot {
@@ -134,6 +135,7 @@ export default {
     margin: 5px;
     height: 3px;
     width: 80%;
+    cursor: default !important;
 }
 
 .owl-dot-button {
@@ -141,6 +143,8 @@ export default {
     height: 100%;
     background: none;
     border: none;
+    display:none;
+    cursor: default !important;
 }
 
 .owl-dot.active{
