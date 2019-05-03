@@ -21,7 +21,7 @@
                     <div id="cvv" class="form-control test"></div>
                 </div>
             </div>
-            <div id="sendButton" class="btn btn-primary continueButton" @click="payWithCreditCard"><span class="continueText">{{gtrans.translate('sendOffer')}}</span></div>
+            <div v-if="showButton" id="sendButton" class="btn btn-primary continueButton" @click="payWithCreditCard"><span class="continueText">{{gtrans.translate('sendOffer')}}</span></div>
 
             
         </form>
@@ -48,6 +48,8 @@ export default {
             errors: "",
             amount: 10,
             gtrans: undefined,
+
+            showButton: true,
         }
     },
     methods: {
@@ -105,16 +107,20 @@ export default {
         payWithCreditCard() {
             if(this.hostedFieldInstance)
             {
-                document.getElementById("sendButton").style.display = "none";
+                this.showButton = false;
                 NProgress.start();
                 this.hostedFieldInstance.tokenize().then(payload => {
                     this.$emit('finishPayment', payload.nonce)
                 })
                 .catch(err => {
-                    console.error(err);
-                    this.errors = err.message;
-                    document.getElementById("errorsDiv").style.display = "block";
-                    document.getElementById("sendButton").style.display = "block";
+                    console.log(err);
+                    if(err.name == 'BraintreeError') {
+                        this.errors = this.gtrans.translate('braintree_error');
+                    } else {
+                        this.errors = err.message;
+                    }
+                    this.showButton = true;
+                    this.$emit('braintreeError', this.errors);
                     window.scrollTo(0,0);
                     NProgress.done();
                 });
