@@ -25,6 +25,7 @@ export default{
     sendOffer : "ENVIAR OFERTA",
     creditcard_placeholder : "Introduzca una Tarjeta de 16 Dígitos",
     paypal_error : "Se ha producido un error al procesar el pago con PayPal.",
+    braintree_error: "Error de Braintree: Hay campos inválidos en la tarjeta de crédito.",
 
     // ----------------------------------------------------
     //                  Offer.vue
@@ -522,6 +523,8 @@ export default{
     // ----------------------------------------------------
 
     chooseDate: 'Selecciona la fecha',
+    chooseDateError: 'Debes seleccionar una fecha.',
+    setDateVueX: "Error: No se ha podido guardar la fecha en VueX",
 
     // ----------------------------------------------------
     //                   PriceSelection.vue 
@@ -529,6 +532,7 @@ export default{
 
     choosePrice: 'Selecciona el precio',
     selectPrice: "Debes seleccionar un precio...",
+    
 
     // ----------------------------------------------------
     //                   ReceivePayment.vue  

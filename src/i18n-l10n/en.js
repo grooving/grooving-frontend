@@ -25,6 +25,7 @@ export default{
     sendOffer : "SEND OFFER",
     creditcard_placeholder : "Enter a 16 digits Credit Card",
     paypal_error : "An error occurred while processing the paypal payment.",
+    braintree_error: "Braintree Error: There are invalid credit card fields",
 
     // ----------------------------------------------------
     //                  CustomHiring.vue
@@ -526,6 +527,8 @@ export default{
     // ----------------------------------------------------
 
     chooseDate: 'Choose a date',
+    chooseDateError: 'You must select a date.',
+    setDateVueX: "Error: Could not set date in VueX",
 
     // ----------------------------------------------------
     //                   PriceSelection.vue 
@@ -533,6 +536,7 @@ export default{
 
     choosePrice: 'Choose the price',
     selectPrice: "You must select a price...",
+    
 
     // ----------------------------------------------------
     //                   ReceivePayment.vue  

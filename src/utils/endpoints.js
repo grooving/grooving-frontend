@@ -37,4 +37,5 @@ export default{
     users: '/users/',
     user: '/user/',
     downloadPersonalData: '/downloadPersonalData/',
+    changeLang: '/language/?lang=',
 }
