@@ -5,7 +5,7 @@
                 
                 <span class="link" @click="goTo(aboutUsURI)">{{gtrans.translate('aboutUs')}} | </span>
                 <span class="link" @click="goTo(termsURI)">{{gtrans.translate('termsAndConditions')}} | </span>
-                <span class="link">{{gtrans.translate('contactUs')}}: grupogrooving@gmail.com | </span>
+                <span>{{gtrans.translate('contactUs')}}: grupogrooving@gmail.com | </span>
                 <span class="link" @click="changeLanguage('en')">EN | </span>
                 <span class="link" @click="changeLanguage('es')">ES</span>
             </div>

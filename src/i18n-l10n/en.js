@@ -260,10 +260,10 @@ export default{
     statistics_title : "Statistics",
     statistics_showLastMonth: "Last Month",
     statistics_showTotal: "Total",
-    registered_artists: "Registered Artists",
-    registered_customers: "Registered Customers",
-    registers: "Registers",
-    registers_lm: "Registers Last Month",
+    registered_artists: "Active Artists",
+    registered_customers: "Active Customers",
+    registers: "Users",
+    registers_lm: "Users Last Month",
     money_earned: "Money Earned",
     money_moved: "Money Moved",
     money: "Money",
@@ -401,7 +401,7 @@ export default{
     //                               CustomPrice.vue
     // --------------------------------------------------------------------------------
 
-    perfomanceDuration: 'Performance duration',
+    perfomanceDuration: "Performance duration: ",
 
     // ----------------------------------------------------
     //                 ZonesList.vue
@@ -532,6 +532,7 @@ export default{
     // ----------------------------------------------------
 
     choosePrice: 'Choose the price',
+    selectPrice: "You must select a price...",
 
     // ----------------------------------------------------
     //                   ReceivePayment.vue  
