@@ -123,13 +123,13 @@ export default {
 
 <style scoped>
 .addElementButton{
-        width: 200px !important;
+        min-width: 100px !important;
         color: white !important;
         font-weight: bold;
         border-radius: 0px 25px 25px 0px;
         text-align: center;
         align-content: center;
-
+        padding: 0px;
         font-size: 22px;
                 
         border: none;
