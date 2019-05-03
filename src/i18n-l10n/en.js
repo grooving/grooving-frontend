@@ -364,6 +364,7 @@ export default{
     filter_score: 'Score',
     filter_zones: 'Zones',
     filter_filterBy: 'Filter by',
+    search_title: 'Search Results',
 
     // --------------------------------------------------------------------------------
     //                 CreditCardPayment.vue
