@@ -76,20 +76,24 @@ export default {
                 }  
                 document.getElementById("errorsDiv").style.display = "block";
                 window.scrollTo(0,0);
+                NProgress.done();
             });
         },
     },
 
     mounted: function() {
-        this.gsecurity = GSecurity;
-        this.gsecurity.obtainSavedCredentials();
+        if (!this.gsecurity.hasRole('ADMIN')) {
+            this.$router.push({name: "error"});
+        } else  {
+            this.gsecurity = GSecurity;
+            this.gsecurity.obtainSavedCredentials();
 
-        if(this.zone != undefined) {
-            this.parentZoneId = this.zone.parent;
-            this.zoneId = this.zone.id;
-            this.zoneName = this.zone.name;
+            if(this.zone != undefined) {
+                this.parentZoneId = this.zone.parent;
+                this.zoneId = this.zone.id;
+                this.zoneName = this.zone.name;
+            }
         }
-        
     },
 }
 </script>

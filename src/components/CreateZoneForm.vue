@@ -9,9 +9,6 @@
                     </router-link>
                     <h6 v-if="parentZoneName != ''" class="card-subtitle mb-2 text-muted">{{gtrans.translate('subtitleCreateZone_3')}}<strong>{{parentZoneName}}.</strong></h6>
                     <h6 v-else class="card-subtitle mb-2 text-muted">{{gtrans.translate('subtitleCreateZone_1')}}<strong>{{gtrans.translate('subtitleCreateZone_2')}}</strong></h6>
-                    <div id="errorsDiv" class="validationErrors vertical-center">
-                        <p style="margin: 0px;">{{errors}}</p>
-                    </div>
                     <div style="width:100%;margin-top:25px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('nameZone')}}</p>
                         <div class="input-group">

@@ -1,6 +1,6 @@
 <template>
   <div id="results" class="container-fluid px-0 mt-0">
-    <h1 v-if="parentZoneName != ''" class="titleView"><div @click="back()"><i style="font-size: 30px;" class="material-icons">chevron_left</i> {{parentZoneName}}</div></h1>
+    <h1 v-if="parentZoneName != ''" class="titleView"><div class="hover" @click="back()"><i style="font-size: 30px;" class="material-icons">chevron_left</i> {{parentZoneName}}</div></h1>
     <h1 v-else class="titleViewNo">{{gtrans.translate('titleListZone')}}</h1>
     <p v-if="parentZoneName == ''" class="subtitleView">{{gtrans.translate('subtitleListZone_1')}}</p>
     <p v-else class="subtitleView">{{gtrans.translate('subtitleListZone_2')}}{{parentZoneName}}.</p>
@@ -11,24 +11,22 @@
         <div @click="newZone" class="btn btn-primary editButton"><span class="hireText">{{gtrans.translate('createZone_1')}}</span></div>
       </div>
 
-      <table v-else>
-        <col width="450">
-        <col width="5">
+      <table v-else >
         <tr>
           <th>{{gtrans.translate('nameZone')}}</th>
           <th style="text-align:center;">{{gtrans.translate('optionsZone')}}</th>
         </tr>
         <tr v-for="zone in zones" :key="zone.id">
             <td class="rowWordBreak">
-              <div style="display:inline-flex !important; vertical-align:top !important">
-                <div v-if="zone.depth < 2" @click="viewChildren(zone.id)"  class="zoneLink" ><span>{{zone.name}}</span><i class="material-icons">chevron_right</i></div>
+              <div style="display:inline-flex !important; vertical-align:top !important; ">
+                <div v-if="zone.depth < 2" @click="viewChildren(zone.id)"  class="zoneLink"><span >{{zone.name}}</span><i class="material-icons">chevron_right</i></div>
                 <div v-if="zone.depth == 2" class="zoneLinkNo">{{zone.name}}</div>
               </div>
             </td>
             
             <td>
               <div class="contentButtons">
-                <div @click="editZone(zone.id)" class="btn btn-primary editButton"><span class="hireText">{{gtrans.translate('editZone')}}</span></div>
+                <div v-if="zone.depth != 0" @click="editZone(zone.id)" class="btn btn-primary editButton"><span class="hireText">{{gtrans.translate('editZone')}}</span></div>
                 <div @click="deleteZone(zone.id)" class="btn btn-primary deleteButton"><span class="hireText">{{gtrans.translate('deleteZone')}}</span></div>
               </div>
             </td>
@@ -105,7 +103,7 @@ export default {
       this.gsecurity.obtainSavedCredentials();
 
       this.gtrans = new GTrans(this.gsecurity.getLanguage());
-          
+
       // Podemos cambiar el lenguaje así para debug...
       //this.gtrans.setLanguage('es')
       //this.gtrans.setLanguage('en')
@@ -149,6 +147,10 @@ export default {
     padding-top: 12px;
   }
 
+  .hover:hover {
+    color: #005999;
+  }
+
   .zoneLink{
     display: inline-flex !important;
     vertical-align: top !important;
@@ -159,7 +161,7 @@ export default {
   }
 
   .zoneLink:hover {
-
+    color: #005999;
   }
 
   .zoneLinkNo{
@@ -208,7 +210,6 @@ export default {
     margin-right: 5px;
     border: none;
     border-radius: 30px;
-
     background-image: linear-gradient(to right, #FB8600, #FF0000);
   }
 
@@ -241,12 +242,13 @@ export default {
   td, th {
     text-align: left;
     padding: 15px;
-    padding-left: 35px;
+    
     
   }
 
   .rowWordBreak{
-    word-break: break-word;
+    width: auto;
+    padding-left: 35px;
   }
 
   .sub {
@@ -273,7 +275,7 @@ export default {
     .titleView{
       text-align: left;
       font-weight: bold;
-      margin-left: 25%;
+      margin-left: 14%;
       margin-right: 25%;
       color: #007bff;
       cursor: pointer;
@@ -282,13 +284,13 @@ export default {
     .titleViewNo{
       text-align: left;
       font-weight: bold;
-      margin-left: 25%;
+      margin-left: 15%;
       margin-right: 25%;
     }
 
     .subtitleView{
       text-align: left;
-      margin-left: 25%;
+      margin-left: 15%;
       margin-right: 25%;
     }
 
@@ -296,8 +298,8 @@ export default {
       margin-top: 10px;
       border-collapse: collapse;
       width: 100%;
-      margin-left: 25%;
-      margin-right: 25%;
+      margin-left: 15%;
+      margin-right: 15%;
       border-radius: 10px;
       overflow: hidden;
       box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, .2);
@@ -316,7 +318,7 @@ export default {
     }
 
     .subtitleView{
-      text-align: left;
+      text-align: center;
       margin-left: 5%;
       margin-right: 5%;
     }

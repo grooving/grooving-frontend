@@ -28,14 +28,18 @@ export default {
         }
     },
     mounted: function() {
-        this.gsecurity = GSecurity;
-        this.gsecurity.obtainSavedCredentials();
+        if (!this.gsecurity.hasRole('ADMIN')) {
+            this.$router.push({name: "error"});
+        } else  {
+            this.gsecurity = GSecurity;
+            this.gsecurity.obtainSavedCredentials();
 
-        if(this.$attrs.parentZone == undefined){
-            this.$router.push('/manageZones/all');
-        }
-        else{
-            this.parentZone = (this.$attrs.parentZone);
+            if(this.$attrs.parentZone == undefined){
+                this.$router.push('/manageZones/all');
+            }
+            else{
+                this.parentZone = (this.$attrs.parentZone);
+            }
         }
     },
     methods: {

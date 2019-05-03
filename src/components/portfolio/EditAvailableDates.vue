@@ -22,7 +22,7 @@
                     <div class="col-12 vertical-center">
                         <input id="deleteDate" @keypress.enter="addRejectedDate()" type="date" v-model="deleteDate" class="col-xs-9 form-control" v-bind:placeholder="this.gtrans.translate('deleteDate')" />
                         <button type="button" class="deleteElementButton col-xs-3" @click="addRejectedDate()">
-                            DELETE
+                            {{gtrans.translate('deleteButton')}}
                         </button>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
                     <div class="col-12 vertical-center">
                         <input id="addDate" @keypress.enter="addNewDate()" type="date" v-model="addDate" class="form-control col-xs-9" v-bind:placeholder="this.gtrans.translate('addDate')" />
                         <button type="button" class="addElementButton col-xs-3" @click="addNewDate()">
-                            ADD
+                            {{gtrans.translate('addButton')}}
                         </button>
                     </div>
                 </div>

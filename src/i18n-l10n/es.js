@@ -65,6 +65,8 @@ export default{
     deleteDate : "Fecha no disponible: YYYY-MM-DD",
     addDate : "Fecha disponible: YYYY-MM-DD",
     date_invalid : "¡Fecha inválida!",
+    deleteButton: "BORRAR",
+    addButton: "AÑADIR",
 
     // ----------------------------------------------------
     //                EditImageCarousel.vue
@@ -174,6 +176,7 @@ export default{
     manageZones: 'Gestión de Zonas',
     manageGenres: 'Gestión de Géneros',
     breachNotification: 'Notificación de Brechas',
+    statistics: "Estadísticas del Sistema",
     logOut: "Cerrar Sesión",
 
     // ----------------------------------------------------
@@ -404,7 +407,7 @@ export default{
     // ----------------------------------------------------
 
     titleListZone : "Zonas",
-    subtitleListZone_1 : "Aquí puede crear, edit y eliminar zonas.",
+    subtitleListZone_1 : "Aquí puede crear, editar y eliminar zonas.",
     subtitleListZone_2 : "Esta es la lista de zonas hijas de ",
     empyZone_1: "Todavía no hay ninguna zona hija de ",
     empyZone_2: ". ¿Quiere crear una?",
@@ -691,5 +694,12 @@ export default{
 
     banner_placeholder: 'Introduzca la URL de su nuevo banner',
     profileImage_placeholder: 'Introduzca la URL de su nueva foto de perfil',
+
+    // ----------------------------------------------------
+    //                  AdminLogin.vue
+    // ----------------------------------------------------
+
+    adminSite : "Sitio del Administrador",
+    wrongPass : "¡Usuario o contraseña incorrecta!",
 
 }

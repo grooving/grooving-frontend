@@ -3,7 +3,7 @@
     <h1 class="titleView">{{listTitle}}</h1>
     <div class="row">
       <div v-for="user in users" :key="user.userURI" class="tarjeta col-12 col-md-6 col-xl-4">
-        <UserCard :userImage="user.userImage" :userName="user.userName" :userId="user.userId" :userIsActive="user.userIsActive"/>
+        <UserCard :userImage="user.userImage" :userName="user.userName" :userId="user.userId" :userIsActive="user.userIsActive" @haveError="haveError"/>
       </div>
       <div v-if="users.length == 0" class="error">
         <h1 class="oops">{{gtrans.translate('oops')}} ☹</h1>
@@ -25,6 +25,7 @@ export default {
     return{
       gsecurity: GSecurity,
       gtrans: undefined,
+      errors: "",
     }
   },
 
@@ -54,12 +55,21 @@ export default {
     // Podemos cambiar el lenguaje así para debug...
     //this.gtrans.setLanguage('es')
     //this.gtrans.setLanguage('en')
-  }
+  },
+  methods: {
+    haveError(error) {
+      this.errors = error;
+      console.log('1',this.errors)
+      this.$emit('haveError', this.errors)
+    }
+  },
 }
 
 </script>
 
 <style scoped>
+
+
 
   .error{
     padding-top: 50px;

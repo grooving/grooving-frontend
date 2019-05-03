@@ -50,6 +50,8 @@ export default{
     deleteDate : "New rejected date: YYYY-MM-DD",
     addDate : "New available date: YYYY-MM-DD",
     date_invalid : "Invalid date!",
+    deleteButton: "DELETE",
+    addButton: "ADD",
 
     // ----------------------------------------------------
     //                EditImageCarousel.vue
@@ -173,6 +175,7 @@ export default{
     manageZones: 'Zones Management',
     manageGenres: 'Genres Management',
     breachNotification: 'Breach Notification',
+    statistics: "System Statistics",
     logOut: "Log Out",
 
 
@@ -695,5 +698,12 @@ export default{
 
     banner_placeholder: 'Add the URL of your new banner',
     profileImage_placeholder: 'Add the URL of your new profile image',
+
+    // ----------------------------------------------------
+    //                  AdminLogin.vue
+    // ----------------------------------------------------
+
+    adminSite : "Administrator Site",
+    wrongPass : "Wrong username or password!",
 
 }

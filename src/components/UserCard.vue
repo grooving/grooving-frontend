@@ -67,6 +67,7 @@ export default {
                     console.log(ex);
                     console.log(ex.response.data.error);
                     this.errors = ex.response.data.error;
+                    this.$emit('haveError', this.errors)
                     window.scrollTo(0,0);
                 }).then( () => {
                     NProgress.done();

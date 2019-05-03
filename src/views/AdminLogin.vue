@@ -1,17 +1,17 @@
 <template>
     <div id="wholePage">
-        <div class="title"><p>Administrator Site</p></div>
+        <div class="title"><p>{{gtrans.translate('adminSite')}}</p></div>
         <div class="bothCards">
             <div id="signin" class="tarjeta">
                 <b-form>
                     <b-form-group>
-                        <b-form-input v-model="input.username" size="lg" placeholder="Username" id="ddown-form-email"></b-form-input>
+                        <b-form-input v-model="input.username" size="lg" v-bind:placeholder="gtrans.translate('header_username')" id="ddown-form-email"></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input v-on:keydown.enter="login()" v-model="input.password" type="password" size="lg" placeholder="Password" id="ddown-form-passwd"></b-form-input>
-                        <p v-if="error" class="err">Wrong username or password!</p>
+                        <b-form-input v-on:keydown.enter="login()" v-model="input.password" type="password" size="lg" v-bind:placeholder="gtrans.translate('header_password')" id="ddown-form-passwd"></b-form-input>
+                        <p v-if="error" class="err">{{gtrans.translate('wrongPass')}}</p>
                     </b-form-group>
-                    <b-button class="continueButton singin" variant="primary" size="sm" v-on:click="login()">SIGN IN</b-button>
+                    <b-button class="continueButton singin" variant="primary" size="sm" v-on:click="login()">{{gtrans.translate('newUser_singin')}}</b-button>
                 </b-form>
             </div>
         </div>
@@ -20,6 +20,7 @@
 
 <script>
     import GSecurity from "@/security/GSecurity.js";
+    import GTrans from "@/utils/GTrans.js";
 
     export default {
         name: 'AdminLogin',
@@ -30,6 +31,7 @@
         data: function() {
             return {
                 gsecurity: GSecurity,
+                gtrans: undefined,
                 input: {
                     username: "",
                     password: ""
@@ -59,6 +61,12 @@
         created() {
             this.gsecurity = GSecurity;
             this.gsecurity.obtainSavedCredentials();
+
+            this.gtrans = new GTrans(this.gsecurity.getLanguage());
+                
+            // Podemos cambiar el lenguaje así para debug...
+            //this.gtrans.setLanguage('es')
+            //this.gtrans.setLanguage('en')
         },
 
         beforeMount: function() {

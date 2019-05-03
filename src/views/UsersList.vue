@@ -1,7 +1,10 @@
 <template>
-    <div class="container-fluid">
+    <div class="container-fluid px-0">
+        <div id="errorsDiv" class="validationErrors vertical-center">
+            <p style="margin: 0px;">{{errors}}</p>
+        </div>
         <div class="container mt-5">
-            <UserList :listTitle="this.gtrans.translate('usersList')" :users="datos" />
+            <UserList :listTitle="this.gtrans.translate('usersList')" :users="datos" @haveError="haveError"/>
         </div>
     </div>
 </template>
@@ -26,10 +29,16 @@ export default {
             datos: Array(),
             gsecurity: GSecurity,
             gtrans: undefined,
+            errors: "",
         }
     },
 
     methods:{
+        haveError(error) {
+            
+            this.errors = error;
+            console.log('2',this.errors)
+        },
         getUsers: function(){
             NProgress.start();
 
@@ -51,8 +60,12 @@ export default {
                         userIsActive: users[i].user.is_active,
                     });
                 }
-            }).catch(ex => {
-                console.log(ex);
+            }).catch(error => {
+                if (error.response.data.error == null){
+                    this.errors = error.message;
+                } else {
+                    this.errors = error.response.data.error;
+                }  
             }).then(() => {
                 NProgress.done()
             });
@@ -76,3 +89,18 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+
+.validationErrors{
+    background-color:#f50057;
+    box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
+    color:white;
+    font-weight: bold;
+    padding: 10px;
+    padding-top: 12px;
+    width: 100% !important;
+}
+
+</style>
+

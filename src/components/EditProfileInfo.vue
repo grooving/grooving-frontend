@@ -58,7 +58,7 @@
                     <div style="width:100%;margin-top:16px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_phone')}}</p>
                         <b-form-group>
-                            <b-form-input v-model="phoneNumber" min="600000000" max="900000000" v-bind:value="phoneNumber" style="text-align: right" type="number"></b-form-input>
+                            <b-form-input v-model="phoneNumber" min="600000000" max="999999999" v-bind:value="phoneNumber" style="text-align: right" type="number"></b-form-input>
                         </b-form-group>
                     </div>
                     <div class="continueButtonDiv">
@@ -156,7 +156,7 @@ export default {
     },
 
     beforeMount: function(){
-        if (!this.gsecurity.isAuthenticated()) {
+        if (!this.gsecurity.isAuthenticated() || this.gsecurity.hasRole('ADMIN')) {
             this.$router.push({name: "error"});
 
         } else {

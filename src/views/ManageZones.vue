@@ -1,5 +1,5 @@
 <template>
-    <div class="hell">
+    <div class="everything">
         <ZonesList :key="parentId" :parentId="parentId" :parentZoneName="parentZoneName" :zones="zoneChildren" @viewPrevious="lastList" @viewChildren="updateList" @newZone="newZone"
             @editZone="editZone" @deleteZone="deleteZone"/>
     </div>
@@ -117,6 +117,11 @@ export default {
         }
     },
     mounted() {
+
+        if (!this.gsecurity.hasRole('ADMIN')) {
+            this.$router.push({name: "error"});
+        } else  {
+
         NProgress.start();
         
       GAxios.get(endpoints.zones)
@@ -164,8 +169,8 @@ export default {
 
       }).then(() => {
             NProgress.done()
-        });
-
+        });       
+        }
     },
     
 }
@@ -189,8 +194,8 @@ export default {
             margin-top: 5%;
             text-align: center;
             padding: 15px;
-            margin-left: 35%;
-            margin-right: 35%;
+            margin-left: 0%;
+            margin-right: 0%;
             margin-top:0%;
         }
         .title {

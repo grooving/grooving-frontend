@@ -1,5 +1,8 @@
 <template>
 <div class="prueba">
+    <div id="errorsDiv" class="validationErrors vertical-center">
+        <p style="margin: 0px;">{{errors}}</p>
+    </div>
     <div class="everything">
         <div class="editZoneForm">
           <div><EditZoneForm :key="zone" :zone="zone" :parentName="parentName" @error="error"/></div>
@@ -28,10 +31,14 @@ export default {
         }
     },
     mounted: function() {
-        this.gsecurity = GSecurity;
-        this.gsecurity.obtainSavedCredentials();
-        this.zone = (this.$attrs.zone);
-        this.parentName = (this.$attrs.parentName);
+        if (!this.gsecurity.hasRole('ADMIN')) {
+            this.$router.push({name: "error"});
+        } else  {
+            this.gsecurity = GSecurity;
+            this.gsecurity.obtainSavedCredentials();
+            this.zone = (this.$attrs.zone);
+            this.parentName = (this.$attrs.parentName);
+        }
     },
     methods: {
         error(error) {
@@ -48,6 +55,18 @@ export default {
 <style scoped>
     * {
         font-family: "Archivo"
+    }
+
+    .validationErrors{
+        background-color:#f50057;
+        border-radius: 5px;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
+        color:white;
+        display: none;
+        font-weight: bold;
+        margin-bottom: 14px;
+        padding: 10px;
+        padding-top: 12px;
     }
 
     @media (min-width:768px)  {

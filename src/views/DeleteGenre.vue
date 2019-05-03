@@ -40,7 +40,7 @@ export default {
     },
 
     beforeMount() {
-        if (!this.gsecurity.isAuthenticated()) {
+        if (!this.gsecurity.hasRole('ADMIN')) {
             this.$router.push({name: "error"});
         } else {
             this.gsecurity = GSecurity

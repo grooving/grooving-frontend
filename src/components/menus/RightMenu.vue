@@ -30,6 +30,10 @@
                     <b-dropdown-divider class="divider"/>
                 </li>
                 <li class="nav-item section" v-if="gsecurity.hasRole('ADMIN')">
+                    <div class="nav-link goTo" @click="goTo('/statistics')" data-toggle="collapse" data-target="#sidebar">{{gtrans.translate('statistics')}}</div>
+                    <b-dropdown-divider class="divider"/>
+                </li>     
+                <li class="nav-item section" v-if="gsecurity.hasRole('ADMIN')">
                     <div class="nav-link goTo" @click="goTo('/breachNotification/')"  data-toggle="collapse" data-target="#sidebar">{{gtrans.translate('breachNotification')}}</div>
                     <b-dropdown-divider class="divider"/>
                 </li>
