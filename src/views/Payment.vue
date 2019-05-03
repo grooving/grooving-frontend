@@ -9,7 +9,7 @@
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :totalPrice="this.cardPrice"/>
         </div>
         <div class="paymentDiv">
-          <div class="creditCardPayment" style="min-width:400px;"><CreditCardPaymentBrain @finishPayment="gpay" /></div>
+          <div class="creditCardPayment" style="min-width:400px;"><CreditCardPaymentBrain @braintreeError="showErrors" @finishPayment="gpay" /></div>
         </div>
     </div>
 </div>
@@ -214,8 +214,12 @@ export default {
                 window.scrollTo(0,0);
             });
         },
-
         
+        showErrors(nonce) {
+            this.errors = nonce;
+            document.getElementById("errorsDiv").style.display = "block";
+            window.scrollTo(0,0);
+        },
     },
 
     created() {

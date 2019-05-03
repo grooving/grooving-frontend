@@ -1,7 +1,11 @@
 <template>
-    <div class="aboutContent">
-        <p class="title">{{gtrans.translate('about_title')}}</p>
+    <div class="hell">
+        <div class="title"><p style="text-align: center">{{gtrans.translate('about_title')}}</p></div>
+
+        <div class="everything">
+            <div class="addDiv">
             <span class="text"><AboutText :aboutUs="this.aboutUs" /></span>
+            </div>
         </div>
     </div>
 </template>
@@ -55,22 +59,54 @@ export default {
 
 <style>
 
-    
     * {
         font-family: "Archivo"
     }
 
-    .aboutContent{
-        margin-left: 20%;
-        margin-right: 20%;
-        padding-top: 30px;
-    }
-
-    .title{
-        font-size: 50px;
+    .title {
+        display: inline-block;
+        margin-right: 12%;
+        margin-left: 10%;
+        text-align: left;
+        font-size: 2em;
+        margin-top: 5%;
         font-weight: bold;
     }
 
-    
+    .everything {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 5%;
+        text-align: center;
+        margin-left: 5%;
+        margin-right: 5%;
+        margin-top:0%;
+    }
+
+    @media (min-width:768px)  {
+      
+        .everything {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 5%;
+            text-align: center;
+            padding: 15px;
+            margin-left: 35%;
+            margin-right: 35%;
+            margin-top:0%;
+        }
+        .title {
+            display: inline-block;
+            margin-right: 12%;
+            margin-left: 10%;
+            text-align: left;
+            font-size: 50px;
+            margin-top: 5%;
+            font-weight: bold;
+        }
+        
+    }
 
 </style>

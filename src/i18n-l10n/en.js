@@ -25,6 +25,7 @@ export default{
     sendOffer : "SEND OFFER",
     creditcard_placeholder : "Enter a 16 digits Credit Card",
     paypal_error : "An error occurred while processing the paypal payment.",
+    braintree_error: "Braintree Error: There are invalid credit card fields",
 
     // ----------------------------------------------------
     //                  CustomHiring.vue
@@ -714,5 +715,18 @@ export default{
 
     adminSite : "Administrator Site",
     wrongPass : "Wrong username or password!",
+
+    // ----------------------------------------------------
+    //                  BreachNotification.vue
+    // ----------------------------------------------------
+    breach_title: 'Breach Notification',
+    breach_subtitle: 'This message will be sent to all the users of the system',
+    breach_subject: 'SUBJECT',
+    breach_body: 'BODY',
+    breach_subject_p: 'Subject',
+    breach_body_p: 'Enter the body of the message...',
+    breach_send: 'SEND',
+    breach_ok: 'The notification was created succesfully',
+
 
 }

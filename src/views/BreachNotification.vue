@@ -1,26 +1,25 @@
 <template>
     <div  id="wholePage" class="col-12 content">
-        
-        <div id="errorsDiv" class="validationErrors vertical-center">
-            <p tyle="margin: 0px;">{{errors}}</p>
+        <div v-if="errors" class="validationErrors vertical-center">
+            <p>{{errors}}</p>
         </div>
-        <div id="okDiv" class="validationOK vertical-center">
-            <p tyle="margin: 0px;">{{ok}}</p>
+        <div v-if="ok" id="okDiv" class="validationOK vertical-center">
+            <p style="margin: 0px;">{{ok}}</p>
         </div>
         
-        <div class="title"><p>Breach Notification</p></div>
-        <div class="subtitle"><p>This message will be sent to all the users of the system</p></div>
+        <div class="title"><p>{{gtrans.translate('breach_title')}}</p></div>
+        <div class="subtitle"><p>{{gtrans.translate('breach_subtitle')}}</p></div>
         <div class="bothCards">
             <form v-on:submit="createNotification">
                 <div class="form-group">
-                    <small for="exampleInputEmail1">SUBJECT</small>
-                    <input v-model="subject" style="font-weight: bold;" type="text" maxlength="100" class="form-control" id="notificationSubject" placeholder="Subject">
+                    <small for="exampleInputEmail1">{{gtrans.translate('breach_subject')}}</small>
+                    <input v-model="subject" style="font-weight: bold;" type="text" maxlength="100" class="form-control" id="notificationSubject" v-bind:placeholder="gtrans.translate('breach_subject_p')">
                 </div>
                 <div class="form-group">
-                    <small for="exampleInputPassword1">BODY</small>
-                    <textarea v-model="body" class="form-control" id="notificationBody" maxlength="700" placeholder="Enter the body of the message..."/>
+                    <small for="exampleInputPassword1">{{gtrans.translate('breach_body')}}</small>
+                    <textarea v-model="body" class="form-control" id="notificationBody" maxlength="700" v-bind:placeholder="gtrans.translate('breach_body_p')"/>
                 </div>
-                <button type="submit" class="continueButton">SEND</button>
+                <button type="submit" class="continueButton">{{gtrans.translate('breach_send')}}</button>
             </form>
         </div>
     </div>
@@ -30,6 +29,7 @@
     import GSecurity from "@/security/GSecurity.js";
     import endpoints from '@/utils/endpoints.js';
     import GAxios from '@/utils/GAxios.js';
+    import GTrans from "@/utils/GTrans.js";
 
     export default {
         name: 'BreachNotification',
@@ -42,8 +42,9 @@
                 gsecurity: GSecurity,
                 subject: "",
                 body: "",
-                errors: "",
-                ok: "The notification was created succesfully.",
+                errors: undefined,
+                gtrans: undefined,
+                //ok: gtrans.translate('breach_ok')
             };
         },
 
@@ -60,17 +61,20 @@
                     "body": this.body
                 }).then(response => {
                     console.log(response);
-                    document.getElementById("errorsDiv").style.display = "none";
-                    document.getElementById("okDiv").style.display = "block";
+                    this.errors = undefined;
+                    this.ok = this.gtrans.translate('breach_ok');
+                    //alert(this.ok);
                     this.subject="";
                     this.body="";
-                    this.$router.push({name: "breachNotification"});
+                    //this.$router.push({name: "breachNotification"});
                 }).catch(ex => {
                     console.log(ex);
                     console.log(ex.response.data.error);
                     this.errors = ex.response.data.error;
-                    document.getElementById("errorsDiv").style.display = "block";
-                    document.getElementById("okDiv").style.display = "none";
+                    this.ok = undefined;
+                    //alert(this.errors);
+                    //document.getElementById("errorsDiv").style.display = "block";
+                    //document.getElementById("okDiv").style.display = "none";
                 }).then( () => {
                     NProgress.done();
                 })
@@ -78,13 +82,13 @@
             }
         },
 
-        props: {
-            error: false,
-        },
+
         
         created() {
             this.gsecurity = GSecurity;
             this.gsecurity.obtainSavedCredentials();
+
+            this.gtrans = new GTrans(this.gsecurity.getLanguage());
 
             if(!this.gsecurity.hasRole('ADMIN')) {
                 console.log("Error: You are not an administrator so you can't create breach notifications");
@@ -111,7 +115,6 @@
         box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
         color:white;
         font-weight: bold;
-        display: none;
         margin-bottom: 14px;
         padding-top: 10px;
         padding-bottom: 0.03px;
@@ -122,7 +125,6 @@
         box-shadow: 0px 2px 8px 2px rgba(0, 110, 255, 0.3);      
         color:white;
         font-weight: bold;
-        display: none;
         margin-bottom: 14px;
         padding-top: 10px;
         padding-bottom: 0.03px;
