@@ -29,7 +29,7 @@
             </div>
             <div class="d-none d-md-inline nav-item">
               <form class="form-inline">
-                <input id="searchFormDesktop" v-model="searchQuery" class="form-control mr-sm-2" style="border-radius:100px;"
+                <input id="searchFormDesktop" v-model="searchQuery" class="form-control mr-sm-2" style="border-radius:100px;" maxlength="100"
                 type="search" v-bind:placeholder="gtrans.translate('search')" aria-label="Search" @keypress.enter="search()">
                 <button class="btn" type="button" @click="search()">
                   <i class="material-icons align-middle">search</i>
@@ -58,13 +58,14 @@
                       class="loginInput"
                       v-model="input.username"
                       size="sm"
+                      maxlength="30"
                       v-bind:placeholder="gtrans.translate('header_username')"
                       id="ddown-form-email"
                     ></b-form-input>
                   </b-form-group>
                   <b-form-group>
                     <b-form-input id="ddown-form-passwd" class="loginInput" v-on:keydown.enter="login()" v-model="input.password"
-                    type="password" size="sm" v-bind:placeholder="gtrans.translate('header_password')"></b-form-input>
+                    type="password" size="sm" maxlength="30" v-bind:placeholder="gtrans.translate('header_password')"></b-form-input>
                   </b-form-group>
                   <b-button class="continueButton" variant="primary" size="sm" v-on:click="login()">{{gtrans.translate('header_signIn')}}</b-button>
                 </b-dropdown-form>

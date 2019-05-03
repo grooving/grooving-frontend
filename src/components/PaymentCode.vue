@@ -8,7 +8,7 @@
         <div class="form-row">
             <div class="form-group col-12">
                 <p class="title">{{gtrans.translate('inputCode')}}:</p>
-                <input id="inputCode" v-model="code" type="text" class="form-control" required>
+                <input id="inputCode" maxlength="100" v-model="code" type="text" class="form-control" required>
             </div>  
         </div>
         <div class="continueButtonDiv"><button v-bind:to="continueURI"

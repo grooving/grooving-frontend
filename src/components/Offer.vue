@@ -83,7 +83,7 @@
                 <div class="collapse" v-bind:id="noHashtag()">
                     <div class="form-group">
                         <label for="rejectionReason">{{gtrans.translate('offer_confirmRejection')}}:</label>
-                        <textarea v-model="reason" style="resize: none;" class="form-control" id="rejectionReason" rows="4" v-bind:placeholder="gtrans.translate('offer_rejectPlaceholder')"></textarea>
+                        <textarea v-model="reason" style="resize: none;" maxlength="500" class="form-control" id="rejectionReason" rows="4" v-bind:placeholder="gtrans.translate('offer_rejectPlaceholder')"></textarea>
                     </div>
                     <div class="row container">
                         <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="enableOfferButtons()" class="btn btn-primary cancelButton" 

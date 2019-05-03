@@ -3,7 +3,7 @@
     <form v-on:submit.prevent="eventDataSelected()">
         <div class="form-row">
             <div class="form-group col-12">
-                <textarea v-model="description" type="text" class="form-control" style="resize: none;" 
+                <textarea v-model="description" type="text" class="form-control" style="resize: none;" maxlength="500"
                     v-bind:placeholder="this.gtrans.translate('description_placeholder')" rows="7" required></textarea>
             </div>  
         </div>

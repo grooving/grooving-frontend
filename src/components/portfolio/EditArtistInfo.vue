@@ -2,14 +2,14 @@
 
     <div class="content overlap">
         <div class="inputForm">
-        <input required v-model="$parent.d_portfolioArtisticName" class="form-control inputName" type="text" id="inputName" v-bind:placeholder="this.gtrans.translate('artist_artisticName')">
+        <input required v-model="$parent.d_portfolioArtisticName" class="form-control inputName" type="text" id="inputName" maxlength="140" v-bind:placeholder="this.gtrans.translate('artist_artisticName')">
         </div>
         <div class="inputForm">
             <EditGenre/>
             <EditZone/>
         </div>
         <div class="inputForm">
-            <textarea v-model="$parent.d_portfolioBiography" class="form-control inputDescription" id="" rows="3" v-bind:placeholder="this.gtrans.translate('artist_description')"></textarea>
+            <textarea v-model="$parent.d_portfolioBiography" maxlength="1000" class="form-control inputDescription" id="" rows="3" v-bind:placeholder="this.gtrans.translate('artist_description')" required></textarea>
         </div>
     </div>
 </template>

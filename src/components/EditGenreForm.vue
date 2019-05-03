@@ -34,7 +34,7 @@
                     <div style="width:100%;margin-top:25px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('genres_name')}} </p><small><i>   ES</i></small>
                         <div class="input-group">
-                            <input v-model="genreNameES" type="text" class="form-control">
+                            <input v-model="genreNameES" type="text" maxlength="140" class="form-control">
                             <div class="input-group-append">
                                 <span class="input-group-text">ES</span>
                             </div>
@@ -43,7 +43,7 @@
                     <div style="width:100%;margin-top:25px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('genres_name')}}</p><small><i>   EN</i></small>
                         <div class="input-group">
-                            <input v-model="genreNameEN" type="text" class="form-control">
+                            <input v-model="genreNameEN" type="text" maxlength="140" class="form-control">
                             <div class="input-group-append">
                                 <span class="input-group-text">EN</span>
                             </div>

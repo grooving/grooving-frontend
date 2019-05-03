@@ -5,10 +5,10 @@
             <div id="signin" class="tarjeta">
                 <b-form>
                     <b-form-group>
-                        <b-form-input v-model="input.username" size="lg" placeholder="Username" id="ddown-form-email"></b-form-input>
+                        <b-form-input v-model="input.username" size="lg" maxlength="30" placeholder="Username" id="ddown-form-email"></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input v-on:keydown.enter="login()" v-model="input.password" type="password" size="lg" placeholder="Password" id="ddown-form-passwd"></b-form-input>
+                        <b-form-input v-on:keydown.enter="login()" v-model="input.password" type="password" size="lg" maxlength="30" placeholder="Password" id="ddown-form-passwd"></b-form-input>
                         <p v-if="error" class="err">Wrong username or password!</p>
                     </b-form-group>
                     <b-button class="continueButton singin" variant="primary" size="sm" v-on:click="login()">SIGN IN</b-button>

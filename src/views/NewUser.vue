@@ -8,10 +8,10 @@
             <div id="signin" class="tarjeta">
                 <b-form>
                     <b-form-group>
-                        <b-form-input v-model="input.username" size="lg" :placeholder="gtrans.translate('newUser_username')" id="ddown-form-email2"></b-form-input>
+                        <b-form-input v-model="input.username" maxlength="30" size="lg" :placeholder="gtrans.translate('newUser_username')" id="ddown-form-email2"></b-form-input>
                     </b-form-group>
                     <b-form-group>
-                        <b-form-input v-on:keydown.enter="login()" v-model="input.password" type="password" size="lg" v-bind:placeholder="gtrans.translate('newUser_password')" id="ddown-form-passwd2"></b-form-input>
+                        <b-form-input v-on:keydown.enter="login()" maxlength="30" v-model="input.password" type="password" size="lg" v-bind:placeholder="gtrans.translate('newUser_password')" id="ddown-form-passwd2"></b-form-input>
                         <p v-if="error" class="err">{{gtrans.translate('newUser_error')}}</p>
                     </b-form-group>
                     <b-button class="continueButton singin" variant="primary" size="sm" v-on:click="login()">{{gtrans.translate('newUser_singin')}}</b-button>

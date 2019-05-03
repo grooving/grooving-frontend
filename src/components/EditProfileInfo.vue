@@ -15,21 +15,21 @@
                     <div style="width:100%;margin-top:25px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_firstName')}}</p>
                         <b-form-group>
-                            <b-form-input v-model="name" v-bind:value="name" style="text-align: right" required></b-form-input>
+                            <b-form-input v-model="name" v-bind:value="name" maxlength="30" style="text-align: right" required></b-form-input>
                         </b-form-group>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:25px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_lastName')}}</p>
                         <b-form-group>
-                            <b-form-input v-model="surnames" v-bind:value="surnames" style="text-align: right" required></b-form-input>
+                            <b-form-input v-model="surnames" v-bind:value="surnames" maxlength="150" style="text-align: right" required></b-form-input>
                         </b-form-group>
                     </div>
                     <hr v-if="this.gsecurity.hasRole('ARTIST')" style="margin-top:0px;margin-bottom:0px;"/>
                     <div v-if="this.gsecurity.hasRole('ARTIST')" style="width:100%;margin-top:16px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_artisticName')}}</p>
                         <b-form-group>
-                            <b-form-input v-model="artisticName" v-bind:value="artisticName" style="text-align: right" type="text"></b-form-input>
+                            <b-form-input v-model="artisticName" v-bind:value="artisticName" style="text-align: right" maxlength="140" type="text"></b-form-input>
                         </b-form-group>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
@@ -51,14 +51,14 @@
                     <div v-if="this.gsecurity.hasRole('ARTIST')" style="width:100%;margin-top:16px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('paypal')}}</p>
                         <b-form-group>
-                            <b-form-input v-model="paypal" v-bind:value="paypal" style="text-align: right" type="email"></b-form-input>
+                            <b-form-input v-model="paypal" v-bind:value="paypal" maxlength="100" style="text-align: right" type="email"></b-form-input>
                         </b-form-group>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:16px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_phone')}}</p>
                         <b-form-group>
-                            <b-form-input v-model="phoneNumber" min="600000000" max="900000000" v-bind:value="phoneNumber" style="text-align: right" type="number"></b-form-input>
+                            <b-form-input v-model="phoneNumber" min="600000000" max="999999999" v-bind:value="phoneNumber" style="text-align: right" type="number"></b-form-input>
                         </b-form-group>
                     </div>
                     <div class="continueButtonDiv">
