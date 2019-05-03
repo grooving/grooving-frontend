@@ -7,7 +7,7 @@
         </div>
         <div id="results" class="col-12 col-lg-8 col-xl-10" style="padding-left:0px; padding-right:0px;">
             <div id="resultsContainer" class="container-fluid mt-0">
-              <ArtistList :artistas="datos_artistas" :listTitle="'Search Results'" />
+              <ArtistList :artistas="datos_artistas" :listTitle="this.gtrans.translate('search_title')" />
             </div>
         </div>
       </div>
@@ -46,6 +46,7 @@ export default {
 
   data: function(){
     return {
+        gsecurity: GSecurity,
         gtrans: undefined,
         simple_filters: [
             {id: 0, text: "Genre", filterName: "artisticGender", value: false},
