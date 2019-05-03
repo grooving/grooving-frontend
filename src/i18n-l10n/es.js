@@ -595,6 +595,7 @@ export default{
     // ----------------------------------------------------
 
     event_info: 'Datos del evento',
+    event_data_error: 'Tienes que introducir información del evento',
 
     // ----------------------------------------------------
     //                      Index.vue

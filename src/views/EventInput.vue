@@ -1,5 +1,8 @@
 <template>
     <div class="hiringProcessContainer">
+        <div v-if="errors" class="validationErrors vertical-center">
+        <p>{{errors}}</p>
+    </div>
         <div class="title"><p>{{gtrans.translate('event_info')}}</p></div>
 
     <div class="everything">
@@ -37,7 +40,7 @@ export default {
             //Hiring Process...
             gsecurity: GSecurity,
             gtrans: undefined,
-
+            errors: undefined,
             artistId: -1,
             nextStep: undefined,
             hiringType: undefined,
@@ -130,8 +133,11 @@ export default {
         ...mapActions(['setEventDescription']),
 
         eventData(description) {
-
-            this.setEventDescription(description).then(() => {
+            if(description == '' || description == undefined){
+                this.errors = this.gtrans.translate('event_data_error');
+            }
+            else{
+                this.setEventDescription(description).then(() => {
                 
                 // If VueX has correcty saved the description
                 this.$router.push(this.nextStep)
@@ -142,6 +148,10 @@ export default {
                 console.log(e);
                 
             });
+
+            }
+
+            
 
         }
     }
@@ -154,6 +164,16 @@ export default {
     }
     .title {
         display: none;
+    }
+
+    .validationErrors{
+        background-color:#f50057;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);
+        
+        color:white;
+        font-weight: bold;
+        height: 100%;
+        padding-top: 12px;
     }
 
     @media (min-width:768px)  {

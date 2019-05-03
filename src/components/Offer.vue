@@ -1,5 +1,8 @@
 <template>
     <div class="everything">
+        <div v-if="errors" class="validationErrors vertical-center">
+        <p>{{errors}}</p>
+    </div>
         <div class="card tarjeta">
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
             <div class="container-fluid">
@@ -135,6 +138,7 @@
                 gtrans: undefined,
                 chat: undefined,
                 chatActive: undefined,
+                errors: undefined,
             }
 
         },
@@ -247,7 +251,9 @@
                         console.log(response);
                         this.$router.go({ path: "/offers" });
                     }).catch(ex => {
+
                         console.log(ex);
+                        this.errors = ex.response.data.error;
                     }).then(() => {
                         NProgress.done()
                     });
@@ -268,6 +274,7 @@
                         window.location.reload();
                     }).catch(ex => {
                         console.log(ex);
+                        this.errors = ex.response.data.error;
                     }).then(() => {
                         NProgress.done()
                     });
@@ -280,6 +287,7 @@
                         window.location.reload();
                     }).catch(ex => {
                         console.log(ex);
+                        this.errors = ex.response.data.error;
                     }).then(() => {
                         NProgress.done()
                     });
@@ -312,6 +320,7 @@
                         window.location.reload();
                     }).catch(ex => {
                         console.log(ex);
+                        this.errors = ex.response.data.error;
                     }).then(() => {
                         NProgress.done()
                     });
@@ -324,6 +333,7 @@
                         window.location.reload();
                     }).catch(ex => {
                         console.log(ex);
+                        this.errors = ex.response.data.error;
                     }).then(() => {
                         NProgress.done()
                     });
@@ -344,6 +354,7 @@
                         window.location.reload();
                     }).catch(ex => {
                         console.log(ex);
+                        this.errors = ex.response.data.error;
                     }).then(() => {
                         NProgress.done()
                     });
@@ -356,6 +367,7 @@
                         window.location.reload();
                     }).catch(ex => {
                         console.log(ex);
+                        this.errors = ex.response.data.error;
                     }).then(() => {
                         NProgress.done()
                     });
@@ -435,6 +447,16 @@
         padding: .450rem .420rem;
         line-height: 1.5;
         transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+
+    .validationErrors{
+        background-color:#f50057;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);
+        
+        color:white;
+        font-weight: bold;
+        height: 100%;
+        padding-top: 12px;
     }
 
     .chat {
