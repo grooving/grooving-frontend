@@ -52,6 +52,7 @@ const ytThumbnail_02 = '/maxresdefault.jpg';
 // Allowed URIs
 const ytURI1 = 'https://www.youtube.com/watch?v=';
 const ytURI2 = 'http://www.youtube.com/watch?v=';
+const ytURI3 = 'https://youtu.be/';
 
 // Length of the YT ID
 const ytIDLength = 11;
@@ -100,7 +101,15 @@ export default {
 
     getThumbnail: function(ytURL){
         var ytVideoId;
-        var substringBeginIndex = ytURL.startsWith(ytURI1) ? ytURI1.length : ytURI2.length;
+        var substringBeginIndex;
+        
+        if(ytURL.startsWith(ytURI1)){
+          substringBeginIndex = ytURI1.length;
+        }else if(ytURL.startsWith(ytURI2)){
+          substringBeginIndex = ytURI2.length;
+        }else{
+          substringBeginIndex = ytURI3.length;
+        }
 
         ytVideoId = ytURL.substring(substringBeginIndex, substringBeginIndex + ytIDLength);
         return ytThumbnail_01 + ytVideoId + ytThumbnail_02;
@@ -108,7 +117,7 @@ export default {
 
     add: function(event){
       
-      if(this.addImageURL && (this.addImageURL.startsWith(ytURI1) || this.addImageURL.startsWith(ytURI2))){
+      if(this.addImageURL && (this.addImageURL.startsWith(ytURI1) || this.addImageURL.startsWith(ytURI2) || this.addImageURL.startsWith(ytURI3))){
 
         var thumbnail = this.getThumbnail(this.addImageURL);
 
