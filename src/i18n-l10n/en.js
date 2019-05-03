@@ -662,7 +662,7 @@ export default{
     customerRegister_passwordReq: "Your password must be at least 8 characters long, and can't be contained in the username, first name, last name or e-mail address.",
     customerRegister_confirmPassword: 'Confirm Password',
     customerRegister_personalInfo: 'Personal Information',
-    customerRegister_photo: '"Profile Photo URL',
+    customerRegister_photo: 'Profile Photo URL',
     customerRegister_firstName: 'First Name',
     customerRegister_lastName: 'Last Name',
     customerRegister_email: 'E-mail',
