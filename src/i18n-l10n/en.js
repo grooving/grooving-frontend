@@ -208,6 +208,7 @@ export default{
     videoShowcase : "Video Showcase",
     insertURL: "Insert your URL Here...",
     validYTLink : "Must be a valid youtube link.",
+    add_carousel: "ADD", // Se usa también en EditImageCarousel.vue
     
     // ----------------------------------------------------
     //                   UserCard.vue

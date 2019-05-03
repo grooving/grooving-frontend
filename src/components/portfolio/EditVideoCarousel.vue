@@ -17,9 +17,9 @@
           <div class="col-12 vertical-center">
             <div class="form-group" style="width: inherit;">
               <div class="row">
-                <input @keypress.enter="add($event)" type="url" v-model="addImageURL" class="form-control col-10" aria-describedby="imageCarouselInput" :placeholder="insertURL_placeholder" />
-                <button type="button" class="addElementButton col-2" @click="add($event)">
-                  ADD
+                <input @keypress.enter="add($event)" type="url" v-model="addImageURL" class="form-control col-8" aria-describedby="imageCarouselInput" :placeholder="insertURL_placeholder" />
+                <button type="button" class="addElementButton col-4" @click="add($event)">
+                  {{gtrans.translate('add_carousel')}}
                 </button>
               </div>
               <small :class="{'imageCarouselInput' : showImageCarouselInputErrors}" class="form-text text-muted">
@@ -162,13 +162,13 @@ export default {
 <style scoped>
 
 .addElementButton{
-        width: 200px !important;
+        min-width: 100px !important;
         color: white !important;
         font-weight: bold;
         border-radius: 0px 25px 25px 0px;
         text-align: center;
         align-content: center;
-
+        padding: 0px;
         font-size: 22px;
                 
         border: none;
