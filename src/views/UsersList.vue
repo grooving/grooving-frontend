@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid px-0">
-        <div id="errorsDiv" class="validationErrors vertical-center">
+        <div v-if="errors != ''" id="errorsDiv" class="validationErrors vertical-center">
             <p style="margin: 0px;">{{errors}}</p>
         </div>
         <div class="container mt-5">
