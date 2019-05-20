@@ -25,7 +25,7 @@
             </div>
             <div class="bothButtons">
                 <div class="cancelButtonDiv"><router-link v-bind:to="cancelURI" class="btn btn-primary cancelButton"><span class="continueText">{{gtrans.translate('back')}}</span></router-link></div>
-                <div class="confirmButtonDiv"><div @click="accept()" class="btn btn-primary confirmButton"><span class="continueText">{{gtrans.translate('accept')}}</span></div></div>
+                <div v-if="status === 'PENDING'" class="confirmButtonDiv"><div @click="accept()" class="btn btn-primary confirmButton"><span class="continueText">{{gtrans.translate('accept')}}</span></div></div>
             </div>
         </div>
     </div>
@@ -120,6 +120,9 @@
             packageDescription: {
                 type: String,
                 default: 'Performance'
+            },
+            status: {
+                type: String,
             }
         },
 
