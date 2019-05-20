@@ -34,7 +34,7 @@
         </div>
         <div>
             <form @submit="deleteAccount">
-                <div id="otroButton" class="continueButtonDiv">
+                <div v-if="showDelete" id="otroButton" class="continueButtonDiv deleteAccountDiv">
                     <b-button id="deleteButton" class="cancelButton" variant="primary" size="sm" v-on:click="showButtons">{{gtrans.translate('deleteAccount')}}</b-button>
                 </div>
                 <div id="myButtons" class="continueButtonDiv" style="display: none;">
@@ -80,6 +80,7 @@ export default {
             userPhoto: '',
             paypal: '',
             artisticName : '',
+            showDelete: true,
         };
     },
 
@@ -103,13 +104,13 @@ export default {
 
         showButtons() {
             document.getElementById("myButtons").style.display='inline-block';
-            document.getElementById("otroButton").style.display='none';
+            this.showDelete = false;
             return false;
         },
 
         hideButtons() {
             document.getElementById("myButtons").style.display='none';
-            document.getElementById("otroButton").style.display='inline-block';
+            this.showDelete = true;
             return false;
         },
 
