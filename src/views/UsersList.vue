@@ -4,7 +4,7 @@
             <p style="margin: 0px;">{{errors}}</p>
         </div>
         <div class="container mt-5">
-            <UserList :listTitle="this.gtrans.translate('usersList')" :users="datos" @haveError="haveError"/>
+            <UserList :listTitle="titleBasedOnQueries" :users="datos" @haveError="haveError"/>
         </div>
     </div>
 </template>
@@ -22,6 +22,19 @@ export default {
 
     components: {
         UserList
+    },
+
+    computed:{
+        titleBasedOnQueries: function(){
+            let res;
+
+            if(!this.$route.query['username'])
+                res = this.gtrans.translate('usersList')                
+            else
+                res = this.gtrans.translate('search_title')
+
+            return res;
+        }
     },
 
     data: function(){

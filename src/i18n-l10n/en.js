@@ -526,6 +526,7 @@ export default{
     // ----------------------------------------------------
 
     timeRange: 'Choose a time range',
+    invalidRange: 'Invalid range',
 
     // ----------------------------------------------------
     //                   DateSelection.vue 

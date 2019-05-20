@@ -6,7 +6,7 @@
                 <div class="row">
                     <div class="col-10 col-lg-11">
                         <form class="form-inline my-2 my-lg-0">
-                            <input @keypress.enter="search()" v-model="searchQuery" class="form-control mr-sm-2" type="search" maxlength="100" v-bind:placeholder="gtrans.translate('search')" aria-label="Search">
+                            <input @keypress.enter="search()" v-model="searchQuery" style="width: 100%;" class="form-control mr-sm-2" type="search" maxlength="100" v-bind:placeholder="gtrans.translate('search')" aria-label="Search">
                         </form>
                     </div>
                     <div class="col-2 col-lg-1 vertical-center">
