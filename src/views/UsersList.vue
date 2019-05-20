@@ -98,7 +98,11 @@ export default {
     },
 
     beforeMount(){
-        this.getUsers();
+        if (!this.gsecurity.hasRole('ADMIN')) {
+            this.$router.push({name: "error"});
+        } else {
+            this.getUsers();
+        }
     },
 }
 </script>

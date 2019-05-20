@@ -105,8 +105,14 @@
                         <router-link v-bind:to="confirmURI" class="btn btn-primary confirmButton"><span class="continueText">{{gtrans.translate('offer_details')}}</span></router-link></div>
                 </div>
                 <div v-if="offerStatus === 'CONTRACT_MADE'" class="row container" v-bind:id="buttonsId()">
-                    <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="disableOfferButtons()" class="btnn btn-primary rejectButton" 
+                    <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="disableOfferButtons()" class="btn btn-primary rejectButton" 
                         data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">{{gtrans.translate('offer_decline')}}</span></a></div>
+                    <div v-if="offerStatus === 'CONTRACT_MADE'" class="right-div right-text2">
+                        <router-link v-bind:to="confirmURI" class="btn btn-primary confirmButton"><span class="continueText">{{gtrans.translate('offer_details')}}</span></router-link></div>
+                </div>
+                <div v-if="offerStatus !== 'CONTRACT_MADE' && offerStatus !== 'PENDING'" class="row container" v-bind:id="buttonsId()">
+                    <div class="right-div right-text2" style="margin: 0 auto;">
+                        <router-link v-bind:to="confirmURI" class="btn btn-primary confirmButton"><span class="continueText">{{gtrans.translate('offer_details')}}</span></router-link></div>
                 </div>
             </div>
         </div>
@@ -561,6 +567,7 @@
     .cardTextId{
         display: inline-flex;
         vertical-align: middle;
+        word-break: break-word;
     }
 
     .continueText {
