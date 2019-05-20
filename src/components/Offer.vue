@@ -567,6 +567,7 @@
     .cardTextId{
         display: inline-flex;
         vertical-align: middle;
+        word-break: break-word;
     }
 
     .continueText {
