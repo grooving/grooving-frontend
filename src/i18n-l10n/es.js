@@ -513,7 +513,7 @@ export default{
 
     genres_deleteQuestion: '¿Estás seguro que quieres eliminar este género?',
     genres_deleteMsg: 'Eliminarás este género y sus correspondientes sub-géneros. Esta acción',
-    genres_undone: 'no puede ser deshecha.',
+    genres_undone: 'no se puede deshacer.',
     genres_cancel: 'CANCELAR',
 
     // ----------------------------------------------------
