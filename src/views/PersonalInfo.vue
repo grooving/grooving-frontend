@@ -6,19 +6,20 @@
           <div class="paymentOptions"><ProfileInfo :name="name" :surnames="userSurnames" :artisticName="artisticName" :email="userEmail" :paypal="paypal" :phoneNumber="userPhoneNumber" :username="username" :photo="userPhoto"/></div>
         </div>
     </div>
+    <hr class="divisor"/>
     <div class="delete">
         <div >
             <span class="card-title" style="font-weight:bold;font-size:30px;margin-bottom:12px">{{gtrans.translate('management_title')}}</span>
         </div>
         <div>
-            <div id="otroButton" class="continueButtonDiv">
+            <div id="otroButton" class="continueButtonDiv" style="margin-bottom: 0px">
                 <form>
                     <div class="form-row">
                         <div class="form-group col-12">
-                            <div style="width:100%;margin-top:25px;overflow:auto;">
-                                <p class="card-text" style="font-weight:bold;display:inline-block;vertical-align:middle;margin-top: 8px;">{{gtrans.translate('download_data')}}</p>
-                                <p class="card-text" style="float:right;">
-                                    <button type="button" class="addButton" @click="downloadPersonalData" style="float:right">
+                            <div class="downloadDiv" style="width:100%;margin-top:25px;overflow:auto;margin-bottom:15px">
+                                <p class="card-text downloadText">{{gtrans.translate('download_data')}}</p>
+                                <p class="card-text downloadButton">
+                                    <button type="button" class="addButton" @click="downloadPersonalData">
                                         <i class="material-icons arrowIcon addURLButton">file_download</i>
                                     </button>
                                 </p>
@@ -216,6 +217,7 @@ export default {
         vertical-align: middle;
         align-items: center;
         padding: 5px;
+        float: none;
     }
 
     .addURLButton{
@@ -290,6 +292,27 @@ export default {
         justify-content: center;
     }
 
+    .divisor {
+        border-top: 1px solid #8c8b8b;
+    }
+
+    .downloadButton {
+        float: initial;
+        text-align: center;
+    }
+
+    .downloadDiv {
+        text-align: center;
+    }
+
+    .downloadText {
+        font-weight: bold;
+        display: inline-block;
+        vertical-align: middle;
+        margin-top: 8px;
+        text-align: center;
+    }
+
     @media (max-width:767px)  {
         .delete{
             padding-top: 5%;
@@ -318,6 +341,22 @@ export default {
             box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, .3);
             width: 400px;
             justify-content: center;
+        }
+
+        .divisor {
+            display: none;
+        }
+
+        .downloadButton {
+            float: right;
+        }
+
+        .downloadDiv {
+            text-align: left;
+        }
+
+        .addButton {
+            float: right;
         }
     }
 
