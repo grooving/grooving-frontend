@@ -3,6 +3,9 @@
     <div class="title"><p style="text-align: left !important;">{{gtrans.translate('timeRange')}}</p></div>
     
     <div class="everything">
+        <div v-if="errors" class="validationErrors">
+            <p>{{errors}}</p>
+        </div>
         <div class="artistCard"><ArtistCard 
             :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :price="this.cardPrice"/>
@@ -54,6 +57,7 @@ export default {
                 hour: '00:00',
                 duration: 23.5,    
             },
+            errors: '',
         }
     },
 
@@ -67,17 +71,25 @@ export default {
 
         timeSelected() {
 
-            this.setDateTime(this.time).then(() => {
+            if(this.time && this.time.duration){
 
-                // If VueX has correcty saved the time
-                this.$router.push(this.nextStep)
+                this.setDateTime(this.time).then(() => {
 
-            }).catch( e => {
+                    // If VueX has correcty saved the time
+                    this.$router.push(this.nextStep)
 
-                console.log('Error: Could not set time in VueX');
-                console.log(e);
+                }).catch( e => {
 
-            });
+                    console.log('Error: Could not set time in VueX');
+                    console.log(e);
+
+                });
+
+            }else{
+                this.errors = this.gtrans.translate('invalidRange')
+                window.scrollTo(0,0);
+            }
+
         },
     },
 
@@ -160,6 +172,16 @@ export default {
     * {
         font-family: "Archivo"
     }
+
+    .validationErrors{
+        background-color:#f50057;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);
+        
+        color:white;
+        font-weight: bold;
+        height: 100%;
+        padding-top: 12px;
+    }
     
 
     .continueButton {
@@ -203,7 +225,6 @@ export default {
 
     @media (min-width:768px)  {
         
-
         .sliderButton  {
             margin-left: 5%;
             width: 100%;

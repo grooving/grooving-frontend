@@ -290,6 +290,7 @@ export default {
         .contentCalendar{
             width: 63%;
             
+            max-width: 600px;
             margin: 0 auto !important;
             padding-top: 10px;
             padding-bottom: 10px;

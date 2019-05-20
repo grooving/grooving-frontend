@@ -6,12 +6,12 @@
                 <img v-else class="card-img-top artistImage" :src="artistImage" alt="Artist's Image">
             </router-link>
             <div class="card-body cuerpoTarjeta">
-                <div class="leftContent" style="width:100%">
+                <div class="leftContent">
                     <h5 class="card-title artistName">{{ artistName }}</h5>
                     <span class="card-text artistGenres">{{ genresToString() }}</span>
                 </div>
                 <div v-if="gsecurity.hasRole('CUSTOMER') || !gsecurity.isAuthenticated()" class="rightContent">
-                    <router-link v-bind:to="hireURI" class="btn btn-primary hireButton"><span class="hireText">{{gtrans.translate('hire')}}</span></router-link>
+                    <router-link v-bind:to="hireURI" class="btn btn-primary hireButton"><span style="min-width: 70px;" class="vertical-center hireText"><i style="font-family: 'Material Icons'; font-size: 1.5em;" class=" material-icons ">shop_two</i></span></router-link>
                 </div>
             </div>
         </div>
@@ -158,7 +158,7 @@ export default {
     .rightContent {
         float: right;
         text-align: center;
-        padding-left: 20px;
+        padding-left: 10px;
     }
 
     .tarjeta {
@@ -168,6 +168,12 @@ export default {
         margin: 0 auto !important;
         border-radius: 20px;
         box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, .2);
+    }
+
+    .vertical-center {
+        display: flex;
+        align-items: center; /*Aligns vertically center */
+        justify-content: center; /*Aligns horizontally center */
     }
 
 </style>
