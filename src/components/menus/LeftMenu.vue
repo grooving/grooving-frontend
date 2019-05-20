@@ -10,7 +10,7 @@
                     <div class="nav-link goTo" @click="goTo('/topArtists')" data-toggle="collapse" data-target="#sidebarleft" >{{gtrans.translate('topArtists')}}</div> 
                     <b-dropdown-divider v-if="!gsecurity.hasRole('ADMIN')" class="divider"/>
                 </li>
-                <li v-if="!gsecurity.hasRole('ADMIN')" class="nav-item section">
+                <li v-if="!gsecurity.hasRole('ADMIN') && gsecurity.isAuthenticated()" class="nav-item section">
                     <div class="nav-link goTo" @click="goTo('/offers')" data-toggle="collapse" 
                     data-target="#sidebarleft" >{{gtrans.translate('myOffers')}}</div>
                     <b-dropdown-divider v-if="gsecurity.isAuthenticated()" class="divider"/>

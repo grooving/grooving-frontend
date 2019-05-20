@@ -1,5 +1,5 @@
 <template>
-  <div id="results" class="container-fluid px-0 mt-0">
+  <div id="results" class="container-fluid ">
     <h1 v-if="parentZoneName != ''" class="titleView"><div class="hover" @click="back()"><i style="font-size: 30px;" class="material-icons">chevron_left</i> {{parentZoneName}}</div></h1>
     <h1 v-else class="titleViewNo">{{gtrans.translate('titleListZone')}}</h1>
     <p v-if="parentZoneName == ''" class="subtitleView">{{gtrans.translate('subtitleListZone_1')}}</p>
@@ -13,7 +13,7 @@
 
       <table v-else >
         <tr>
-          <th>{{gtrans.translate('nameZone')}}</th>
+          <th >{{gtrans.translate('nameZone')}}</th>
           <th style="text-align:center;">{{gtrans.translate('optionsZone')}}</th>
         </tr>
         <tr v-for="zone in zones" :key="zone.id">
@@ -242,8 +242,6 @@ export default {
   td, th {
     text-align: left;
     padding: 15px;
-    
-    
   }
 
   .rowWordBreak{
@@ -254,7 +252,6 @@ export default {
   .sub {
     width: 160px;
     cursor: pointer;
-
   }
 
   tr:nth-child(even) {
@@ -312,14 +309,12 @@ export default {
     .titleView{
       text-align: left;
       font-weight: bold;
-      margin-left: 5%;
       margin-right: 5%;
 
     }
 
     .subtitleView{
       text-align: center;
-      margin-left: 5%;
       margin-right: 5%;
     }
   }

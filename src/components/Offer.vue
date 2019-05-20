@@ -36,8 +36,7 @@
                         <i class="material-icons iconOffer">bookmark</i><p>{{statusMessage()}}</p>
                     </div>
                     <div v-if="offerStatus == 'PAYMENT_MADE' && gsecurity.hasRole('CUSTOMER') && ratingD !== null" class="cardTextId">
-                        <div class="rating"><br v-if="rating == null && ratingD !== null">
-
+                        <div class="rating">
                             <span class="ratingOK" v-if="ratingD >= 1">★</span>
                             <span v-else>☆</span>
                             
@@ -52,9 +51,6 @@
                             
                             <span class="ratingOK" v-if="ratingD >= 5">★</span>
                             <span v-else>☆</span>
-                        </div>
-                        <div v-if="rating == null && ratingD !== null" class="cardTextId">
-                            <p>{{gtrans.translate('offer_thankYou')}}</p>
                         </div>
                     </div>
                     <div v-if="offerStatus == 'PAYMENT_MADE' && gsecurity.hasRole('CUSTOMER') && ratingD == null && artistId != null" class="cardTextId">
@@ -75,8 +71,7 @@
                                 
                                 <span class="ratingOK" v-if="ratingD !== null && ratingD >= 5">★</span>
                                 <span v-else class="toRate" @click="rateDone(5)">☆</span>
-                            </div>
-                            
+                            </div>        
                     </div>
                     <div v-if="reason !== '' && reason != null && (offerStatus == 'WITHDRAWN' || offerStatus == 'REJECTED' || offerStatus == 'CANCELLED_ARTIST' || offerStatus == 'CANCELLED_CUSTOMER')" class="cardTextId">
                        <p><span style="font-weight: bold;">&nbsp;{{gtrans.translate('offer_reason')}}: </span> {{reason}}</p>
@@ -248,10 +243,9 @@
                         "score": this.ratingD,
                         "comment": "",
                     }).then(response => {
+                        this.$emit("offerRated", this.offerID,this.ratingD);
                         console.log(response);
-                        this.$router.go({ path: "/offers" });
                     }).catch(ex => {
-
                         console.log(ex);
                         this.errors = ex.response.data.error;
                     }).then(() => {
@@ -452,7 +446,6 @@
     .validationErrors{
         background-color:#f50057;
         box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);
-        
         color:white;
         font-weight: bold;
         height: 100%;
