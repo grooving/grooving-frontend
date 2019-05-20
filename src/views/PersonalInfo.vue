@@ -3,7 +3,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <div class="everything">
         <div class="paymentSelect">
-          <div class="paymentOptions"><ProfileInfo :name="name" :surnames="userSurnames" :artisticName="artisticName" :email="userEmail" :paypal="paypal" :phoneNumber="userPhoneNumber" :username="username"/></div>
+          <div class="paymentOptions"><ProfileInfo :name="name" :surnames="userSurnames" :artisticName="artisticName" :email="userEmail" :paypal="paypal" :phoneNumber="userPhoneNumber" :username="username" :photo="userPhoto"/></div>
         </div>
     </div>
     <div class="delete">
@@ -76,6 +76,7 @@ export default {
             username: '',
             userEmail: '',
             userPhoneNumber: '',
+            userPhoto: '',
             paypal: '',
             artisticName : '',
         };
@@ -169,7 +170,7 @@ export default {
                         this.userEmail=personalInformation['email'];
                         this.userPhoneNumber = response.data.phone;
                         this.username = personalInformation['username'];
-                        
+                        this.userPhoto = response.data.photo;                        
                 }).then(() => {
                     NProgress.done()
                 });
@@ -191,9 +192,8 @@ export default {
                         this.username = personalInformation['username'];
                         this.paypal = response.data.paypalAccount;
                         this.artisticName = response.data.artisticName['artisticName'];
-                        
-
-
+                        this.userPhoto = response.data.photo;
+                        console.log('HOLAAAA')
                 }).then(() => {
                     NProgress.done()
                 });  

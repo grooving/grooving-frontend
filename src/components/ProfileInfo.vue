@@ -8,6 +8,12 @@
                         <i class="material-icons iconOffer">create</i>
                     </router-link>
                     <h6 class="card-subtitle mb-2 text-muted">{{gtrans.translate('profile_subtitle')}}</h6>
+                    <div style="width:100%;margin-top:25px;overflow:auto;justify-content:center">
+                        <p class="card-text" style="font-weight:bold;display:inline-block;margin-bottom:0px;margin-top:10px">{{gtrans.translate('user_photo')}}</p>
+                        <img v-if="photo == null || photo == '' || photo == 'null'" src="@/assets/defaultPhoto.png" class="profileImage" v-bind:alt="this.gtrans.translate('image_alt')" style="float:right">
+                        <img v-else v-bind:src="photo" :key="photo" class="profileImage" v-bind:alt="this.gtrans.translate('image_alt')" style="float:right">
+                    </div>
+                    <hr style="margin-top:5px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:25px;overflow:auto;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_firstName')}}</p>
                         <p class="card-text" style="float:right;">{{name}}</p>
@@ -93,7 +99,10 @@ export default {
         artisticName: {
             type: String,
             //default: 'Charli XCX'
-        }
+        },
+        photo: {
+            type: String,
+        },
     },
 
     created() {
@@ -126,6 +135,13 @@ export default {
     .iconOffer  {
          font-size: 28px;
          float: right;
+    }
+
+    .profileImage {
+        width: 45px;
+        height: 45px;
+        object-fit: cover;
+        border-radius: 25px;
     }
 
     @media (max-width:767px)  {

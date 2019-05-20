@@ -12,6 +12,17 @@
                     <div id="errorsDiv" class="validationErrors vertical-center">
                         <p style="margin: 0px;">{{errors}}</p>
                     </div>
+                    <div style="width:100%;margin-top:25px;overflow:auto;justify-content:center">
+                        <p class="card-text" style="font-weight:bold;display:inline-block;margin-bottom:0px;margin-top:10px">{{gtrans.translate('user_photo')}}</p>
+                        <img v-if="photo == null || photo == '' || photo == 'null'" src="@/assets/defaultPhoto.png" class="profileImage" v-bind:alt="this.gtrans.translate('image_alt')" style="float:right">
+                        <img v-else v-bind:src="photo" :key="photo" class="profileImage" v-bind:alt="this.gtrans.translate('image_alt')" style="float:right">
+                    </div>
+                    <div style="width:100%;margin-top:10px;">
+                        <b-form-group>
+                            <b-form-input v-model="photo" v-bind:value="photo" maxlength="500" type="url"></b-form-input>
+                        </b-form-group>
+                    </div>
+                    <hr style="margin-top:5px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:25px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_firstName')}}</p>
                         <b-form-group>
@@ -39,13 +50,22 @@
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:16px;">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_password')}}</p>
-                        <p class="card-text" style="float:right;">&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;</p>
+                        <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_newPassword')}}</p>
+                        <b-form-group>
+                            <b-form-input v-model="password" type="password" maxlength="30" v-bind:placeholder="gtrans.translate('user_newPassword_placeholder')" minlength="8"></b-form-input>
+                        </b-form-group>
+                        <b-form-group>
+                            <b-form-input v-model="confirmPassword" type="password" maxlength="30" v-bind:placeholder="gtrans.translate('user_confirmPassword_placeholder')" minlength="8"></b-form-input>
+                        </b-form-group>
+                        <small class="form-text text-muted" style="margin-bottom:14px">
+                        {{gtrans.translate('customerRegister_passwordReq')}}</small>
                     </div>
                     <hr style="margin-top:0px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:16px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_email')}}</p>
-                        <p class="card-text" style="float:right;">{{email}}</p>
+                        <b-form-group>
+                            <b-form-input v-model="email" v-bind:value="email" maxlength="100" style="text-align: right" type="email"></b-form-input>
+                        </b-form-group>
                     </div>
                     <hr v-if="this.gsecurity.hasRole('ARTIST')" style="margin-top:0px;margin-bottom:0px;"/>
                     <div v-if="this.gsecurity.hasRole('ARTIST')" style="width:100%;margin-top:16px;">
@@ -91,6 +111,9 @@ export default {
             paypal: '',
             phoneNumber: '',
             artisticName: '',
+            photo: '',
+            password: '',
+            confirmPassword: '',
             errors: "",
             gsecurity: GSecurity,
             gtrans: undefined,
@@ -112,13 +135,19 @@ export default {
                     "first_name": this.name,
                     "last_name": this.surnames,
                     "phone": this.phoneNumber,
-                    "photo": this.gsecurity.getPhoto(),
+                    "photo": this.photo,
                     "paypalAccount": this.paypal,
                     "artisticName": this.artisticName,
+                    "username": this.gsecurity.getUsername(),
+                    "password": this.password,
+                    "confirm_password": this.confirmPassword,
+                    "email": this.email,
                 }).then(response => {
                     console.log(response);
                     this.gsecurity.setFirstName(this.name);
                     window.localStorage.setItem("firstName", this.name);
+                    this.gsecurity.setPhoto(this.photo);
+                    window.localStorage.setItem("photo", this.photo);
                     this.$router.push({name: "personalInfo"});
                     window.location.reload();
                 }).catch(ex => {
@@ -135,11 +164,17 @@ export default {
                     "first_name": this.name,
                     "last_name": this.surnames,
                     "phone": this.phoneNumber,
-                    "photo": this.gsecurity.getPhoto(),
+                    "photo": this.photo,
+                    "username": this.gsecurity.getUsername(),
+                    "password": this.password,
+                    "confirm_password": this.confirmPassword,
+                    "email": this.email,
                 }).then(response => {
                     console.log(response);
                     this.gsecurity.setFirstName(this.name);
                     window.localStorage.setItem("firstName", this.name);
+                    this.gsecurity.setPhoto(this.photo);
+                    window.localStorage.setItem("photo", this.photo);
                     this.$router.push({name: "personalInfo"});
                     window.location.reload();
                 }).catch(ex => {
@@ -183,7 +218,8 @@ export default {
                     this.surnames = personalInformation['last_name'];
                     this.email = personalInformation['email'];
                     this.phoneNumber = response.data.phone;
-                    this.username = personalInformation['username'];                    
+                    this.username = personalInformation['username'];
+                    this.photo = response.data.photo;
 
                     if (role == 'ARTIST') {
                         this.paypal = response.data.paypalAccount;
@@ -249,6 +285,13 @@ export default {
     input:hover{
         border-color: #187fe6;
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, .3) !important;
+    }
+
+    .profileImage {
+        width: 45px;
+        height: 45px;
+        object-fit: cover;
+        border-radius: 25px;
     }
 
     select:focus{

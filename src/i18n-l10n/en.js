@@ -75,6 +75,10 @@ export default{
     user_password : "PASSWORD", // Se usa también en ProfileInfo.vue
     user_email : "EMAIL", // Se usa también en ProfileInfo.vue
     user_phone : "PHONE", // Se usa también en ProfileInfo.vue
+    user_photo : "PROFILE PHOTO", // Se usa también en ProfileInfo.vue
+    user_newPassword: "NEW PASSWORD",
+    user_newPassword_placeholder: "New password",
+    user_confirmPassword_placeholder: "Confirm new password",
 
     // ----------------------------------------------------
     //                   EditSubmenu.vue
