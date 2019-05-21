@@ -271,6 +271,7 @@ import GTrans from "@/utils/GTrans.js";
         
         box-shadow: 2px 2px 20px 1px;
         overflow-x: auto;
+        overflow-y: initial;
         display: flex;
         flex-direction: column;
         
