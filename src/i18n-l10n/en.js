@@ -290,6 +290,7 @@ export default{
 
     artist_zone_submit: 'Submit',
     artist_zone_title: 'Edit Zones:',
+    addNewZone: "---- Add a new zone ----",
     
     // ----------------------------------------------------
     //                 HiringType.vue
@@ -409,6 +410,7 @@ export default{
 
     submit: 'Submit',
     artist_genre_title: 'Edit Genres:',
+    addNewGenre: "---- Add a new genre ----",
 
     // --------------------------------------------------------------------------------
     //                               CustomPrice.vue

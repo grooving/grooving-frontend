@@ -304,6 +304,7 @@ export default {
     font-size: 80px !important;
     font-weight: bold;
     color: rgba(0,0,0,.4);
+    margin-bottom: 10%;
   }
 
   .results{
