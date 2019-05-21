@@ -7,7 +7,7 @@
     <div class="banner1" v-if="gtrans.getLanguage() == 'en'"><img class="d-block w-100 banner1" src="@/assets/img/banner_EN.png" v-bind:alt="this.gtrans.translate('image')" style="box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .2) !important;"></div>
   </div>
   <div class="container-fluid">
-    <div class="container"><ArtistList :listTitle="this.gtrans.translate('artists')" :artistas="datos" /></div>
+    <div class="container"><ArtistList :availableData="availableData" :key="availableData" :listTitle="this.gtrans.translate('artists')" :artistas="datos" /></div>
   </div>
   </div>
 
@@ -31,7 +31,7 @@ export default {
     return{
       gsecurity: GSecurity,
       gtrans: undefined,
-
+      availableData: true,
       datos: Array(),
     }
   },
@@ -43,6 +43,7 @@ export default {
       GAxios.get(endpoints.artists).then(response => {
 
         var artists = response.data;
+        console.log(artists)
 
         for(var i = 0; i < artists.length; i++){
           var genres = Array();
@@ -62,6 +63,9 @@ export default {
       }).catch(ex => {
           console.log(ex);
       }).then(() => {
+        if(this.datos.length == 0) {
+          this.availableData = false;
+        }
         NProgress.done()
       });
     }

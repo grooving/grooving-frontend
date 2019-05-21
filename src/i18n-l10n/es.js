@@ -230,6 +230,7 @@ export default{
     // ----------------------------------------------------
 
     oops : "Nada que mostrar", // Se usa también en OffersList.vue
+    loading: 'Obteniendo datos...',
 
     // ----------------------------------------------------
     //                   UsersList.vue

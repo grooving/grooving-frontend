@@ -231,6 +231,7 @@ export default{
     // ----------------------------------------------------
 
     oops : "Nothing to show", // Se usa también en OffersList.vue
+    loading: 'Retrieving data...',
 
     // ----------------------------------------------------
     //                   UsersList.vue
@@ -734,6 +735,8 @@ export default{
     breach_body_p: 'Enter the body of the message...',
     breach_send: 'SEND',
     breach_ok: 'The notification was created succesfully',
+
+    
 
 
 }

@@ -5,7 +5,10 @@
       <div v-for="artist in artistas" :key="artist.artistURI" class="tarjeta col-12 col-md-6 col-xl-4">
         <ArtistCard :artistImage="artist.artistImage" :artistName="artist.artistName" :artistGenres="artist.artistGenres" :artistId="artist.artistID" />
       </div>
-      <div v-if="artistas.length == 0" class="error">
+      <div v-if="artistas.length == 0 && availableData" class="error">
+        <h1 class="oops">{{gtrans.translate('loading')}}</h1>
+      </div>
+      <div v-if="artistas.length == 0 && !availableData" class="error">
         <h1 class="oops">{{gtrans.translate('oops')}} ☹</h1>
       </div>
     </div>
@@ -24,7 +27,6 @@ export default {
   components: {
     ArtistCard,
   },
-
   data:{
       gsecurity: GSecurity,
       gtrans: undefined,
@@ -39,8 +41,11 @@ export default {
     artistas:{
       type: Array,
       required: true,
-    }
-
+    },
+    availableData: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   created: function(){
@@ -52,7 +57,6 @@ export default {
     // Podemos cambiar el lenguaje así para debug...
     //this.gtrans.setLanguage('es')
     //this.gtrans.setLanguage('en')
-
   }
 }
 
