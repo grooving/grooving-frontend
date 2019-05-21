@@ -6,7 +6,7 @@
                 <img v-else class="card-img-top artistImage" :src="artistImage" alt="Artist's Image">
             </router-link>
             <div class="card-body cuerpoTarjeta">
-                <div class="leftContent">
+                <div class="leftContent" style="width:100%">
                     <h5 class="card-title artistName">{{ artistName }}</h5>
                     <span class="card-text artistGenres">{{ genresToString() }}</span>
                 </div>

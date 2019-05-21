@@ -3,7 +3,7 @@
    
      <div class="collapse navbar-collapse width px-2 bg-light" id="sidebarleft">
          <p>
-         <div class="navContent">
+         <div class="navContent" :key="$route.fullPath">
          <h2 class="title">{{gtrans.translate('menu')}}</h2>
             <ul class="navbar-nav mr-auto p-2 col align-self-center justify-content-center">
                 <li v-if="!gsecurity.hasRole('ADMIN')" class="nav-item section">

@@ -8,7 +8,7 @@
       <RightMenu  @samePage='samePage' :key="refreshRM + $route.fullPath"/>
     </div>
     <div class="LeftMenu">
-      <LeftMenu :key="$route.fullPath" @samePage='samePage'/>
+      <LeftMenu @samePage='samePage'/>
     </div>
     <router-view :key="$route.fullPath" id="mainContent"/>
     </div>
