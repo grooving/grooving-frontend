@@ -41,6 +41,8 @@ export default{
     cancelledCustomerMessage : "La oferta fue cancelada por el cliente después de ser aceptada.",
     paymentMessage : "El pago ya ha sido realizado.",
     chat: "Chat",
+    offer_id: "ID de la oferta: ",
+    offer_userID: "ID de usuario: ",
 
     // ----------------------------------------------------
     //                  CustomHiring.vue
@@ -231,6 +233,7 @@ export default{
 
     oops : "Nada que mostrar", // Se usa también en OffersList.vue
     loading: 'Obteniendo datos...',
+    userId: "ID de usuario: ",
 
     // ----------------------------------------------------
     //                   UsersList.vue
@@ -243,6 +246,9 @@ export default{
     // ----------------------------------------------------
 
     account_deleted : "Cuenta Eliminada",
+    noPending: "No tienes ninguna oferta pendiente en este momento",
+    noAccepted: "No tienes ninguna oferta aceptada en este momento",
+    noRejected: "No tienes ninguna oferta rechazada en este momento",
 
     // ----------------------------------------------------
     //                   PersonalInfo.vue
@@ -463,7 +469,7 @@ export default{
     //                        NewUser.vue
     // ----------------------------------------------------
 
-    login_required: 'You must log in to perform this action',
+    login_required: 'Debes iniciar sesión para realizar esta acción',
 
     // ----------------------------------------------------
     //                        App.vue
@@ -726,7 +732,7 @@ export default{
     breach_subtitle: 'Este mensaje será enviado a todos los usuarios del sistema',
     breach_subject: 'ASUNTO',
     breach_body: 'CUERPO',
-    breach_subject_p: 'Asunto',
+    breach_subject_p: 'Introduce un título para esta notificación',
     breach_body_p: 'Introduce el cuerpo del mensaje...',
     breach_send: 'ENVIAR',
     breach_ok: 'La notificación fue creada exitosamente',

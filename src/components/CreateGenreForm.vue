@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-        <form v-on:submit="createGenre">
+        <form v-on:submit.prevent="createGenre">
             <div class="form-row">
                 <div class="form-group col-12">
                     <span style="font-weight:bold;font-size:30px;">{{gtrans.translate('genres_new')}}</span>

@@ -83,9 +83,9 @@ export default {
             this.cancelButtonId = this.parentGenreId;
         }
 
-        /*if(this.genreId == undefined){
+        if(this.parentGenreId == undefined){
             this.$router.push('/manageGenres/all');
-        }*/
+        }
         
     },
 

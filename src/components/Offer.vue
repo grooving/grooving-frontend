@@ -7,6 +7,7 @@
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
             <div class="container-fluid">
                 <div class="container">
+                    
                     <div class="right-div right-text" style="width: 100px; text-align: left; vertical-align: top;">
                         <div class="priceCard"><h1>{{price}}€</h1><br>
                         </div>
@@ -17,12 +18,12 @@
                         <div class="cardTextLocation"><i class="material-icons iconOffer">location_on</i><p style="margin-left: 5px;">  {{place}}</p>
                         </div>
                         <br>
-                        <div class="cardTextId"><i class="material-icons iconOffer ">error_outline</i><p style="margin-left: 5px; word-break: break-all">ID:{{offerID}}</p>
+                        <div class="cardTextId"><i class="material-icons iconOffer ">error_outline</i><p style="margin-left: 5px; ">{{gtrans.translate('offer_id') + offerID}}</p>
                         </div>
                         <br>
-                        <button v-if="offerStatus == 'CONTRACT_MADE' || offerStatus == 'PAYMENT_MADE'" @click="openChat()" class="btn btn-primary continueButton"><span class="continueText">{{gtrans.translate('chat')}}</span></button>
-                                                   
+                        <button style="margin-left:0px" v-if="offerStatus == 'CONTRACT_MADE' || offerStatus == 'PAYMENT_MADE'" @click="openChat()" class="btn btn-primary continueButton"><span class="continueText">{{gtrans.translate('chat')}}</span></button>                         
                         </div>
+                    
                     </div>
                     <div class="right-div right-text">
                         <router-link v-bind:to="{name: imageURI, params: {userName, customerSurnames, place, artistId: artistId }}">
@@ -30,6 +31,7 @@
                             <img v-else v-bind:src="userIcon" :key="userIcon" class="card-img-top foto" alt="Image">
                         </router-link>
                         <h3 class="fotoText">{{userName}}</h3>
+                        <p>{{gtrans.translate('offer_userID') + artistId}}</p>
                     </div>
                     <hr class="mb-2"/>
                     <div v-if="offerStatus !== 'PENDING' && offerStatus !== 'CONTRACT_MADE'" class="cardTextId">
@@ -83,30 +85,30 @@
                         <textarea v-model="reason" style="resize: none;" maxlength="500" class="form-control" id="rejectionReason" rows="4" v-bind:placeholder="gtrans.translate('offer_rejectPlaceholder')"></textarea>
                     </div>
                     <div class="row container">
-                        <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="enableOfferButtons()" class="btn btn-primary cancelButton" 
+                        <div class="right-div-b right-text2"><a v-bind:href="hashtag()" v-on:click="enableOfferButtons()" class="btn btn-primary cancelButton" 
                             data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">{{gtrans.translate('offer_cancel')}}</span></a></div>
-                        <div v-if="offerStatus === 'PENDING' && gsecurity.hasRole('ARTIST')" class="right-div right-text2">
+                        <div v-if="offerStatus === 'PENDING' && gsecurity.hasRole('ARTIST')" class="right-div-b right-text2">
                             <button class="btnn2 btn-primary confirmButton" v-on:click="rejectOffer"><span class="continueText">{{gtrans.translate('offer_confirm')}}</span></button></div>
-                        <div v-if="offerStatus === 'PENDING' && gsecurity.hasRole('CUSTOMER')" class="right-div right-text2">
+                        <div v-if="offerStatus === 'PENDING' && gsecurity.hasRole('CUSTOMER')" class="right-div-b right-text2">
                             <button class="btnn2 btn-primary confirmButton" v-on:click="withdrawnOffer"><span class="continueText">{{gtrans.translate('offer_confirm')}}</span></button></div>
-                        <div v-if="offerStatus === 'CONTRACT_MADE'" class="right-div right-text2">
+                        <div v-if="offerStatus === 'CONTRACT_MADE'" class="right-div-b right-text2">
                             <button class="btnn2 btn-primary confirmButton" v-on:click="cancelOffer"><span class="continueText">{{gtrans.translate('offer_confirm')}}</span></button></div>
                     </div>
                 </div>
                 <div v-if="offerStatus === 'PENDING'" class="row container" v-bind:id="buttonsId()">
-                    <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="disableOfferButtons()" class="btn btn-primary rejectButton" 
+                    <div class="right-div-b right-text2"><a v-bind:href="hashtag()" v-on:click="disableOfferButtons()" class="btn btn-primary rejectButton" 
                         data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">{{gtrans.translate('offer_reject')}}</span></a></div>
-                    <div v-if="offerStatus === 'PENDING' && gsecurity.hasRole('ARTIST')" class="right-div right-text2">
+                    <div v-if="offerStatus === 'PENDING' && gsecurity.hasRole('ARTIST')" class="right-div-b right-text2">
                         <router-link v-bind:to="confirmURI" class="btn btn-primary confirmButton"><span class="continueText">{{gtrans.translate('offer_details')}}</span></router-link></div>
                 </div>
                 <div v-if="offerStatus === 'CONTRACT_MADE'" class="row container" v-bind:id="buttonsId()">
-                    <div class="right-div right-text2"><a v-bind:href="hashtag()" v-on:click="disableOfferButtons()" class="btn btn-primary rejectButton" 
+                    <div class="right-div-b right-text2"><a v-bind:href="hashtag()" v-on:click="disableOfferButtons()" class="btn btn-primary rejectButton" 
                         data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="continueText">{{gtrans.translate('offer_decline')}}</span></a></div>
-                    <div v-if="offerStatus === 'CONTRACT_MADE'" class="right-div right-text2">
+                    <div v-if="offerStatus === 'CONTRACT_MADE'" class="right-div-b right-text2">
                         <router-link v-bind:to="confirmURI" class="btn btn-primary confirmButton"><span class="continueText">{{gtrans.translate('offer_details')}}</span></router-link></div>
                 </div>
                 <div v-if="offerStatus !== 'CONTRACT_MADE' && offerStatus !== 'PENDING'" class="row container" v-bind:id="buttonsId()">
-                    <div class="right-div right-text2" style="margin: 0 auto;">
+                    <div class="right-div-b right-text2" style="margin: 0 auto;">
                         <router-link v-bind:to="confirmURI" class="btn btn-primary confirmButton"><span class="continueText">{{gtrans.translate('offer_details')}}</span></router-link></div>
                 </div>
             </div>
@@ -603,6 +605,15 @@
         padding: 20px !important;
     }
 
+    .right-div-b{
+        display: inline-block;
+        text-align: center;
+        margin-left: 5%;
+        margin-right: 5%;
+        width: 90% !important;
+        padding: 10px !important;
+    }
+
     .right-div .right-text{
         width: 200px;
     }
@@ -630,10 +641,12 @@
         width: 100%;
         border: none;
         border-radius: 30px;
+        word-break: keep-all;
     }
 
     .confirmButton {
         background-image: linear-gradient(to right, #00fb82, #187fe6);
+        margin-bottom: 10px;
     }
 
     .rejectButton {        
@@ -662,6 +675,23 @@
 
         .everything {
             margin: 0 auto;
+        }
+
+        .right-div{
+            display: inline-block;
+            text-align: center;
+            width: 50% !important;
+            padding: 20px !important;
+        }
+
+    }
+
+    @media (max-width:500px)  {
+        .right-div{
+            display: inline-block;
+            text-align: center;
+            width: 100% !important;
+            padding: 10px !important;
         }
 
     }

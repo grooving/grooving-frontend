@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form v-on:submit.prevent="savePortfolio">
+    <form v-on:submit.prevent.prevent="savePortfolio">
       <EditSubmenu :artistId="artistId" />
       <div id="errorsDiv" class="validationErrors vertical-center">
         <p style="margin: 0px;">{{errors}}</p>

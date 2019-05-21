@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-    <form v-on:submit.prevent="addressDataSelected()">
+    <form v-on:submit.prevent.prevent="addressDataSelected()">
         <div class="form-row" style="margin-top:15px">
             <div class="form-group col-12">
                 <input v-model="street" type="text" maxlength="100" class="form-control" v-bind:placeholder="gtrans.translate('addressData_address')" required>

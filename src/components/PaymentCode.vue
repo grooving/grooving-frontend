@@ -1,10 +1,7 @@
 <template>
     <div>
-    <div id="errorsDiv" class="validationErrors vertical-center">
-        <p style="margin: 0px;">{{errors}}</p>
-    </div>
     <div class="content">
-    <form v-on:submit="receivePayment()">
+    <form v-on:submit.prevent.prevent="receivePayment()">
         <div class="form-row">
             <div class="form-group col-12">
                 <p class="title">{{gtrans.translate('inputCode')}}:</p>
@@ -36,7 +33,6 @@ export default {
             gaxios: GAxios,
             errors: '',
             gtrans: undefined,
-
             code: '',
     	}
     },
@@ -51,7 +47,6 @@ export default {
     methods: {
     	receivePayment(){
             NProgress.start();
-
 			var authorizedGAxios = GAxios;
             var GAxiosToken = this.gsecurity.getToken();
             authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
@@ -70,15 +65,12 @@ export default {
                     this.$emit('offerDetails', arrayOffer);
                     this.$router.push('/paymentConfirmation');
 	      		}).catch(ex => {
-                    this.$emit('errorPayment', true);
-                    console.log(ex.response.data);
+                    console.log(ex);
                     if (ex.response.data.error != null){
-                        this.errors = ex.response.data.error;
-                        document.getElementById("errorsDiv").style.display = "block";
+                        this.$emit('errorPayment', ex.response.data.error);
                         window.scrollTo(0,0);
                     } else if (ex.response.data.paypal != null) {
-                        this.errors = ex.response.data.paypal;
-                        document.getElementById("errorsDiv").style.display = "block";
+                        this.$emit('errorPayment', ex.response.data.paypal);
                         window.scrollTo(0,0);   
                     }
 	      		}).then(() => {
@@ -190,6 +182,7 @@ export default {
 
         .content{
             margin-left: 3%;
+            margin-bottom: 12%;
             height: 305px;
             border-radius: 10px;
             display: flex;

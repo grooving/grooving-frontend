@@ -1,5 +1,5 @@
 <template>
-  <div id="results" class="container-fluid px-0 mt-0">
+  <div id="results" class="container-fluid">
     <h1 v-if="parentGenreName != ''" class="titleView"><router-link v-bind:to="genreBackLink.toString()"><i style="font-size: 30px;" class="material-icons">chevron_left</i> {{parentGenreName}}</router-link></h1>
     <h1 v-else class="titleView">{{gtrans.translate('genres_title')}}</h1>
     <p v-if="parentGenreName == ''" class="subtitleView">{{gtrans.translate('genres_subtitle')}}</p>
@@ -184,12 +184,12 @@ export default {
   td, th {
     text-align: left;
     padding: 15px;
-    padding-left: 35px;
-    
   }
 
   .rowWordBreak{
     word-break: break-all;
+    width: auto;
+    padding-left: 35px;
   }
 
   tr:nth-child(even) {
@@ -210,14 +210,14 @@ export default {
     .titleView{
       text-align: left;
       font-weight: bold;
-      margin-left: 25%;
+      margin-left: 15%;
       margin-right: 25%;
 
     }
 
     .subtitleView{
       text-align: left;
-      margin-left: 25%;
+      margin-left: 15%;
       margin-right: 25%;
     }
 
@@ -225,8 +225,8 @@ export default {
       margin-top: 10px;
       border-collapse: collapse;
       width: 100%;
-      margin-left: 25%;
-      margin-right: 25%;
+      margin-left: 15%;
+      margin-right: 15%;
       border-radius: 10px;
       overflow: hidden;
       box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, .2);
@@ -239,14 +239,12 @@ export default {
     .titleView{
       text-align: left;
       font-weight: bold;
-      margin-left: 5%;
       margin-right: 5%;
 
     }
 
     .subtitleView{
       text-align: left;
-      margin-left: 5%;
       margin-right: 5%;
     }
   }

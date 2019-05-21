@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-        <form v-on:submit="createZone">
+        <form v-on:submit.prevent="createZone">
             <div class="form-row">
                 <div class="form-group col-12">
                     <span style="font-weight:bold;font-size:30px;">{{gtrans.translate('titleCreateZone')}}</span>
@@ -39,7 +39,7 @@ export default {
     data: function() {
         return {
             parentZoneName: undefined,
-            parentZoneId: undefined,
+            parentZoneId: 'all',
             zoneName: "",
             errors: "",
             gtrans: undefined,

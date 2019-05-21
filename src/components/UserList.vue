@@ -54,6 +54,7 @@ export default {
   },
 
   created: function(){
+    console.log(this.users)
     this.gsecurity = GSecurity;
     this.gsecurity.obtainSavedCredentials();
 

@@ -1,5 +1,8 @@
 <template>
 <div class="prueba">
+    <div v-if="errors" id="errorsDiv" class="validationErrors vertical-center">
+        <p style="margin: 0px;">{{errors}}</p>
+    </div>
     <div class="title"><p>{{gtrans.translate('receivePayment')}}</p></div>
     <div class="everything">
         <div class="paymentSelect">
@@ -27,6 +30,7 @@ export default {
         return {
             gsecurity: GSecurity,
             gtrans: undefined,
+            errors: undefined,
         }
     },
 
@@ -94,6 +98,7 @@ export default {
             display:block;
             align-content: center;
             padding-top: 15px;
+            padding-top: 5px;
         }
 
     @media (min-width:768px)  {

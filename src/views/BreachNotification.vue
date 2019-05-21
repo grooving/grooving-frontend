@@ -10,14 +10,14 @@
         <div class="title"><p>{{gtrans.translate('breach_title')}}</p></div>
         <div class="subtitle"><p>{{gtrans.translate('breach_subtitle')}}</p></div>
         <div class="bothCards">
-            <form v-on:submit="createNotification">
+            <form v-on:submit.prevent="createNotification">
                 <div class="form-group">
                     <small for="exampleInputEmail1">{{gtrans.translate('breach_subject')}}</small>
-                    <input v-model="subject" style="font-weight: bold;" type="text" maxlength="100" class="form-control" id="notificationSubject" v-bind:placeholder="gtrans.translate('breach_subject_p')">
+                    <input required v-model="subject" style="font-weight: bold;" type="text" maxlength="100" class="form-control" id="notificationSubject" v-bind:placeholder="gtrans.translate('breach_subject_p')">
                 </div>
                 <div class="form-group">
                     <small for="exampleInputPassword1">{{gtrans.translate('breach_body')}}</small>
-                    <textarea v-model="body" class="form-control" id="notificationBody" maxlength="700" v-bind:placeholder="gtrans.translate('breach_body_p')"/>
+                    <textarea required v-model="body" class="form-control" id="notificationBody" maxlength="700" v-bind:placeholder="gtrans.translate('breach_body_p')"/>
                 </div>
                 <button type="submit" class="continueButton">{{gtrans.translate('breach_send')}}</button>
             </form>
@@ -72,6 +72,7 @@
                     console.log(ex.response.data.error);
                     this.errors = ex.response.data.error;
                     this.ok = undefined;
+                    window.scrollTo(0,0);
                     //alert(this.errors);
                     //document.getElementById("errorsDiv").style.display = "block";
                     //document.getElementById("okDiv").style.display = "none";
@@ -238,6 +239,13 @@
         margin-top: 5%;
     }
 
+    @media (min-width:767px)  {
+
+        form {
+            margin-bottom: 8%;
+        }
+    }
+
     @media (max-width:767px)  {
 
         .bothCards {
@@ -262,7 +270,11 @@
             font-weight: bold;
             margin-top: 5%;
         }
-
+        form {
+            margin-bottom: 3%;
+            margin-right: 3%;
+            margin-left: 3%;
+        }
         
     }
 </style>
