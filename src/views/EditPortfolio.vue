@@ -289,6 +289,7 @@ export default {
         //window.location.reload();
         
         //Actualizamos el calendario
+        if(this.d_portfolioDays.length != 0) {
         authorizedGAxios.put(endpoints.calendar + this.artistId + '/', body_calendar)
         .then(response => {
           this.$router.push("/showPortfolio/"+this.artistId)
@@ -298,6 +299,9 @@ export default {
             document.getElementById("errorsDiv").style.display = "block";
             window.scrollTo(0,0);
         })
+      } else {
+        this.$router.push("/showPortfolio/"+this.artistId);
+      }
 
       }).catch(ex => {
           console.log(ex);

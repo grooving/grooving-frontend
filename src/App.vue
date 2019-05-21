@@ -5,7 +5,7 @@
       <Header @toBlur='blurred' @refreshRightMenu='refreshRightMenu'/>
     </div>
     <div class="RightMenu">
-      <RightMenu @samePage='samePage' :key="refreshRM"/>
+      <RightMenu  @samePage='samePage' :key="refreshRM"/>
     </div>
     <div class="LeftMenu">
       <LeftMenu @samePage='samePage'/>
