@@ -5,10 +5,10 @@
       <Header @toBlur='blurred' @refreshRightMenu='refreshRightMenu'/>
     </div>
     <div class="RightMenu">
-      <RightMenu @samePage='samePage' :key="refreshRM"/>
+      <RightMenu  @samePage='samePage' :key="refreshRM + $route.fullPath"/>
     </div>
     <div class="LeftMenu">
-      <LeftMenu @samePage='samePage'/>
+      <LeftMenu :key="$route.fullPath" @samePage='samePage'/>
     </div>
     <router-view :key="$route.fullPath" id="mainContent"/>
     </div>

@@ -12,7 +12,7 @@
         <h1 style="font-weight: bold;">{{artistName}}</h1>
         <span class="card-text artistGenres">{{ genresToString() }}</span>
         <div>
-            <router-link v-if="gsecurity.hasRole('CUSTOMER') || !gsecurity.isAuthenticated()" v-bind:to="hireURI" class="btn btn-primary hireButton"><span class="hireText">HIRE</span></router-link>
+            <router-link v-if="gsecurity.hasRole('CUSTOMER') || !gsecurity.isAuthenticated()" v-bind:to="hireURI" class="btn btn-primary hireButton"><span class="hireText">{{gtrans.translate('hire')}}</span></router-link>
         </div>
         <div class="rating">
 
@@ -42,6 +42,7 @@
 
 <script>
 import GSecurity from "@/security/GSecurity.js";
+import GTrans from "@/utils/GTrans.js";
 
 const hiringBaseURI = '/hiringType/';
 const registerURI = '/newUser/';
@@ -52,6 +53,7 @@ export default {
     data: function() {
         return {
             gsecurity: GSecurity,
+            gtrans: undefined,
         };
     },
 
@@ -134,8 +136,10 @@ export default {
     },
 
     created() {
+        // Retreive store credentials
         this.gsecurity = GSecurity;
         this.gsecurity.obtainSavedCredentials();
+        this.gtrans = new GTrans(this.gsecurity.getLanguage());
     },
 }
 </script>
