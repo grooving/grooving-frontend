@@ -22,7 +22,7 @@
             <span v-if="selectedTab == 1">
             <div class="row">
               <div v-for="oferta in acceptedOffers" :key="oferta.offerID" class="tarjeta col-12 col-md-6 col-xl-6">
-                <Offer @openChat="chat" :offerID="oferta.offerID" :confirmURI="oferta.confirmURI" :date="oferta.date" :price="oferta.price" 
+                <Offer @offerRated="offerRated" @openChat="chat" :offerID="oferta.offerID" :confirmURI="oferta.confirmURI" :date="oferta.date" :price="oferta.price" 
                   :rating="oferta.rating" :place="oferta.place" :userIcon="oferta.userIcon" :userName="oferta.userName"  :offerStatus="oferta.offerStatus" :imageURI="oferta.imageURI" :customerSurnames="oferta.customerSurnames" :artistId="oferta.artistId" :reason="oferta.reason"/>
               </div>
                 <Chat :offerId="chatOfferId" :chatActive="chatActive" v-if="chatReady" @closeChat="chatReady=false" :key="chatOfferId" style="z-index: 8000; position:absolute"/>
@@ -142,6 +142,14 @@ export default {
       this.chatReady = true;
     },
 
+    offerRated(offerId,rating) {
+      console.log(offerId,rating)
+      for(let i=0; i < this.offers.length; i++){
+        if(this.offers[i].offerID == offerId) {
+          this.offers[i].rating = rating;
+        }
+      }
+    },
     setSelectedTab(status) {
       this.selectedTab = status;
     },

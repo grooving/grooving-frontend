@@ -6,7 +6,7 @@
         <p style="margin: 0px;">{{errors}}</p>
       </div>
       <EditPhoto :artistImage="this.d_portfolioMainPhoto" :artistBanner="this.d_portfolioBanner"/>
-      <EditArtistInfo/>
+      <EditArtistInfo :key="updateArtistInfoKey"/>
        
 
       <EditImageCarousel :photosInfo="d_portfolioImages" :key="updateImagesKey" />
@@ -66,6 +66,7 @@ export default {
       updateVideosKey: 0,
       updateImagesKey: 0,
       updateCalendarKey: 0,
+      updateArtistInfoKey:0,
       artistId: -1,
       errors: false,
 
@@ -153,12 +154,15 @@ export default {
           }
 
           // Zones
-          var zones = portfolio.zones;
-          
+          var zones = portfolio.zone;
+          console.log('zzzzzones', zones)
           for(var i = 0; i < zones.length; i++){
             var zone = zones[i];
             this.d_portfolioZones.push(zone);
           }
+          this.updateArtistInfoKey++;
+          this.setCurrentGenres(this.d_portfolioGenres);
+          this.setCurrentZones(this.d_portfolioZones);
   
       }).catch( response => {
         this.errors = response.data.error;

@@ -174,7 +174,7 @@ export default {
         .content{
             padding-top: 5%;
             margin-right: 3%;
-            margin-left: 3%;
+            margin-left: 10%;
         }
 
         .iconOffer  {

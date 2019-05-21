@@ -32,13 +32,10 @@ import GTrans from "@/utils/GTrans.js";
 export default {
 
     name: 'AddressInput',
-
     computed: mapGetters(['offerArtist']),
-
     components: {
         AddressData, ArtistCard
     },
-
     data() {
         return {
 

@@ -193,14 +193,13 @@ export default {
             justify-content: center;
             margin-top: 5%;
             text-align: center;
-            padding: 15px;
             margin-left: 0%;
             margin-right: 0%;
             margin-top:0%;
         }
         .title {
             display: inline-block;
-            margin-right: 12%;
+            margin-right: 10%;
             margin-left: 10%;
             text-align: left;
             font-size: 50px;

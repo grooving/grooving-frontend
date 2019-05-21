@@ -1,7 +1,7 @@
 <template>
 <div class="hiringProcessContainer">
-    <div id="errorsDiv" class="validationErrors vertical-center">
-        <p style="margin: 0px;">{{errors}}</p>
+    <div v-if="errors" class="validationErrors vertical-center">
+        <p>{{errors}}</p>
     </div>
     <div class="title"><p>{{gtrans.translate('payment_payment')}}</p></div>
     <div class="everything">
@@ -79,7 +79,7 @@ export default {
      methods: {
          
         gpay(nonce) {
-            
+            this.errors = undefined;
             // Preparamos una oferta con los campos de VueX, que usaremos para redactar el 
             // cuerpo de la petición
             this.preparedOffer.artistId = this.$store.getters.offerArtist.artistId,
@@ -187,11 +187,8 @@ export default {
                        } else {
                            this.errors = error.response.data.error;
                        }  
-                       document.getElementById("errorsDiv").style.display = "block";
                        window.scrollTo(0,0);         
-                    })
-
-                    
+                    })                    
                 })
                 .catch(error => {
                     if (error.response.data.error == null){
@@ -199,10 +196,8 @@ export default {
                     } else {
                         this.errors = error.response.data.error;
                     }  
-                    document.getElementById("errorsDiv").style.display = "block";
                     window.scrollTo(0,0);
                 });
-                
             })
             .catch(error => {
                 if (error.response.data.error == null){
@@ -210,14 +205,13 @@ export default {
                 } else {
                     this.errors = error.response.data.error;
                 }  
-                document.getElementById("errorsDiv").style.display = "block";
                 window.scrollTo(0,0);
             });
         },
         
         showErrors(nonce) {
+            console.log('OK' , nonce);
             this.errors = nonce;
-            document.getElementById("errorsDiv").style.display = "block";
             window.scrollTo(0,0);
         },
     },
@@ -295,14 +289,10 @@ export default {
 
     .validationErrors{
         background-color:#f50057;
-        border-radius: 5px;
-        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);
         color:white;
-        display: none;
         font-weight: bold;
         height: 100%;
-        margin-bottom: 14px;
-        padding: 10px;
         padding-top: 12px;
     }
 

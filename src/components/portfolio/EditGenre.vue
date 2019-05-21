@@ -9,8 +9,8 @@
 
         <template v-if="select">
             <b-form>
-              <b-form-select v-model="newGenre" style="width:90%; margin:0 auto;" >
-                  <option :value="undefined">---------</option>
+              <b-form-select v-model="newGenre" >
+                  <option disabled>---- Add a new genre ----</option>
                   <option v-for="opt in tree" :key="opt.id" :value="opt">
                       <span v-for="times in opt.depth" :key="times">&nbsp;&nbsp;</span>
                       <span>{{opt.name}}</span>
@@ -101,11 +101,52 @@ export default {
     console.log(this.tree)
   },
   beforeMount() {
+    this.genres = this.$store.getters.genres.allGenres;
     this.selectedGenres = this.$store.getters.genres.currentGenres;
+    console.log('Todas las genres' , this.genres)
+    console.log('genres del artista' , this.selectedGenres)
+
+    this.tree = Array();
+
+    var all = this.genres;
+    if(this.selectedGenres.length == 0 || this.selectedGenres[0].name != all.name) {
+      this.tree.push({id:all['id'], name: all['name'], children:all['children'], depth: 0});
+
+      if (this.genres.children != null) {
+        var cat1 = this.genres.children;
+
+        cat1loop:
+        for (let a = 0; a < cat1.length; a++) {
+          var c1 = cat1[a];
+            for(let t = 0; t < this.selectedGenres.length; t++) {
+              if(this.selectedGenres[t].name == c1.name) {
+                continue cat1loop;
+              }
+            }
+          this.tree.push({id:c1['id'], name: c1['name'], children:c1['children'], depth: 1});
+
+          if(cat1[a].children != null) {
+            var cat2 = cat1[a].children;
+
+            cat2loop:
+            for(let u = 0; u < cat2.length; u++) {
+              var c2 = cat2[u];
+              for(let p = 0; p < this.selectedGenres.length; p++) {
+                if(this.selectedGenres[p].name == c2.name) {
+                  continue cat2loop;
+                }
+              }
+              this.tree.push({id:c2['id'], name: c2['name'], children:c2['children'], depth: 2});
+            }
+          }
+        }
+      }
+    }
   },
   methods: {
     ...mapActions(['setNewGenres']),
     deleteGenre(index) {
+        console.log('to delete',index)
         this.selectedGenres.splice(index,1);
         this.setNewGenres(this.selectedGenres);
     },
@@ -188,6 +229,21 @@ export default {
 .bttn {
     border-radius: 50%;
 }
+
+@media (max-width: 767px){
+  select {
+    margin: 0;
+    width: 75%;
+  }
+}
+
+@media (min-width: 768px){
+  select {
+    margin: 0;
+    width: 25%;
+  }
+}
+
 
 select:hover{
     border-color: #187fe6;
