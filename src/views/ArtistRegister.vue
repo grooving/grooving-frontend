@@ -32,7 +32,8 @@
                     <img v-if="input.photo" :src="input.photo" class="profileImage"/>
                     <div class="custom-file">
                         <input type="file" class="custom-file-input"  id="customFile" @change="onFileChange">
-                        <label class="custom-file-label" for="customFile">{{gtrans.translate('customerRegister_uploadImage')}}</label>
+                        <label v-if="this.gtrans.getLanguage() == 'es'" class="custom-file-label labelES" for="customFile"></label>
+                        <label v-else class="custom-file-label labelEN" for="customFile"></label>
                     </div> 
                      <!--
                     <b-form-group>
@@ -191,6 +192,7 @@
 </script>
 
 <style scoped>
+
     * {
         font-family: "Archivo"
     }
@@ -227,6 +229,14 @@
         color: #6c757d;
         font-weight: semibold;
         text-align: left;
+    }
+
+    .custom-file-input ~ .custom-file-label.labelES::after {
+        content: "Buscar" !important;
+    }
+
+    .custom-file-input ~ .custom-file-label.labelEN::after {
+        content: "Browse" !important;
     }
     
     .form-check {

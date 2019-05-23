@@ -24,7 +24,8 @@
                     <img v-if="photo" :src="photo" class="profileImage"/>
                     <div class="custom-file">
                         <input type="file" class="custom-file-input"  id="customFile" @change="onFileChange">
-                        <label class="custom-file-label" for="customFile">{{gtrans.translate('customerRegister_uploadImage')}}</label>
+                        <label v-if="this.gtrans.getLanguage() == 'es'" class="custom-file-label labelES" for="customFile"></label>
+                        <label v-else class="custom-file-label labelEN" for="customFile"></label>
                     </div> 
          
                     <hr style="margin-top:5px;margin-bottom:0px;"/>
@@ -338,6 +339,15 @@ export default {
         font-weight: semibold;
         text-align: left;
     }
+
+    .custom-file-input ~ .custom-file-label.labelES::after {
+        content: "Buscar" !important;
+    }
+
+    .custom-file-input ~ .custom-file-label.labelEN::after {
+        content: "Browse" !important;
+    }
+
     .iconOffer  {
          font-size: 28px;
          float: right;
@@ -356,10 +366,13 @@ export default {
     }
 
     .profileImage {
-        width: 45px;
-        height: 45px;
-        object-fit: cover;
         border-radius: 25px;
+        display: block;
+        height: 45px;
+        margin: auto;
+        margin-bottom: .5rem !important;
+        object-fit: cover;
+        width: 45px;
     }
 
     select:focus{
