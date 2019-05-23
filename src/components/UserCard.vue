@@ -6,7 +6,6 @@
             <div class="card-body cuerpoTarjeta">
                 <div class="leftContent" style="width:100%">
                     <h5 class="card-title artistName">{{ userName }}</h5>
-                    <span class="card-text artistGenres">{{this.gtrans.translate('userId') + userId}}</span>
                 </div>                
                 <div class="rightContent">
                     <button v-if="userIsActive == true" class="btn btn-primary banButton" @click="banUser"><span class="hireText">{{gtrans.translate('ban')}}</span></button>
