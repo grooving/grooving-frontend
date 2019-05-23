@@ -31,7 +31,6 @@
                             <img v-else v-bind:src="userIcon" :key="userIcon" class="card-img-top foto" alt="Image">
                         </router-link>
                         <h3 class="fotoText">{{userName}}</h3>
-                        <p>{{gtrans.translate('offer_userID') + artistId}}</p>
                     </div>
                     <hr class="mb-2"/>
                     <div v-if="offerStatus !== 'PENDING' && offerStatus !== 'CONTRACT_MADE'" class="cardTextId">
