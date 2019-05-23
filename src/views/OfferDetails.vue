@@ -33,8 +33,9 @@ export default {
       }
   },
   beforeMount: function() {
-    if (!this.gsecurity.hasRole('ARTIST')) {
+    if (!(this.gsecurity.hasRole('ARTIST') || this.gsecurity.hasRole('CUSTOMER'))) {
       this.$router.push({name: "error"});
+      console.log("holes")
 
     } else {
       NProgress.start();

@@ -10,7 +10,7 @@
         <template v-if="select">
             <b-form>
               <b-form-select v-model="newGenre" >
-                  <option disabled>---- Add a new genre ----</option>
+                  <option disabled>{{gtrans.translate('addNewGenre')}}</option>
                   <option v-for="opt in tree" :key="opt.id" :value="opt">
                       <span v-for="times in opt.depth" :key="times">&nbsp;&nbsp;</span>
                       <span>{{opt.name}}</span>

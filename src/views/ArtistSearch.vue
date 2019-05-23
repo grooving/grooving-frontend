@@ -7,7 +7,7 @@
         </div>
         <div id="results" class="col-12 col-lg-8 col-xl-10" style="padding-left:0px; padding-right:0px;">
             <div id="resultsContainer" class="container-fluid mt-0">
-              <ArtistList :artistas="datos_artistas" :listTitle="this.gtrans.translate('search_title')" />
+              <ArtistList :availableData="availableData" :key="availableData" :artistas="datos_artistas" :listTitle="this.gtrans.translate('search_title')" />
             </div>
         </div>
       </div>
@@ -64,6 +64,7 @@ export default {
         ],
         showFilterSelectionModal: false,
         datos_artistas: Array(),
+        availableData: true,
       }
   },
 
@@ -149,6 +150,9 @@ export default {
       }).catch(ex => {
           console.log(ex);      
       }).then(() => {
+        if(this.datos_artistas.length == 0) {
+          this.availableData = false;
+        }
         NProgress.done()
       });
     }

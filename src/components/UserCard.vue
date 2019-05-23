@@ -2,11 +2,11 @@
     <div>
         <div class="card tarjeta">
             <img v-if="!userImage" src="@/assets/defaultPhoto.png" class="card-img-top artistImage" v-bind:alt="this.gtrans.translate('image')">
-            <img v-else class="card-img-top artistImage" :src="userImage" v-bind:alt="this.gtrans.translate('image')">
+            <img v-else class="card-img-top artistImage" :src="userImage" v-bind:alt="this.gtrans.translate('image_alt')">
             <div class="card-body cuerpoTarjeta">
                 <div class="leftContent" style="width:100%">
                     <h5 class="card-title artistName">{{ userName }}</h5>
-                </div>
+                </div>                
                 <div class="rightContent">
                     <button v-if="userIsActive == true" class="btn btn-primary banButton" @click="banUser"><span class="hireText">{{gtrans.translate('ban')}}</span></button>
                     <button v-if="userIsActive == false" class="btn btn-primary unbanButton" @click="banUser"><span class="hireText">{{gtrans.translate('unban')}}</span></button>

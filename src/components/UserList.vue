@@ -5,7 +5,10 @@
       <div v-for="user in users" :key="user.userURI" class="tarjeta col-12 col-md-6 col-xl-4">
         <UserCard :userImage="user.userImage" :userName="user.userName" :userId="user.userId" :userIsActive="user.userIsActive" @haveError="haveError"/>
       </div>
-      <div v-if="users.length == 0" class="error">
+      <div v-if="users.length == 0 && availableData" class="error">
+        <h1 class="oops">{{gtrans.translate('loading')}}</h1>
+      </div>
+      <div v-if="users.length == 0 && !availableData" class="error">
         <h1 class="oops">{{gtrans.translate('oops')}} ☹</h1>
       </div>
     </div>
@@ -42,11 +45,16 @@ export default {
     users:{
       type: Array,
       required: true,
-    }
+    },
+    availableData: {
+      type: Boolean,
+      default: true,
+    },
 
   },
 
   created: function(){
+    console.log(this.users)
     this.gsecurity = GSecurity;
     this.gsecurity.obtainSavedCredentials();
 

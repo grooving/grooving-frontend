@@ -70,7 +70,7 @@
                   <b-button class="continueButton" variant="primary" size="sm" v-on:click="login()">{{gtrans.translate('header_signIn')}}</b-button>
                 </b-dropdown-form>
                 <b-dropdown-divider style="margin-bottom:0px"/>
-                <router-link to="newUser">
+                <router-link to="/newUser">
                 <b-dropdown-item-button class="dropdownButton">
                   <span>{{gtrans.translate('header_newUser')}} </span>
                   <span class="signUp">{{gtrans.translate('header_signUp')}}</span>

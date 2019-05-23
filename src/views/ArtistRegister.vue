@@ -3,7 +3,7 @@
         <div class="title"><p>{{gtrans.translate('createArtistAccount')}}</p></div>
         <div class="bothCards">
             <div id="signup" class="tarjeta">
-                <b-form v-on:submit="createArtist">
+                <b-form v-on:submit.prevent="createArtist">
                     <div id="errorsDiv" class="validationErrors vertical-center">
                         <p style="margin: 0px;">{{errors}}</p>
                     </div>

@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-    <form v-on:submit.prevent="eventDataSelected()">
+    <form v-on:submit.prevent.prevent="eventDataSelected()">
         <div class="form-row">
             <div class="form-group col-12">
                 <textarea v-model="description" type="text" class="form-control" style="resize: none;" maxlength="500"

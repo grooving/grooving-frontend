@@ -34,7 +34,7 @@ export default {
     data: function() {
         return {
             gsecurity: GSecurity,
-            parentZoneId: undefined,
+            parentZoneId: 'all',
             zoneId: undefined,
             zoneName: undefined,
             gtrans: undefined,   
@@ -76,6 +76,7 @@ export default {
                 }  
                 document.getElementById("errorsDiv").style.display = "block";
                 window.scrollTo(0,0);
+            }).then( () => {
                 NProgress.done();
             });
         },
@@ -93,6 +94,9 @@ export default {
                 this.zoneId = this.zone.id;
                 this.zoneName = this.zone.name;
             }
+        }
+        if(this.zoneName == undefined) {
+            this.$router.push('manageZones/'+ this.parentZoneId);
         }
     },
 }

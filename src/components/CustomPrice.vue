@@ -4,7 +4,7 @@
             <label for="" class="subtitle" style="font-weight:bold;">{{gtrans.translate('perfomanceDuration')}} </label>
             <label for="" class="subtitle">&nbsp;{{duration}}h</label>
             <div class="input-group">
-                <input v-model="priceHour" type="number" class="form-control" :min="minPrice" step="0.01" v-on:change="priceSelected();totalPrice();" v-on:click="priceSelected();totalPrice();">
+                <input v-model="priceHour" type="number" class="form-control" :min="minPrice" step="0.01" v-on:change="priceSelected()">
                 <div class="input-group-append">
                     <span class="input-group-text">€/h</span>
                 </div>
@@ -31,7 +31,7 @@ export default {
     data: function() {
         return {
             priceHour: 8,
-            emitPrice: Math.round(this.priceHour * this.duration * 100) / 100,
+            emitPrice: undefined,
             gsecurity: GSecurity,
             gtrans: undefined,
         };
@@ -39,7 +39,11 @@ export default {
 
     methods: {
         priceSelected() {
-            this.$emit('priceSelected', this.emitPrice);
+            if(this.priceHour < parseFloat(this.minPrice)) {
+                this.priceHour = this.minPrice;
+            } 
+            this.$emit('priceSelected', Math.round(this.priceHour * this.duration * 100) / 100);
+            this.totalPrice();
         },
 
         totalPrice: function() {

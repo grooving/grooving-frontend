@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-        <form v-on:submit="updateZone">
+        <form v-on:submit.prevent="updateZone">
             <div class="form-row">
                 <div class="form-group col-12">
                     <span style="font-weight:bold;font-size:30px;">{{gtrans.translate('titleEditZone')}}</span>
@@ -42,7 +42,7 @@ export default {
             gsecurity: GSecurity,
             gtrans: undefined,
             tree: Array(),
-            parentZoneId: undefined,
+            parentZoneId: 'all',
             parentZoneName: undefined,
             zoneId: undefined,
             zoneName: undefined,
@@ -110,6 +110,9 @@ export default {
             this.parentZoneName = this.parentName;
             this.zoneId = this.zone.id;
             this.zoneName = this.zone.name;
+        }
+        if(this.zoneName == undefined) {
+            this.$router.push('manageZones/'+ this.parentZoneId);
         }
     }
 }

@@ -231,6 +231,8 @@ export default{
     // ----------------------------------------------------
 
     oops : "Nothing to show", // Se usa también en OffersList.vue
+    loading: 'Retrieving data...',
+    userId: "User ID: ",
 
     // ----------------------------------------------------
     //                   UsersList.vue
@@ -243,6 +245,9 @@ export default{
     // ----------------------------------------------------
 
     account_deleted : "Deleted Account",
+    noPending: "You have no pending offers at this moment",
+    noAccepted: "You have no accepted offers at this moment",
+    noRejected: "You have no rejected offers at this moment",
 
     // ----------------------------------------------------
     //                   PersonalInfo.vue
@@ -285,6 +290,7 @@ export default{
 
     artist_zone_submit: 'Submit',
     artist_zone_title: 'Edit Zones:',
+    addNewZone: "---- Add a new zone ----",
     
     // ----------------------------------------------------
     //                 HiringType.vue
@@ -346,6 +352,8 @@ export default{
     offer_reason: 'Reason',
     offer_thankYou: 'Thank you for rating the artist!',
     offer_rateNow: 'Rate now the artist',
+    offer_id: "Offer ID: ",
+    offer_userID: "User ID: ",
 
     // ----------------------------------------------------
     //                 Header.vue
@@ -402,6 +410,7 @@ export default{
 
     submit: 'Submit',
     artist_genre_title: 'Edit Genres:',
+    addNewGenre: "---- Add a new genre ----",
 
     // --------------------------------------------------------------------------------
     //                               CustomPrice.vue
@@ -730,10 +739,12 @@ export default{
     breach_subtitle: 'This message will be sent to all the users of the system',
     breach_subject: 'SUBJECT',
     breach_body: 'BODY',
-    breach_subject_p: 'Subject',
+    breach_subject_p: 'Enter a title for this notification ',
     breach_body_p: 'Enter the body of the message...',
     breach_send: 'SEND',
     breach_ok: 'The notification was created succesfully',
+
+    
 
 
 }

@@ -33,7 +33,7 @@
             <hr style="margin-top:0px;margin-bottom:0px;"/>
         </div>
         <div>
-            <form @submit="deleteAccount">
+            <form @submit.prevent="deleteAccount">
                 <div v-if="showDelete" id="otroButton" class="continueButtonDiv deleteAccountDiv">
                     <b-button id="deleteButton" class="cancelButton" variant="primary" size="sm" v-on:click="showButtons">{{gtrans.translate('deleteAccount')}}</b-button>
                 </div>

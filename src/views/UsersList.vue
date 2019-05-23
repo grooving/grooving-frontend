@@ -4,7 +4,7 @@
             <p style="margin: 0px;">{{errors}}</p>
         </div>
         <div class="container mt-5">
-            <UserList :listTitle="titleBasedOnQueries" :users="datos" @haveError="haveError"/>
+            <UserList :availableData="availableData" :key="availableData" :listTitle="titleBasedOnQueries" :users="datos" @haveError="haveError"/>
         </div>
     </div>
 </template>
@@ -43,6 +43,7 @@ export default {
             gsecurity: GSecurity,
             gtrans: undefined,
             errors: "",
+            availableData: true,
         }
     },
 
@@ -74,13 +75,19 @@ export default {
                     });
                 }
             }).catch(error => {
-                if (error.response.data.error == null){
-                    this.errors = error.message;
-                } else {
-                    this.errors = error.response.data.error;
-                }  
+                try {
+                    if (error.response.data.error == null){
+                        this.errors = error.message;
+                    } else {
+                        this.errors = error.response.data.error;
+                    }  
+                } catch {}
+
             }).then(() => {
-                NProgress.done()
+            if(this.datos.length == 0) {
+                this.availableData = false;
+            }
+            NProgress.done()
             });
         }
     },

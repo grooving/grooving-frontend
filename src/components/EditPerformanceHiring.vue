@@ -1,7 +1,7 @@
 <template>
     <div class="content">
         
-        <form v-on:submit="updatePerformance">
+        <form v-on:submit.prevent="updatePerformance">
             <div class="form-row">
                 <div class="form-group col-12">
                     <span style="font-weight:bold;font-size:30px;">{{gtrans.translate('performance_title')}}</span>
@@ -12,7 +12,7 @@
                     <div style="width:100%;margin-top:25px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('performance_description')}}</p>
                         <div class="input-group">
-                            <input v-model="description" type="text" class="form-control" maxlength="250" required>
+                            <textarea v-model="description" rows="5" style="resize:none" class="form-control" maxlength="250" required></textarea>
                         </div>
                     </div>
                     <div style="width:100%;margin-top:25px;">

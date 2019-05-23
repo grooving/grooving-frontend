@@ -30,7 +30,7 @@
                 </li>
 
                 <li class="nav-item section">
-                    <div class="nav-link goTo" data-toggle="collapse" data-target="#sidebarleft" ><span class="link" @click="changeLanguage('en')">EN </span><span>|</span><span class="link" @click="changeLanguage('es')"> ES</span></div>
+                    <div class="nav-link goTo" data-toggle="collapse" data-target="#sidebarleft" ><span class="link" @click="changeLanguage('en')">EN |</span><span></span><span class="link" @click="changeLanguage('es')"> ES</span></div>
                 </li>
                 
                 <!-- <li class="nav-item section">

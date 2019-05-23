@@ -15,8 +15,14 @@
                   :place="oferta.place" :userIcon="oferta.userIcon" :userName="oferta.userName"  :offerStatus="oferta.offerStatus" :imageURI="oferta.imageURI" :customerSurnames="oferta.customerSurnames" :artistId="oferta.artistId" :reason="oferta.reason"/>
               </div>
             </div>
-            <div v-if="pendingOffers.length == 0" class="error">
+            <div v-if="pendingOffers.length == 0 && availableData && acceptedOffers.length == 0 && rejectedOffers.length == 0" class="error">
+              <h1 class="oops">{{gtrans.translate('loading')}}</h1>
+            </div>
+            <div v-if="pendingOffers.length == 0 && !availableData" class="error">
               <h1 class="oops">{{gtrans.translate('oops')}} ☹</h1>
+            </div>
+            <div v-if="pendingOffers.length == 0 && availableData && ((acceptedOffers.length != 0) || (rejectedOffers.length != 0))" class="error">
+              <h1 class="oops">{{gtrans.translate('noPending')}} </h1>
             </div>
             </span>
             <span v-if="selectedTab == 1">
@@ -27,8 +33,14 @@
               </div>
                 <Chat :offerId="chatOfferId" :chatActive="chatActive" v-if="chatReady" @closeChat="chatReady=false" :key="chatOfferId" style="z-index: 8000; position:absolute"/>
             </div>
-            <div v-if="acceptedOffers.length == 0" class="error">
+            <div v-if="acceptedOffers.length == 0 && availableData && pendingOffers.length == 0 && rejectedOffers.length == 0" class="error">
+              <h1 class="oops">{{gtrans.translate('loading')}}</h1>
+            </div>
+            <div v-if="acceptedOffers.length == 0 && !availableData" class="error">
               <h1 class="oops">{{gtrans.translate('oops')}} ☹</h1>
+            </div>
+            <div v-if="acceptedOffers.length == 0 && !availableData && ((pendingOffers.length != 0) || (rejectedOffers.length != 0))" class="error">
+              <h1 class="oops">{{gtrans.translate('noAccepted')}} </h1>
             </div>
             </span>
             <span v-if="selectedTab == 2">
@@ -38,8 +50,14 @@
                   :place="oferta.place" :userIcon="oferta.userIcon" :userName="oferta.userName"  :offerStatus="oferta.offerStatus" :imageURI="oferta.imageURI" :customerSurnames="oferta.customerSurnames" :artistId="oferta.artistId" :reason="oferta.reason"/>
               </div>
             </div>
-            <div v-if="rejectedOffers.length == 0" class="error">
+            <div v-if="rejectedOffers.length == 0 && availableData && pendingOffers.length == 0 && acceptedOffers.length == 0" class="error">
+              <h1 class="oops">{{gtrans.translate('loading')}}</h1>
+            </div>
+            <div v-if="rejectedOffers.length == 0 && !availableData" class="error">
               <h1 class="oops">{{gtrans.translate('oops')}} ☹</h1>
+            </div>
+            <div v-if="rejectedOffers.length == 0 && !availableData && ((acceptedOffers.length != 0) || (pendingOffers.length != 0))" class="error">
+              <h1 class="oops">{{gtrans.translate('noRejected')}} </h1>
             </div>
             </span>
             
@@ -70,7 +88,6 @@ export default {
     TabbedSubMenu,
     Chat,
   },
-
   data: function() {
     return {
       gsecurity: GSecurity,
@@ -119,6 +136,7 @@ export default {
       ],
       selectedTab: 0,
       offers: Array(),
+      availableData: true,
     }
   },
 
@@ -249,8 +267,13 @@ export default {
       }
     }).catch(ex => {
         console.log(ex);
-        this.errors = ex.response.data.error;
+        try {
+          this.errors = ex.response.data.error;
+        } catch {}
     }).then(() => {
+      if(this.offers.length == 0) {
+        this.availableData = false;
+      }
       NProgress.done()
     });
   },
@@ -281,6 +304,7 @@ export default {
     font-size: 80px !important;
     font-weight: bold;
     color: rgba(0,0,0,.4);
+    margin-bottom: 10%;
   }
 
   .results{

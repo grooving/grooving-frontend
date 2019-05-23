@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-        <form @submit="saveInfo">
+        <form @submit.prevent="saveInfo">
             <div class="form-row">
                 <div class="form-group col-12">
                     

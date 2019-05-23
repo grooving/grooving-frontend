@@ -24,7 +24,7 @@ import GTrans from "@/utils/GTrans.js";
 
 const showPortfolioBaseURI = '/showPortfolio/';
 const hiringBaseURI = '/hiringType/';
-const registerURI = '/newUser/';
+const registerURI = '/newUser';
 
 export default {
     name: "ArtistCard",

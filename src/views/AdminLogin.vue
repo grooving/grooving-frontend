@@ -155,6 +155,7 @@
         justify-content: center;
         margin-left: 10px;
         margin-right: 10px;
+        margin-bottom: 6%;
         min-height: 335px;
         min-width: 335px;
         padding: 25px;
