@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URI = 'http://localhost:8000';
+const BASE_URI = 'https://groovy-fupload-test.herokuapp.com';
 const CORS_HEADERS = {
     'Access-Control-Allow-Origin': "*",
     'Access-Control-Allow-Credentials': 'true',
