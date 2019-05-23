@@ -703,7 +703,7 @@ export default{
     customerRegister_terms2: "Grooving's Terms and Conditions",
     customerRegister_signIn: 'SIGN IN',
     customerRegister_photoMaxSize: 'Max photo size reached',
-
+    customerRegister_uploadImage: 'Upload an image',
 
     // ----------------------------------------------------
     //                     ErrorView.vue

@@ -12,16 +12,21 @@
                     <div id="errorsDiv" class="validationErrors vertical-center">
                         <p style="margin: 0px;">{{errors}}</p>
                     </div>
-                    <div style="width:100%;margin-top:25px;overflow:auto;justify-content:center">
-                        <p class="card-text" style="font-weight:bold;display:inline-block;margin-bottom:0px;margin-top:10px">{{gtrans.translate('user_photo')}}</p>
-                        <img v-if="photo == null || photo == '' || photo == 'null'" src="@/assets/defaultPhoto.png" class="profileImage" v-bind:alt="this.gtrans.translate('image_alt')" style="float:right">
-                        <img v-else v-bind:src="photo" :key="photo" class="profileImage" v-bind:alt="this.gtrans.translate('image_alt')" style="float:right">
-                    </div>
+                    
+                    <!--<img v-if="photo" :src="photo" class="profileImage"/>
                     <div style="width:100%;margin-top:10px;">
                         <b-form-group>
-                            <b-form-input v-model="photo" v-bind:value="photo" maxlength="500" type="url"></b-form-input>
+                            <img v-if="photo" :src="photo" class="profileImage"/>
+                           <input type="file" class="custom-file-input"  id="customFile" @change="onFileChange">
                         </b-form-group>
-                    </div>
+                        -->
+
+                    <img v-if="photo" :src="photo" class="profileImage"/>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input"  id="customFile" @change="onFileChange">
+                        <label class="custom-file-label" for="customFile">{{gtrans.translate('customerRegister_uploadImage')}}</label>
+                    </div> 
+         
                     <hr style="margin-top:5px;margin-bottom:0px;"/>
                     <div style="width:100%;margin-top:25px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('user_firstName')}}</p>
@@ -112,6 +117,8 @@ export default {
             phoneNumber: '',
             artisticName: '',
             photo: '',
+            image64: '',
+            ext:'',
             password: '',
             confirmPassword: '',
             errors: "",
@@ -121,6 +128,32 @@ export default {
     },
 
     methods: {
+
+        createImage(file) {
+                var image = new Image();
+                var reader = new FileReader();
+                
+                reader.onload = (e) => {
+                    this.photo = e.target.result
+                    this.image64 = this.photo.split("base64,")[1];
+
+                };
+                reader.readAsDataURL(file);
+            
+            },
+            onFileChange(e) {
+                var files = e.target.files || e.dataTransfer.files;
+                if (!files.length) {
+                    return;
+                }
+                this.createImage(files[0]);
+          
+                var fileName = files[0].name;
+                
+                this.ext= fileName.split(".")[1];
+            
+                $('.custom-file-label').html(fileName);
+            },
         saveInfo() {
             NProgress.start();
             var uri = '';
@@ -135,7 +168,8 @@ export default {
                     "first_name": this.name,
                     "last_name": this.surnames,
                     "phone": this.phoneNumber,
-                    "photo": this.photo,
+                    "image64": this.image64,
+                    "ext": this.ext,
                     "paypalAccount": this.paypal,
                     "artisticName": this.artisticName,
                     "username": this.gsecurity.getUsername(),
@@ -164,7 +198,8 @@ export default {
                     "first_name": this.name,
                     "last_name": this.surnames,
                     "phone": this.phoneNumber,
-                    "photo": this.photo,
+                    "image64": this.image64,
+                    "ext": this.ext,
                     "username": this.gsecurity.getUsername(),
                     "password": this.password,
                     "confirm_password": this.confirmPassword,
@@ -220,7 +255,7 @@ export default {
                     this.phoneNumber = response.data.phone;
                     this.username = personalInformation['username'];
                     this.photo = response.data.photo;
-
+                    
                     if (role == 'ARTIST') {
                         this.paypal = response.data.paypalAccount;
                         this.artisticName = response.data.artisticName['artisticName'];
@@ -270,6 +305,15 @@ export default {
         justify-content: center;
     }
 
+    .custom-file {
+        margin-bottom: 16px;
+    }
+
+    .custom-file-label {
+        color: #6c757d;
+        font-weight: semibold;
+        text-align: left;
+    }
     .iconOffer  {
          font-size: 28px;
          float: right;

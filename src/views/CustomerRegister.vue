@@ -30,7 +30,7 @@
                     <img v-if="input.photo" :src="input.photo" class="profileImage"/>
                     <div class="custom-file">
                         <input type="file" class="custom-file-input"  id="customFile" @change="onFileChange">
-                        <label class="custom-file-label" for="customFile">Upload a Photo</label>
+                        <label class="custom-file-label" for="customFile">{{gtrans.translate('customerRegister_uploadImage')}}</label>
                     </div> 
                     <!--
                     <b-form-group>
@@ -106,8 +106,6 @@
                 reader.onload = (e) => {
                     this.input.photo = e.target.result
                     this.input.image64 = this.input.photo.split("base64,")[1];
-                    
-                    alert(this.input.image64)
                 };
                 reader.readAsDataURL(file);
             
@@ -134,7 +132,7 @@
                     this.errors = this.gtrans.translate('phone_error');
                     document.getElementById("errorsDiv").style.display = "block";
                     window.scrollTo(0,0);
-                }else if(this.input.image64.length>=1646000){
+                }else if(this.input.image64.length>=1500000){
                     this.errors = this.gtrans.translate('customerRegister_photoMaxSize');
                     document.getElementById("errorsDiv").style.display = "block";
                     
