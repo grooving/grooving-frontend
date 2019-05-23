@@ -132,7 +132,7 @@
                     this.errors = this.gtrans.translate('phone_error');
                     document.getElementById("errorsDiv").style.display = "block";
                     window.scrollTo(0,0);
-                }else if(this.input.image64.length>=1500000){
+                }else if(this.input.image64.length>=1995000){
                     this.errors = this.gtrans.translate('customerRegister_photoMaxSize');
                     document.getElementById("errorsDiv").style.display = "block";
                     

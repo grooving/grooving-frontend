@@ -109,6 +109,7 @@ export default {
 
     data: function() {
         return {
+            
             name: '',
             surnames: '',
             username: '',
@@ -157,6 +158,8 @@ export default {
         saveInfo() {
             NProgress.start();
             var uri = '';
+
+
             if (this.gsecurity.hasRole('ARTIST')) {
                 uri = endpoints.artist;
             } else if (this.gsecurity.hasRole('CUSTOMER')) {
@@ -164,6 +167,17 @@ export default {
             }
 
             if (this.gsecurity.getRole() == 'ARTIST') {
+                alert("EPEPEPEP")
+                if(this.image64.length>=1995000){
+                    alert("DENTRO")
+                    this.errors = this.gtrans.translate('customerRegister_photoMaxSize');
+                    document.getElementById("errorsDiv").style.display = "block";
+                    
+                    window.scrollTo(0,0);
+                    NProgress.done();
+            
+                }
+                else{
                 GAxios.put(uri + this.gsecurity.getId() + '/', {
                     "first_name": this.name,
                     "last_name": this.surnames,
@@ -193,7 +207,16 @@ export default {
                 }).then( () => {
                     NProgress.done();
                 })
+                }
             } else if (this.gsecurity.getRole() == 'CUSTOMER') {
+                if(this.image64.length>=1995000){
+                    this.errors = this.gtrans.translate('customerRegister_photoMaxSize');
+                    document.getElementById("errorsDiv").style.display = "block";
+                    
+                    window.scrollTo(0,0);
+                    NProgress.done();
+                }
+                else{
                 GAxios.put(uri + this.gsecurity.getId() + '/', {
                     "first_name": this.name,
                     "last_name": this.surnames,
@@ -221,6 +244,7 @@ export default {
                 }).then( () => {
                     NProgress.done();
                 })
+            }
             }
         },
     },
