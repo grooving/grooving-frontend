@@ -38,4 +38,5 @@ export default{
     user: '/user/',
     downloadPersonalData: '/downloadPersonalData/',
     changeLang: '/language/?lang=',
+    uploadImage: '/image/',
 }

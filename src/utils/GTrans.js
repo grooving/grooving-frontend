@@ -28,9 +28,8 @@ class GTrans {
         var res = "KEYWORD IS UNDEFINED";
 
         if(keyword){
-
             if(this.getLanguage() == 'en'){
-
+                
                 res = en[keyword];
 
             }else if(this.getLanguage() == 'es'){

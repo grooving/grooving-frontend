@@ -26,14 +26,17 @@
                     <div v-else>
                         <img :src="image" class="profileImage"/>
                     </div> -->
+
                     <img v-if="input.photo" :src="input.photo" class="profileImage"/>
-                    <!-- <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="customFile" @change="onFileChange">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input"  id="customFile" @change="onFileChange">
                         <label class="custom-file-label" for="customFile">Upload a Photo</label>
-                    </div> -->
+                    </div> 
+                    <!--
                     <b-form-group>
                         <b-form-input type="url" v-model="input.photo" maxlength="500" v-bind:placeholder="gtrans.translate('customerRegister_photo')"></b-form-input>
                     </b-form-group>
+                    -->
                     <b-form-group>
                         <b-form-input v-model="input.firstName" maxlength="30" v-bind:placeholder="gtrans.translate('customerRegister_firstName')" required></b-form-input>
                     </b-form-group>
@@ -84,7 +87,10 @@
                     lastName: "",
                     email: "",
                     phoneNumber: "",
+                    image64: "",
+                    ext:"",
                     photo: "",
+                    
                 },
                 errors: "",
                 status: 'not_accepted',
@@ -92,15 +98,19 @@
         },
 
         methods: {
-            /*createImage(file) {
+            createImage(file) {
                 var image = new Image();
                 var reader = new FileReader();
-                var vm = this;
+          
 
                 reader.onload = (e) => {
-                    vm.image = e.target.result;
+                    this.input.photo = e.target.result
+                    this.input.image64 = this.input.photo.split("base64,")[1];
+                    
+                    alert(this.input.image64)
                 };
                 reader.readAsDataURL(file);
+            
             },
             onFileChange(e) {
                 var files = e.target.files || e.dataTransfer.files;
@@ -108,9 +118,13 @@
                     return;
                 }
                 this.createImage(files[0]);
+          
                 var fileName = files[0].name;
+        
+                this.input.ext= fileName.split(".")[1];
+            
                 $('.custom-file-label').html(fileName);
-            },*/
+            },
             createCustomer() {
                 if (this.status == 'not_accepted') {
                     this.errors = this.gtrans.translate('terms_error');
@@ -119,6 +133,11 @@
                 } else if (parseInt(this.input.phoneNumber, 10) < 600000000 || parseInt(this.input.phoneNumber, 10) > 999999999) {
                     this.errors = this.gtrans.translate('phone_error');
                     document.getElementById("errorsDiv").style.display = "block";
+                    window.scrollTo(0,0);
+                }else if(this.input.image64.length>=1646000){
+                    this.errors = this.gtrans.translate('customerRegister_photoMaxSize');
+                    document.getElementById("errorsDiv").style.display = "block";
+                    
                     window.scrollTo(0,0);
                 } else {
                     NProgress.start();
@@ -129,7 +148,8 @@
                         "confirm_password": this.input.confirmPassword,
                         "username": this.input.username,
                         "email": this.input.email,
-                        "photo": this.input.photo,
+                        "image64": this.input.image64,
+                        "ext": this.input.ext,
                         "phone": this.input.phoneNumber,
                     }).then(response => {
                         console.log(response);

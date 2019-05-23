@@ -697,6 +697,7 @@ export default{
     customerRegister_terms1: 'Creando la cuenta confirmas que estás de acuerdo con los',
     customerRegister_terms2: "Términos y Condiciones de Grooving",
     customerRegister_signIn: 'REGISTRAR',
+    customerRegister_photoMaxSize: 'Tamaño máximo de imagen alcanzado',
 
     // ----------------------------------------------------
     //                     ErrorView.vue
