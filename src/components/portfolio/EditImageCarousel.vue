@@ -267,6 +267,11 @@ export default {
     align-items: center;  /*Aligns vertically center */
   }
 
+  #urlForm{
+    max-width: 95%;
+    margin: 0 auto;
+  }
+
 </style>
 
 
