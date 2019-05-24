@@ -20,14 +20,28 @@
             <div >
                 <div >
         
-                    <div class="inputForm ">
-                        <input v-if="this.editBanner" class="form-control" type="file" @change="onFileChange('BANNER', $event)"  
-                            v-bind:placeholder="this.gtrans.translate('banner_placeholder')" >
+                    <div class="inputForm">
+                        <div v-if="this.editBanner" class="custom-file">
+                            <input type="file" accept="image/*" class="custom-file-input"  @change="onFileChange('BANNER', $event)"
+                            v-bind:placeholder="this.gtrans.translate('banner_placeholder')">
+                            <label v-if="this.gtrans.getLanguage() == 'es'" class="custom-file-label labelES" for="customFile"></label>
+                            <label v-else class="custom-file-label labelEN" for="customFile"></label>
+                            <small class="form-text text-muted">
+                                {{gtrans.translate('image_help')}}
+                            </small>
+                        </div> 
                     </div>
 
-                    <div class="inputForm ">
-                        <input v-if="this.editPhoto" class="form-control" type="file" @change="onFileChange('PROFILE', $event)"  
-                            v-bind:placeholder="this.gtrans.translate('profileImage_placeholder')" >
+                    <div class="inputForm">
+                        <div v-if="this.editPhoto" class="custom-file">
+                            <input type="file" accept="image/*" class="custom-file-input"  @change="onFileChange('PROFILE', $event)"
+                            v-bind:placeholder="this.gtrans.translate('profileImage_placeholder')">
+                            <label v-if="this.gtrans.getLanguage() == 'es'" class="custom-file-label labelES" for="customFile"></label>
+                            <label v-else class="custom-file-label labelEN" for="customFile"></label>
+                            <small class="form-text text-muted">
+                                {{gtrans.translate('image_help')}}
+                            </small>
+                        </div> 
                     </div>
 
                     
@@ -272,6 +286,15 @@ export default {
         font-weight: semibold;
         text-align: left;
     }
+
+    .custom-file-input ~ .custom-file-label.labelES::after {
+        content: "Buscar" !important;
+    }
+
+    .custom-file-input ~ .custom-file-label.labelEN::after {
+        content: "Browse" !important;
+    }
+
     #main_photo {
         color: #6c757d;
         font-weight: semibold;

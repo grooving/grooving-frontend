@@ -26,6 +26,9 @@
                         <input type="file" accept="image/*" class="custom-file-input"  id="customFile" @change="onFileChange">
                         <label v-if="this.gtrans.getLanguage() == 'es'" class="custom-file-label labelES" for="customFile"></label>
                         <label v-else class="custom-file-label labelEN" for="customFile"></label>
+                        <small class="form-text text-muted">
+                            {{gtrans.translate('image_help')}}
+                        </small>
                     </div> 
          
                     <hr style="margin-top:5px;margin-bottom:0px;"/>
