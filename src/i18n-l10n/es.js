@@ -77,7 +77,7 @@ export default{
 
     artist_images : "Expositor de Imágenes", // Se usa también en ImageCarousel.vue
     image_placeholder : "Agrega la URL aquí...",
-    image_help : "Debe ser un enlace a una imagen .png, .gif, .jpg o .jpeg.",
+    image_help : "Debe ser una imagen .png, .gif, .jpg o .jpeg.",
 
     // ----------------------------------------------------
     //                EditProfileInfo.vue
@@ -697,6 +697,8 @@ export default{
     customerRegister_terms1: 'Creando la cuenta confirmas que estás de acuerdo con los',
     customerRegister_terms2: "Términos y Condiciones de Grooving",
     customerRegister_signIn: 'REGISTRAR',
+    customerRegister_photoMaxSize: 'Tamaño máximo de imagen alcanzado',
+    customerRegister_uploadImage: 'Suba una imagen',
 
     // ----------------------------------------------------
     //                     ErrorView.vue

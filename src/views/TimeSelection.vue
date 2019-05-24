@@ -1,11 +1,11 @@
 <template>
 <div class="hiringProcessContainer">
+    <div v-if="errors" class="validationErrors">
+        <p>{{errors}}</p>
+    </div>
     <div class="title"><p style="text-align: left !important;">{{gtrans.translate('timeRange')}}</p></div>
     
     <div class="everything">
-        <div v-if="errors" class="validationErrors">
-            <p>{{errors}}</p>
-        </div>
         <div class="artistCard"><ArtistCard 
             :artistName="this.artistData.artisticName" :artistImage="this.artistData.photo" 
             :artistGenres="this.artistData.genres" :artistId="this.artistData.artistId" :price="this.cardPrice"/>

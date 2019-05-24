@@ -60,7 +60,7 @@ export default{
 
     artist_images : "Image Showcase", // Se usa también en ImageCarousel.vue
     image_placeholder : "Insert your URL here...",
-    image_help : "Must be a .png, .gif, .jpg or .jpeg link to an image.",
+    image_help : "Must be a .png, .gif, .jpg or .jpeg image.",
 
     // ----------------------------------------------------
     //                EditProfileInfo.vue
@@ -702,6 +702,8 @@ export default{
     customerRegister_terms1: 'By creating an account you agree to',
     customerRegister_terms2: "Grooving's Terms and Conditions",
     customerRegister_signIn: 'SIGN IN',
+    customerRegister_photoMaxSize: 'Max photo size reached',
+    customerRegister_uploadImage: 'Upload an image',
 
     // ----------------------------------------------------
     //                     ErrorView.vue

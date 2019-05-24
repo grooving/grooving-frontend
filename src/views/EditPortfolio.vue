@@ -6,6 +6,7 @@
         <p style="margin: 0px;">{{errors}}</p>
       </div>
       <EditPhoto :artistImage="this.d_portfolioMainPhoto" :artistBanner="this.d_portfolioBanner"/>
+      <p hidden v-on:update:banner="this.d_portfolioBanner = $event"> </p>
       <EditArtistInfo :key="updateArtistInfoKey"/>
        
 
