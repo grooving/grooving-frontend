@@ -22,12 +22,12 @@
         
                     <div class="inputForm ">
                         <input v-if="this.editBanner" class="form-control" type="file" @change="onFileChange('BANNER', $event)"  
-                            v-bind:placeholder="this.gtrans.translate('banner_placeholder')"  >
+                            v-bind:placeholder="this.gtrans.translate('banner_placeholder')" >
                     </div>
 
                     <div class="inputForm ">
                         <input v-if="this.editPhoto" class="form-control" type="file" @change="onFileChange('PROFILE', $event)"  
-                            v-bind:placeholder="this.gtrans.translate('profileImage_placeholder')"  >
+                            v-bind:placeholder="this.gtrans.translate('profileImage_placeholder')" >
                     </div>
 
                     
@@ -97,7 +97,18 @@ export default {
                 this.photo = e.target.result;
                 
                 this.image64 = this.photo.split("base64,")[1];
-                
+                if(this.image64.length>=1995000){
+                  
+                  this.$parent.errors = this.gtrans.translate('customerRegister_photoMaxSize');
+                  
+                  document.getElementById("errorsDiv").style.display = "block";
+                  
+                  window.scrollTo(0,0);
+           
+                  NProgress.done();
+                }
+
+                else{
                 this.ext = ext;
                 this.imgtype = typeImg;
                 this.oldUrl = parentUrl;
@@ -134,7 +145,7 @@ export default {
                         NProgress.done();
 
                     })
-                };
+                };}
                     reader.readAsDataURL(file);
                 },
         onFileChange(typeImg, e) {

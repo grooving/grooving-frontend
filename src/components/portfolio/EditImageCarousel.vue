@@ -17,10 +17,9 @@
           <div class="col-12 vertical-center">
             <div class="form-group" style="width: inherit;">
               <div class="row">
-                <input @keypress.enter="add($event)" type="file"  class="form-control col-8" aria-describedby="imageCarouselInput"  v-bind:placeholder="this.gtrans.translate('image_placeholder')" />
-                <button type="button" class="addElementButton col-4" @click="add($event)">
-                  {{gtrans.translate('add_carousel')}}
-                </button>
+                <input @change="onFileChange($event)" type="file" id="customFile" class="custom-file-input" aria-describedby="imageCarouselInput"  v-bind:placeholder="this.gtrans.translate('image_placeholder')" />
+                <label v-if="this.gtrans.getLanguage() == 'es'" class="custom-file-label labelES" for="customFile"></label>
+                <label v-else class="custom-file-label labelEN" for="customFile"></label>
               </div>
               <small :class="{'imageCarouselInput' : showImageCarouselInputErrors}" class="form-text text-muted">
                 {{gtrans.translate('image_help')}}
@@ -44,6 +43,8 @@
 import OwlImageCarousel from './OwlImageCarousel.vue';
 import GSecurity from "@/security/GSecurity.js"
 import GTrans from "@/utils/GTrans.js"
+import endpoints from '@/utils/endpoints.js';
+import GAxios from '@/utils/GAxios.js'
 
 export default {
 
@@ -67,6 +68,72 @@ export default {
 
   methods: {
 
+    img_get_url(file, ext) {
+           
+            var reader = new FileReader();
+            
+            reader.onload = (e) => {
+                NProgress.start()
+                this.photo = e.target.result;
+                this.image64 = this.photo.split("base64,")[1];
+                
+                if(this.image64.length>=1995000){
+                  
+                  this.$parent.errors = this.gtrans.translate('customerRegister_photoMaxSize');
+                  
+                  document.getElementById("errorsDiv").style.display = "block";
+                  
+                  window.scrollTo(0,0);
+           
+                  NProgress.done();
+                }
+                else{
+                this.ext = ext;
+                this.imgtype = "CAROUSEL";
+                
+                var uri = '';
+                uri = endpoints.uploadImage;
+                GAxios.put(uri, {
+                    
+                    "imgData": this.image64,
+                    "imgExtension":this.ext,
+                    "oldUrl": null,
+                    "type": this.imgtype,
+
+                    }).then(response => {
+                        this.addImageURL = response.data['imgUrl'];
+                        this.add(e)
+                        console.log(response);
+                    }).catch(ex => {
+                        
+                        this.errors = ex.response.data.error;
+                        document.getElementById("errorsDiv").style.display = "block";
+                        window.scrollTo(0,0);
+                    }).then( () => {
+                        NProgress.done();
+
+                    })
+                };}
+                    reader.readAsDataURL(file);
+                    
+                },
+        onFileChange(e) {
+            
+            var files = e.target.files || e.dataTransfer.files;
+            if (!files.length) {
+                return;
+            }   
+    
+            var fileName = files[0].name;
+            
+            this.ext= fileName.split(".")[1];
+            
+            this.img_get_url(files[0], this.ext);
+            
+            //$('.custom-file-label').html(this.response);
+            
+        },
+
     deleteCarouselImage: function(id){
       this.d_photosInfo = this.d_photosInfo.filter(x => x.id != id);
       this.$parent.d_portfolioImages = this.d_photosInfo;
@@ -79,7 +146,7 @@ export default {
     },
 
     add: function(event){
-
+      
       if(this.addImageURL){
 
         if(this.addImageURL.endsWith('.png') || this.addImageURL.endsWith('.jpg') || this.addImageURL.endsWith('.jpeg') || this.addImageURL.endsWith('.gif')){
@@ -164,11 +231,22 @@ export default {
     background:none; 
     border:none;
   }
+  .custom-file-input ~ .custom-file-label.labelES::after {
+        content: "Buscar" !important;
+    }
 
+  .custom-file-input ~ .custom-file-label.labelEN::after {
+        content: "Browse" !important;
+    }
   .imageCarouselInput{
     color: #f50057 !important;
   }
 
+  .custom-file-label .form-control{
+        color: #6c757d;
+        font-weight: semibold;
+        text-align: left;
+    }
   .horizontal-center{
     margin: 0 auto;
   }

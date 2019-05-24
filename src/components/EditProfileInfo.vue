@@ -168,9 +168,9 @@ export default {
             }
 
             if (this.gsecurity.getRole() == 'ARTIST') {
-                alert("EPEPEPEP")
+                
                 if(this.image64.length>=1995000){
-                    alert("DENTRO")
+                    
                     this.errors = this.gtrans.translate('customerRegister_photoMaxSize');
                     document.getElementById("errorsDiv").style.display = "block";
                     
