@@ -111,6 +111,10 @@ export default {
 
 <style>
 
+html {
+  overflow-y: scroll;
+}
+
 * {
     font-family: "Archivo"
 }
