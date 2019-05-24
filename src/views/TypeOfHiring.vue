@@ -164,7 +164,7 @@ export default {
 
         var authorizedGAxios = GAxios;
         var GAxiosToken = this.gsecurity.getToken();
-        authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
+        //authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
 
         // ** Artist Information - Left Card **
         authorizedGAxios.get(endpoints.portfolio + this.artistId + "/")
