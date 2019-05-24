@@ -12,7 +12,7 @@
               <b-form-select v-model="newGenre" >
                   <option disabled>{{gtrans.translate('addNewGenre')}}</option>
                   <option v-for="opt in tree" :key="opt.id" :value="opt">
-                      <span v-for="times in opt.depth" :key="times">&nbsp;&nbsp;</span>
+                      <span v-for="times in opt.depth-1" :key="times">&nbsp;&nbsp;</span>
                       <span>{{opt.name}}</span>
                   </option>
               </b-form-select>
@@ -66,7 +66,7 @@ export default {
 
     var all = this.genres;
     if(this.selectedGenres.length == 0 || this.selectedGenres[0].name != all.name) {
-      this.tree.push({id:all['id'], name: all['name'], children:all['children'], depth: 0});
+      //this.tree.push({id:all['id'], name: all['name'], children:all['children'], depth: 0});
 
       if (this.genres.children != null) {
         var cat1 = this.genres.children;
@@ -110,7 +110,7 @@ export default {
 
     var all = this.genres;
     if(this.selectedGenres.length == 0 || this.selectedGenres[0].name != all.name) {
-      this.tree.push({id:all['id'], name: all['name'], children:all['children'], depth: 0});
+      //this.tree.push({id:all['id'], name: all['name'], children:all['children'], depth: 0});
 
       if (this.genres.children != null) {
         var cat1 = this.genres.children;
