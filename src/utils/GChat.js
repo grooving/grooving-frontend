@@ -1,6 +1,6 @@
 
 // Server socket
-const HOST_URI = 'groovy-fupload-test.herokuapp.com';
+const HOST_URI = 'groovy-bupload-test.herokuapp.com';
 
 // Both normal and secure forms
 const SUPPORTED_PROTOCOLS = ['ws', 'wss']
