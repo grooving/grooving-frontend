@@ -31,7 +31,7 @@
                     </div> -->
                     <img v-if="input.photo" :src="input.photo" class="profileImage"/>
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input"  id="customFile" @change="onFileChange">
+                        <input type="file" accept="image/*" class="custom-file-input"  id="customFile" @change="onFileChange">
                         <label v-if="this.gtrans.getLanguage() == 'es'" class="custom-file-label labelES" for="customFile"></label>
                         <label v-else class="custom-file-label labelEN" for="customFile"></label>
                     </div> 
@@ -229,6 +229,12 @@
         color: #6c757d;
         font-weight: semibold;
         text-align: left;
+        min-width: 100%;
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        right: 0;
+        white-space: nowrap;
     }
 
     .custom-file-input ~ .custom-file-label.labelES::after {

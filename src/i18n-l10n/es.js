@@ -77,7 +77,7 @@ export default{
 
     artist_images : "Expositor de Imágenes", // Se usa también en ImageCarousel.vue
     image_placeholder : "Agrega la URL aquí...",
-    image_help : "Debe ser un enlace a una imagen .png, .gif, .jpg o .jpeg.",
+    image_help : "Debe ser una imagen .png, .gif, .jpg o .jpeg.",
 
     // ----------------------------------------------------
     //                EditProfileInfo.vue
