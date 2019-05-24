@@ -106,7 +106,7 @@ export default {
                         console.log(response);
                     }).catch(ex => {
                         
-                        this.errors = ex.response.data.error;
+                        this.$parent.errors = ex.response.data.error;
                         document.getElementById("errorsDiv").style.display = "block";
                         window.scrollTo(0,0);
                     }).then( () => {
