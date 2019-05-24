@@ -2,17 +2,17 @@
   <div id="app">
     <div class="content">
     <div class="Header">
-      <Header @toBlur='blurred' @refreshRightMenu='refreshRightMenu'/>
+      <Header @toBlur='blurred' @refreshRightMenu="refreshRightMenu" />
     </div>
     <div class="RightMenu">
       <RightMenu  @samePage='samePage' :key="refreshRM"/>
     </div>
     <div class="LeftMenu">
-      <LeftMenu @samePage='samePage'/>
+      <LeftMenu @samePage='samePage' :key="refreshRM"/>
     </div>
     <router-view :key="$route.fullPath" id="mainContent"/>
     </div>
-    <footer><Footer @samePage='samePage' @refreshRightMenu='refreshRightMenu'/></footer>
+    <footer><Footer @samePage='samePage' @refreshRightMenu="refreshRightMenu"/></footer>
     <cookie-law :key="refreshC" theme="blood-orange--rounded">
       <div slot-scope="props">
         <p>

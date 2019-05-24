@@ -7,7 +7,10 @@
           data-target="#sidebarleft" >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="ml-2 vertical-center goTo" @click="goTo('/')">
+          <div v-if="!gsecurity.hasRole('ADMIN')" class="ml-2 vertical-center goTo" @click="goTo('/')">
+            <img src="@/assets/logos/logo_name.png" width="100px">
+          </div>
+          <div v-if="gsecurity.hasRole('ADMIN')" class="ml-2 vertical-center goTo" @click="goTo('/statistics')">
             <img src="@/assets/logos/logo_name.png" width="100px">
           </div>
         </div>
@@ -47,12 +50,12 @@
                 </a>
               </button>
             </li>
-            <li v-else>
-              <b-dropdown :disabled="loginDisabled" id="ddown-form" ref="ddown" class="m-2" right>
+            <li v-else >
+              <b-dropdown id="ddown-form" ref="ddown" class="m-2" right >
                 <template slot="button-content">
-                  <i class="material-icons align-middle">account_circle</i>
+                  <i class="material-icons align-middle" @click="test">account_circle</i>
                 </template>
-                <b-dropdown-form class="loginDropdown">
+                <b-dropdown-form class="loginDropdown" >
                   <b-form-group class="loginLabel" v-bind:label="gtrans.translate('header_logIn')" label-for="ddown-form-email">
                     <b-form-input
                       class="loginInput"
@@ -61,6 +64,7 @@
                       maxlength="30"
                       v-bind:placeholder="gtrans.translate('header_username')"
                       id="ddown-form-email"
+                      v-on:keydown.enter="login()"
                     ></b-form-input>
                   </b-form-group>
                   <b-form-group>
@@ -164,6 +168,9 @@ export default {
       this.searchQuery = arguments[0];
       this.search();
     },
+    test() {
+      this.$emit('refreshRightMenu');
+    },
     goTo(path) {
         this.$emit('refreshRightMenu');
         this.url = this.$store.getters.sideMenus.url;
@@ -193,12 +200,13 @@ export default {
     },
 
     search: function() {
-
+      this.$emit('refreshRightMenu');
       if(this.gsecurity && this.gsecurity.hasRole('ADMIN'))
         window.location = ADMIN_SEARCH_URI + this.searchQuery;
       else
         window.location = ARTIST_SEARCH_URI + this.searchQuery;
       //window.location.reload();
+      
     },
 
 
