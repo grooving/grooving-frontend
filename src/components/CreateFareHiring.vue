@@ -14,7 +14,7 @@
                     <div style="width:100%;margin-top:25px;">
                         <p class="card-text" style="font-weight:bold;display:inline-block;">{{gtrans.translate('fare_fixedPrice')}}</p>
                         <div class="input-group">
-                            <input v-model="fixedPrice" type="number" class="form-control" min="0.01" step="0.01" required>
+                            <input v-model="fixedPrice" type="number" class="form-control" min="20" step="0.01" required>
                             <div class="input-group-append">
                                 <span class="input-group-text">€/h</span>
                             </div>
