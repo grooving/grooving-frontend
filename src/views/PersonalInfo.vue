@@ -92,11 +92,11 @@ export default {
             }).then(response => {
                 setTimeout(function(){ window.location.reload(); }, 2000);
                 this.$swal(this.gtrans.translate('toast_title'), this.gtrans.translate('toast_subtitle'), "success");
-                console.log(response);
+                //console.log(response);
                 this.gsecurity.deauthenticate();
                 this.$router.push({path: "/"});
             }).catch(ex => {
-                console.log(ex);
+                //console.log(ex);
             }).then( () => {
                 NProgress.done();
             })
@@ -118,11 +118,11 @@ export default {
             NProgress.start();
             GAxios.post(endpoints.downloadPersonalData, {
             }).then(response => {
-                console.log(response);
+                //console.log(response);
                 //document.getElementById("downloadButton").style.display="none";
                 document.getElementById("downloadMessage").style.display="block";
             }).catch(ex => {
-                console.log(ex);
+                //console.log(ex);
             }).then( () => {
                 NProgress.done();
             })
@@ -164,8 +164,8 @@ export default {
                 authorizedGAxios.get(endpoints.customerPersonalInformation)
                     .then(response => {
                         var personalInformation = response.data.user;
-                        console.log(personalInformation);
-                        console.log(response);
+                        //console.log(personalInformation);
+                        //console.log(response);
                         
                         this.name=personalInformation['first_name']
                         this.userSurnames = personalInformation['last_name'];
@@ -184,8 +184,8 @@ export default {
                 authorizedGAxios.get(endpoints.artistPersonalInformation)
                     .then(response => {
                         var personalInformation = response.data.user;
-                        console.log(personalInformation);
-                        console.log(response);
+                        //console.log(personalInformation);
+                        //console.log(response);
                         
                         this.name=personalInformation['first_name']
                         this.userSurnames = personalInformation['last_name'];
@@ -195,7 +195,7 @@ export default {
                         this.paypal = response.data.paypalAccount;
                         this.artisticName = response.data.artisticName['artisticName'];
                         this.userPhoto = response.data.photo;
-                        console.log('HOLAAAA')
+                        //console.log('HOLAAAA')
                 }).then(() => {
                     NProgress.done()
                 });  

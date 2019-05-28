@@ -60,7 +60,7 @@
                     "subject": this.subject,
                     "body": this.body
                 }).then(response => {
-                    console.log(response);
+                    //console.log(response);
                     this.errors = undefined;
                     this.ok = this.gtrans.translate('breach_ok');
                     //alert(this.ok);
@@ -68,8 +68,8 @@
                     this.body="";
                     //this.$router.push({name: "breachNotification"});
                 }).catch(ex => {
-                    console.log(ex);
-                    console.log(ex.response.data.error);
+                    //console.log(ex);
+                    //console.log(ex.response.data.error);
                     this.errors = ex.response.data.error;
                     this.ok = undefined;
                     window.scrollTo(0,0);
@@ -92,7 +92,7 @@
             this.gtrans = new GTrans(this.gsecurity.getLanguage());
 
             if(!this.gsecurity.hasRole('ADMIN')) {
-                console.log("Error: You are not an administrator so you can't create breach notifications");
+                //console.log("Error: You are not an administrator so you can't create breach notifications");
                 this.$router.push({name: "error"});
             }
         },

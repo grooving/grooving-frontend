@@ -80,7 +80,7 @@ export default {
                 "name_en": this.genreNameEN,
                 "parentGender": this.parentGenreId
             }).then(response => {
-                console.log(response);
+                //console.log(response);
                 if(this.parentGenreId == 1){
                     this.$router.push('/manageGenres/all');
                 }
@@ -89,8 +89,8 @@ export default {
                 }
                 
             }).catch(ex => {
-                console.log(ex);
-                console.log(ex.response.data.error);
+                //console.log(ex);
+                //console.log(ex.response.data.error);
                 this.errors = ex.response.data.error;
                 document.getElementById("errorsDiv").style.display = "block";
             }).then( () => {

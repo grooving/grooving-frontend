@@ -132,10 +132,10 @@
                         "photo": this.input.photo,
                         "phone": this.input.phoneNumber,
                     }).then(response => {
-                        console.log(response);
+                        //console.log(response);
                         this.$router.push({name: "registerConfirmation", params: {created: true}});
                     }).catch(ex => {
-                        console.log(ex.response.data.error);
+                        //console.log(ex.response.data.error);
                         this.errors = ex.response.data.error;
                         document.getElementById("errorsDiv").style.display = "block";
                         this.status = 'not_accepted';

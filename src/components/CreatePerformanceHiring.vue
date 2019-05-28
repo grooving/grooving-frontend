@@ -71,11 +71,11 @@ export default {
                 "hours": this.duration,
                 "price": this.fixedPrice
             }).then(response => {
-                console.log(response);
+                //console.log(response);
                 this.$router.push({name: "hiringSettings"});
             }).catch(ex => {
-                console.log(ex);
-                console.log(ex.response.data.error);
+                //console.log(ex);
+                //console.log(ex.response.data.error);
                 this.errors = ex.response.data.error;
                 document.getElementById("errorsDiv").style.display = "block";
             }).then( () => {

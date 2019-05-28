@@ -53,7 +53,7 @@ export default {
 
         let offerId = this.$route.params['offerId'];
         this.gchat = new GChat("ws", offerId, this.gsecurity.getToken(), this.gsecurity.getUsername());
-        console.log(this.gchat)
+        //console.log(this.gchat)
 
         this.gchat.getWebSocket().addEventListener("message", (event) => {
             this.newMessage(event)

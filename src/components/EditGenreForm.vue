@@ -98,7 +98,7 @@ export default {
                 "id":this.genreId,
                 "parentGender":this.parentId
             }).then(response => {
-                console.log(response);
+                //console.log(response);
                 if(this.parentId==1){
                     this.$router.push('manageGenres/all');
                 }
@@ -106,8 +106,8 @@ export default {
                     this.$router.push('manageGenres/'+this.parentId);
                 }
             }).catch(ex => {
-                console.log(ex);
-                console.log(ex.response.data.error);
+                //console.log(ex);
+                //console.log(ex.response.data.error);
                 this.errors = ex.response.data.error;
                 document.getElementById("errorsDiv").style.display = "block";
             }).then( () => {
@@ -141,7 +141,7 @@ export default {
             this.genreNameES = response.data.name_es;
             this.genreNameEN = response.data.name_en;
             var children = response.data.children;
-            //console.log(children);
+            ////console.log(children);
             //alert(children.length);
 
             if(children.length == 0){
@@ -151,11 +151,11 @@ export default {
                 this.canChangeParent = 0;
             }
         }).catch(ex => {
-            console.log(ex);
+            //console.log(ex);
         });
 
         GAxios.get(endpoints.genres+'?tree=true').then(response =>{
-            //console.log(response);
+            ////console.log(response);
             this.genresList = response.data;
             var genreRoot = response.data;
             var childrenRoot = response.data.children;
@@ -164,18 +164,18 @@ export default {
 
             for(var i=0; i<childrenRoot.length; i++){
                 var genre = childrenRoot[i];
-                //console.log(genre);
-                //console.log(this.genreId);
+                ////console.log(genre);
+                ////console.log(this.genreId);
                 if(genre.id != this.genreId){
                     this.tree.push(genre);
 
                 }
             }
-            console.log(this.tree);
+            //console.log(this.tree);
 
 
         }).catch(ex => {
-            console.log(ex);
+            //console.log(ex);
         })
     },
 }

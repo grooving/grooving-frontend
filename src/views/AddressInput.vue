@@ -93,8 +93,8 @@ export default {
 
                 }).catch( e => {
 
-                    console.log('Error: Could not set address in VueX');
-                    console.log(e);
+                    //console.log('Error: Could not set address in VueX');
+                    //console.log(e);
                 });
 
             }
@@ -124,23 +124,23 @@ export default {
         // ###### SECURITY ACCESS CHECKS ###### 
 
         if(!this.$gsecurity.isAuthenticated()) {
-            console.log('Error')
+            //console.log('Error')
             this.$router.push({name: "error"});
         }
 
         if(!this.$gsecurity.hasRole('CUSTOMER')) {
-            console.log("Error: You are not a customer so you can't hire an artist");
+            //console.log("Error: You are not a customer so you can't hire an artist");
             this.$router.push({name: "error"});
         }
 
         if(!this.artistId || !vuexArtistId || this.artistId != vuexArtistId){
-            console.log("Error: ArtistId not provided or VueX not matching URL");
+            //console.log("Error: ArtistId not provided or VueX not matching URL");
             location.replace("/")
         }
 
         // Check the user does not access the view directly
         if(!PaymentProcess.checkViewRequirements(PaymentProcess.state, this.hiringType, "AddressInput")){
-            console.log('Error: Direct access to the view was detected')
+            //console.log('Error: Direct access to the view was detected')
             location.replace("/#/hiringType/" + this.artistId + "/")
         }
 

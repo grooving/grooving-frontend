@@ -43,7 +43,7 @@ export default {
       GAxios.get(endpoints.artists).then(response => {
 
         var artists = response.data;
-        console.log(artists)
+        //console.log(artists)
 
         for(var i = 0; i < artists.length; i++){
           var genres = Array();
@@ -61,7 +61,7 @@ export default {
 
         }
       }).catch(ex => {
-          console.log(ex);
+          //console.log(ex);
       }).then(() => {
         if(this.datos.length == 0) {
           this.availableData = false;

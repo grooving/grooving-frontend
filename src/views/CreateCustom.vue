@@ -39,7 +39,7 @@ export default {
             
             authorizedGAxios.get(endpoints.paymentPackages + this.gsecurity.getId() + '/')
                 .then(response => {
-                    console.log(response.data);
+                    //console.log(response.data);
                     var packages = response.data;
 
                     for (var i = 0; i < packages.length; i++) {
@@ -55,7 +55,7 @@ export default {
                     }
                     
                 }).catch(ex => {
-                    console.log(ex);
+                    //console.log(ex);
                 }).then(() => {
                     NProgress.done()
                 });           

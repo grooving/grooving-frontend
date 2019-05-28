@@ -92,7 +92,7 @@
                 this.$router.push("/error")
             }
             this.userName = this.$store.getters.paymentConfirmation.userName;
-            console.log(this.userName);
+            //console.log(this.userName);
             this.userPhoto = this.$store.getters.paymentConfirmation.userPhoto;
             this.offerPrice = this.$store.getters.paymentConfirmation.offerPrice;
 

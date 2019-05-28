@@ -68,8 +68,8 @@ export default {
         ...mapActions(['setPaymentConfirmation']),
         
         detailsOffer(value){
-            console.log("HOLA");
-            console.log(value);
+            //console.log("HOLA");
+            //console.log(value);
 
             this.setPaymentConfirmation(value);
 

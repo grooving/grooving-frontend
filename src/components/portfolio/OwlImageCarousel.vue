@@ -49,7 +49,7 @@ export default {
     },
 
     imageTrigger: function(event){
-      console.log("This event is disabled due to malfunction")
+      //console.log("This event is disabled due to malfunction")
       //this.$emit('imageTrigger', event.target.id);
     },
 

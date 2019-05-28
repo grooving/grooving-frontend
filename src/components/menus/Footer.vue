@@ -70,9 +70,9 @@ export default {
                 var authorizedGAxios = GAxios;
 
                 authorizedGAxios.get(endpoints.changeLang + language).then(response =>{
-                    console.log('Changing Language in Backend to: ', language)
+                    //console.log('Changing Language in Backend to: ', language)
                 }).catch( e => {
-                    console.error('Error while processing the request... ', e);
+                    //console.error('Error while processing the request... ', e);
                 }).then( () => {
                     //Debemos esperar a obtener una respuesta de la petición para 
                     // que la request no sea cancelada...

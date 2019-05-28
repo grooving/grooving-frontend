@@ -51,7 +51,7 @@ export default {
         haveError(error) {
             
             this.errors = error;
-            console.log('2',this.errors)
+            //console.log('2',this.errors)
         },
         getUsers: function(){
             NProgress.start();
@@ -62,7 +62,7 @@ export default {
             authorizedGAxios.get(endpoints.users, {
                 params: this.$route.query,
             }).then(response => {
-                console.log(response);
+                //console.log(response);
 
                 var users = response.data;
 

@@ -60,12 +60,12 @@ export default {
             authorizedGAxios.put(endpoints.user, {
                     "id": this.userId,
                 }).then(response => {
-                    console.log(response);
+                    //console.log(response);
                     this.$router.push({name: "usersList"});
                     window.location.reload();
                 }).catch(ex => {
-                    console.log(ex);
-                    console.log(ex.response.data.error);
+                    //console.log(ex);
+                    //console.log(ex.response.data.error);
                     this.errors = ex.response.data.error;
                     this.$emit('haveError', this.errors)
                     window.scrollTo(0,0);

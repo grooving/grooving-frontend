@@ -55,8 +55,8 @@ export default {
                 authorizedGAxios.get(endpoints.customerPersonalInformation)
                     .then(response => {
                         var personalInformation = response.data.user;
-                        console.log(personalInformation);
-                        console.log(response);
+                        //console.log(personalInformation);
+                        //console.log(response);
                         
                         this.name=personalInformation['first_name']
                         this.userSurnames = personalInformation['last_name'];
@@ -76,8 +76,8 @@ export default {
                 authorizedGAxios.get(endpoints.artistPersonalInformation)
                     .then(response => {
                         var personalInformation = response.data.user;
-                        console.log(personalInformation);
-                        console.log(response);
+                        //console.log(personalInformation);
+                        //console.log(response);
                         
                         this.name=personalInformation['first_name']
                         this.userSurnames = personalInformation['last_name'];

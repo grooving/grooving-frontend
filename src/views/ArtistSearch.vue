@@ -148,7 +148,7 @@ export default {
 
         }
       }).catch(ex => {
-          console.log(ex);      
+          //console.log(ex);      
       }).then(() => {
         if(this.datos_artistas.length == 0) {
           this.availableData = false;
@@ -200,7 +200,7 @@ export default {
         }
       }
 
-      console.log(tree)
+      //console.log(tree)
 
       this.selector_filters[0].data = tree;
 

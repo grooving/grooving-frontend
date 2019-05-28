@@ -98,7 +98,7 @@ export default {
 
                 })
                 .catch(err => {
-                    console.log(err)
+                    //console.log(err)
                 }).then(() => {
                     NProgress.done();
                 });
@@ -113,7 +113,7 @@ export default {
                     this.$emit('finishPayment', payload.nonce)
                 })
                 .catch(err => {
-                    console.log(err);
+                    //console.log(err);
                     if(err.name == 'BraintreeError') {
                         this.errors = this.gtrans.translate('braintree_error');
                     } else {
@@ -137,7 +137,7 @@ export default {
         .then(response => {
             this.auth_key = response.data
         }).catch(ex => {
-            console.log(ex);
+            //console.log(ex);
         }).then(() => this.obtainInstance());        
     },
 

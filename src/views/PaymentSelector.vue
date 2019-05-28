@@ -93,7 +93,7 @@ export default {
             this.preparedOffer.description = this.$store.getters.offerEvent.description,
             this.preparedOffer.zoneId = this.$store.getters.offerEvent.zone,
 
-            console.log("Oferta preparada: ", this.preparedOffer);
+            //console.log("Oferta preparada: ", this.preparedOffer);
 
             // Preparamos una fecha con los campos de VueX, que usaremos para redactar el 
             // cuerpo de la petición
@@ -157,8 +157,8 @@ export default {
             authorizedGAxios.post(endpoints.eventlocation, body_eventLocation)
             .then((res) => {
                 
-                console.log("Event Location Created...")
-                console.log(res)
+                //console.log("Event Location Created...")
+                //console.log(res)
                 
                 // Reference the brand-new eventLocation
                 body_offer['eventLocation_id'] = res.data.id;
@@ -166,8 +166,8 @@ export default {
                 // Una vez creado el eventLocation, procedemos a crear la oferta
                 authorizedGAxios.post(endpoints.offer, body_offer)
                 .then((res) => {
-                    console.log("Offer Created...")
-                    console.log(res)
+                    //console.log("Offer Created...")
+                    //console.log(res)
 
                     let body_payPal = {
                         'authorization_id': authorizationID,
@@ -177,7 +177,7 @@ export default {
                     authorizedGAxios.post(endpoints.paypal, body_payPal)
                     .then((res) => {
                     
-                       console.log(res)
+                       //console.log(res)
                     
                     })
                     .then(() => {
@@ -246,23 +246,23 @@ export default {
         // ###### SECURITY ACCESS CHECKS ###### 
 
         if(!this.$gsecurity.isAuthenticated()) {
-            console.log('Error')
+            //console.log('Error')
             this.$router.push({name: "error"});
         }
 
         if(!this.$gsecurity.hasRole('CUSTOMER')) {
-            console.log("Error: You are not a customer so you can't hire an artist");
+            //console.log("Error: You are not a customer so you can't hire an artist");
             this.$router.push({name: "error"});
         }
 
         if(!this.artistId || !vuexArtistId || this.artistId != vuexArtistId){
-            console.log("Error: ArtistId not provided or VueX not matching URL");
+            //console.log("Error: ArtistId not provided or VueX not matching URL");
             location.replace("/")
         }
 
         // Check the user does not access the view directly
         if(!PaymentProcess.checkViewRequirements(PaymentProcess.state, this.hiringType, "PaymentSelector")){
-            console.log('Error: Direct access to the view was detected')
+            //console.log('Error: Direct access to the view was detected')
             location.replace("/#/hiringType/" + this.artistId + "/")
         }
 

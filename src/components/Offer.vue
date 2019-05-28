@@ -251,9 +251,9 @@
                         "comment": "",
                     }).then(response => {
                         this.$emit("offerRated", this.offerID,this.ratingD);
-                        console.log(response);
+                        //console.log(response);
                     }).catch(ex => {
-                        console.log(ex);
+                        //console.log(ex);
                         this.errors = ex.response.data.error;
                     }).then(() => {
                         NProgress.done()
@@ -271,10 +271,10 @@
                         "status": "REJECTED",
                         "reason": this.reason,
                     }).then(response => {
-                        console.log(response);
+                        //console.log(response);
                         window.location.reload();
                     }).catch(ex => {
-                        console.log(ex);
+                        //console.log(ex);
                         this.errors = ex.response.data.error;
                     }).then(() => {
                         NProgress.done()
@@ -284,10 +284,10 @@
                     authorizedGAxios.put(endpoints.offer + this.offerID + '/', {
                         "status": "REJECTED",
                     }).then(response => {
-                        console.log(response);
+                        //console.log(response);
                         window.location.reload();
                     }).catch(ex => {
-                        console.log(ex);
+                        //console.log(ex);
                         this.errors = ex.response.data.error;
                     }).then(() => {
                         NProgress.done()
@@ -317,10 +317,10 @@
                         "status": status,
                         "reason": this.reason,
                     }).then(response => {
-                        console.log(response);
+                        //console.log(response);
                         window.location.reload();
                     }).catch(ex => {
-                        console.log(ex);
+                        //console.log(ex);
                         this.errors = ex.response.data.error;
                     }).then(() => {
                         NProgress.done()
@@ -330,10 +330,10 @@
                     authorizedGAxios.put(endpoints.offer + this.offerID + '/', {
                         "status": status,
                     }).then(response => {
-                        console.log(response);
+                        //console.log(response);
                         window.location.reload();
                     }).catch(ex => {
-                        console.log(ex);
+                        //console.log(ex);
                         this.errors = ex.response.data.error;
                     }).then(() => {
                         NProgress.done()
@@ -351,10 +351,10 @@
                         "status": "WITHDRAWN",
                         "reason": this.reason,
                     }).then(response => {
-                        console.log(response);
+                        //console.log(response);
                         window.location.reload();
                     }).catch(ex => {
-                        console.log(ex);
+                        //console.log(ex);
                         this.errors = ex.response.data.error;
                     }).then(() => {
                         NProgress.done()
@@ -364,10 +364,10 @@
                     authorizedGAxios.put(endpoints.offer + this.offerID + '/', {
                         "status": "WITHDRAWN",
                     }).then(response => {
-                        console.log(response);
+                        //console.log(response);
                         window.location.reload();
                     }).catch(ex => {
-                        console.log(ex);
+                        //console.log(ex);
                         this.errors = ex.response.data.error;
                     }).then(() => {
                         NProgress.done()

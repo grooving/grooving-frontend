@@ -59,8 +59,8 @@ export default {
   beforeUpdate() {
     this.genres = this.$store.getters.genres.allGenres;
     this.selectedGenres = this.$store.getters.genres.currentGenres;
-    console.log('Todas las genres' , this.genres)
-    console.log('genres del artista' , this.selectedGenres)
+    //console.log('Todas las genres' , this.genres)
+    //console.log('genres del artista' , this.selectedGenres)
 
     this.tree = Array();
 
@@ -98,13 +98,13 @@ export default {
         }
       }
     }
-    console.log(this.tree)
+    //console.log(this.tree)
   },
   beforeMount() {
     this.genres = this.$store.getters.genres.allGenres;
     this.selectedGenres = this.$store.getters.genres.currentGenres;
-    console.log('Todas las genres' , this.genres)
-    console.log('genres del artista' , this.selectedGenres)
+    //console.log('Todas las genres' , this.genres)
+    //console.log('genres del artista' , this.selectedGenres)
 
     this.tree = Array();
 
@@ -146,7 +146,7 @@ export default {
   methods: {
     ...mapActions(['setNewGenres']),
     deleteGenre(index) {
-        console.log('to delete',index)
+        //console.log('to delete',index)
         this.selectedGenres.splice(index,1);
         this.setNewGenres(this.selectedGenres);
     },

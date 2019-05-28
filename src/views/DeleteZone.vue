@@ -66,7 +66,7 @@ export default {
             NProgress.start();
             GAxios.delete(endpoints.manageZone +this.zoneId +'/', {
             }).then(response => {
-                console.log(response);
+                //console.log(response);
                 this.$router.push('/manageZones/'+this.parentZoneId);
             }).catch(error => {
                 if (error.response.data.error == null){

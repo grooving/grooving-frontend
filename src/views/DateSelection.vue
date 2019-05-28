@@ -93,8 +93,8 @@ export default {
 
                 }).catch( e => {
 
-                    console.log('Error: Could not set date in VueX');
-                    console.log(e);
+                    //console.log('Error: Could not set date in VueX');
+                    //console.log(e);
 
                     this.errors = this.gtrans.translate('setDateVueX');
                     window.scrollTo(0,0);
@@ -129,18 +129,18 @@ export default {
         // ###### SECURITY ACCESS CHECKS ###### 
 
         if(!this.gsecurity.hasRole('CUSTOMER')) {
-            console.log("Error: You are not a customer so you can't hire an artist");
+            //console.log("Error: You are not a customer so you can't hire an artist");
             location.replace("/#/*")
         }
 
         if(!this.artistId || !vuexArtistId || this.artistId != vuexArtistId){
-            console.log("Error: ArtistId not provided or VueX not matching URL");
+            //console.log("Error: ArtistId not provided or VueX not matching URL");
             location.replace("/")
         }
 
         // Check the user does not access the view directly
         if(!PaymentProcess.checkViewRequirements(PaymentProcess.state, this.hiringType, "DateSelection")){
-            console.log('Error: Direct access to the view was detected')
+            //console.log('Error: Direct access to the view was detected')
             location.replace("/#/hiringType/" + this.artistId + "/")
         }
 
@@ -181,7 +181,7 @@ export default {
                 }
 
             }).catch(ex => {
-                console.log(ex);
+                //console.log(ex);
             }).then( () => {NProgress.done()}).then(() => {
           this.refreshC++;
         });

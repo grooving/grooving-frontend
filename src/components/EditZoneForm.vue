@@ -66,7 +66,7 @@ export default {
                 "name": this.zoneName,
                 "parentZone":this.parentZoneId
             }).then(response => {
-                console.log(response);
+                //console.log(response);
                 if(this.parentId==1){
                     this.$router.push('manageZones/all');
                 }
@@ -106,7 +106,7 @@ export default {
     mounted() {
         if(this.zone != undefined && this.parentName != undefined) {
             this.parentZoneId = this.zone.parent;
-            console.log(this.parentName) 
+            //console.log(this.parentName) 
             this.parentZoneName = this.parentName;
             this.zoneId = this.zone.id;
             this.zoneName = this.zone.name;

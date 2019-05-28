@@ -131,10 +131,7 @@ export default {
         align-content: center;
         padding: 0px;
         font-size: 22px;
-                
         border: none;
-
-
         background-image: linear-gradient(to right, #00fb82, #187fe6);
     }
 

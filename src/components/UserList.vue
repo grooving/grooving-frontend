@@ -54,7 +54,7 @@ export default {
   },
 
   created: function(){
-    console.log(this.users)
+    //console.log(this.users)
     this.gsecurity = GSecurity;
     this.gsecurity.obtainSavedCredentials();
 
@@ -67,7 +67,7 @@ export default {
   methods: {
     haveError(error) {
       this.errors = error;
-      console.log('1',this.errors)
+      //console.log('1',this.errors)
       this.$emit('haveError', this.errors)
     }
   },

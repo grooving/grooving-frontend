@@ -51,11 +51,11 @@ export default {
             var GAxiosToken = this.gsecurity.getToken();
             authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
             //authorizedGAxios.defaults.headers.common['Content-Type'] = 'application/json';
-            console.log(this.code);
+            //console.log(this.code);
     		authorizedGAxios.put(endpoints.paymentCode, {
                 "paymentCode": this.code
     			}).then(response => {
-                    console.log(response);
+                    //console.log(response);
                     var userPicture = response.data.photo;
                     var userName = response.data.name;
                     var offerPrice = response.data.price;
@@ -65,7 +65,7 @@ export default {
                     this.$emit('offerDetails', arrayOffer);
                     this.$router.push('/paymentConfirmation');
 	      		}).catch(ex => {
-                    console.log(ex);
+                    //console.log(ex);
                     if (ex.response.data.error != null){
                         this.$emit('errorPayment', ex.response.data.error);
                         window.scrollTo(0,0);

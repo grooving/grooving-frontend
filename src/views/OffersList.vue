@@ -161,7 +161,7 @@ export default {
     },
 
     offerRated(offerId,rating) {
-      console.log(offerId,rating)
+      //console.log(offerId,rating)
       for(let i=0; i < this.offers.length; i++){
         if(this.offers[i].offerID == offerId) {
           this.offers[i].rating = rating;
@@ -184,7 +184,7 @@ export default {
     //this.gtrans.setLanguage('en')
 
     if(!this.$gsecurity.isAuthenticated()) {
-      console.log('Error')
+      //console.log('Error')
       location.replace("/#/*")
     }
     
@@ -205,7 +205,7 @@ export default {
 
     authorizedGAxios.get(URI)
     .then(response => {
-      console.log(response);
+      //console.log(response);
       var offers = response.data.results;
 
       var name;
@@ -266,7 +266,7 @@ export default {
         });
       }
     }).catch(ex => {
-        console.log(ex);
+        //console.log(ex);
         try {
           this.errors = ex.response.data.error;
         } catch {}

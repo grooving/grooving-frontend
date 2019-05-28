@@ -42,7 +42,7 @@ export default {
     },
     methods: {
         error(error) {
-            console.log(error)
+            //console.log(error)
             this.errors = error;
 
             document.getElementById("errorsDiv").style.display = "block";
