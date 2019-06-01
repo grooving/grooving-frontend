@@ -156,7 +156,7 @@ export default {
 
           // Zones
           var zones = portfolio.zone;
-          console.log('zzzzzones', zones)
+          //console.log('zzzzzones', zones)
           for(var i = 0; i < zones.length; i++){
             var zone = zones[i];
             this.d_portfolioZones.push(zone);
@@ -279,11 +279,11 @@ export default {
         "portfolio":this.$route.params['artistId']
       };
 
-      console.log('body',body)
+      //console.log('body',body)
 
       authorizedGAxios.put(endpoints.portfolio + this.artistId + '/', body)
       .then(response => {
-        console.log(response.data);
+        //console.log(response.data);
         this.gsecurity.setPhoto(this.d_portfolioMainPhoto);
         window.localStorage.setItem("photo", this.d_portfolioMainPhoto);
         //this.$router.push("/showPortfolio/"+this.artistId);
@@ -295,7 +295,7 @@ export default {
         .then(response => {
           this.$router.push("/showPortfolio/"+this.artistId)
         }).catch(ex => {
-            console.log(ex);
+            //console.log(ex);
             this.errors = ex.response.data.error;
             document.getElementById("errorsDiv").style.display = "block";
             window.scrollTo(0,0);
@@ -305,7 +305,7 @@ export default {
       }
 
       }).catch(ex => {
-          console.log(ex);
+          //console.log(ex);
           this.errors = ex.response.data.error;
           document.getElementById("errorsDiv").style.display = "block";
           window.scrollTo(0,0);

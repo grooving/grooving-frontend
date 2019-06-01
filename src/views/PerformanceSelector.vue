@@ -100,8 +100,8 @@ export default {
                         // If VueX has correctly set the package
                         this.$router.push(this.nextStep);
                     }).catch( e => {
-                        console.log('Could not set PaymentPackage: Performance');
-                        console.log(e);
+                        //console.log('Could not set PaymentPackage: Performance');
+                        //console.log(e);
                     })
 
                 }
@@ -128,23 +128,23 @@ export default {
         // ###### SECURITY ACCESS CHECKS ###### 
 
         if(!this.$gsecurity.isAuthenticated()) {
-            console.log('Error')
+            //console.log('Error')
             this.$router.push({name: "error"});
         }
 
         if(!this.$gsecurity.hasRole('CUSTOMER')) {
-            console.log("Error: You are not a customer so you can't hire an artist");
+            //console.log("Error: You are not a customer so you can't hire an artist");
             this.$router.push({name: "error"});
         }
 
         if(!this.artistId || !vuexArtistId || this.artistId != vuexArtistId){
-            console.log("Error: ArtistId not provided or VueX not matching URL");
+            //console.log("Error: ArtistId not provided or VueX not matching URL");
             location.replace("/")
         }
 
         // Check the user does not access the view directly
         if(!PaymentProcess.checkViewRequirements(PaymentProcess.state, this.hiringType, "PerformanceSelector")){
-            console.log('Error: Direct access to the view was detected')
+            //console.log('Error: Direct access to the view was detected')
             location.replace("/#/hiringType/" + this.artistId + "/")
         }
 
@@ -170,7 +170,7 @@ export default {
         NProgress.start();        
         authorizedGAxios.get(endpoints.paymentPackages + this.artistData.artistId + '/')
             .then(response => {
-                console.log("PayPacks", response.data);
+                //console.log("PayPacks", response.data);
                 
                 var packages = response.data;
 
@@ -191,7 +191,7 @@ export default {
                 }
                 
             }).catch(ex => {
-                console.log(ex);
+                //console.log(ex);
             }) 
 
         // ** Artist Information - Left Card **
@@ -223,8 +223,8 @@ export default {
             this.setArtist(this.artistData);
 
             }).catch(ex => {
-                console.log('Could not load Artist Info Data API');
-                console.log(ex);
+                //console.log('Could not load Artist Info Data API');
+                //console.log(ex);
             }).then(() => {
                 NProgress.done()
             });

@@ -62,7 +62,7 @@ export default {
 
         if(!this.$gsecurity.hasRole('CUSTOMER') || this.artistData.artistId != this.$route.params['artistId'] ) {
                 
-            console.log('Error')
+            //console.log('Error')
             location.replace("/#/*")
         }
         // Obtenemos el precio de la tarjeta izq   

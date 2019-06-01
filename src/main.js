@@ -8,6 +8,10 @@ import Chat from 'vue-beautiful-chat'
 
 
 Vue.config.productionTip = false
+Vue.config.silent = true
+Vue.config.errorHandler = function(err, vm, info) {
+  //console.log(`Error: ${err.toString()}\nInfo: ${info}`);
+}
 Vue.use(BootstrapVue)
 Vue.prototype.$gsecurity = GSecurity;
 Vue.use(Chat)

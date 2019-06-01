@@ -61,8 +61,8 @@ export default {
 
     this.zones = this.$store.getters.zones.allZones;
     this.selectedZones = this.$store.getters.zones.currentZones;
-    console.log('Todas las zonas' , this.zones)
-    console.log('Zonas del artista' , this.selectedZones)
+    //console.log('Todas las zonas' , this.zones)
+    //console.log('Zonas del artista' , this.selectedZones)
 
     this.tree = Array();
 
@@ -100,14 +100,14 @@ export default {
         }
       }
     }
-    console.log(this.tree)
+    //console.log(this.tree)
     
   },
   beforeMount() {
     this.zones = this.$store.getters.zones.allZones;
     this.selectedZones = this.$store.getters.zones.currentZones;
-    console.log('Todas las zonas' , this.zones)
-    console.log('Zonas del artista' , this.selectedZones)
+    //console.log('Todas las zonas' , this.zones)
+    //console.log('Zonas del artista' , this.selectedZones)
 
     this.tree = Array();
 

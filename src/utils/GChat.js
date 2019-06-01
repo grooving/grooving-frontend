@@ -58,7 +58,7 @@ class GChat{
         try{
 
             var receivedMessage = JSON.parse(rawResponse)['json'];
-            console.log("Parsed Received Message: ", receivedMessage);
+            //console.log("Parsed Received Message: ", receivedMessage);
 
             var mode = receivedMessage['mode'];
 
@@ -78,8 +78,8 @@ class GChat{
 
         } catch(error){
 
-            console.log("Error while processing a received message");
-            console.log(error);
+            //console.log("Error while processing a received message");
+            //console.log(error);
 
             res = this.formatVueChatMessage('server', 'Unexpected error. Try Again later');
 
@@ -116,11 +116,11 @@ class GChat{
                 res = true;
 
             }else{
-                console.log("Attempted to send a non-supported type of message: ", typeof textMessage)
+                //console.log("Attempted to send a non-supported type of message: ", typeof textMessage)
             }
 
         }else{
-            console.log("Attempted to send a message over a closed socket")
+            //console.log("Attempted to send a message over a closed socket")
         }
 
         return res;
@@ -157,7 +157,7 @@ class GChat{
         this._webSocket = new WebSocket(this.getURI());
         this._webSocket.addEventListener("open", () => {
 
-            console.log("WS was opened: ", this._webSocket)
+            //console.log("WS was opened: ", this._webSocket)
             this._webSocket.send(JSON.stringify(initMessage));
 
         });

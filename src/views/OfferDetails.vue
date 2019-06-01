@@ -35,7 +35,7 @@ export default {
   beforeMount: function() {
     if (!(this.gsecurity.hasRole('ARTIST') || this.gsecurity.hasRole('CUSTOMER'))) {
       this.$router.push({name: "error"});
-      console.log("holes")
+      //console.log("holes")
 
     } else {
       NProgress.start();
@@ -44,7 +44,7 @@ export default {
       authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
       authorizedGAxios.get(endpoints.offer + this.$route.params['offerId'] + '/')
       .then(response => {
-        console.log(response);
+        //console.log(response);
         var off = response.data;
         
         this.offer.push({
@@ -59,7 +59,7 @@ export default {
           status: off.status,
         });
       }).catch(ex => {
-          console.log(ex);
+          //console.log(ex);
       }).then(() => {
         NProgress.done()
       });

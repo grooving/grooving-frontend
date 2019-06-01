@@ -157,7 +157,7 @@ export default {
 
             authorizedGAxios.get(endpoints.statistics)
             .then(response => {
-                console.log(response);
+                //console.log(response);
                 var statistics = response.data;
 
                 // BarGraph
@@ -188,7 +188,7 @@ export default {
 
                 this.barGraphUpdated += 1;
             }).catch(ex => {
-                console.log(ex);
+                //console.log(ex);
             }).then(() => {
                 NProgress.done()
             });

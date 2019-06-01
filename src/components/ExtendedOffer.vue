@@ -137,10 +137,10 @@
                 {
                     "status": "CONTRACT_MADE",
                 }).then(response => {
-                    console.log(response);
+                    //console.log(response);
                     this.$router.push({path: '/offers/'})
                 }).catch(ex => {
-                    console.log(ex);  
+                    //console.log(ex);  
                     this.errors = ex.response.data.error;
                     document.getElementById("errorsDiv").style.display = "block";
                     window.scrollTo(0,0);

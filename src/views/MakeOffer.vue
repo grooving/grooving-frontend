@@ -74,7 +74,7 @@ export default {
             var authorizedGAxios = GAxios;
             var GAxiosToken = this.gsecurity.getToken();
             authorizedGAxios.defaults.headers.common['Authorization'] = 'Token ' + GAxiosToken;
-            console.log(GAxiosToken)
+            //console.log(GAxiosToken)
             //Creamos EventLocation
             authorizedGAxios.post(endpoints.offer,{        
     
@@ -89,7 +89,7 @@ export default {
                var offerId = response.data.id;
                this.nextStep();
             }).catch(ex => {
-                console.log(ex);
+                //console.log(ex);
             }).then(() => {
                 NProgress.done()
             });

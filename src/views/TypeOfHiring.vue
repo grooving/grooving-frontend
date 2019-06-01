@@ -102,8 +102,8 @@ export default {
                         // If VueX has correctly set the package
                         this.$router.push(nextView);
                     }).catch( e => {
-                        console.log('Could not set PaymentPackage: Fare');
-                        console.log(e);
+                        //console.log('Could not set PaymentPackage: Fare');
+                        //console.log(e);
                     });
 
                 }else if(hiringType == 'CUSTOM'){
@@ -113,8 +113,8 @@ export default {
                         // If VueX has correctly set the package
                         this.$router.push(nextView);
                     }).catch( e => {
-                        console.log('Could not set PaymentPackage: Custom');
-                        console.log(e);
+                        //console.log('Could not set PaymentPackage: Custom');
+                        //console.log(e);
                     })
 
                 }else if(hiringType == 'PERFORMANCE'){
@@ -143,12 +143,12 @@ export default {
         // ###### SECURITY ACCESS CHECKS ###### 
 
         if(!this.gsecurity.hasRole('CUSTOMER')) {
-            console.log("Error: You are not a customer so you can't hire an artist");
+            //console.log("Error: You are not a customer so you can't hire an artist");
             location.replace("/#/*");
         }
 
         if(!this.artistId){
-            console.log("Error: ArtistId not provided");
+            //console.log("Error: ArtistId not provided");
             location.replace("/")
         }
 
@@ -195,8 +195,8 @@ export default {
           this.setArtist(this.artistData);
 
         }).catch(ex => {
-            console.log('Could not load Artist Info Data API');
-            console.log(ex);
+            //console.log('Could not load Artist Info Data API');
+            //console.log(ex);
             this.$router.push('/error');
         });
 
@@ -229,8 +229,8 @@ export default {
 
             }
         }).catch(ex => {
-            console.log('Could not load Payment Packages API')
-            console.log(ex);
+            //console.log('Could not load Payment Packages API')
+            //console.log(ex);
             this.$router.push('/error');
         }).then(() => {
             NProgress.done()

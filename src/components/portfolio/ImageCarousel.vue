@@ -81,7 +81,7 @@ export default {
     //this.gtrans.setLanguage('en')
 
     this.d_photosInfo = this.$props.photosInfo;
-    console.log(this.popUpPhoto)
+    //console.log(this.popUpPhoto)
   },
 }
 </script>

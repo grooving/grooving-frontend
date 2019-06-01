@@ -195,7 +195,7 @@ export default {
                     "confirm_password": this.confirmPassword,
                     "email": this.email,
                 }).then(response => {
-                    console.log(response);
+                    //console.log(response);
                     this.gsecurity.setFirstName(this.name);
                     window.localStorage.setItem("firstName", this.name);
                     this.gsecurity.setPhoto(this.photo);
@@ -203,8 +203,8 @@ export default {
                     this.$router.push({name: "personalInfo"});
                     window.location.reload();
                 }).catch(ex => {
-                    console.log(ex);
-                    console.log(ex.response.data.error);
+                    //console.log(ex);
+                    //console.log(ex.response.data.error);
                     this.errors = ex.response.data.error;
                     document.getElementById("errorsDiv").style.display = "block";
                     window.scrollTo(0,0);
@@ -232,7 +232,7 @@ export default {
                     "confirm_password": this.confirmPassword,
                     "email": this.email,
                 }).then(response => {
-                    console.log(response);
+                    //console.log(response);
                     this.gsecurity.setFirstName(this.name);
                     window.localStorage.setItem("firstName", this.name);
                     this.gsecurity.setPhoto(this.photo);
@@ -240,8 +240,8 @@ export default {
                     this.$router.push({name: "personalInfo"});
                     window.location.reload();
                 }).catch(ex => {
-                    console.log(ex);
-                    console.log(ex.response.data.error);
+                    //console.log(ex);
+                    //console.log(ex.response.data.error);
                     this.errors = ex.response.data.error;
                     document.getElementById("errorsDiv").style.display = "block";
                     window.scrollTo(0,0);
@@ -274,8 +274,8 @@ export default {
             authorizedGAxios.get(uri)
                 .then(response => {
                     var personalInformation = response.data.user;
-                    console.log(personalInformation);
-                    console.log(response);
+                    //console.log(personalInformation);
+                    //console.log(response);
                     
                     this.name = personalInformation['first_name']
                     this.surnames = personalInformation['last_name'];

@@ -128,7 +128,7 @@ export default {
 
         try {
           this.gchat = new GChat(this.protocol, this.offerId.toString(), this.gsecurity.getToken(), this.gsecurity.getUsername());
-          console.log(this.chatErrorCount)
+          //console.log(this.chatErrorCount)
           
           // When the chat receives a message
           this.gchat.getWebSocket().addEventListener("message", (event) => {
@@ -137,8 +137,8 @@ export default {
 
           // When the chat unexpectely encounters an error
           this.gchat.getWebSocket().addEventListener("error", (event) => {
-            console.log("Chat Message encountered and error!");
-            console.log("Trying to safely recreate the instance...");
+            //console.log("Chat Message encountered and error!");
+            //console.log("Trying to safely recreate the instance...");
             this.chatErrorCount += 1;
             this.safelyCreateChatInstance();
           });
@@ -149,7 +149,7 @@ export default {
           this.gchat.getWebSocket().addEventListener("close", (event) => {
 
             let exitCode = event.code;
-            console.log("Chat Message has closed! Exit Code: ", exitCode);
+            //console.log("Chat Message has closed! Exit Code: ", exitCode);
 
             if(exitCode == 1000){
               this.chatClosingCount++;
@@ -163,8 +163,8 @@ export default {
 
           break;
         } catch (error) {
-          console.log("Error in the initialization phase of the Chat: ", error);
-          console.log("Attempting to retry...")
+          //console.log("Error in the initialization phase of the Chat: ", error);
+          //console.log("Attempting to retry...")
 
           this.chatErrorCount += 1;
         }
@@ -215,7 +215,7 @@ export default {
     },
     
     handleOnType () {
-      console.log('Emit typing event')
+      //console.log('Emit typing event')
     },
 
   },
@@ -268,7 +268,7 @@ export default {
         this.messageList.push(this.gchat.formatVueChatMessage(m.username, m.message, m.hour));
       }
 
-      console.log(this.messageList);
+      //console.log(this.messageList);
 
     });
 

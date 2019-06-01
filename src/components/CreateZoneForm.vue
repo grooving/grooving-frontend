@@ -65,7 +65,7 @@ export default {
                 "name": this.zoneName,
                 "parentZone":this.parentZoneId
             }).then(response => {
-                console.log(response);
+                //console.log(response);
                 if(this.parentId==1){
                     this.$router.push('manageZones/all');
                 }

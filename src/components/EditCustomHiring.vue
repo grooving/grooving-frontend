@@ -55,10 +55,10 @@ export default {
             GAxios.post(endpoints.custom + this.customId + '/', {
                 "minimumPrice": this.minimumPrice,
             }).then(response => {
-                console.log(response);
+                //console.log(response);
                 this.$router.push({name: "hiringSettings"});
             }).catch(ex => {
-                console.log(ex);
+                //console.log(ex);
                 this.errors = ex.response.data.error;
                 document.getElementById("errorsDiv").style.display = "block";
             }).then( () => {

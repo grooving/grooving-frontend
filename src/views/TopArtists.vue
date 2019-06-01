@@ -57,7 +57,7 @@ export default {
 
         }
       }).catch(ex => {
-          console.log(ex);
+          //console.log(ex);
       }).then(() => {
         NProgress.done()
       });

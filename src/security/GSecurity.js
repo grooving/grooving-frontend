@@ -157,7 +157,7 @@ class GSecurity {
                 "password": password
               }).then(response => {
                 
-                    console.log(response)
+                    //console.log(response)
 
                     let isArtist = response.data.artist ? true : false;
                     let token = response.headers['x-auth'];
@@ -202,7 +202,7 @@ class GSecurity {
                 "password": password
               }).then(response => {
                 
-                    console.log(response)
+                    //console.log(response)
 
                     if(response.data.admin){
 
@@ -239,7 +239,7 @@ class GSecurity {
                     res = false;
                   });
         }
-        console.log(res)
+        //console.log(res)
         return res;
     }
 

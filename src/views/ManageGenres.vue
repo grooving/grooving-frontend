@@ -57,10 +57,10 @@ export default {
         
         GAxios.get(endpoints.listGenres+this.genreId)
             .then(response => {
-                console.log(response);
+                //console.log(response);
                 this.depth = response.data.depth;
                 if(this.depth > 2){
-                    console.log('Error: You cannot access to this list.');
+                    //console.log('Error: You cannot access to this list.');
                     this.$router.push('/error');
                 }
                 else{
@@ -90,7 +90,7 @@ export default {
                 }
                 
         }).catch(ex => {
-            console.log(ex);
+            //console.log(ex);
             this.$router.push('/error');
         }).then( () => {
             NProgress.done();

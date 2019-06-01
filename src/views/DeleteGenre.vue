@@ -57,11 +57,11 @@ export default {
             NProgress.start();
             GAxios.delete(endpoints.createGenre+this.genre.id+'/', {
             }).then(response => {
-                console.log(response);
+                //console.log(response);
                 this.$router.push('/manageGenres/'+this.cancelButtonId);
             }).catch(ex => {
-                console.log(ex);
-                console.log(ex.response.data.error);
+                //console.log(ex);
+                //console.log(ex.response.data.error);
                 this.errors = ex.response.data.error;
                 document.getElementById("errorsDiv").style.display = "block";
             }).then( () => {
