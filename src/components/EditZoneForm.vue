@@ -104,6 +104,7 @@ export default {
         } 
     },
     mounted() {
+        console.log(this.zone, this.parentName)
         if(this.zone != undefined && this.parentName != undefined) {
             this.parentZoneId = this.zone.parent;
             //console.log(this.parentName) 
@@ -115,6 +116,7 @@ export default {
             this.$router.push('manageZones/'+ this.parentZoneId);
         }
     }
+
 }
 </script>
 

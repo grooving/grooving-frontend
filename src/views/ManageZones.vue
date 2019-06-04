@@ -63,6 +63,7 @@ export default {
                     }                     
                 }
             }
+            console.log("edit", zone, parentName);
             this.$router.push({name: 'editZone', params: {zone, parentName}});
         },
         updateList(zoneId) {
@@ -139,7 +140,7 @@ export default {
         'tree': true
       }
       }).then(response => {
-
+          console.log(response)
         var root = response.data;
 
         this.tree.push({id:root['id'], name: root['name'], parent: 'all', children: root['children'], depth: 0})

@@ -5,7 +5,7 @@
     </div>
     <div class="everything">
         <div class="editZoneForm">
-          <div><EditZoneForm :key="zone" :zone="zone" :parentName="parentName" @error="error"/></div>
+          <div><EditZoneForm v-if="zone" :key="zone" :zone="zone" :parentName="parentName" @error="error"/></div>
         </div>
     </div>
 </div>
