@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URI = 'https://groovy-bupload-test.herokuapp.com';
+const BASE_URI = 'https://grooving-backend-d6.herokuapp.com';
 const CORS_HEADERS = {
     'Access-Control-Allow-Origin': "*",
     'Access-Control-Allow-Credentials': 'true',
