@@ -54,6 +54,7 @@ export default {
     data() {
         return {
             gtrans: undefined,
+            errors: "",
         }
     },
 
@@ -79,8 +80,10 @@ export default {
                 this.$router.push({name: "hiringSettings"});
             }).catch(ex => {
                 //console.log(ex);
+                this.errors = ex.response.data.error;
             }).then( () => {
                 NProgress.done();
+                this.$emit('error', this.errors);
             })
         },
     },

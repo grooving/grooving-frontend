@@ -1,8 +1,11 @@
 <template>
 <div class="prueba">
+    <div id="errorsDiv" class="validationErrors vertical-center">
+        <p style="margin: 0px;">{{errors}}</p>
+    </div>
     <div class="everything">
         <div class="paymentSelect">
-          <div class="paymentOptions"><EditPerformanceHiring :description="description" :duration="duration" :fixedPrice="fixedPrice" :packageId="packageId" :performanceId="performanceId"/></div>
+          <div class="paymentOptions"><EditPerformanceHiring :description="description" :duration="duration" :fixedPrice="fixedPrice" :packageId="packageId" :performanceId="performanceId" @error="error"/></div>
         </div>
     </div>
 </div>
@@ -24,6 +27,7 @@ export default {
     data: function() {
         return {
             gsecurity: GSecurity,
+            errors: '',
         }
     },
 
@@ -33,6 +37,17 @@ export default {
         fixedPrice: {},
         packageId: {},
         performanceId: {},
+    },
+
+    methods:{
+        
+        error(error) {
+            //console.log(error)
+            this.errors = error;
+
+            document.getElementById("errorsDiv").style.display = "block";
+            window.scrollTo(0,0);
+        }
     },
 
     beforeMount: function(){
@@ -47,6 +62,18 @@ export default {
 <style scoped>
     * {
         font-family: "Archivo"
+    }
+
+    .validationErrors{
+        background-color:#f50057;
+        border-radius: 5px;
+        box-shadow: 0px 2px 8px 2px rgba(255, 0, 0, .3);      
+        color:white;
+        display: none;
+        font-weight: bold;
+        margin-bottom: 14px;
+        padding: 10px;
+        padding-top: 12px;
     }
 
     @media (min-width:768px)  {

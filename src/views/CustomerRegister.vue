@@ -118,9 +118,11 @@
                 }
                 this.createImage(files[0]);
           
-                var fileName = files[0].name;
-        
-                this.input.ext= fileName.split(".")[1];
+                let splittedFN = fileName.split(".");
+
+                if(splittedFN.length > 1){
+                    this.input.ext= splittedFN[splittedFN.length - 1 ];
+                }
             
                 $('.custom-file-label').html(fileName);
             },
