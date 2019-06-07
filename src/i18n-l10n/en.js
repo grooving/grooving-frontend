@@ -674,7 +674,7 @@ export default{
     // ----------------------------------------------------
 
     startingDate_title: 'Pick a starting date',
-    startingDate_error: 'You must specific a starting hour',
+    startingDate_error: 'You must specify a starting hour',
 
     // ----------------------------------------------------
     //                      SentOffer.vue
