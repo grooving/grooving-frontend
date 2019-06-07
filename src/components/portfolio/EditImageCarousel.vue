@@ -17,7 +17,7 @@
           <div class="col-12 vertical-center">
             <div class="form-group" style="width: inherit;">
               <div class="row">
-                <input @change="onFileChange($event)" type="file" id="customFile" class="custom-file-input" aria-describedby="imageCarouselInput"  v-bind:placeholder="this.gtrans.translate('image_placeholder')" />
+                <input @change="onFileChange($event)" accept="image/*" type="file" id="customFile" class="custom-file-input" aria-describedby="imageCarouselInput"  v-bind:placeholder="this.gtrans.translate('image_placeholder')" />
                 <label v-if="this.gtrans.getLanguage() == 'es'" class="custom-file-label labelES" for="customFile"></label>
                 <label v-else class="custom-file-label labelEN" for="customFile"></label>
               </div>
@@ -103,7 +103,7 @@ export default {
                     }).then(response => {
                         this.addImageURL = response.data['imgUrl'];
                         this.add(e)
-                        console.log(response);
+                        //console.log(response);
                     }).catch(ex => {
                         
                         this.$parent.errors = ex.response.data.error;
@@ -125,8 +125,11 @@ export default {
             }   
     
             var fileName = files[0].name;
-            
-            this.ext= fileName.split(".")[1];
+            let splittedFN = fileName.split(".");
+
+            if(splittedFN.length > 1){
+              this.ext= splittedFN[splittedFN.length - 1 ];
+            }
             
             this.img_get_url(files[0], this.ext);
             

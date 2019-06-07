@@ -171,7 +171,11 @@ export default {
     
             var fileName = files[0].name;
             
-            this.ext= fileName.split(".")[1];
+            let splittedFN = fileName.split(".");
+
+            if(splittedFN.length > 1){
+                this.ext= splittedFN[splittedFN.length - 1 ];
+            }
             
             this.img_get_url(files[0], this.ext, typeImg);
             

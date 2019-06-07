@@ -15,8 +15,8 @@
                     <p class="card-text"><span style="font-weight: bold;">{{gtrans.translate('offer_address')}}: </span>{{ address }}</p>
                     </div>
                     <div class="description">
-                        <p class="card-text"><span style="font-weight: bold;">{{gtrans.translate('offer_package')}}: </span></p>
-                        <p class="card-text">{{ packageDescription }}</p>
+                        <p v-if="packageDescription" class="card-text"><span style="font-weight: bold;">{{gtrans.translate('offer_package')}}: </span></p>
+                        <p v-if="packageDescription" class="card-text">{{ packageDescription }}</p>
                         <p class="card-text"><span style="font-weight: bold;">{{gtrans.translate('offer_description')}}: </span></p>
                         <p class="card-text">{{ description }}</p>
                     </div>

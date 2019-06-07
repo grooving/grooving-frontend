@@ -39,6 +39,10 @@ export default {
             this.zone = (this.$attrs.zone);
             this.parentName = (this.$attrs.parentName);
         }
+
+        if(this.zone == undefined){
+            this.$router.push('/manageZones/all');
+        }
     },
     methods: {
         error(error) {

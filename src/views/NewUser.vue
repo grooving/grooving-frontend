@@ -73,6 +73,7 @@
                         this.$router.push({ name: "receivePayment", query: {paymentCode: this.paymentCode} })
                     }else{
                         this.$router.push({ path: "/" });
+                        this.$router.go();
                     }
                 } else {
                     $('#ddown-form-email, #ddown-form-passwd').css('border-color', 'red');

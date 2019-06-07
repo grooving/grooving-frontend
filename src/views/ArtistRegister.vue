@@ -54,7 +54,7 @@
                     </b-form-group>
                     <div class="form-check">
                         <b-form-checkbox id="checkbox-1" v-model="status" value="accepted" unchecked-value="not_accepted" required>
-                            <p>{{gtrans.translate('registerTerms_1')}}<a href="/">{{gtrans.translate('registerTerms_2')}}</a>.</p>
+                            <p>{{gtrans.translate('registerTerms_1')}}<router-link to="terms">{{gtrans.translate('registerTerms_2')}}</router-link>.</p>
                         </b-form-checkbox>
                     </div>
                     <b-button class="continueButton" variant="primary" size="sm" type="submit">{{gtrans.translate('header_signIn')}}</b-button>
@@ -121,9 +121,12 @@
                 this.createImage(files[0]);
           
                 var fileName = files[0].name;
-        
-                this.input.ext= fileName.split(".")[1];
-            
+                let splittedFN = fileName.split(".");
+
+                if(splittedFN.length > 1){
+                    this.input.ext= splittedFN[splittedFN.length - 1 ];
+                }
+                
                 $('.custom-file-label').html(fileName);
             },
             createArtist() {
